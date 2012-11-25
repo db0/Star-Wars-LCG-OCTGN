@@ -29,6 +29,7 @@
 		<property name="Text" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Damage Capacity" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Resources" type="String" hidden="false" ignoreText="False" textKind="Free" />
+		<property name="Alternate" type="String" hidden="True" ignoreText="True" textKind="Free" />
 	</card>
 	<table name="Table" visibility="undefined" ordered="false" width="500" height="380" background="r3">
       <groupactions menu="Game...">
@@ -69,6 +70,14 @@
          <cardaction menu="Add shield counter" default="false" shortcut="Ctrl+F1" execute="addShield" />
          <cardaction menu="Remove shield counter" default="false" shortcut="Ctrl+F2" execute="subShield" />
       </cardactions>
+      <groupactions menu="Timing Structures References">
+         <groupaction menu="Balance Phase" default="false" execute="HELP_BalancePhase" />
+         <groupaction menu="Refresh Phase" default="false" execute="HELP_RefreshPhase" />
+         <groupaction menu="Draw Phase" default="false" execute="HELP_DrawPhase" />
+         <groupaction menu="Deployment Phase" default="false" execute="HELP_DeploymentPhase" />
+         <groupaction menu="Conflict Phase" default="false" execute="HELP_ConflictPhase" />
+         <groupaction menu="Force Phase" default="false" execute="HELP_ForcePhase" />
+      </groupactions>
 	</table>
 	<player summary="Hand: {#Hand}">
       <globalvariable name="Side" value="" /> 
@@ -90,6 +99,7 @@
 		<group name="Objective Deck" visibility="none" ordered="false" width="63" height="88" icon="r13" collapsed="false" />
 		<group name="Discard Pile" visibility="all" ordered="false" width="63" height="88" shortcut="F6" icon="r14" collapsed="false" />
 		<group name="Removed from Game" visibility="all" ordered="false" width="63" height="88" shortcut="F8" icon="r15" collapsed="true" />
+      <counter name="Reserves" default="6" reset="true" icon="r4" />
 	</player>
 	<shared>
 		<counter name="Death Star Counter" default="0" reset="true" icon="r16" />

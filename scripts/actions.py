@@ -15,7 +15,7 @@
     # along with this script.  If not, see <http://www.gnu.org/licenses/>.
 
 ###==================================================File Contents==================================================###
-# This file contains the basic table actions in ANR. They are the ones the player calls when they use an action in the menu.
+# This file contains the basic table actions in SW LCG. They are the ones the player calls when they use an action in the menu.
 # Many of them are also called from the autoscripts.
 ###=================================================================================================================###
 
@@ -25,6 +25,10 @@ import re
 #---------------------------------------------------------------------------
 
 Side = None # The side of the player. 'runner' or 'corp'
+    
+#---------------------------------------------------------------------------
+# Rest
+#---------------------------------------------------------------------------
     
 def refreshAll(group, x = 0, y = 0):
 	mute()
@@ -61,18 +65,10 @@ def focus(card, x = 0, y = 0):
     else:
         notify('{} untaps {}'.format(me, card))
 		  
-def flip(card, x = 0, y = 0):
-    mute()
-    if card.isFaceUp:
-        notify("{} turns {} face down.".format(me, card))
-        card.isFaceUp = False
-    else:
-        card.isFaceUp = True
-        notify("{} turns {} face up.".format(me, card))
-
 def discard(card, x = 0, y = 0):
 	card.moveTo(me.piles['Discard Pile'])
 	notify("{} discards {}".format(me, card))
+
 def play(card, x = 0, y = 0):
 	mute()
 	src = card.group

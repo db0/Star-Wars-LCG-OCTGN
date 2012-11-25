@@ -107,6 +107,23 @@ def switchUniCode(group,x=0,y=0,command = 'Off'):
       UniCode = True
 
 #------------------------------------------------------------------------------
+# Help functions
+#------------------------------------------------------------------------------
+
+def HELP_BalancePhase(group,x=0,y=0):
+   table.create('d98d94d5-57ef-4616-875d-41224784cb96', x, y, 1)
+def HELP_RefreshPhase(group,x=0,y=0):
+   table.create('1c13a82f-74f3-40fa-81f3-9b98523acfc3', x, y, 1)
+def HELP_DrawPhase(group,x=0,y=0):
+   table.create('6b6c8bd3-07ea-4b21-9ced-07562c16e7d7', x, y, 1)
+def HELP_DeploymentPhase(group,x=0,y=0):
+   table.create('6d18a054-516f-4ce4-aee5-ec22bb1f300f', x, y, 1)
+def HELP_ConflictPhase(group,x=0,y=0):
+   table.create('987517ed-111d-4ee0-a8a0-66b9f553e0a8', x, y, 1)
+def HELP_ForcePhase(group,x=0,y=0):
+   table.create('3aaf2774-97e5-4886-8476-49980647ddc1', x, y, 1)
+      
+#------------------------------------------------------------------------------
 #  Online Functions
 #------------------------------------------------------------------------------
 
