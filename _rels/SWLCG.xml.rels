@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+  <Relationship Target="/card/back.png" Id="r1" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/card/front.png" Id="r2" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/table/background1.png" Id="r3" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/Resource.png" Id="r4" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/Shield.png" Id="r5" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/damage.png" Id="r6" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/damage.png" Id="r7" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/Resource.png" Id="r8" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/Shield.png" Id="r9" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/groups/hand.png" Id="r11" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/groups/library.png" Id="r12" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/groups/sideboard.png" Id="r13" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/groups/graveyard.png" Id="r14" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/groups/removed.png" Id="r15" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/Death-Star-icon.png" Id="r16" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/counters/DSOb.png" Id="r17" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/scripts/actions.py" Id="r100" Type="http://schemas.octgn.org/script" />
+  <Relationship Target="/scripts/constants.py" Id="r101" Type="http://schemas.octgn.org/script" />
+  <Relationship Target="/scripts/generic.py" Id="r102" Type="http://schemas.octgn.org/script" />
+  <Relationship Target="/scripts/meta.py" Id="r103" Type="http://schemas.octgn.org/script" />
+  <Relationship Target="/scripts/autoscripts.py" Id="r104" Type="http://schemas.octgn.org/script" />
+</Relationships>
