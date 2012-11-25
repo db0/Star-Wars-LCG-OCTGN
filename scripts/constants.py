@@ -27,11 +27,20 @@ mdict = dict( # A dictionary which holds all the hard coded markers (in the mark
 
 ScoredColor = "#00ff44"
 SelectColor = "#009900"
-EmergencyColor = "#ff0000"
 DummyColor = "#000000" # Marks cards which are supposed to be out of play, so that players can tell them apart.
 RevealedColor = "#ffffff"
 PriorityColor = "#ffd700"
 InactiveColor = "#888888" # Cards which are in play but not active yet
+AttackColor = "#ff0000"
+DefendColor = "#0000ff"
 
 Xaxis = 'x'
 Yaxis = 'y'
+
+phases = [
+    "Balance Phase: {}.".format(me),
+    "Refresh Phase: {}.".format(me),
+    "Draw Phase: {}.".format(me),
+    "Deployment Phase: {}.".format(me),
+    "Conflict Phase: {}.".format(me),
+    "Force Phase: {}.".format(me)]

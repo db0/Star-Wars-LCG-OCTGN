@@ -29,7 +29,6 @@
 		<property name="Text" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Damage Capacity" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Resources" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Alternate" type="String" hidden="True" ignoreText="True" textKind="Free" />
 	</card>
 	<table name="Table" visibility="undefined" ordered="false" width="500" height="380" background="r3">
       <groupactions menu="Game...">
@@ -45,8 +44,7 @@
       </groupactions>
 		<groupaction menu="Refresh all" default="false" shortcut="F4" execute="refreshAll" />
 		<groupaction menu="Clear targets" default="false" shortcut="Esc" execute="clearAll" />
-		<cardaction menu="Focus" default="true" execute="focus" />
-		<cardaction menu="Flip up/down" default="false" execute="flip" />
+		<cardaction menu="Focus" default="true" shortcut="Ctrl+F" execute="focus" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
 		<groupactions menu="Damage">
 			<groupaction menu="Add Damage Counter" default="false" shortcut="F1" execute="addDamage" />
@@ -57,18 +55,17 @@
 			<groupaction menu="Jump to Refresh Phase." default="false" shortcut="F2" execute="goToRefresh" />
 			<groupaction menu="Jump to Draw Phase." default="false" shortcut="F3" execute="goToDraw" />
 			<groupaction menu="Jump to Deployment Phase." default="false" shortcut="F4" execute="goToDeployment" />
-			<groupaction menu="Jump to Conflict Phase." default="false" shortcut="F4" execute="goToConflict" />
-			<groupaction menu="Jump to Force Phase." default="false" shortcut="F4" execute="goToForce" />
+			<groupaction menu="Jump to Conflict Phase." default="false" shortcut="F5" execute="goToConflict" />
+			<groupaction menu="Jump to Force Phase." default="false" shortcut="F6" execute="goToForce" />
 			<groupaction menu="Start/End an Engagement." default="false" shortcut="F10" execute="goToEngagement" />
-			<groupaction menu="Go back to the Pre-Game Setup Phase (use this only after a reset)." default="false" execute="goToSetup" />
 		</groupactions>
       <cardactions menu="Tokens...">
-         <cardaction menu="Add damage counter" default="false" shortcut="F1" execute="addDamage" />
-         <cardaction menu="Remove damage counter" default="false" shortcut="F2" execute="subDamage" />
-         <cardaction menu="Add resource counter" default="false" shortcut="Shift+F1" execute="addResource" />
-         <cardaction menu="Remove resource counter" default="false" shortcut="Shift+F2" execute="subResource" />
-         <cardaction menu="Add shield counter" default="false" shortcut="Ctrl+F1" execute="addShield" />
-         <cardaction menu="Remove shield counter" default="false" shortcut="Ctrl+F2" execute="subShield" />
+         <cardaction menu="Add Damage counter" default="false" shortcut="Alt+D" execute="addDamage" />
+         <cardaction menu="Remove Damage counter" default="false" shortcut="Shift+Alt+D" execute="subDamage" />
+         <cardaction menu="Add Focus counter" default="false" shortcut="Alt+F" execute="addFocus" />
+         <cardaction menu="Remove Focus counter" default="false" shortcut="Shift+Alt+F" execute="subFocus" />
+         <cardaction menu="Add Shield counter" default="false" shortcut="Alt+S" execute="addShield" />
+         <cardaction menu="Remove Shield counter" default="false" shortcut="Alt+Shift+S" execute="subShield" />
       </cardactions>
       <groupactions menu="Timing Structures References">
          <groupaction menu="Balance Phase" default="false" execute="HELP_BalancePhase" />
@@ -81,7 +78,9 @@
 	</table>
 	<player summary="Hand: {#Hand}">
       <globalvariable name="Side" value="" /> 
+      <globalvariable name="Phase" value="0" /> 
       <globalvariable name="specialCards" value="{}" /> 
+      <globalvariable name="currentObjectives" value="[]" /> 
       <globalvariable name="gameVersion" value="" /> 
 		<hand name="Hand" visibility="me" ordered="false" width="63" height="88" icon="r11">
 			<groupaction menu="Play Card" default="true" execute="play" />
@@ -100,11 +99,9 @@
 		<group name="Discard Pile" visibility="all" ordered="false" width="63" height="88" shortcut="F6" icon="r14" collapsed="false" />
 		<group name="Removed from Game" visibility="all" ordered="false" width="63" height="88" shortcut="F8" icon="r15" collapsed="true" />
       <counter name="Reserves" default="6" reset="true" icon="r4" />
+		<counter name="Death Star Dial" default="0" reset="true" icon="r16" />
+		<counter name="DS Objectives Destroyed" default="0" reset="true" icon="r17" />
 	</player>
-	<shared>
-		<counter name="Death Star Counter" default="0" reset="true" icon="r16" />
-		<counter name="Dark Side Objectives Destroyed" default="0" reset="true" icon="r17" />
-	</shared>
 	<deck>
 		<section name="Affiliation" group="Hand" />     
 		<section name="Command Deck" group="Command Deck" />

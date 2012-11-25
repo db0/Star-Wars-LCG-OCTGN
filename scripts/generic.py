@@ -389,6 +389,9 @@ def multiChoice(title, options,card): # This displays a choice where the player 
 # Generic
 #---------------------------------------------------------------------------
 
+def Pass(group, x = 0, y = 0): # Player says pass. A very common action.
+   notify('{} Passes.'.format(me))
+
 def num (s):
    #if debugVerbosity >= 1: notify(">>> num(){}".format(extraASDebug())) #Debug
    if not s: return 0

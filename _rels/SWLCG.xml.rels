@@ -2,7 +2,7 @@
 <Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
   <Relationship Target="/card/back.png" Id="r1" Type="http://schemas.octgn.org/picture" />
   <Relationship Target="/card/front.jpg" Id="r2" Type="http://schemas.octgn.org/picture" />
-  <Relationship Target="/table/background.png" Id="r3" Type="http://schemas.octgn.org/picture" />
+  <Relationship Target="/table/background1.png" Id="r3" Type="http://schemas.octgn.org/picture" />
   <Relationship Target="/counters/Reserves.png" Id="r4" Type="http://schemas.octgn.org/picture" />
   <Relationship Target="/groups/hand.png" Id="r11" Type="http://schemas.octgn.org/picture" />
   <Relationship Target="/groups/library.png" Id="r12" Type="http://schemas.octgn.org/picture" />

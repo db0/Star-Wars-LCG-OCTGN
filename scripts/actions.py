@@ -24,12 +24,130 @@ import re
 # Global variables
 #---------------------------------------------------------------------------
 
-Side = None # The side of the player. 'runner' or 'corp'
+Side = None # The side of the player. 
+Affiliation = None
+opponent = None # A variable holding the player object of our opponent.
+
+#---------------------------------------------------------------------------
+# Phases
+#---------------------------------------------------------------------------
+
+def showCurrentPhase(): # Just say a nice notification about which phase you're on.
+   notify(phases[num(me.getGlobalVariable('Phase'))].format(me))
+   
+def nextPhase(group, x = 0, y = 0):  
+# Function to take you to the next phase. 
+   mute()
+   phase = num(me.getGlobalVariable('Phase'))
+   if phase == 6: 
+      me.setGlobalVariable('Phase','-1') # In case we're on the last phase (Force), we end our turn.
+      opponent.setGlobalVariable('Phase','0') # Phase 0 means they're ready to start their turn
+      notify("{} has ended their turn".format(me))
+      return
+   elif phase < 0:
+      if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
+      me.setGlobalVariable('Phase','1')
+      opponent.setGlobalVariable('Phase','-1')
+   else: me.setGlobalVariable('Phase',str(phase + 1)) # Otherwise, just move up one phase
+   showCurrentPhase()
+
+def goToBalance(group, x = 0, y = 0): # Go directly to the Balance phase
+   mute()
+   me.setGlobalVariable('Phase','1')
+   showCurrentPhase()
+   clearHandRanks() # Clear the Hand Ranks, in case one is leftover from last High Noon.
+
+def goToRefresh(group, x = 0, y = 0): # Go directly to the Refresh phase
+   mute()
+   me.setGlobalVariable('Phase','2')
+   showCurrentPhase()
+
+def goToDraw(group, x = 0, y = 0): # Go directly to the Draw phase
+   mute()
+   me.setGlobalVariable('Phase','3')
+   showCurrentPhase()
+
+def goToDeployment(group, x = 0, y = 0): # Go directly to the Deployment phase
+   mute()
+   me.setGlobalVariable('Phase','4')
+   showCurrentPhase()   
     
+def goToConflict(group, x = 0, y = 0): # Go directly to the Conflict phase
+   mute()
+   me.setGlobalVariable('Phase','5')
+   showCurrentPhase()   
+
+def goToForce(group, x = 0, y = 0): # Go directly to the Force phase
+   mute()
+   me.setGlobalVariable('Phase','6')
+   showCurrentPhase()   
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
-    
+
+def gameSetup(group, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
+   global Side
+   mute()
+   deck = me.piles['Command Deck']
+   objectives = me.piles['Objective Deck']
+   #if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
+   versionCheck()
+   if Side and not Affiliation:
+      if ofwhom('ofOpponent') == me and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
+         whisper("Please wait until your opponent has drawn their objectives before proceeding")
+         return
+      if not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
+      for card in me.hand:
+         if card.Type != 'Objective': 
+            whisper(":::Warning::: You are not supposed to have any non-Objective cards in your hand at this point")
+            card.moveToBottom(deck)
+            continue
+         else: storeObjective(card)
+      shuffle(deck)
+      drawMany(deck, 6)
+      opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
+      notify("{} has drawn their starting commands".format(me))
+   else: # This choice is only for a new game.
+      if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
+      Side = None
+      if not table.isTwoSided() and not confirm(":::WARNING::: This game is designed to be played on a two-sided table. Things will be extremely uncomfortable otherwise!! Please start a new game and makde sure the  the appropriate button is checked. Are you sure you want to continue?"): return
+      chooseSide()
+      if debugVerbosity >= 5: confirm("Checking Deck")
+      if len(deck) == 0:
+         whisper ("Please load a deck first!")
+         return
+      if debugVerbosity >= 5: confirm("Reseting Variables")
+      #resetAll()
+      if debugVerbosity >= 5: confirm("Placing Identity")
+      for card in me.hand:
+         if card.Type != 'Affiliation': 
+            whisper(":::Warning::: You are not supposed to have any non-Affiliation cards in your hand when you start the game")
+            if card.Type == 'Objective': card.moveToBottom(objectives)
+            else: card.moveToBottom(deck)
+            continue
+         else: 
+            Side = card.Side
+            storeSpecial(card)
+            me.setGlobalVariable('Side', Side)
+            Affiliation = card
+      if not Side: 
+         confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
+         return
+      if debugVerbosity >= 5: confirm("Placing Affiliation")
+      Affiliation.moveToTable(playerside * 400, playerside * 88)
+      rnd(1,10)  # Allow time for the affiliation to be recognised
+      notify("{} is representing the {}.".format(me,Affiliation))
+      if debugVerbosity >= 5: confirm("Shuffling Decks")
+      shuffle(objectives)
+      if debugVerbosity >= 5: confirm("Drawing 4 Objectives")
+      drawMany(objectives, 4)
+      notify("{} is choosing their objectives.".format(me))
+      whisper("Once both players have discarded their 4 objective, press Ctrl+Shift+S to place them on the table")
+      if debugVerbosity >= 5: confirm("Reshuffling Deck")
+      shuffle(objectives) # And another one just to be sure
+      shuffle(deck)
+   
 def refreshAll(group, x = 0, y = 0):
 	mute()
 	notify("{} untaps all his cards".format(me))
@@ -43,19 +161,6 @@ def clearAll(group, x = 0, y = 0):
 		if card.controller == me:
 			card.target(False)
 			card.highlight = None
-
-def roll20(group, x = 0, y = 0):
-    mute()
-    n = rnd(1, 20)
-    notify("{} rolls {} on a 20-sided die.".format(me, n))
-
-def flipCoin(group, x = 0, y = 0):
-    mute()
-    n = rnd(1, 2)
-    if n == 1:
-        notify("{} flips heads.".format(me))
-    else:
-        notify("{} flips tails.".format(me))
 
 def focus(card, x = 0, y = 0):
     mute()
