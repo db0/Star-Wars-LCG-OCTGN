@@ -1,0 +1,5 @@
+=====Message of the Day======
+
+If you're reading this, it means the SW LCG Plugin is functional on OCTGN. Yay!
+
+===============================

@@ -105,7 +105,76 @@ def switchUniCode(group,x=0,y=0,command = 'Off'):
    else:
       whisper("Credits and Clicks will now be displayed as Unicode.".format(me))
       UniCode = True
+
+#------------------------------------------------------------------------------
+#  Online Functions
+#------------------------------------------------------------------------------
+
+def versionCheck():
+   if debugVerbosity >= 1: notify(">>> versionCheck()") #Debug
+   global startupMsg
+   me.setGlobalVariable('gameVersion',gameVersion)
+   if not startupMsg:
+      (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt')
+      if debugVerbosity >= 2: notify("### url:{}, code: {}".format(url,code)) #Debug
+      if code != 200 or not url:
+         whisper(":::WARNING::: Cannot check version at the moment.")
+         return
+      detailsplit = url.split('||')
+      currentVers = detailsplit[0].split('.')
+      installedVers = gameVersion.split('.')
+      if len(installedVers) < 3:
+         whisper("Your game definition does not follow the correct version conventions. It is most likely outdated or modified from its official release.")
+         startupMsg = True
+      elif num(currentVers[0]) > num(installedVers[0]) or num(currentVers[1]) > num(installedVers[1]) or num(currentVers[2]) > num(installedVers[2]):
+         notify("{}'s game definition ({}) is out-of-date!".format(me, gameVersion))
+         if confirm("There is a new game definition available!\nYour version: {}.\nCurrent version: {}\n{}\
+                     {}\
+                 \n\nDo you want to be redirected to download the latest version?.\
+                   \n(You'll have to download the game definition, any patch for the current version and the markers if they're newer than what you have installed)\
+                     ".format(gameVersion, detailsplit[0],detailsplit[2],detailsplit[1])):
+            openUrl('https://github.com/db0/Star-Wars-LCG-OCTGN/downloads')
+         startupMsg = True
+      if not startupMsg: MOTD() # If we didn't give out any other message , we give out the MOTD instead.
+      startupMsg = True
+   if debugVerbosity >= 3: notify("<<< versionCheck()") #Debug
+      
+      
+def MOTD():
+   if debugVerbosity >= 1: notify(">>> MOTD()") #Debug
+   (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt')
+   (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt')
+   if (MOTDcode != 200 or not MOTDurl) or (DYKcode !=200 or not DYKurl):
+      whisper(":::WARNING::: Cannot fetch MOTD or DYK info at the moment.")
+      return
+   DYKlist = DYKurl.split('||')
+   DYKrnd = rnd(0,len(DYKlist)-1)
+   while MOTDdisplay(MOTDurl,DYKlist[DYKrnd]) == 'MORE': 
+      MOTDurl = '' # We don't want to spam the MOTD for the further notifications
+      DYKrnd += 1
+      if DYKrnd == len(DYKlist): DYKrnd = 0
+   if debugVerbosity >= 3: notify("<<< MOTD()") #Debug
    
+def MOTDdisplay(MOTD,DYK):
+   if debugVerbosity >= 1: notify(">>> MOTDdisplay()") #Debug
+   if re.search(r'http',MOTD): # If the MOTD has a link, then we do not sho DYKs, so that they have a chance to follow the URL
+      MOTDweb = MOTD.split('&&')      
+      if confirm("{}".format(MOTDweb[0])): openUrl(MOTDweb[1].strip())
+   elif re.search(r'http',DYK):
+      DYKweb = DYK.split('&&')
+      if confirm("{}\
+              \n\nDid You Know?:\
+                \n------------------\
+                \n{}".format(MOTD,DYKweb[0])):
+         openUrl(DYKweb[1].strip())
+   elif confirm("{}\
+              \n\nDid You Know?:\
+                \n-------------------\
+                \n{}\
+                \n-------------------\
+              \n\nWould you like to see the next tip?".format(MOTD,DYK)): return 'MORE'
+   return 'STOP'
+      
 #------------------------------------------------------------------------------
 # Debugging
 #------------------------------------------------------------------------------

@@ -1,0 +1,10 @@
+1.0.0||
+======New Version Information======
+
+There's no way you're actually reading this.
+
+Have fun!
+===============================
+||
+Latest Core Set: 1.0.0
+Latest Markers Set: N/A

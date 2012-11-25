@@ -1,0 +1,73 @@
+You can create an arrow pointing from one card to another. Hold Shift and left-click on the source card, then drag your mouse to the destination.
+
+Clear the arrow by shift+left-clicking on the source card again. 
+||
+You can target a card by holding shift and left-clicking on it. You clear the target the same way. You can have multiple cards targeted.
+
+When a card effect requires that you have one or more cards as targets, first target them, and then use the card effect.
+||
+We have a dedicated bug tracker.
+
+Have you found a bug? Do you have a feature request? Please put it in our Issue Tracker in github. 
+
+This makes it easier for us to track and implement improvements, avoid duplicates, and you also get to see when your issue is fixed!
+
+Would you like to learn more?
+&&
+https://github.com/db0/Star-Wars-LCG-OCTGN/issues
+||
+The Developer of this OCTGN plugin has made many others like it. 
+
+Games implemented include: Android:Netrunner, Doomtown CCG, Dune CCG, Classic Netrunner and more
+
+Would you like to learn more?
+&&
+http://octgn.gamersjudgement.com/memberlist.php?mode=viewprofile&u=61
+||
+If the OCTGN server ever goes down and you cannot login, you can still play games "offline" via direct IP connection.
+
+Would you like to learn more?
+&&
+http://octgn.gamersjudgement.com/viewtopic.php?f=52&t=513
+||
+People can observe games.
+
+Observers need to join the game's lobby before you start.
+
+Once the table has loaded, those players should not load a deck or use the "Set Up" function. 
+
+Observers are ignored by the game. However any player who wants can make their hand and deck visible to them and they can even peek at all cards in the table.
+
+::Important::: Observers need to stay in the game for the whole length. Leaving the game might break the scripts.
+
+If an observer needs to leave, ask them to simply minimize OCTGN until the game is finished
+||
+You can add more "Did you know"
+
+Just contact the developer and give him your suggestions
+
+Would you like to learn more?
+&&
+https://github.com/db0/Android-Netrunner-OCTGN/issues
+||
+The chat area has important messages
+
+Almost anything important that happens in the game is announced there. 
+
+Keep an eye on it, in case your opponent does a mistake.
+||
+You can pan the table
+
+Simply hold [Space] and then click drag your mouse on the table.
+||
+The Developer of this plugin provides a voice chat server.
+
+We provide a Mumble server to allow ANR players to be able to effortlessly connect and voice communicate with others.
+
+Voice communication not only improves the speed of the game significantly, but it also makes it actually _feel_ like a boardgame, of which an important aspect if the player interaction outside of the game rules.
+
+Even if you don't own a mic, take the time to install the mumble client and setup a connection to the server, so that you can connect easily. Even with one side being able to talk, it helps.
+
+Would you like to learn more?
+&&
+http://octgn.gamersjudgement.com/viewtopic.php?f=52&t=545
