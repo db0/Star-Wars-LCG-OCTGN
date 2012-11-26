@@ -88,7 +88,7 @@ def goToForce(group, x = 0, y = 0): # Go directly to the Force phase
 
 def gameSetup(group, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
-   global Side, Affiliation, SetupPhase
+   global Side, Affiliation, SetupPhase, opponent
    mute()
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
@@ -98,7 +98,7 @@ def gameSetup(group, x = 0, y = 0):
       if ofwhom('ofOpponent') == me and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
          whisper("Please wait until your opponent has drawn their objectives before proceeding")
          return
-      if not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
+      if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
       for card in me.hand:
          if card.Type != 'Objective': 
             whisper(":::Warning::: You are not supposed to have any non-Objective cards in your hand at this point")
@@ -106,9 +106,9 @@ def gameSetup(group, x = 0, y = 0):
             continue
          else: storeObjective(card)
       shuffle(deck)
-      drawMany(deck, 6)
+      drawMany(deck, 6, silent = True)
       opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
-      notify("{} has drawn their starting commands".format(me))
+      notify("{} has played their objectives and drawn their starting commands".format(me))
       SetupPhase = False
    else: # This choice is only for a new game.
       if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
@@ -145,9 +145,9 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 5: confirm("Shuffling Decks")
       shuffle(objectives)
       if debugVerbosity >= 5: confirm("Drawing 4 Objectives")
-      drawMany(objectives, 4)
+      drawMany(objectives, 4, silent = True)
       notify("{} is choosing their objectives.".format(me))
-      whisper("Once both players have discarded their 4 objective, press Ctrl+Shift+S to place them on the table")
+      whisper(":::ATTENTION::: Once both players have discarded their 4th objective, press Ctrl+Shift+S to place your objectives on the table and draw your starting hand.")
       if debugVerbosity >= 5: confirm("Reshuffling Deck")
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
@@ -174,10 +174,45 @@ def focus(card, x = 0, y = 0):
     else:
         notify('{} untaps {}'.format(me, card))
 		  
-def discard(card, x = 0, y = 0):
-	card.moveTo(me.piles['Discard Pile'])
-	notify("{} discards {}".format(me, card))
 
+def handDiscard(card):
+   if debugVerbosity >= 1: notify(">>> handDiscard(){}".format(extraASDebug())) #Debug
+   mute()
+   if card.Type == "Objective": 
+      card.moveToBottom(me.piles['Objective Deck']) # This should only happen during the game setup
+      notify("{} chose their 3 starting objectives.".format(me))
+   else:
+      card.moveTo(me.piles['Discard Pile'])
+      notify("{} discards {}".format(me,card))
+      
+def discard(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> discard(){}".format(extraASDebug())) #Debug
+   mute()
+   if card.Type == "Objective":
+      if card.owner == me:
+         if debugVerbosity >= 2: notify("About to score objective")
+         card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
+         opponent.counters['Objectives Destroyed'].value += 1
+         if Side == 'Light': 
+            modifyDial(opponent.counters['Destroyed Objectives'].value)
+            notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
+         else: notify("{} thwarts {}.".format(opponent,card))
+      else:
+         card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
+         notify("{} thwarts {}.".format(me,card))
+         me.counters['Objectives Destroyed'].value += 1
+         if Side == 'Dark': 
+            modifyDial(opponent.counters['Destroyed Objectives'].value)
+            notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
+         else: notify("{} thwarts {}.".format(me,card))
+   elif card.Type == "Affiliation": whisper("This isn't the card you're looking for...")
+   else:
+      card.moveTo(card.owner.piles['Discard Pile'])
+      notify("{} discards {}".format(me,card))
+
+def modifyDial(value):
+   for player in players: player.counters['Death Star Dial'].value += value
+   
 def play(card, x = 0, y = 0):
 	mute()
 	src = card.group
@@ -211,12 +246,24 @@ def draw(group, x = 0, y = 0):
 	group[0].moveTo(me.hand)
 	notify("{} draws a card.".format(me))
 
-def drawMany(group, count = None):
-	if len(group) == 0: return
-	mute()
-	if count == None: count = askInteger("Draw how many cards?", 0)
-	for card in group.top(count): card.moveTo(me.hand)
-	notify("{} draws {} cards.".format(me, count))
+def drawMany(group, count = None, destination = None, silent = False):
+   if debugVerbosity >= 1: notify(">>> drawMany(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 2: notify("source: {}".format(group.name))
+   if debugVerbosity >= 2 and destination: notify("destination: {}".format(destination.name))
+   mute()
+   if destination == None: destination = me.hand
+   SSize = len(group)
+   if SSize == 0: return 0
+   if count == None: count = askInteger("Draw how many cards?", 5)
+   if count == None: return 0
+   if count > SSize : 
+      count = SSize
+      whisper("You do not have enough cards in your deck to complete this action. Will draw as many as possible")
+   for c in group.top(count): 
+      c.moveTo(destination)
+   if not silent: notify("{} draws {} cards.".format(me, count))
+   if debugVerbosity >= 3: notify("<<< drawMany() with return: {}".format(count))
+   return count
 
 def drawBottom(group, x = 0, y = 0):
 	if len(group) == 0: return
