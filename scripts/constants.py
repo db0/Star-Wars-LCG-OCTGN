@@ -41,6 +41,7 @@ Xaxis = 'x'
 Yaxis = 'y'
 
 phases = [
+    "Opponent's Turn",
     "Balance Phase: {}.".format(me),
     "Refresh Phase: {}.".format(me),
     "Draw Phase: {}.".format(me),

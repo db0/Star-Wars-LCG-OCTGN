@@ -49,36 +49,60 @@ def nextPhase(group, x = 0, y = 0):
       if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
       me.setGlobalVariable('Phase','1')
       opponent.setGlobalVariable('Phase','-1')
-   else: me.setGlobalVariable('Phase',str(phase + 1)) # Otherwise, just move up one phase
-   showCurrentPhase()
+   else: 
+      phase += 1
+      me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
+      if phase == 1: goToBalance()
+      elif phase == 2: goToRefresh()
+      elif phase == 3: goToDraw()
+      elif phase == 4: goToDeployment()
+      elif phase == 5: goToConflict()
+      elif phase == 6: goToForce()
 
-def goToBalance(group, x = 0, y = 0): # Go directly to the Balance phase
+def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
+   if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
-   clearHandRanks() # Clear the Hand Ranks, in case one is leftover from last High Noon.
+   if Side == 'Dark': 
+      if getSpecial('BotD').isAlternateImage():
+         modifyDial(2)
+         notify(":> The Force is with the Dark Side! The Death Star dial advances by 2")
+      else:
+         modifyDial(1)
+         notify(":> The Death Star dial advances by 1")
+   else:
+      if not getSpecial('BotD').isAlternateImage():
+         opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
+         choiceObjective = SingleChoice("The Force is with the Light Side. Choose one Dark Side objective to damage", opponentObjectives, type = 'radio', default = 0)
+         notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(choiceObjective))      
 
-def goToRefresh(group, x = 0, y = 0): # Go directly to the Refresh phase
+def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
+   if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','2')
    showCurrentPhase()
 
-def goToDraw(group, x = 0, y = 0): # Go directly to the Draw phase
+def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
+   if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','3')
    showCurrentPhase()
 
-def goToDeployment(group, x = 0, y = 0): # Go directly to the Deployment phase
+def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment phase
+   if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','4')
    showCurrentPhase()   
     
-def goToConflict(group, x = 0, y = 0): # Go directly to the Conflict phase
+def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
+   if debugVerbosity >= 1: notify(">>> goToConflict(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','5')
    showCurrentPhase()   
 
-def goToForce(group, x = 0, y = 0): # Go directly to the Force phase
+def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
+   if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()   
@@ -110,6 +134,7 @@ def gameSetup(group, x = 0, y = 0):
       opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
       notify("{} has played their objectives and drawn their starting commands".format(me))
       SetupPhase = False
+      if Side == 'Dark': me.setGlobalVariable('Phase','0') # We now allow the dark side to start
    else: # This choice is only for a new game.
       if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
       Side = None
@@ -140,6 +165,10 @@ def gameSetup(group, x = 0, y = 0):
          return
       if debugVerbosity >= 5: confirm("Placing Affiliation")
       Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
+      if Side == 'Light': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
+         BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
+         BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+         setGlobalVariable('Balance of the Force', str(BotD._id))
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
       if debugVerbosity >= 5: confirm("Shuffling Decks")
@@ -151,21 +180,7 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 5: confirm("Reshuffling Deck")
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
-   
-def refreshAll(group, x = 0, y = 0):
-	mute()
-	notify("{} untaps all his cards".format(me))
-	for card in group: 
-		if card.controller == me:
-			card.orientation &= ~Rot90			
-			
-def clearAll(group, x = 0, y = 0):
-    notify("{} clears all targets and combat.".format(me))
-    for card in group:
-		if card.controller == me:
-			card.target(False)
-			card.highlight = None
-
+   		
 def focus(card, x = 0, y = 0):
    mute()
    if (card.markers[mdict['Focus']]
@@ -175,7 +190,6 @@ def focus(card, x = 0, y = 0):
    notify("{} Focuses on {}.".format(me, card))
    card.markers[mdict['Focus']] += 1
 		  
-
 def handDiscard(card):
    if debugVerbosity >= 1: notify(">>> handDiscard(){}".format(extraASDebug())) #Debug
    mute()
@@ -213,19 +227,15 @@ def discard(card, x = 0, y = 0):
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: notify("{} thwarts {}.".format(me,card))
-   elif card.Type == "Affiliation": whisper("This isn't the card you're looking for...")
+   elif card.Type == "Affiliation" or card.Type == "BotD": whisper("This isn't the card you're looking for...")
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
-
-def modifyDial(value):
-   for player in players: player.counters['Death Star Dial'].value += value
    
 def play(card, x = 0, y = 0):
 	mute()
-	src = card.group
 	card.moveToTable(0, 0)
-	notify("{} plays {} from their {}.".format(me, card, src.name))
+	notify("{} plays {}.".format(me, card))
 
 def mulligan(group):
    if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug

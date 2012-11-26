@@ -65,9 +65,14 @@ def storeObjective(card):
 def getSpecial(cardType,player = me):
 # Functions takes as argument the name of a special card, and the player to whom it belongs, and returns the card object.
    if debugVerbosity >= 1: notify(">>> getSpecial(){}".format(extraASDebug())) #Debug
-   specialCards = eval(player.getGlobalVariable('specialCards'))
-   if debugVerbosity >= 3: notify("<<< getSpecial() by returning: {}".format(Card(specialCards[cardType])))
-   return Card(specialCards[cardType])
+   if cardType == 'BotD':   
+      BotD = getGlobalVariable('Balance of the Force')
+      if debugVerbosity >= 3: notify("<<< getSpecial() by returning: {}".format(Card(num(BotD))))
+      return Card(num(BotD))
+   else: 
+      specialCards = eval(player.getGlobalVariable('specialCards'))
+      if debugVerbosity >= 3: notify("<<< getSpecial() by returning: {}".format(Card(specialCards[cardType])))
+      return Card(specialCards[cardType])
 
 def checkUnique (card):
    if debugVerbosity >= 1: notify(">>> checkUnique(){}".format(extraASDebug())) #Debug
@@ -105,6 +110,9 @@ def ofwhom(Autoscript, controller = me):
       else: targetPL = me
    if debugVerbosity >= 3: notify("<<< ofwhom()")
    return targetPL
+
+def modifyDial(value):
+   for player in players: player.counters['Death Star Dial'].value += value
 
 #------------------------------------------------------------------------------
 # Switches
