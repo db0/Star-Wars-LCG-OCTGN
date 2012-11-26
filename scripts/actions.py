@@ -220,19 +220,29 @@ def play(card, x = 0, y = 0):
 	notify("{} plays {} from their {}.".format(me, card, src.name))
 
 def mulligan(group):
-    mute()
-    newCount = len(group) - 1
-    if newCount < 0: return
-    if not confirm("Mulligan down to %i ?" % newCount): return
-    notify("{} mulligans down to {}".format(me, newCount))
-    librarycount = len(me.piles["Life Deck"])
-    for card in group:
-        n = rnd(0, librarycount)
-        card.moveTo(me.piles["Life Deck"], n)
-    me.piles["Life Deck"].shuffle()
-    for card in me.piles["Life Deck"].top(newCount):
-        card.moveTo(me.hand)
+   if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
+   if not confirm("Are you sure you want to take a mulligan?"): return
+   notify("{} is taking a Mulligan...".format(me))
+   groupToDeck(group,silent = True)
+   #resetAll()
+   for i in range(2): 
+      shuffle(me.piles['Command Deck']) # We do a good shuffle this time.   
+      rnd(1,10)
+      whisper("Shuffling...")
+   drawMany(me.piles['Command Deck'], me.Reserves)   
+   if debugVerbosity >= 3: notify("<<< mulligan()") #Debug
 
+def groupToDeck (group = me.hand, player = me, silent = False):
+   if debugVerbosity >= 1: notify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
+   mute()
+   deck = player.piles['Command Deck']
+   count = len(group)
+   for c in group: c.moveTo(deck)
+   if debugVerbosity >= 2: notify("About to announce")
+   if not silent: notify ("{} moves their whole {} to their {}.".format(player,group.name,deck.name))
+   if debugVerbosity >= 3: notify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(group.name,deck.name,count)) #Debug
+   return(group.name,deck.name,count) # Return a tuple with the names of the groups.
+   
 def randomDiscard(group):
 	mute()
 	card = group.random()
