@@ -48,8 +48,11 @@ def storeObjective(card):
    if debugVerbosity >= 1: notify(">>> storeObjective(){}".format(extraASDebug())) #Debug
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
    currentObjectives.append(card._id)
+   if debugVerbosity >= 2: notify("About to iterate the list: {}".format(currentObjectives))
    for iter in range(len(currentObjectives)):
-      currentObjectives[iter].moveToTable(playerside * 320, (playerside * 150) + (88 * iter))
+      Objective = Card(currentObjectives[iter])
+      Objective.moveToTable(playerside * -400, (playerside * 95) + (55 * iter))
+      #Objective.orientation = Rot90
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
 
 def getSpecial(cardType,player = me):
@@ -235,7 +238,7 @@ def TrialError(group, x=0, y=0): # Debugging
    if debugVerbosity >=0: 
       if debugVerbosity == 0: 
          debugVerbosity = 1
-         ImAProAtThis() # At debug level 1, we also disable all warnings
+         #ImAProAtThis() # At debug level 1, we also disable all warnings
       elif debugVerbosity == 1: debugVerbosity = 2
       elif debugVerbosity == 2: debugVerbosity = 3
       elif debugVerbosity == 3: debugVerbosity = 4

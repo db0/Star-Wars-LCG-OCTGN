@@ -27,6 +27,7 @@ import re
 Side = None # The side of the player. 
 Affiliation = None
 opponent = None # A variable holding the player object of our opponent.
+SetupPhase = False
 
 #---------------------------------------------------------------------------
 # Phases
@@ -87,13 +88,13 @@ def goToForce(group, x = 0, y = 0): # Go directly to the Force phase
 
 def gameSetup(group, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
-   global Side
+   global Side, Affiliation, SetupPhase
    mute()
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
    #if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
-   versionCheck()
-   if Side and not Affiliation:
+   #versionCheck()
+   if SetupPhase:
       if ofwhom('ofOpponent') == me and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
          whisper("Please wait until your opponent has drawn their objectives before proceeding")
          return
@@ -108,9 +109,12 @@ def gameSetup(group, x = 0, y = 0):
       drawMany(deck, 6)
       opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
       notify("{} has drawn their starting commands".format(me))
+      SetupPhase = False
    else: # This choice is only for a new game.
       if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
       Side = None
+      Affiliation = None
+      SetupPhase = True
       if not table.isTwoSided() and not confirm(":::WARNING::: This game is designed to be played on a two-sided table. Things will be extremely uncomfortable otherwise!! Please start a new game and makde sure the  the appropriate button is checked. Are you sure you want to continue?"): return
       chooseSide()
       if debugVerbosity >= 5: confirm("Checking Deck")
@@ -135,7 +139,7 @@ def gameSetup(group, x = 0, y = 0):
          confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
          return
       if debugVerbosity >= 5: confirm("Placing Affiliation")
-      Affiliation.moveToTable(playerside * 400, playerside * 88)
+      Affiliation.moveToTable(playerside * -400, playerside * 20)
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
       if debugVerbosity >= 5: confirm("Shuffling Decks")

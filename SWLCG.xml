@@ -30,7 +30,7 @@
 		<property name="Damage Capacity" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Resources" type="String" hidden="false" ignoreText="False" textKind="Free" />
 	</card>
-	<table name="Table" visibility="undefined" ordered="false" width="500" height="380" background="r3">
+	<table name="Table" visibility="undefined" ordered="false" width="800" height="600" background="r3">
       <groupactions menu="Game...">
          <groupaction menu="Set up" default="false" shortcut="Ctrl+Shift+S" execute="gameSetup" />
          <groupaction menu="Concede" default="false" shortcut="Ctrl+Shift+C" execute="concede" />
