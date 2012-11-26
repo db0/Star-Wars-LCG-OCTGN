@@ -21,9 +21,12 @@ Shield = ("Shield", "e9a419ff-5154-41cf-b84f-95149cc19a2a") # Temp
 
     
 mdict = dict( # A dictionary which holds all the hard coded markers (in the markers file)
-             Resource =                ("Resource", "62a2ba76-9872-481b-b8fc-ec35447ca640"),
-             Damage =                  ("Damage", "38d55f36-04d7-4cf9-a496-06cb84de567d"),
-             Shield =                  ("Shield", "e9a419ff-5154-41cf-b84f-95149cc19a2a"))
+             Focus =                   ("Resource", "c93d4582-16a0-4e2d-9e63-71be20fbfa0c"),
+             Damage =                  ("Damage", "224b865d-173b-49fd-9aed-17df678259b0"),
+             PlusOnePerm =             ("Permanent +1", "2246648d-1581-4be9-9636-1b75129313a6"),
+             PlusOne =                 ("Temporary +1", "987d0d3f-0965-49ae-a96c-03394783d47a"),
+             MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"),
+             Shield =                  ("Shield", "8559643f-7a15-4605-937d-0f39d59c9eda"))
 
 ScoredColor = "#00ff44"
 SelectColor = "#009900"

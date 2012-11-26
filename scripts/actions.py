@@ -167,12 +167,13 @@ def clearAll(group, x = 0, y = 0):
 			card.highlight = None
 
 def focus(card, x = 0, y = 0):
-    mute()
-    card.orientation ^= Rot90
-    if card.orientation & Rot90 == Rot90:
-		notify('{} taps {}'.format(me, card))
-    else:
-        notify('{} untaps {}'.format(me, card))
+   mute()
+   if (card.markers[mdict['Focus']]
+         and card.markers[mdict['Focus']] >= 1
+         and not confirm("Card already has focus. Bypass?")):
+      return 
+   notify("{} Focuses on {}.".format(me, card))
+   card.markers[mdict['Focus']] += 1
 		  
 
 def handDiscard(card):
@@ -306,32 +307,36 @@ def drawBottom(group, x = 0, y = 0):
 
 def shuffle(group):
 	group.shuffle()
+
+#---------------------------------------------------------------------------
+# Tokena and Markers
+#---------------------------------------------------------------------------
 	
-def addResource(card, x = 0, y = 0):
+def addFocus(card, x = 0, y = 0):
     mute()
-    notify("{} adds a Resource to {}.".format(me, card))
-    card.markers[Resource] += 1
+    notify("{} adds a Focus token on {}.".format(me, card))
+    card.markers[mdict['Focus']] += 1
     
 def addDamage(card, x = 0, y = 0):
     mute()
-    notify("{} adds a Damage to {}.".format(me, card))
-    card.markers[Damage] += 1    
+    notify("{} adds a Damage token on {}.".format(me, card))
+    card.markers[mdict['Damage']] += 1    
     
 def addShield(card, x = 0, y = 0):
     mute()
-    notify("{} adds a Shield to {}.".format(me, card))
-    card.markers[Shield] += 1        
+    notify("{} adds a Shield token on {}.".format(me, card))
+    card.markers[mdict['Shield']] += 1        
 
 def subResource(card, x = 0, y = 0):
-    subToken(card, Resource)
+    subToken(card, 'Resource')
 
 def subDamage(card, x = 0, y = 0):
-    subToken(card, Damage)
+    subToken(card, 'Damage')
 
 def subShield(card, x = 0, y = 0):
-    subToken(card, Shield)
+    subToken(card, 'Shield')
 
 def subToken(card, tokenType):
     mute()
     notify("{} removes a {} from {}.".format(me, tokenType[0], card))
-    card.markers[tokenType] -= 1	
+    card.markers[mdict[tokenType]] -= 1	
