@@ -47,13 +47,20 @@ def storeObjective(card):
 # This function also reorganizes the objectives on the table
    if debugVerbosity >= 1: notify(">>> storeObjective(){}".format(extraASDebug())) #Debug
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
+   for card_id in destroyedObjectives: 
+      try:
+         currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
+         destroyedObjectives.remove(card_id) # When we successfully remove an objective stored in this list, we clear it as well, so that we don't check it again in the future.
+      except ValueError: pass # If an exception is thrown, it means that destroyed objective does not exist in this objective list
    currentObjectives.append(card._id)
    if debugVerbosity >= 2: notify("About to iterate the list: {}".format(currentObjectives))
    for iter in range(len(currentObjectives)):
       Objective = Card(currentObjectives[iter])
-      Objective.moveToTable(playerside * -400, (playerside * 95) + (55 * iter))
+      Objective.moveToTable(playerside * -400, (playerside * 95) + (55 * iter * playerside) + yaxisMove(Objective))
       #Objective.orientation = Rot90
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
+   setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
 
 def getSpecial(cardType,player = me):
 # Functions takes as argument the name of a special card, and the player to whom it belongs, and returns the card object.
@@ -78,6 +85,7 @@ def checkUnique (card):
 
 def ofwhom(Autoscript, controller = me): 
    if debugVerbosity >= 1: notify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
+   targetPL = None
    if re.search(r'o[fn]Opponent', Autoscript):
       if len(players) > 1:
          if controller == me: # If we're the current controller of the card who's scripts are being checked, then we look for our opponent

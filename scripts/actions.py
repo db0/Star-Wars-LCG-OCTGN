@@ -95,7 +95,7 @@ def gameSetup(group, x = 0, y = 0):
    #if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
    #versionCheck()
    if SetupPhase:
-      if ofwhom('ofOpponent') == me and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
+      if not ofwhom('ofOpponent') and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
          whisper("Please wait until your opponent has drawn their objectives before proceeding")
          return
       if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
@@ -139,7 +139,7 @@ def gameSetup(group, x = 0, y = 0):
          confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
          return
       if debugVerbosity >= 5: confirm("Placing Affiliation")
-      Affiliation.moveToTable(playerside * -400, playerside * 20)
+      Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
       if debugVerbosity >= 5: confirm("Shuffling Decks")
@@ -191,18 +191,25 @@ def discard(card, x = 0, y = 0):
    if card.Type == "Objective":
       if card.owner == me:
          if debugVerbosity >= 2: notify("About to score objective")
+         currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+         currentObjectives.remove(card._id)
+         me.setGlobalVariable('currentObjectives', str(currentObjectives))
          card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
-         opponent.counters['Objectives Destroyed'].value += 1
+         opponent.counters['Objectives Destroyed'].value += 1         
          if Side == 'Light': 
-            modifyDial(opponent.counters['Destroyed Objectives'].value)
+            modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
          else: notify("{} thwarts {}.".format(opponent,card))
       else:
+         destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
+         # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
+         # Then when the other player tries to refresh, it first removes any destroyed objectives from their list.
+         destroyedObjectives.append(card._id)
+         setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
-         notify("{} thwarts {}.".format(me,card))
          me.counters['Objectives Destroyed'].value += 1
          if Side == 'Dark': 
-            modifyDial(opponent.counters['Destroyed Objectives'].value)
+            modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: notify("{} thwarts {}.".format(me,card))
    elif card.Type == "Affiliation": whisper("This isn't the card you're looking for...")
@@ -250,12 +257,28 @@ def randomDiscard(group):
 	notify("{} randomly discards {}.".format(me,card.name))
 	card.moveTo(me.piles['Discard Pile'])
 
-def draw(group, x = 0, y = 0):
-	if len(group) == 0: return
-	mute()
-	group[0].moveTo(me.hand)
-	notify("{} draws a card.".format(me))
+def drawCommand(group, silent = False):
+   if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
+   mute()
+   if len(group) == 0: return
+   card = group.top()
+   card.moveTo(me.hand)
+   if not silent: notify("{} Draws a command card.".format(me))
 
+def drawObjective(group = me.piles['Objective Deck'], silent = False):
+   if debugVerbosity >= 1: notify(">>> drawObjective(){}".format(extraASDebug())) #Debug
+   mute()
+   if len(group) == 0: return
+   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
+   for card_id in destroyedObjectives: 
+      try: currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
+      except ValueError: pass 
+   if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
+   card = group.top()
+   storeObjective(card)
+   if not silent: notify("{} new objective is {}.".format(me,card))
+   
 def drawMany(group, count = None, destination = None, silent = False):
    if debugVerbosity >= 1: notify(">>> drawMany(){}".format(extraASDebug())) #Debug
    if debugVerbosity >= 2: notify("source: {}".format(group.name))

@@ -12,6 +12,7 @@
      <globalvariable name="chatsize" value="12"/> 
      <globalvariable name="gameEnded" value="False" /> 
      <globalvariable name="gameGUID" value="None" /> 
+     <globalvariable name="destroyedObjectives" value="[]" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
 		<property name="Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
@@ -76,7 +77,7 @@
          <groupaction menu="Force Phase" default="false" execute="HELP_ForcePhase" />
       </groupactions>
 	</table>
-	<player summary="Hand: {#Hand}">
+	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
       <globalvariable name="Side" value="" /> 
       <globalvariable name="Phase" value="0" /> 
       <globalvariable name="specialCards" value="{}" /> 
@@ -90,12 +91,14 @@
          <cardaction menu="Discard" default="false" shortcut="del" execute="handDiscard" />           
 		</hand>
 		<group name="Command Deck" visibility="none" ordered="false" width="63" height="88" icon="r12" collapsed="false">
-			<groupaction menu="Draw" default="false" shortcut="Ctrl+D" execute="draw" />
+			<groupaction menu="Draw" default="true" shortcut="Ctrl+D" execute="drawCommand" />
 			<groupaction menu="Draw X..." default="false" shortcut="Ctrl+X" execute="drawMany" />
 			<groupaction menu="Draw from Bottom" default="false" shortcut="Ctrl+Alt+D" execute="drawBottom" />
 			<groupaction menu="Shuffle" default="false" shortcut="Ctrl+S" execute="shuffle" />
 		</group>
-		<group name="Objective Deck" visibility="none" ordered="false" width="63" height="88" icon="r13" collapsed="false" />
+		<group name="Objective Deck" visibility="none" ordered="false" width="63" height="88" icon="r13" collapsed="false">
+			<groupaction menu="Draw and Play" default="true" shortcut="Ctrl+O" execute="drawObjective" />
+      </group>
 		<group name="Discard Pile" visibility="all" ordered="false" width="63" height="88" icon="r14" collapsed="false" />
 		<group name="Victory Pile" visibility="all" ordered="false" width="63" height="88" icon="r17" collapsed="true" />
 		<group name="Removed from Game" visibility="all" ordered="false" width="63" height="88" shortcut="F8" icon="r15" collapsed="true" />
