@@ -33,7 +33,7 @@ SelectColor = "#009900"
 DummyColor = "#000000" # Marks cards which are supposed to be out of play, so that players can tell them apart.
 RevealedColor = "#ffffff"
 PriorityColor = "#ffd700"
-InactiveColor = "#888888" # Cards which are in play but not active yet
+CapturedColor = "#888888" # Cards which are in play but not active yet
 AttackColor = "#ff0000"
 DefendColor = "#0000ff"
 

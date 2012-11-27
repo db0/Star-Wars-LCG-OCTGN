@@ -52,36 +52,61 @@ def nextPhase(group, x = 0, y = 0):
    else: 
       phase += 1
       me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
-      if phase == 1: goToBalance()
-      elif phase == 2: goToRefresh()
-      elif phase == 3: goToDraw()
-      elif phase == 4: goToDeployment()
-      elif phase == 5: goToConflict()
-      elif phase == 6: goToForce()
+   if phase == 1: goToBalance()
+   elif phase == 2: goToRefresh()
+   elif phase == 3: goToDraw()
+   elif phase == 4: goToDeployment()
+   elif phase == 5: goToConflict()
+   elif phase == 6: goToForce()
 
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
+   BotD = getSpecial('BotD')
    if Side == 'Dark': 
-      if getSpecial('BotD').isAlternateImage():
+      if BotD.isAlternateImage:
          modifyDial(2)
          notify(":> The Force is with the Dark Side! The Death Star dial advances by 2")
       else:
          modifyDial(1)
          notify(":> The Death Star dial advances by 1")
    else:
-      if not getSpecial('BotD').isAlternateImage():
+      if not BotD.isAlternateImage:
          opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
-         choiceObjective = SingleChoice("The Force is with the Light Side. Choose one Dark Side objective to damage", opponentObjectives, type = 'radio', default = 0)
-         notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(choiceObjective))      
+         objectiveList = []
+         for objectve_ID in opponentObjectives:
+            objective = Card(objectve_ID)
+            objectiveList.append(objective.name)
+         choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage", objectiveList, type = 'radio', default = 0)
+         chosenObj = Card(opponentObjectives[choice])
+         chosenObj.markers[mdict['Damage']] += 1
+         notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(chosenObj))      
 
 def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','2')
    showCurrentPhase()
+   for card in table:
+      if card.owner == me and card.controller == me and card.highlight != CapturedColor:
+         if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
+            card.markers[mdict['Focus']] -=1
+            if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
+               card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
+         if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
+            card.markers[mdict['Shield']] = 0
+   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
+   for card_id in destroyedObjectives: 
+      try: currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
+      except ValueError: pass 
+   while len(currentObjectives) < 3:
+      card = me.piles['Objective Deck'].top()
+      storeObjective(card)
+      currentObjectives = eval(me.getGlobalVariable('currentObjectives')) # We don't need to clear destroyed objectives anymore, since that is taken care of during storeObjective()
+   notify(":> {} refreshed all their cards".format(me))   
 
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
