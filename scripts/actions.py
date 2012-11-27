@@ -113,13 +113,17 @@ def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    mute()
    me.setGlobalVariable('Phase','3')
    showCurrentPhase()
-
+   if len(me.hand) == 0: refillHand()
+   elif not confirm("Do you wish to discard a card before refilling your hand?\
+                \n\n(if you press yes, discard your card and then press Ctrl+R to refill)"):
+      refillHand()
+   
 def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment phase
    if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','4')
    showCurrentPhase()   
-    
+   
 def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
    if debugVerbosity >= 1: notify(">>> goToConflict(){}".format(extraASDebug())) #Debug
    mute()
@@ -130,7 +134,46 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','6')
-   showCurrentPhase()   
+   showCurrentPhase()
+   struggleTotal = 0
+   if Side == 'Light': 
+      commitColor = LightForceColor
+      commitOpponent = DarkForceColor
+   else: 
+      commitColor = DarkForceColor
+      commitOpponent = LightForceColor
+   if debugVerbosity >= 2: notify("Counting my committed cards") #Debug
+   commitedCards = [c for c in table if c.controller == me and c.highlight == commitColor]
+   if debugVerbosity >= 2: notify("About to loop") #Debug
+   for card in commitedCards:
+      try: 
+         if card.markers[mdict['Focus']] == 0: struggleTotal += num(card.Force)
+      except: struggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
+   if debugVerbosity >= 2: notify("Counting my opponents cards") #Debug
+   opponentCommitedCards  = [c for c in table if c.controller == opponent and c.highlight == commitOpponent]
+   for card in opponentCommitedCards:
+      try: 
+         if card.markers[mdict['Focus']] == 0: struggleTotal -= num(card.Force)
+      except: struggleTotal -= num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
+   if debugVerbosity >= 2: notify("Checking Struggle") #Debug
+   BotD = getSpecial('BotD')
+   if struggleTotal > 0: 
+      if debugVerbosity >= 2: notify("struggleTotal Positive") #Debug
+      if (Side == 'Light' and BotD.isAlternateImage) or (Side == 'Dark' and not BotD.isAlternateImage):
+         if debugVerbosity >= 2: notify("About to flip BotD due to my victory") #Debug
+         BotD.switchImage
+         x,y = Affiliation.position
+         BotD.moveToTable(playerside * (x - 70), y)
+         notify("The force struggle tips the balance of the force towards the {} side".format(Side))
+   elif struggleTotal < 0: 
+      if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
+      if (Side == 'Light' and not BotD.isAlternateImage) or (Side == 'Dark' and BotD.isAlternateImage):
+         if debugVerbosity >= 2: notify("About to flip BotD due to my opponent's victory") #Debug
+         BotD.switchImage
+         opponentAffiliation = getSpecial('Affiliation',opponent)
+         x,y = opponentAffiliation.position
+         BotD.moveToTable(-playerside * (x - 70), y)
+         notify("The force struggle tips the balance of the force towards the {} side".format(opponent.getGlobalVariable('Side')))
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
@@ -190,7 +233,7 @@ def gameSetup(group, x = 0, y = 0):
          return
       if debugVerbosity >= 5: confirm("Placing Affiliation")
       Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
-      if Side == 'Light': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
+      if Side == 'Dark': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
          BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
          BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
          setGlobalVariable('Balance of the Force', str(BotD._id))
@@ -206,15 +249,30 @@ def gameSetup(group, x = 0, y = 0):
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
    		
-def focus(card, x = 0, y = 0):
+def strike(card, x = 0, y = 0):
    mute()
    if (card.markers[mdict['Focus']]
          and card.markers[mdict['Focus']] >= 1
-         and not confirm("Card already has focus. Bypass?")):
+         and not confirm("Card is already exhausted. Bypass?")):
       return 
-   notify("{} Focuses on {}.".format(me, card))
+   notify("{} strikes with {}.".format(me, card))
    card.markers[mdict['Focus']] += 1
+   if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
 		  
+def commit(card, x = 0, y = 0):
+   mute()
+   if Side == 'Light': commitColor = LightForceColor
+   else: commitColor = DarkForceColor
+   if card.Type != 'Unit':
+      whisper(":::ATTENTION::: You can only commit units to the force. ABORTING!")
+      return      
+   commitedCards = [c for c in table if c.controller == me and c.highlight == commitColor]
+   if len(commitedCards) >= 3:
+      whisper(":::ATTENTION::: You already have 3 cards committed to the source. You cannot commit any more without losing on of those. ABORTING!")
+      return
+   notify("{} commits {} to the force.".format(me, card))
+   card.highlight = commitColor
+
 def handDiscard(card):
    if debugVerbosity >= 1: notify(">>> handDiscard(){}".format(extraASDebug())) #Debug
    mute()
@@ -258,9 +316,10 @@ def discard(card, x = 0, y = 0):
       notify("{} discards {}".format(me,card))
    
 def play(card, x = 0, y = 0):
-	mute()
-	card.moveToTable(0, 0)
-	notify("{} plays {}.".format(me, card))
+   if debugVerbosity >= 1: notify(">>> play(){}".format(extraASDebug())) #Debug
+   mute()
+   card.moveToTable(0, 0 + yaxisMove(card))
+   notify("{} plays {}.".format(me, card))
 
 def mulligan(group):
    if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
@@ -272,7 +331,7 @@ def mulligan(group):
       shuffle(me.piles['Command Deck']) # We do a good shuffle this time.   
       rnd(1,10)
       whisper("Shuffling...")
-   drawMany(me.piles['Command Deck'], me.Reserves)   
+   drawMany(count = me.Reserves)   
    if debugVerbosity >= 3: notify("<<< mulligan()") #Debug
 
 def groupToDeck (group = me.hand, player = me, silent = False):
@@ -315,7 +374,7 @@ def drawObjective(group = me.piles['Objective Deck'], silent = False):
    storeObjective(card)
    if not silent: notify("{} new objective is {}.".format(me,card))
    
-def drawMany(group, count = None, destination = None, silent = False):
+def drawMany(group = me.piles['Command Deck'], count = None, destination = None, silent = False):
    if debugVerbosity >= 1: notify(">>> drawMany(){}".format(extraASDebug())) #Debug
    if debugVerbosity >= 2: notify("source: {}".format(group.name))
    if debugVerbosity >= 2 and destination: notify("destination: {}".format(destination.name))
@@ -334,6 +393,13 @@ def drawMany(group, count = None, destination = None, silent = False):
    if debugVerbosity >= 3: notify("<<< drawMany() with return: {}".format(count))
    return count
 
+def refillHand(): # Simply refills the player's hand to their reserve maximum
+   mute()
+   if len(me.hand) < me.Reserves: 
+      drawMany(count = me.Reserves - len(me.hand))
+      notify(":> {} Refills their hand to their reserve maximum".format(me))
+      
+   
 def drawBottom(group, x = 0, y = 0):
 	if len(group) == 0: return
 	mute()

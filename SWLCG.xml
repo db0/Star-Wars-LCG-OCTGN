@@ -46,7 +46,8 @@
       </groupactions>
 		<groupaction menu="Refresh all" default="false" execute="refreshAll" />
 		<groupaction menu="Clear targets" default="false" execute="clearAll" />
-		<cardaction menu="Focus" default="true" shortcut="Ctrl+F" execute="focus" />
+		<cardaction menu="Strike" default="true" shortcut="Ctrl+S" execute="strike" />
+		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
 		<groupactions menu="Damage">
 			<groupaction menu="Add Damage Counter" default="false" execute="addDamage" />
@@ -87,6 +88,7 @@
 		<hand name="Hand" visibility="me" ordered="false" width="63" height="88" icon="r11">
 			<groupaction menu="Play Card" default="true" execute="play" />
 			<groupaction menu="Mulligan" default="false" execute="mulligan" />
+			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="mulligan" />
 			<groupaction menu="Random Discard" default="false" execute="randomDiscard" />
          <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
          <cardaction menu="Discard" default="false" shortcut="del" execute="handDiscard" />           
@@ -95,7 +97,7 @@
 			<groupaction menu="Draw" default="true" shortcut="Ctrl+D" execute="drawCommand" />
 			<groupaction menu="Draw X..." default="false" shortcut="Ctrl+X" execute="drawMany" />
 			<groupaction menu="Draw from Bottom" default="false" shortcut="Ctrl+Alt+D" execute="drawBottom" />
-			<groupaction menu="Shuffle" default="false" shortcut="Ctrl+S" execute="shuffle" />
+			<groupaction menu="Shuffle" default="false" execute="shuffle" />
 		</group>
 		<group name="Objective Deck" visibility="none" ordered="false" width="63" height="88" icon="r13" collapsed="false">
 			<groupaction menu="Draw and Play" default="true" shortcut="Ctrl+O" execute="drawObjective" />
