@@ -26,21 +26,23 @@ mdict = dict( # A dictionary which holds all the hard coded markers (in the mark
              Shield =                  ("Shield", "8559643f-7a15-4605-937d-0f39d59c9eda"),
              PlusOnePerm =             ("Permanent +1", "2246648d-1581-4be9-9636-1b75129313a6"),
              PlusOne =                 ("Temporary +1", "987d0d3f-0965-49ae-a96c-03394783d47a"),
-             MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"),
-             ResourceSith =            ("Sith Resource", "960e830a-fc0c-46ed-89be-6ac8efb5da8b"),
-             ResourceImperial =        ("Imperial Navy Resource", "28fc888e-527e-453e-b9ba-263d36ea94dd"),
-             ResourceScum =            ("Scum & Villainy Resource", "5b96ecac-4570-43f3-81bd-c81be0b4b602"),
-             ResourceRebel =           ("Rebel Alliance Resource", "cd947edc-ae8b-4983-822a-88f8dc6a86f2"),
-             ResourceJedi =            ("Jedi Resource", "ee546e3c-de9c-43d1-9ad4-943645644c72"),
-             ResourceSmuggler =        ("Smugglers & Spies Resource", "bc58905b-1f57-4297-9199-837c85a8ef0d"),
-             ResourceNeutral =         ("Neutral", "fae80b84-88f5-46fe-9806-ed624265757f"))
+             MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"))
 
-ScoredColor = "#00ff44"
+resdict = {
+             'Resource:Sith' :                 ("Sith Resource", "960e830a-fc0c-46ed-89be-6ac8efb5da8b"),
+             'Resource:Imperial Navy' :        ("Imperial Navy Resource", "28fc888e-527e-453e-b9ba-263d36ea94dd"),
+             'Resource:Scum and Villainy' :    ("Scum & Villainy Resource", "5b96ecac-4570-43f3-81bd-c81be0b4b602"),
+             'Resource:Rebel Alliance' :       ("Rebel Alliance Resource", "cd947edc-ae8b-4983-822a-88f8dc6a86f2"),
+             'Resource:Jedi' :                 ("Jedi Resource", "ee546e3c-de9c-43d1-9ad4-943645644c72"),
+             'Resource:Smugglers and Spies' :  ("Smugglers & Spies Resource", "bc58905b-1f57-4297-9199-837c85a8ef0d"),
+             'Resource:Neutral' :              ("Neutral", "fae80b84-88f5-46fe-9806-ed624265757f")}
+
+
+
+UnpaidColor = "#ffd700"
 SelectColor = "#009900"
-DummyColor = "#000000" # Marks cards which are supposed to be out of play, so that players can tell them apart.
 LightForceColor = "#ffffff"
 DarkForceColor = "#000000"
-PriorityColor = "#ffd700"
 CapturedColor = "#888888" # Cards which are in play but captured by the dark side
 AttackColor = "#ff0000"
 DefendColor = "#0000ff"

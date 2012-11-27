@@ -28,6 +28,7 @@ Side = None # The side of the player.
 Affiliation = None
 opponent = None # A variable holding the player object of our opponent.
 SetupPhase = False
+unpaidCard = None # A variable that holds the card object of a card that has not been paid yet, for ease of find.
 
 #---------------------------------------------------------------------------
 # Phases
@@ -293,19 +294,8 @@ def gameSetup(group, x = 0, y = 0):
 def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
-   if (num(card.Resources) > 0
-         and card.Type == 'Unit'
-         and getGlobalVariable('Engaged Objective') != 'None'):
-      if debugVerbosity >= 2: notify("Card has resources and it's engagement time") # Debug
-      if card.orientation == Rot0:
-         choice = SingleChoice("Do you want to generate resources or select as a participant?", ['Generate Resources','Select as Engagement Participant'], type = 'button')
-         if choice == 1: participate(card)
-         else: generate(card)
-      else:
-         choice = SingleChoice("Do you want to generate resources or Strike?", ['Generate Resources','Strike'], type = 'button')
-         if choice == 1: strike(card)
-         else: generate(card)
-   elif num(card.Resources) > 0: 
+   if card.highlight == UnpaidColor: purchaseCard(card)
+   elif num(card.Resources) > 0 and findUnpaidCard(): 
       if debugVerbosity >= 2: notify("Card has resources") # Debug
       generate(card)
    elif card.Type == 'Unit' and getGlobalVariable('Engaged Objective') != 'None':
@@ -340,6 +330,10 @@ def participate(card, x = 0, y = 0):
 def generate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
    mute()
+   unpaidC = findUnpaidCard()
+   if not unpaidC: 
+      whisper(":::ERROR::: You are not attempting to pay for a card or effect. ABORTING!")
+      return
    if (card.markers[mdict['Focus']]
          and card.markers[mdict['Focus']] >= 1
          and not confirm("Card is already exhausted. Bypass?")):
@@ -348,19 +342,64 @@ def generate(card, x = 0, y = 0):
       whisper("Resources, this card produces not!")
       return
    elif num(card.Resources) > 1: 
-      count = askInteger("Card can generate more than one resource. How many do you want to produce?", 1)
+      count = askInteger("Card can generate up to {} resources. How many do you want to produce?".format(card.Resources), 1)
       if not count: return # If the player closed the window or put 0, do nothing.
+      while count > num(card.Resources):
+         count = askInteger(":::ERROR::: This card cannot generate so many resources.\
+                         \n\nPlease input again how many resources to produce (Max {})".format(card.Resources), 1)
+         if not count: return # If the player closed the window or put 0, do nothing.      
    else: count = 1
-   if card.Affiliation == 'Sith': card.markers[mdict['ResourceSith']] += count
-   elif card.Affiliation == 'Imperial Navy': card.markers[mdict['ResourceImperial']] += count
-   elif card.Affiliation == 'Scum and Villainy': card.markers[mdict['ResourceScum']] += count
-   elif card.Affiliation == 'Rebel Alliance': card.markers[mdict['ResourceRebel']] += count
-   elif card.Affiliation == 'Jedi': card.markers[mdict['ResourceJedi']] += count
-   elif card.Affiliation == 'Smugglers and Spies': card.markers[mdict['ResourceSmuggler']] += count
-   else: card.markers[mdict['ResourceNeutral']] += count
+   try: unpaidC.markers[resdict['Resource:{}'.format(card.Affiliation)]] += count
+   except: unpaidC.markers[resdict['Resource:Neutral']] += count
    card.markers[mdict['Focus']] += count
    notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
+   if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC)
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
+
+def findUnpaidCard():
+   if debugVerbosity >= 1: notify(">>> findUnpaidCard(){}".format(extraASDebug())) #Debug
+   if unpaidCard: return unpaidCard
+   else:
+      for card in table:
+         if card.highlight == UnpaidColor and card.controller == me: return card
+   if debugVerbosity >= 3: notify("<<< findUnpaidCard()") #Debug
+   return None # If not unpaid card is found, return None
+
+def checkPaidResources(card):
+   if debugVerbosity >= 1: notify(">>> checkPaidResources(){}".format(extraASDebug())) #Debug
+   count = 0
+   affiliationMatch = False
+   for cMarkerKey in card.markers: #We check the key of each marker on the card
+      for resdictKey in resdict:  #against each resource type available
+         if debugVerbosity >= 2: notify("About to compare marker keys: {} and {}".format(resdict[resdictKey],cMarkerKey)) #Debug
+         if resdict[resdictKey] == cMarkerKey: # If the marker is a resource
+            count += card.markers[cMarkerKey]  # We increase the count of how many resources have been paid for this card
+            if debugVerbosity >= 2: notify("About to check resource found affiliaton") #Debug
+            if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
+               affiliationMatch = True # We set that we've also got a matching resource affiliation
+   if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
+   if count >= num(card.Cost) and (card.Affiliation == 'Neutral' or affiliationMatch):
+      if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
+      return 'OK'
+   else:
+      if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
+      return 'NOK'
+
+def purchaseCard(card, x=0, y=0):
+   if debugVerbosity >= 1: notify(">>> purchaseCard(){}".format(extraASDebug())) #Debug
+   global unpaidCard
+   checkPaid = checkPaidResources(card)
+   if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
+      # if the card has been fully paid, we remove the resource markers and move it at its final position.
+      card.highlight = None
+      for cMarkerKey in card.markers: 
+         for resdictKey in resdict:
+            if resdict[resdictKey] == cMarkerKey: 
+               card.markers[cMarkerKey] = 0
+      unpaidCard = None
+      if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
+      else: notify(":::ATTENTION::: {} has acquired {} by skipping its full cost".format(me,card))
+   if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> commit(){}".format(extraASDebug())) #Debug
@@ -435,10 +474,12 @@ def rulings(card, x = 0, y = 0):
 
 def play(card):
    if debugVerbosity >= 1: notify(">>> play(){}".format(extraASDebug())) #Debug
+   global unpaidCard
    mute()
    card.moveToTable(0, 0 + yaxisMove(card))
-   notify("{} plays {}.".format(me, card))
-
+   card.highlight = UnpaidColor
+   unpaidCard = card
+   notify("{} attempts to play {}.".format(me, card))
 
 def mulligan(group):
    if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
