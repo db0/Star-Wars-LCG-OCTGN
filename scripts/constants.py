@@ -23,10 +23,17 @@ Shield = ("Shield", "e9a419ff-5154-41cf-b84f-95149cc19a2a") # Temp
 mdict = dict( # A dictionary which holds all the hard coded markers (in the markers file)
              Focus =                   ("Resource", "c93d4582-16a0-4e2d-9e63-71be20fbfa0c"),
              Damage =                  ("Damage", "224b865d-173b-49fd-9aed-17df678259b0"),
+             Shield =                  ("Shield", "8559643f-7a15-4605-937d-0f39d59c9eda"),
              PlusOnePerm =             ("Permanent +1", "2246648d-1581-4be9-9636-1b75129313a6"),
              PlusOne =                 ("Temporary +1", "987d0d3f-0965-49ae-a96c-03394783d47a"),
              MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"),
-             Shield =                  ("Shield", "8559643f-7a15-4605-937d-0f39d59c9eda"))
+             ResourceSith =            ("Sith Resource", "960e830a-fc0c-46ed-89be-6ac8efb5da8b"),
+             ResourceImperial =        ("Imperial Navy Resource", "28fc888e-527e-453e-b9ba-263d36ea94dd"),
+             ResourceScum =            ("Scum & Villainy Resource", "5b96ecac-4570-43f3-81bd-c81be0b4b602"),
+             ResourceRebel =           ("Rebel Alliance Resource", "cd947edc-ae8b-4983-822a-88f8dc6a86f2"),
+             ResourceJedi =            ("Jedi Resource", "ee546e3c-de9c-43d1-9ad4-943645644c72"),
+             ResourceSmuggler =        ("Smugglers & Spies Resource", "bc58905b-1f57-4297-9199-837c85a8ef0d"),
+             ResourceNeutral =         ("Neutral", "fae80b84-88f5-46fe-9806-ed624265757f"))
 
 ScoredColor = "#00ff44"
 SelectColor = "#009900"
@@ -34,7 +41,7 @@ DummyColor = "#000000" # Marks cards which are supposed to be out of play, so th
 LightForceColor = "#ffffff"
 DarkForceColor = "#000000"
 PriorityColor = "#ffd700"
-CapturedColor = "#888888" # Cards which are in play but not active yet
+CapturedColor = "#888888" # Cards which are in play but captured by the dark side
 AttackColor = "#ff0000"
 DefendColor = "#0000ff"
 

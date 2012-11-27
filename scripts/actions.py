@@ -40,6 +40,7 @@ def nextPhase(group, x = 0, y = 0):
 # Function to take you to the next phase. 
    mute()
    phase = num(me.getGlobalVariable('Phase'))
+   if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
    if phase == 6: 
       me.setGlobalVariable('Phase','-1') # In case we're on the last phase (Force), we end our turn.
       opponent.setGlobalVariable('Phase','0') # Phase 0 means they're ready to start their turn
@@ -133,10 +134,10 @@ def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict pha
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
    mute()
+   if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() # If the playes jump to the force phase after engagement, we make sure we clear the engagement.
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()
    whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
-   
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
    mute()
@@ -182,6 +183,38 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          if debugVerbosity >= 2: notify("Opponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
          BotD.moveToTable(x - (playerside * 70), y)
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
+   if debugVerbosity >= 3: notify("<<< resolveForceStruggle()") #Debug
+         
+def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
+   if debugVerbosity >= 1: notify(">>> engageTarget(){}".format(extraASDebug())) #Debug
+   mute()
+   if me.getGlobalVariable('Phase') != '5' and not confirm("You need to be in the conflict phase before you can engage an objective. Bypass?"):
+      return
+   if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() 
+   if debugVerbosity >= 2: notify("About to find targeted objectives.") #Debug
+   cardList = [c for c in table if c.Type == 'Objective' and c.targetedBy and c.targetedBy == me and c.owner == opponent]
+   if debugVerbosity >= 2: notify("About to count found objectives list. List is {}".format(cardList)) #Debug
+   if len(cardList) == 0: 
+      whisper("You need to target an opposing Objective to start an Engagement")
+      return
+   else: targetObjective = cardList[0]
+   targetObjective.highlight = DefendColor
+   if debugVerbosity >= 2: notify("About set the global variable") #Debug
+   setGlobalVariable('Engaged Objective',str(targetObjective._id))
+   if debugVerbosity >= 2: notify("About to announce") #Debug
+   notify("{} forces have engaged {}'s {}".format(me,targetObjective.owner, targetObjective))
+   rnd(1,10)
+   whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
+   if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
+   
+def finishEngagement():
+   if debugVerbosity >= 1: notify(">>> finishEngagement(){}".format(extraASDebug())) #Debug
+   for card in table:
+      if card.orientation == Rot90: card.orientation = Rot0
+      if card.highlight == DefendColor: card.highlight = None
+   notify("The engagement at {} is finished".format(Card(num(getGlobalVariable('Engaged Objective')))))
+   setGlobalVariable('Engaged Objective','None')
+   if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
@@ -256,18 +289,81 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 5: confirm("Reshuffling Deck")
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
-   		
+
+def defaultAction(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
+   mute()
+   if (num(card.Resources) > 0
+         and card.Type == 'Unit'
+         and getGlobalVariable('Engaged Objective') != 'None'):
+      if debugVerbosity >= 2: notify("Card has resources and it's engagement time") # Debug
+      if card.orientation == Rot0:
+         choice = SingleChoice("Do you want to generate resources or select as a participant?", ['Generate Resources','Select as Engagement Participant'], type = 'button')
+         if choice == 1: participate(card)
+         else: generate(card)
+      else:
+         choice = SingleChoice("Do you want to generate resources or Strike?", ['Generate Resources','Strike'], type = 'button')
+         if choice == 1: strike(card)
+         else: generate(card)
+   elif num(card.Resources) > 0: 
+      if debugVerbosity >= 2: notify("Card has resources") # Debug
+      generate(card)
+   elif card.Type == 'Unit' and getGlobalVariable('Engaged Objective') != 'None':
+      if debugVerbosity >= 2: notify("Card is Unit and it's engagement time") # Debug
+      if card.orientation == Rot0: participate(card)
+      else: strike(card)
+   if debugVerbosity >= 3: notify("<<< defaultAction()") #Debug
+     
 def strike(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> strike(){}".format(extraASDebug())) #Debug
+   mute()
+   if (card.markers[mdict['Focus']]
+         and card.markers[mdict['Focus']] >= 1
+         and not confirm("Unit is already exhausted. Bypass?")):
+      return 
+   notify("{} strikes with {}.".format(me, card))
+   card.markers[mdict['Focus']] += 1
+   if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
+   if debugVerbosity >= 3: notify("<<< strike()") #Debug
+		  
+def participate(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
+   mute()
+   if (card.markers[mdict['Focus']]
+         and card.markers[mdict['Focus']] >= 1
+         and not confirm("Unit is not ready. Bypass?")):
+      return 
+   notify("{} selects {} as an engagement participant.".format(me, card))
+   card.orientation = Rot90
+   if debugVerbosity >= 3: notify("<<< participate()") #Debug
+
+def generate(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
    mute()
    if (card.markers[mdict['Focus']]
          and card.markers[mdict['Focus']] >= 1
          and not confirm("Card is already exhausted. Bypass?")):
       return 
-   notify("{} strikes with {}.".format(me, card))
-   card.markers[mdict['Focus']] += 1
-   if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
-		  
+   if num(card.Resources) == 0: 
+      whisper("Resources, this card produces not!")
+      return
+   elif num(card.Resources) > 1: 
+      count = askInteger("Card can generate more than one resource. How many do you want to produce?", 1)
+      if not count: return # If the player closed the window or put 0, do nothing.
+   else: count = 1
+   if card.Affiliation == 'Sith': card.markers[mdict['ResourceSith']] += count
+   elif card.Affiliation == 'Imperial Navy': card.markers[mdict['ResourceImperial']] += count
+   elif card.Affiliation == 'Scum and Villainy': card.markers[mdict['ResourceScum']] += count
+   elif card.Affiliation == 'Rebel Alliance': card.markers[mdict['ResourceRebel']] += count
+   elif card.Affiliation == 'Jedi': card.markers[mdict['ResourceJedi']] += count
+   elif card.Affiliation == 'Smugglers and Spies': card.markers[mdict['ResourceSmuggler']] += count
+   else: card.markers[mdict['ResourceNeutral']] += count
+   card.markers[mdict['Focus']] += count
+   notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
+   if debugVerbosity >= 3: notify("<<< generate()") #Debug
+
 def commit(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> commit(){}".format(extraASDebug())) #Debug
    mute()
    if Side == 'Light': commitColor = LightForceColor
    else: commitColor = DarkForceColor
@@ -280,6 +376,7 @@ def commit(card, x = 0, y = 0):
       return
    notify("{} commits {} to the force.".format(me, card))
    card.highlight = commitColor
+   if debugVerbosity >= 3: notify("<<< commit()") #Debug
 
 def handDiscard(card):
    if debugVerbosity >= 1: notify(">>> handDiscard(){}".format(extraASDebug())) #Debug
@@ -322,12 +419,26 @@ def discard(card, x = 0, y = 0):
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
-   
-def play(card, x = 0, y = 0):
+ 
+def inspectCard(card, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.
+   if debugVerbosity >= 1: notify(">>> inspectCard(){}".format(extraASDebug())) #Debug
+   #if debugVerbosity > 0: finalTXT = 'AutoScript: {}\n\n AutoAction: {}'.format(CardsAS.get(card.model,''),CardsAA.get(card.model,''))
+   finalTXT = "{}\n\nCard Text: {}".format(card.name, card.Text)
+   confirm("{}".format(finalTXT))
+
+def rulings(card, x = 0, y = 0):
+   if debugVerbosity >= 1: notify(">>> rulings(){}".format(extraASDebug())) #Debug
+   mute()
+   #if not card.isFaceUp: return
+   #openUrl('http://www.netrunneronline.com/cards/{}/'.format(card.Errata))
+   openUrl('http://www.cardgamedb.com/index.php/netrunner/star-wars-card-search?text={}&fTS=0'.format(card.name)) # Errata is not filled in most card so this works better until then
+
+def play(card):
    if debugVerbosity >= 1: notify(">>> play(){}".format(extraASDebug())) #Debug
    mute()
    card.moveToTable(0, 0 + yaxisMove(card))
    notify("{} plays {}.".format(me, card))
+
 
 def mulligan(group):
    if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
@@ -449,3 +560,12 @@ def subToken(card, tokenType):
     mute()
     notify("{} removes a {} from {}.".format(me, tokenType[0], card))
     card.markers[mdict[tokenType]] -= 1	
+    
+def addMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.
+   if debugVerbosity >= 1: notify(">>> addMarker(){}".format(extraASDebug())) #Debug
+   mute()
+   marker, quantity = askMarker() # Ask the player how many of the same type they want.
+   if quantity == 0: return
+   for card in cards: # Then go through their cards and add those markers to each.
+      card.markers[marker] += quantity
+      notify("{} adds {} {} counter to {}.".format(me, quantity, marker[0], card))	

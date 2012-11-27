@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.0" markersize="15">
+<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.0" markersize="20">
 	<scripts>
 		<script src="r100" />
 		<script src="r101" />
@@ -13,7 +13,8 @@
      <globalvariable name="gameEnded" value="False" /> 
      <globalvariable name="gameGUID" value="None" /> 
      <globalvariable name="destroyedObjectives" value="[]" />      
-     <globalvariable name="Balance of the Force" value="" />      
+     <globalvariable name="Balance of the Force" value="" /> 
+     <globalvariable name="Engaged Objective" value="None" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
 		<property name="Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
@@ -47,9 +48,11 @@
 <!--		<cardaction menu="DebugTest" default="true" execute="flipcard" /> -->
 		<groupaction menu="Refresh all" default="false" execute="refreshAll" />
 		<groupaction menu="Clear targets" default="false" execute="clearAll" />
-		<cardaction menu="Strike" default="true" shortcut="Ctrl+S" execute="strike" />
+		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="true" shortcut="Ctrl+S" execute="defaultAction" />
+<!--		<cardaction menu="Generate Resources" shortcut="Ctrl+G" execute="generate" /> -->
 		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
 		<groupaction menu="Resolve Force Struggle" default="false" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
+		<groupaction menu="Engage Target Objective" default="false" shortcut="Ctrl+E" execute="engageTarget" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
 		<groupactions menu="Damage">
 			<groupaction menu="Add Damage Counter" default="false" execute="addDamage" />
@@ -71,6 +74,7 @@
          <cardaction menu="Remove Focus counter" default="false" shortcut="Shift+Alt+F" execute="subFocus" />
          <cardaction menu="Add Shield counter" default="false" shortcut="Alt+S" execute="addShield" />
          <cardaction menu="Remove Shield counter" default="false" shortcut="Alt+Shift+S" execute="subShield" />
+         <cardaction menu="Add Markers" default="false" shortcut="Alt+M" batchExecute="addMarker" />
       </cardactions>
       <groupactions menu="Timing Structures References">
          <groupaction menu="Balance Phase" default="false" execute="HELP_BalancePhase" />
@@ -88,7 +92,7 @@
       <globalvariable name="currentObjectives" value="[]" /> 
       <globalvariable name="gameVersion" value="" /> 
 		<hand name="Hand" visibility="me" ordered="false" width="63" height="88" icon="r11">
-			<groupaction menu="Play Card" default="true" execute="play" />
+			<cardaction menu="Play Card" default="true" execute="play" />
 			<groupaction menu="Mulligan" default="false" execute="mulligan" />
 			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="mulligan" />
 			<groupaction menu="Random Discard" default="false" execute="randomDiscard" />
