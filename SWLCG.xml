@@ -44,10 +44,12 @@
          <groupaction menu="Re-Download all card automations" default="false" execute="fetchCardScripts" />
          <groupaction menu="Debug" default="false" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
       </groupactions>
+<!--		<cardaction menu="DebugTest" default="true" execute="flipcard" /> -->
 		<groupaction menu="Refresh all" default="false" execute="refreshAll" />
 		<groupaction menu="Clear targets" default="false" execute="clearAll" />
 		<cardaction menu="Strike" default="true" shortcut="Ctrl+S" execute="strike" />
 		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
+		<groupaction menu="Resolve Force Struggle" default="false" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
 		<groupactions menu="Damage">
 			<groupaction menu="Add Damage Counter" default="false" execute="addDamage" />

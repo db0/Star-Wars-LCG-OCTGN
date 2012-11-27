@@ -248,9 +248,8 @@ def TrialError(group, x=0, y=0): # Debugging
    global Side, debugVerbosity
    mute()
    ######## Testing Corner ########
-   #for hook in regexHooks: notify("regex for {} is {}".format(hook, regexHooks[hook]))
-   #if regexHooks['GainX'].search('TrashMyself'): confirm("Found!")
-   #else: confirm("Not Found :(")
+#   BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
+#   BotD.moveToTable(0,0) 
    ###### End Testing Corner ######
    if debugVerbosity >=0: 
       if debugVerbosity == 0: 
@@ -279,6 +278,11 @@ def TrialError(group, x=0, y=0): # Debugging
 #      storeProperties(test)
 #      if test.Type == 'ICE' or test.Type == 'Agenda' or test.Type == 'Asset': test.isFaceUp = False
 
+def flipcard(card,x,y):
+   card.switchImage
+   if card.isAlternateImage: notify("is Alternate")
+   elif not card.isAlternateImage: notify("is not Alternate")
+   
 def extraASDebug(Autoscript = None):
    if Autoscript and debugVerbosity >= 3: return ". Autoscript:{}".format(Autoscript)
    else: return ''

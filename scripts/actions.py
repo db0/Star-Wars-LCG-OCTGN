@@ -135,7 +135,13 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    mute()
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()
-   struggleTotal = 0
+   whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
+   
+
+def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
+   mute()
+   myStruggleTotal = 0
+   opponentStruggleTotal = 0
    if Side == 'Light': 
       commitColor = LightForceColor
       commitOpponent = DarkForceColor
@@ -147,33 +153,35 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if debugVerbosity >= 2: notify("About to loop") #Debug
    for card in commitedCards:
       try: 
-         if card.markers[mdict['Focus']] == 0: struggleTotal += num(card.Force)
-      except: struggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
+         if card.markers[mdict['Focus']] == 0: myStruggleTotal += num(card.Force)
+      except: myStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
    if debugVerbosity >= 2: notify("Counting my opponents cards") #Debug
    opponentCommitedCards  = [c for c in table if c.controller == opponent and c.highlight == commitOpponent]
    for card in opponentCommitedCards:
       try: 
-         if card.markers[mdict['Focus']] == 0: struggleTotal -= num(card.Force)
-      except: struggleTotal -= num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
+         if card.markers[mdict['Focus']] == 0: opponentStruggleTotal += num(card.Force)
+      except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
    if debugVerbosity >= 2: notify("Checking Struggle") #Debug
    BotD = getSpecial('BotD')
-   if struggleTotal > 0: 
+   if myStruggleTotal - opponentStruggleTotal > 0: 
       if debugVerbosity >= 2: notify("struggleTotal Positive") #Debug
       if (Side == 'Light' and BotD.isAlternateImage) or (Side == 'Dark' and not BotD.isAlternateImage):
          if debugVerbosity >= 2: notify("About to flip BotD due to my victory") #Debug
          BotD.switchImage
          x,y = Affiliation.position
-         BotD.moveToTable(playerside * (x - 70), y)
-         notify("The force struggle tips the balance of the force towards the {} side".format(Side))
-   elif struggleTotal < 0: 
+         if debugVerbosity >= 2: notify("My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
+         BotD.moveToTable(x - (playerside * 70), y)
+         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
+   elif myStruggleTotal - opponentStruggleTotal < 0: 
       if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
       if (Side == 'Light' and not BotD.isAlternateImage) or (Side == 'Dark' and BotD.isAlternateImage):
          if debugVerbosity >= 2: notify("About to flip BotD due to my opponent's victory") #Debug
          BotD.switchImage
          opponentAffiliation = getSpecial('Affiliation',opponent)
          x,y = opponentAffiliation.position
-         BotD.moveToTable(-playerside * (x - 70), y)
-         notify("The force struggle tips the balance of the force towards the {} side".format(opponent.getGlobalVariable('Side')))
+         if debugVerbosity >= 2: notify("Opponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
+         BotD.moveToTable(x - (playerside * 70), y)
+         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
