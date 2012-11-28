@@ -49,10 +49,17 @@
 		<groupaction menu="Refresh all" default="false" execute="refreshAll" />
 		<groupaction menu="Clear targets" default="false" execute="clearAll" />
 		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="true" shortcut="Ctrl+S" execute="defaultAction" />
+      <cardactions menu="Manual Actions">
+         <cardaction menu="Strike" default="false" execute="strike" />
+         <cardaction menu="Participate in current engagement" default="false" execute="participate" />
+         <cardaction menu="Generate Resources" default="false" execute="generate" />
+         <cardaction menu="Complete Payment" default="false" execute="purchaseCard" />
+      </cardactions>
 <!--		<cardaction menu="Generate Resources" shortcut="Ctrl+G" execute="generate" /> -->
 		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
 		<groupaction menu="Resolve Force Struggle" default="false" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
-		<groupaction menu="Engage Target Objective" default="false" shortcut="Ctrl+E" execute="engageTarget" />
+		<groupaction menu="Attack Target Objective" default="false" shortcut="Ctrl+A" execute="engageTarget" />
+		<groupaction menu="Reveal Edge Cards/Resolve Edge Battle" default="false" shortcut="Ctrl+Shift+E" execute="revealEdge" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
 		<groupactions menu="Damage">
 			<groupaction menu="Add Damage Counter" default="false" execute="addDamage" />
@@ -84,6 +91,7 @@
          <groupaction menu="Conflict Phase" default="false" execute="HELP_ConflictPhase" />
          <groupaction menu="Force Phase" default="false" execute="HELP_ForcePhase" />
       </groupactions>
+      <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
 	</table>
 	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
       <globalvariable name="Side" value="" /> 
@@ -93,8 +101,9 @@
       <globalvariable name="gameVersion" value="" /> 
 		<hand name="Hand" visibility="me" ordered="false" width="63" height="88" icon="r11">
 			<cardaction menu="Play Card" default="true" execute="play" />
+			<cardaction menu="Place as Edge Card" default="false" shortcut="Ctrl+E" execute="playEdge" />
 			<groupaction menu="Mulligan" default="false" execute="mulligan" />
-			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="mulligan" />
+			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="refillHand" />
 			<groupaction menu="Random Discard" default="false" execute="randomDiscard" />
          <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
          <cardaction menu="Discard" default="false" shortcut="del" execute="handDiscard" />           

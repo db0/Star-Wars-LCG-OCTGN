@@ -26,7 +26,8 @@ mdict = dict( # A dictionary which holds all the hard coded markers (in the mark
              Shield =                  ("Shield", "8559643f-7a15-4605-937d-0f39d59c9eda"),
              PlusOnePerm =             ("Permanent +1", "2246648d-1581-4be9-9636-1b75129313a6"),
              PlusOne =                 ("Temporary +1", "987d0d3f-0965-49ae-a96c-03394783d47a"),
-             MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"))
+             MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"),
+             Edge =                    ("The Edge", "6ca2a796-1023-4ccf-9946-2fe4d2252c0c"))
 
 resdict = {
              'Resource:Sith' :                 ("Sith Resource", "960e830a-fc0c-46ed-89be-6ac8efb5da8b"),
@@ -46,6 +47,7 @@ DarkForceColor = "#000000"
 CapturedColor = "#888888" # Cards which are in play but captured by the dark side
 AttackColor = "#ff0000"
 DefendColor = "#0000ff"
+EdgeColor = "#c0c0c0"
 
 Xaxis = 'x'
 Yaxis = 'y'
