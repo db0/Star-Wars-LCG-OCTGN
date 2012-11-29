@@ -32,6 +32,8 @@ unpaidCard = None # A variable that holds the card object of a card that has not
 edgeCount = 0 # How many edge cards the player has played per engagement.
 edgeRevealed = False # Remembers if the player has revealed their edge cards yet or not.
 firstTurn = True # A variable to allow the engine to skip some phases on the first turn.
+handRefillDone = False # A variable which tracks if the player has refilled their hand during the draw phase. Allows the game to go faster.
+forceStruggleDone = False # A variable which tracks if the player's have actually done the force struggle for this turn (just in case it's forgotten)
 
 #---------------------------------------------------------------------------
 # Phases
@@ -47,9 +49,10 @@ def nextPhase(group, x = 0, y = 0):
    phase = num(me.getGlobalVariable('Phase'))
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
    if phase == 6: 
+      if not forceStruggleDone: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
       me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
       setGlobalVariable('Active Player', opponent.name)
-      notify("{} has ended their turn.".format(me))
+      notify("=== {} has ended their turn ===.".format(me))
       if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
       return
    elif getGlobalVariable('Active Player') != me.name:
@@ -63,7 +66,9 @@ def nextPhase(group, x = 0, y = 0):
    if phase == 1: goToBalance()
    elif phase == 2: goToRefresh()
    elif phase == 3: goToDraw()
-   elif phase == 4: goToDeployment()
+   elif phase == 4: 
+      if not handRefillDone: refillHand() # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
+      goToDeployment()
    elif phase == 5:
       if firstTurn and Side == 'Dark':
          global firstTurn
@@ -130,12 +135,11 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
    mute()
+   global handRefillDone
+   handRefillDone = False
    me.setGlobalVariable('Phase','3')
    showCurrentPhase()
-   if len(me.hand) == 0: refillHand()
-   elif not confirm("Do you wish to discard a card before refilling your hand?\
-                \n\n(if you press yes, discard your card and then press Ctrl+R to refill)"):
-      refillHand()
+   if len(me.hand) == 0: refillHand() # If the player's hand is empty, there's no option to take. Just refill.
    
 def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment phase
    if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
@@ -152,6 +156,8 @@ def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict pha
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
    mute()
+   global forceStruggleDone
+   forceStruggleDone = False # At the start of the force phase, the force struggle is obviously not done yet.
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() # If the playes jump to the force phase after engagement, we make sure we clear the engagement.
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()
@@ -159,6 +165,9 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
    mute()
+   if num(me.getGlobalVariable('Phase')) != 6 and not confirm("The force struggle is only supposed to happen at the end of your force phase. Bypass?"):
+      return # If it's not the force phase, give the player an opportunity to abort.
+   global forceStruggleDone
    myStruggleTotal = 0
    opponentStruggleTotal = 0
    if Side == 'Light': 
@@ -191,6 +200,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          if debugVerbosity >= 2: notify("My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
          BotD.moveToTable(x - (playerside * 70), y)
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
+      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
    elif myStruggleTotal - opponentStruggleTotal < 0: 
       if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
       if (Side == 'Light' and not BotD.isAlternateImage) or (Side == 'Dark' and BotD.isAlternateImage):
@@ -201,6 +211,13 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          if debugVerbosity >= 2: notify("Opponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
          BotD.moveToTable(x - (playerside * 70), y)
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
+      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
+   else: # If the current force totals are tied, we just announce that.
+      if debugVerbosity >= 2: notify("Force struggle is tied") #Debug
+      if BotD.isAlternateImage: BotDside = 'Dark'
+      else: BotDside = 'Light'
+      notify(":> The force struggle is tied. The Balance remains tiped to the the {} Side. ({}: {} - {}: {})".format(BotDside,me,myStruggleTotal,opponent,opponentStruggleTotal))
+   forceStruggleDone = True # Set that the forcestruggle is done.
    if debugVerbosity >= 3: notify("<<< resolveForceStruggle()") #Debug
          
 def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
@@ -717,10 +734,14 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    return count
 
 def refillHand(group = me.hand): # Simply refills the player's hand to their reserve maximum
+   if debugVerbosity >= 1: notify(">>> refillHand(){}".format(extraASDebug())) #Debug
    mute()
+   global handRefillDone
    if len(me.hand) < me.Reserves: 
       drawMany(count = me.Reserves - len(me.hand))
    notify(":> {} Refills their hand to their reserve maximum".format(me))
+   handRefillDone = True
+   if debugVerbosity >= 3: notify("<<< refillHand()")
       
    
 def drawBottom(group, x = 0, y = 0):
