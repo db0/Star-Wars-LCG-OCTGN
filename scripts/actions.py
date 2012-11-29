@@ -42,18 +42,21 @@ def showCurrentPhase(): # Just say a nice notification about which phase you're 
    
 def nextPhase(group, x = 0, y = 0):  
 # Function to take you to the next phase. 
+   if debugVerbosity >= 1: notify(">>> nextPhase(){}".format(extraASDebug())) #Debug
    mute()
    phase = num(me.getGlobalVariable('Phase'))
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
    if phase == 6: 
-      me.setGlobalVariable('Phase','-1') # In case we're on the last phase (Force), we end our turn.
-      opponent.setGlobalVariable('Phase','0') # Phase 0 means they're ready to start their turn
-      notify("{} has ended their turn".format(me))
+      me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
+      setGlobalVariable('Active Player', opponent.name)
+      notify("{} has ended their turn.".format(me))
+      if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
       return
-   elif phase < 0:
+   elif getGlobalVariable('Active Player') != me.name:
+      if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
       if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
       me.setGlobalVariable('Phase','1')
-      opponent.setGlobalVariable('Phase','-1')
+      setGlobalVariable('Active Player', me.name)
    else: 
       phase += 1
       me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
@@ -271,7 +274,9 @@ def gameSetup(group, x = 0, y = 0):
       opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
       notify("{} has played their objectives and drawn their starting commands".format(me))
       SetupPhase = False
-      if Side == 'Dark': me.setGlobalVariable('Phase','0') # We now allow the dark side to start
+      if Side == 'Dark': 
+         me.setGlobalVariable('Phase','0') # We now allow the dark side to start
+         notify("{} of the Dark Side has the initiative".format(me))
    else: # This choice is only for a new game.
       if debugVerbosity >= 3: notify("### Executing First Setup Phase")
       if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
@@ -307,6 +312,7 @@ def gameSetup(group, x = 0, y = 0):
          BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
          BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
          setGlobalVariable('Balance of the Force', str(BotD._id))
+         setGlobalVariable('Active Player', me.name) # We also set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
       if debugVerbosity >= 3: notify("### Shuffling Decks")
@@ -382,7 +388,7 @@ def strike(card, x = 0, y = 0):
       TacticsTXT = " (exhausting {})".format(targetUnit)
    elif ((Unit_Damage and Tactics) or Tactics > 1) and targetUnit: # We inform the user why we didn't assign markers automatically.
       whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
-   elif not targetUnit: # We give some informatory whispers to the players to help them perform strikes faster in the future
+   elif not targetUnit and (Unit_Damage or Tactics): # We give some informatory whispers to the players to help them perform strikes faster in the future
       whisper(":::ATTENTION::: You had no units targeted with shift+click, so no counters were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
    if Unit_Damage: AnnounceText += ' {} Unit Damage{}'.format(Unit_Damage,Unit_DamageTXT)
    if Tactics: 
@@ -766,8 +772,8 @@ def addShieldTarget(group, x = 0, y = 0):
          card.markers[mdict['Shield']] += 1        
          notify("{} adds a Shield token on {}.".format(me, card))
 
-def subResource(card, x = 0, y = 0):
-   subToken(card, 'Resource')
+def subFocus(card, x = 0, y = 0):
+   subToken(card, 'Focus')
 
 def subDamage(card, x = 0, y = 0):
    subToken(card, 'Damage')
@@ -775,9 +781,21 @@ def subDamage(card, x = 0, y = 0):
 def subShield(card, x = 0, y = 0):
    subToken(card, 'Shield')
 
+def subFocusTarget(group, x = 0, y = 0):
+   for card in table:
+      if card.targetedBy and card.targetedBy == me: subToken(card, 'Focus')
+
+def subDamageTarget(group, x = 0, y = 0):
+   for card in table:
+      if card.targetedBy and card.targetedBy == me: subToken(card, 'Damage')
+
+def subShieldTarget(group, x = 0, y = 0):
+   for card in table:
+      if card.targetedBy and card.targetedBy == me: subToken(card, 'Shield')
+
 def subToken(card, tokenType):
    mute()
-   notify("{} removes a {} from {}.".format(me, tokenType[0], card))
+   notify("{} removes a {} from {}.".format(me, tokenType, card))
    card.markers[mdict[tokenType]] -= 1	
     
 def addMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.

@@ -15,6 +15,7 @@
      <globalvariable name="destroyedObjectives" value="[]" />      
      <globalvariable name="Balance of the Force" value="" /> 
      <globalvariable name="Engaged Objective" value="None" />      
+     <globalvariable name="Active Player" value="" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
 		<property name="Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
@@ -61,7 +62,7 @@
 		<groupaction menu="Reveal Edge Cards/Resolve Edge Battle" default="false" shortcut="Ctrl+Shift+E" execute="revealEdge" />
 		<groupaction menu="Declare Pass" default="false" shortcut="Ctrl+Space" execute="declarePass" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
-		<groupaction menu="Move to Next phase." default="false" shortcut="ctrl+enter" execute="nextPhase" />
+		<groupaction menu="Move to Next phase." default="false" shortcut="Ctrl+Enter" execute="nextPhase" />
 		<groupactions menu="Phases...">
 			<groupaction menu="Jump to Balance Phase." default="false" shortcut="F1" execute="goToBalance" />
 			<groupaction menu="Jump to Refresh Phase." default="false" shortcut="F2" execute="goToRefresh" />
@@ -73,17 +74,20 @@
 		</groupactions>
       <cardactions menu="Tokens...">
          <cardaction menu="Add Damage counter" default="false" shortcut="Alt+D" execute="addDamage" />
-         <cardaction menu="Remove Damage counter" default="false" shortcut="Shift+Alt+D" execute="subDamage" />
          <cardaction menu="Add Focus counter" default="false" shortcut="Alt+F" execute="addFocus" />
-         <cardaction menu="Remove Focus counter" default="false" shortcut="Shift+Alt+F" execute="subFocus" />
          <cardaction menu="Add Shield counter" default="false" shortcut="Alt+S" execute="addShield" />
-         <cardaction menu="Remove Shield counter" default="false" shortcut="Alt+Shift+S" execute="subShield" />
          <cardaction menu="Add Markers" default="false" shortcut="Alt+M" batchExecute="addMarker" />
+         <cardaction menu="Remove Damage counter" default="false" shortcut="Alt+Shift+D" execute="subDamage" />
+         <cardaction menu="Remove Focus counter" default="false" shortcut="Alt+Shift+F" execute="subFocus" />
+         <cardaction menu="Remove Shield counter" default="false" shortcut="Alt+Shift+S" execute="subShield" />
       </cardactions>
       <groupactions menu="Tokens (Targeted)...">
          <cardaction menu="Damage" default="false" shortcut="Alt+D" execute="addDamageTarget" />
          <cardaction menu="Focus" default="false" shortcut="Alt+F" execute="addFocusTarget" />
          <cardaction menu="Shield" default="false" shortcut="Alt+S" execute="addShieldTarget" />
+         <cardaction menu="Remove Damage" default="false" shortcut="Alt+Shift+D" execute="subDamageTarget" />
+         <cardaction menu="Remove Focus" default="false" shortcut="Alt+Shift+F" execute="subFocusTarget" />
+         <cardaction menu="Remove Shield" default="false" shortcut="Alt+Shift+S" execute="subShieldTarget" />
       </groupactions>
       <groupactions menu="Timing Structures References">
          <groupaction menu="Balance Phase" default="false" execute="HELP_BalancePhase" />
