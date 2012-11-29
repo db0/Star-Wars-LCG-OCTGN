@@ -216,7 +216,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       if debugVerbosity >= 2: notify("Force struggle is tied") #Debug
       if BotD.isAlternateImage: BotDside = 'Dark'
       else: BotDside = 'Light'
-      notify(":> The force struggle is tied. The Balance remains tiped to the the {} Side. ({}: {} - {}: {})".format(BotDside,me,myStruggleTotal,opponent,opponentStruggleTotal))
+      notify(":> The force struggle is tied. The Balance remains tiped to the {} Side. ({}: {} - {}: {})".format(BotDside,me,myStruggleTotal,opponent,opponentStruggleTotal))
    forceStruggleDone = True # Set that the forcestruggle is done.
    if debugVerbosity >= 3: notify("<<< resolveForceStruggle()") #Debug
          
