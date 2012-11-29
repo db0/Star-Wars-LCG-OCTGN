@@ -31,6 +31,7 @@ SetupPhase = False
 unpaidCard = None # A variable that holds the card object of a card that has not been paid yet, for ease of find.
 edgeCount = 0 # How many edge cards the player has played per engagement.
 edgeRevealed = False # Remembers if the player has revealed their edge cards yet or not.
+firstTurn = True # A variable to allow the engine to skip some phases on the first turn.
 
 #---------------------------------------------------------------------------
 # Phases
@@ -60,7 +61,13 @@ def nextPhase(group, x = 0, y = 0):
    elif phase == 2: goToRefresh()
    elif phase == 3: goToDraw()
    elif phase == 4: goToDeployment()
-   elif phase == 5: goToConflict()
+   elif phase == 5:
+      if firstTurn and Side == 'Dark':
+         global firstTurn
+         notify(":::NOTICE::: {} skips his first conflict phase".format(me))
+         firstTurn = False
+         goToForce()
+      else: goToConflict()
    elif phase == 6: goToForce()
 
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
@@ -95,10 +102,15 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    showCurrentPhase()
    for card in table:
       if card.owner == me and card.controller == me and card.highlight != CapturedColor:
-         if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
-            card.markers[mdict['Focus']] -=1
-            if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
-               card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
+         if firstTurn and Side == 'Light':
+            global firstTurn
+            notify(":::NOTICE::: {} skips his first card refresh".format(me))
+            firstTurn = False
+         else:
+            if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
+               card.markers[mdict['Focus']] -=1
+               if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
+                  card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
          if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
             card.markers[mdict['Shield']] = 0
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
@@ -210,8 +222,16 @@ def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
    whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
-def finishEngagement():
+def finishEngagement(group = table, x=0, y=0):
    if debugVerbosity >= 1: notify(">>> finishEngagement(){}".format(extraASDebug())) #Debug
+   # First we check for unopposed bonus
+   currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
+   unopposed = True
+   for card in table:
+      if card.orientation == Rot90 and card.owner == currentTarget.owner: unopposed = False
+   if unopposed and currentTarget in table: 
+      notify("{} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective".format(me,currentTarget))
+      currentTarget.markers[mdict['Damage']] += 1
    for card in table:
       if card.orientation == Rot90: card.orientation = Rot0
       if card.highlight == DefendColor: card.highlight = None
@@ -220,20 +240,22 @@ def finishEngagement():
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
       if card.owner == me and card.highlight == EdgeColor: discard(card)
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
-   if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug  
+   if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
 
 def gameSetup(group, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
-   global Side, Affiliation, SetupPhase, opponent
    mute()
+   global SetupPhase, Side, Affiliation
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
    #if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
    #versionCheck()
-   if SetupPhase:
+   if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
+      if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
+      global opponent
       if not ofwhom('ofOpponent') and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
          whisper("Please wait until your opponent has drawn their objectives before proceeding")
          return
@@ -251,19 +273,20 @@ def gameSetup(group, x = 0, y = 0):
       SetupPhase = False
       if Side == 'Dark': me.setGlobalVariable('Phase','0') # We now allow the dark side to start
    else: # This choice is only for a new game.
+      if debugVerbosity >= 3: notify("### Executing First Setup Phase")
       if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
-      Side = None
-      Affiliation = None
+      if debugVerbosity >= 3: notify("### Setting SetupPhase Variable")
       SetupPhase = True
       if not table.isTwoSided() and not confirm(":::WARNING::: This game is designed to be played on a two-sided table. Things will be extremely uncomfortable otherwise!! Please start a new game and makde sure the  the appropriate button is checked. Are you sure you want to continue?"): return
+      if debugVerbosity >= 3: notify("### Choosing Side")
       chooseSide()
-      if debugVerbosity >= 5: confirm("Checking Deck")
+      if debugVerbosity >= 3: notify("### Checking Deck")
       if len(deck) == 0:
          whisper ("Please load a deck first!")
          return
-      if debugVerbosity >= 5: confirm("Reseting Variables")
-      #resetAll()
-      if debugVerbosity >= 5: confirm("Placing Identity")
+      if debugVerbosity >= 3: notify("### Reseting Variables")
+      resetAll()
+      if debugVerbosity >= 3: notify("### Placing Identity")
       for card in me.hand:
          if card.Type != 'Affiliation': 
             whisper(":::Warning::: You are not supposed to have any non-Affiliation cards in your hand when you start the game")
@@ -278,7 +301,7 @@ def gameSetup(group, x = 0, y = 0):
       if not Side: 
          confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
          return
-      if debugVerbosity >= 5: confirm("Placing Affiliation")
+      if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
       if Side == 'Dark': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
          BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
@@ -286,13 +309,13 @@ def gameSetup(group, x = 0, y = 0):
          setGlobalVariable('Balance of the Force', str(BotD._id))
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
-      if debugVerbosity >= 5: confirm("Shuffling Decks")
+      if debugVerbosity >= 3: notify("### Shuffling Decks")
       shuffle(objectives)
-      if debugVerbosity >= 5: confirm("Drawing 4 Objectives")
+      if debugVerbosity >= 3: notify("### Drawing 4 Objectives")
       drawMany(objectives, 4, silent = True)
       notify("{} is choosing their objectives.".format(me))
       whisper(":::ATTENTION::: Once both players have discarded their 4th objective, press Ctrl+Shift+S to place your objectives on the table and draw your starting hand.")
-      if debugVerbosity >= 5: confirm("Reshuffling Deck")
+      if debugVerbosity >= 3: notify("### Reshuffling Deck")
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
 
@@ -325,11 +348,59 @@ def strike(card, x = 0, y = 0):
          and card.markers[mdict['Focus']] >= 1
          and not confirm("Unit is already exhausted. Bypass?")):
       return 
-   notify("{} strikes with {}.".format(me, card))
+   #notify("{} strikes with {}.".format(me, card))
    card.markers[mdict['Focus']] += 1
    if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
+   Unit_Damage = 0
+   Blast_Damage = 0
+   Tactics = 0
+   AnnounceText = ''
+   Unit_DamageTXT = ''
+   TacticsTXT = ''
+   targetUnit = None
+   UD = re.search(r'(?<!-)UD:([0-9])',card.properties['Combat Icons'])
+   EEUD = re.search(r'EE-UD:([0-9])',card.properties['Combat Icons'])
+   BD = re.search(r'(?<!-)BD:([0-9])',card.properties['Combat Icons'])
+   EEBD = re.search(r'EE-BD:([0-9])',card.properties['Combat Icons'])
+   T = re.search(r'(?<!-)T:([0-9])',card.properties['Combat Icons'])
+   EET = re.search(r'EE-T:([0-9])',card.properties['Combat Icons'])
+   if UD: Unit_Damage += num(UD.group(1))
+   if EEUD and gotEdge(): Unit_Damage += num(EEUD.group(1))
+   currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
+   if BD and currentTarget.owner == opponent: Blast_Damage += num(BD.group(1))
+   if EEBD and gotEdge() and currentTarget.owner == opponent: Blast_Damage += num(EEBD.group(1))
+   if T: Tactics += num(T.group(1))
+   if EET and gotEdge(): Tactics += num(EET.group(1))
+   currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
+   for c in table: # We check to see if the attacking player has already selected a target.
+      if c.targetedBy and c.targetedBy == me and c.Type == 'Unit': targetUnit = c
+   if Unit_Damage and not Tactics and targetUnit:  # if our strike only does unit damage, and we've already targeted a unit, then just automatically apply it to it.
+      targetUnit.markers[mdict['Damage']] += Unit_Damage
+      Unit_DamageTXT = " to {}".format(targetUnit)
+   elif not Unit_Damage and Tactics == 1 and targetUnit:  # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
+      targetUnit.markers[mdict['Damage']] += Unit_Damage
+      TacticsTXT = " (exhausting {})".format(targetUnit)
+   elif ((Unit_Damage and Tactics) or Tactics > 1) and targetUnit: # We inform the user why we didn't assign markers automatically.
+      whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
+   elif not targetUnit: # We give some informatory whispers to the players to help them perform strikes faster in the future
+      whisper(":::ATTENTION::: You had no units targeted with shift+click, so no counters were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
+   if Unit_Damage: AnnounceText += ' {} Unit Damage{}'.format(Unit_Damage,Unit_DamageTXT)
+   if Tactics: 
+      if AnnounceText == '': AnnounceText += ' {} Tactics{}'.format(Tactics,TacticsTXT)
+      elif Blast_Damage: AnnounceText += ', {} Tactics{}'.format(Tactics,TacticsTXT)
+      else: AnnounceText += ' and {} Tactics{}'.format(Tactics,TacticsTXT)
+   if Blast_Damage: 
+      if AnnounceText == '': AnnounceText += ' {} Blast Damage'.format(Blast_Damage)
+      else: AnnounceText += ' and {} Blast Damage'.format(Blast_Damage)
+   if AnnounceText == '': AnnounceText = " no effect"
+   notify("{} strikes with {} for{}.".format(me,card,AnnounceText))
+   if debugVerbosity >= 2: notify("UD is: {}. EE-UD is: {}. Total is: {}".format(UD, EEUD, Unit_Damage)) #Debug
    if debugVerbosity >= 3: notify("<<< strike()") #Debug
-		  
+
+def gotEdge():
+   if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: return True
+   else: return False
+   
 def participate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
    mute()
@@ -508,12 +579,12 @@ def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
    global edgeCount
    mute()
-   card.moveToTable(playerside * 400, 30 + yaxisMove(card) + (40 * edgeCount), True)
+   card.moveToTable(playerside * 450, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    card.highlight = EdgeColor
    edgeCount += 1
    notify("{} places a card in their edge stack.".format(me, card))
    
-def revealEdge():
+def revealEdge(group = table, x=0, y=0):
    if debugVerbosity >= 1: notify(">>> revealEdge(){}".format(extraASDebug())) #Debug
    global edgeRevealed
    fateNr = 0
@@ -541,7 +612,7 @@ def revealEdge():
          # We check to see if we already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             Affiliation.markers[mdict['Edge']] = 1
-            notify("{} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
+            notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
          else: whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          if debugVerbosity >= 2: notify("Opponent has the edge") #Debug
@@ -550,7 +621,7 @@ def revealEdge():
          # We check to see if our opponent already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             oppAffiliation.markers[mdict['Edge']] = 1
-            notify("{} has the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
+            notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
          else: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("Edge is a Tie") #Debug
@@ -564,6 +635,9 @@ def revealEdge():
          else: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
+def declarePass(group, x=0, y=0):
+   notify("{} Passes".format(me))
+   
 def mulligan(group):
    if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
    if not confirm("Are you sure you want to take a mulligan?"): return
@@ -636,11 +710,11 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    if debugVerbosity >= 3: notify("<<< drawMany() with return: {}".format(count))
    return count
 
-def refillHand(): # Simply refills the player's hand to their reserve maximum
+def refillHand(group = me.hand): # Simply refills the player's hand to their reserve maximum
    mute()
    if len(me.hand) < me.Reserves: 
       drawMany(count = me.Reserves - len(me.hand))
-      notify(":> {} Refills their hand to their reserve maximum".format(me))
+   notify(":> {} Refills their hand to their reserve maximum".format(me))
       
    
 def drawBottom(group, x = 0, y = 0):
@@ -657,33 +731,54 @@ def shuffle(group):
 #---------------------------------------------------------------------------
 	
 def addFocus(card, x = 0, y = 0):
-    mute()
-    notify("{} adds a Focus token on {}.".format(me, card))
-    card.markers[mdict['Focus']] += 1
+   mute()
+   notify("{} adds a Focus token on {}.".format(me, card))
+   card.markers[mdict['Focus']] += 1
     
 def addDamage(card, x = 0, y = 0):
-    mute()
-    notify("{} adds a Damage token on {}.".format(me, card))
-    card.markers[mdict['Damage']] += 1    
+   mute()
+   notify("{} adds a Damage token on {}.".format(me, card))
+   card.markers[mdict['Damage']] += 1    
     
 def addShield(card, x = 0, y = 0):
-    mute()
-    notify("{} adds a Shield token on {}.".format(me, card))
-    card.markers[mdict['Shield']] += 1        
+   mute()
+   notify("{} adds a Shield token on {}.".format(me, card))
+   card.markers[mdict['Shield']] += 1        
+
+def addFocusTarget(group, x = 0, y = 0):
+   mute()
+   for card in table:
+      if card.targetedBy and card.targetedBy == me:
+         card.markers[mdict['Focus']] += 1
+         notify("{} adds a Focus token on {}.".format(me, card))
+    
+def addDamageTarget(group, x = 0, y = 0):
+   mute()
+   for card in table:
+      if card.targetedBy and card.targetedBy == me:
+         card.markers[mdict['Damage']] += 1    
+         notify("{} adds a Damage token on {}.".format(me, card))
+    
+def addShieldTarget(group, x = 0, y = 0):
+   mute()
+   for card in table:
+      if card.targetedBy and card.targetedBy == me:
+         card.markers[mdict['Shield']] += 1        
+         notify("{} adds a Shield token on {}.".format(me, card))
 
 def subResource(card, x = 0, y = 0):
-    subToken(card, 'Resource')
+   subToken(card, 'Resource')
 
 def subDamage(card, x = 0, y = 0):
-    subToken(card, 'Damage')
+   subToken(card, 'Damage')
 
 def subShield(card, x = 0, y = 0):
-    subToken(card, 'Shield')
+   subToken(card, 'Shield')
 
 def subToken(card, tokenType):
-    mute()
-    notify("{} removes a {} from {}.".format(me, tokenType[0], card))
-    card.markers[mdict[tokenType]] -= 1	
+   mute()
+   notify("{} removes a {} from {}.".format(me, tokenType[0], card))
+   card.markers[mdict[tokenType]] -= 1	
     
 def addMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.
    if debugVerbosity >= 1: notify(">>> addMarker(){}".format(extraASDebug())) #Debug

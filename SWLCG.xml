@@ -46,7 +46,6 @@
          <groupaction menu="Debug" default="false" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
       </groupactions>
 <!--		<cardaction menu="DebugTest" default="true" execute="flipcard" /> -->
-		<groupaction menu="Refresh all" default="false" execute="refreshAll" />
 		<groupaction menu="Clear targets" default="false" execute="clearAll" />
 		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="true" shortcut="Ctrl+S" execute="defaultAction" />
       <cardactions menu="Manual Actions">
@@ -60,11 +59,9 @@
 		<groupaction menu="Resolve Force Struggle" default="false" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
 		<groupaction menu="Attack Target Objective" default="false" shortcut="Ctrl+A" execute="engageTarget" />
 		<groupaction menu="Reveal Edge Cards/Resolve Edge Battle" default="false" shortcut="Ctrl+Shift+E" execute="revealEdge" />
+		<groupaction menu="Declare Pass" default="false" shortcut="Ctrl+Space" execute="declarePass" />
 		<cardaction menu="Discard" default="false" shortcut="Del" execute="discard" />
-		<groupactions menu="Damage">
-			<groupaction menu="Add Damage Counter" default="false" execute="addDamage" />
-		</groupactions>
-		<groupaction menu="Move to Next phase." default="false" shortcut="enter" execute="nextPhase" />
+		<groupaction menu="Move to Next phase." default="false" shortcut="ctrl+enter" execute="nextPhase" />
 		<groupactions menu="Phases...">
 			<groupaction menu="Jump to Balance Phase." default="false" shortcut="F1" execute="goToBalance" />
 			<groupaction menu="Jump to Refresh Phase." default="false" shortcut="F2" execute="goToRefresh" />
@@ -72,7 +69,7 @@
 			<groupaction menu="Jump to Deployment Phase." default="false" shortcut="F4" execute="goToDeployment" />
 			<groupaction menu="Jump to Conflict Phase." default="false" shortcut="F5" execute="goToConflict" />
 			<groupaction menu="Jump to Force Phase." default="false" shortcut="F6" execute="goToForce" />
-			<groupaction menu="Start/End an Engagement." default="false" shortcut="F10" execute="goToEngagement" />
+			<groupaction menu="Finish an Engagement." default="false" shortcut="F10" execute="finishEngagement" />
 		</groupactions>
       <cardactions menu="Tokens...">
          <cardaction menu="Add Damage counter" default="false" shortcut="Alt+D" execute="addDamage" />
@@ -83,6 +80,11 @@
          <cardaction menu="Remove Shield counter" default="false" shortcut="Alt+Shift+S" execute="subShield" />
          <cardaction menu="Add Markers" default="false" shortcut="Alt+M" batchExecute="addMarker" />
       </cardactions>
+      <groupactions menu="Tokens (Targeted)...">
+         <cardaction menu="Damage" default="false" shortcut="Alt+D" execute="addDamageTarget" />
+         <cardaction menu="Focus" default="false" shortcut="Alt+F" execute="addFocusTarget" />
+         <cardaction menu="Shield" default="false" shortcut="Alt+S" execute="addShieldTarget" />
+      </groupactions>
       <groupactions menu="Timing Structures References">
          <groupaction menu="Balance Phase" default="false" execute="HELP_BalancePhase" />
          <groupaction menu="Refresh Phase" default="false" execute="HELP_RefreshPhase" />
@@ -110,6 +112,7 @@
 		</hand>
 		<group name="Command Deck" visibility="none" ordered="false" width="63" height="88" icon="r12" collapsed="false">
 			<groupaction menu="Draw" default="true" shortcut="Ctrl+D" execute="drawCommand" />
+			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="refillHand" />
 			<groupaction menu="Draw X..." default="false" shortcut="Ctrl+X" execute="drawMany" />
 			<groupaction menu="Draw from Bottom" default="false" shortcut="Ctrl+Alt+D" execute="drawBottom" />
 			<groupaction menu="Shuffle" default="false" execute="shuffle" />

@@ -114,6 +114,21 @@ def ofwhom(Autoscript, controller = me):
 def modifyDial(value):
    for player in players: player.counters['Death Star Dial'].value += value
 
+def resetAll(): # Clears all the global variables in order to start a new game.
+   if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
+   global unpaidCard, edgeCount, edgeRevealed, firstTurn, debugVerbosity
+   global Side, Affiliation, opponent
+   mute()
+   Side = None
+   Affiliation = None
+   unpaidCard = None 
+   opponent = None
+   edgeCount = 0 
+   edgeRevealed = False
+   firstTurn = True
+   debugVerbosity = -1 # Reset means normal game.
+   if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
+
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------
