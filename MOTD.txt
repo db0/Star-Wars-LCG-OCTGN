@@ -1,5 +1,7 @@
 =====Message of the Day======
 
-If you're reading this, it means the SW LCG Plugin is functional on OCTGN. Yay!
+Welcome to the very first version of the Star Wars LCG plugin! 
+
+More automations will be coming soon!
 
 ===============================

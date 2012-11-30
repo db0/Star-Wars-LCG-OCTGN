@@ -7,4 +7,4 @@ Have fun!
 ===============================
 ||
 Latest Core Set: 1.0.0
-Latest Markers Set: N/A
+Latest Markers Set: 1.0.0
