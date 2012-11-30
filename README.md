@@ -6,6 +6,12 @@ More instructions will be forthcoming soon. Stay tuned...
 
 Enjoy!
 
+Screenshots
+---------
+(Click for larger size)
+
+Demo game at v1.0.0
+[![](http://i.imgur.com/GutHll.jpg)](http://i.imgur.com/GutHl.jpg)
 
 Changelog
 ---------
@@ -16,3 +22,4 @@ First working version for the public. It has basic gameplay functionality but no
 
 However the basic things you need to do quickly and effortlessly should be possible. 
 
+http://i.imgur.com/GutHl.jpg

@@ -60,6 +60,7 @@ def nextPhase(group, x = 0, y = 0):
       if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
       me.setGlobalVariable('Phase','1')
       setGlobalVariable('Active Player', me.name)
+      phase = 1
    else: 
       phase += 1
       me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
@@ -632,6 +633,7 @@ def playEdge(card):
    notify("{} places a card in their edge stack.".format(me, card))
    
 def revealEdge(group = table, x=0, y=0):
+   mute()
    if debugVerbosity >= 1: notify(">>> revealEdge(){}".format(extraASDebug())) #Debug
    global edgeRevealed
    fateNr = 0
@@ -668,7 +670,7 @@ def revealEdge(group = table, x=0, y=0):
          # We check to see if our opponent already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             oppAffiliation.markers[mdict['Edge']] = 1
-            notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
+            notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
          else: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("Edge is a Tie") #Debug
