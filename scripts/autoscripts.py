@@ -26,9 +26,6 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
       foundTargets = []
       if re.search(r'Targeted', Autoscript):
          validTargets = [] # a list that holds any type that a card must be, in order to be a valid target.
-         validNamedTargets = [] # a list that holds any name or allegiance that a card must have, in order to be a valid target.
-         invalidTargets = [] # a list that holds any type that a card must not be to be a valid target.
-         invalidNamedTargets = [] # a list that holds the name or allegiance that the card must not have to be a valid target.
          requiredAllegiances = []
          targetGroups = []
          cardProperties = []
@@ -51,7 +48,6 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
                else: 
                   if debugVerbosity >= 4: notify("### Valid Target") #Debug
                   targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
-            validTargets.remove(ValidTargetsSnapshot[iter]) # Finally, remove the multicondition keyword from the valid list. Its individual elements should now be on this list or the invalid targets one.
          if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\ntargetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in table: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
             if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or (re.search(r'AutoTargeted', Autoscript) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor)) and chkPlayer(Autoscript, targetLookup.controller, False): # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
@@ -79,44 +75,43 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
                   if targetC: break # If the card is a valid target from a previous restrictions group, we just chose it.
                   if len(restrictionsGroup[0]) > 0: targetC = targetLookup # If there are no positive restrictions, any targeted card is acceptable
                   else:
-                     for validtargetCHK in restrictionsGroup: # look if the card we're going through matches our valid target checks
+                     for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
                         if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
-                        if validtargetCHK not in cardProperties
-                           targetC = targetLookup
-                     for validtargetCHK in validNamedTargets: # look if the card we're going through matches our valid target checks
-                        if validtargetCHK == fetchProperty(targetLookup, 'name'):
-                           targetC = targetLookup
-               if len(invalidTargets) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
-                  for invalidtargetCHK in invalidTargets:
-                     if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
-                     if re.search(r'{}'.format(invalidtargetCHK), fetchProperty(targetLookup, 'Type')) or re.search(r'{}'.format(invalidtargetCHK), fetchProperty(targetLookup, 'Keywords')) or re.search(r'{}'.format(invalidtargetCHK), targetLookup.Side):
-                        targetC = None
-               if len(invalidNamedTargets) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
-                  for invalidtargetCHK in invalidNamedTargets:
-                     if invalidtargetCHK == fetchProperty(targetLookup, 'name'):
-                        targetC = None
+                        if validtargetCHK not in cardProperties: targetC = None
+                  if len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
+                     for invalidtargetCHK in restrictionsGroup[1]:
+                        if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
+                        if invalidtargetCHK in cardProperties: targetC = None
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
-               elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))
+               elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
          if targetC == None and not re.search(r'AutoTargeted', Autoscript): 
             targetsText = ''
-            if len(validTargets) > 0: targetsText += "\nValid Target types: {}.".format(validTargets)
-            if len(validNamedTargets) > 0: targetsText += "\nSpecific Valid Targets: {}.".format(validNamedTargets)
-            if len(invalidTargets) > 0: targetsText += "\nInvalid Target types: {}.".format(invalidTargets)
-            if len(invalidNamedTargets) > 0: targetsText += "\nSpecific Invalid Targets: {}.".format(invalidNamedTargets)
+            mergedList = []
+            for posRestrictions in targetGroups: 
+               if debugVerbosity >= 2: notify("### About to chkPlayer()")# Debug
+               if targetsText == '': targetsText = '\nYou need: '
+               else: targetsText += ', or '
+               del mergedList[:]
+               mergedList += posRestrictions[0]
+               if len(mergedList) > 0: targetsText += "{} and ".format(mergedList)  
+               del mergedList[:]
+               mergedList += posRestrictions[1]
+               if len(mergedList) > 0: targetsText += "not {}".format(mergedList)
+               if targetsText.endswith(' and '): targetsText = targetsText[:-len(' and ')]
+            if debugVerbosity >= 2: notify("### About to chkPlayer()")# Debug
             if not chkPlayer(Autoscript, targetLookup.controller, False): 
                allegiance = re.search(r'by(Opponent|Me)', Autoscript)
                requiredAllegiances.append(allegiance.group(1))
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
-            whisper("You need to target a valid card before using this action{}".format(targetsText))
-      #confirm("List is: {}".format(foundTargets)) # Debug
-      if debugVerbosity >= 3: 
+            whisper("You need to target a valid card before using this action{}.".format(targetsText))
+      if debugVerbosity >= 3: # Debug
          tlist = []
-         for foundTarget in foundTargets: tlist.append(fetchProperty(foundTarget, 'name')) # Debug
+         for foundTarget in foundTargets: tlist.append(foundTarget.name) # Debug
          notify("<<< findTarget() by returning: {}".format(tlist))
       return foundTargets
-   except ValueError: notify("!!!ERROR!!! Null value on findTarget()")
+   except: notify("!!!ERROR!!! on findTarget()")
 
 def chkPlayer(Autoscript, controller, manual): # Function for figuring out if an autoscript is supposed to target an opponent's cards or ours.
 # Function returns 1 if the card is not only for rivals, or if it is for rivals and the card being activated it not ours.
@@ -140,5 +135,5 @@ def chkPlayer(Autoscript, controller, manual): # Function for figuring out if an
          return 1 # If the card needs to be played by us.
       if debugVerbosity >= 3: notify("<<< chkPlayer() with return 0") # Debug
       else: return 0 # If all the above fail, it means that we're not supposed to be triggering, so we'll return 0 whic
-   except ValueError: notify("!!!ERROR!!! Null value on chkPlayer()")
+   except: notify("!!!ERROR!!! Null value on chkPlayer()")
       
