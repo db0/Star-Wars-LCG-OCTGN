@@ -131,6 +131,7 @@
 		</group>
 		<group name="Objective Deck" visibility="none" ordered="false" width="63" height="88" icon="r13" collapsed="false">
 			<groupaction menu="Draw and Play" default="true" shortcut="Ctrl+O" execute="drawObjective" />
+			<groupaction menu="Shuffle" default="false" execute="shuffle" />
       </group>
 		<group name="Discard Pile" visibility="all" ordered="false" width="63" height="88" icon="r14" collapsed="false" />
 		<group name="Victory Pile" visibility="all" ordered="false" width="63" height="88" icon="r17" collapsed="true" />
