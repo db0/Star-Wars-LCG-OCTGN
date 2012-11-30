@@ -503,6 +503,7 @@ def purchaseCard(card, x=0, y=0):
    if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
       card.highlight = None
+      placeCard(card)
       for cMarkerKey in card.markers: 
          for resdictKey in resdict:
             if resdict[resdictKey] == cMarkerKey: 
@@ -572,6 +573,17 @@ def discard(card, x = 0, y = 0):
       # (I've put this here, because it's one of the few places during engagement, where the opponent has to take an action as well)
       edgeCount = 0
       card.moveTo(card.owner.piles['Discard Pile'])
+   elif card.Type == 'Unit':
+      if Automations['Placement']:
+         if card.owner == me:
+            freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
+            freePositions.append(card.position)
+            me.setGlobalVariable('freePositions',str(freePositions))
+         unitAmount = eval(getGlobalVariable('Existing Units'))
+         unitAmount[card.owner.name] -= 1
+         setGlobalVariable('Existing Units',str(unitAmount))
+      card.moveTo(card.owner.piles['Discard Pile'])
+      notify("{} discards {}".format(me,card))   
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))

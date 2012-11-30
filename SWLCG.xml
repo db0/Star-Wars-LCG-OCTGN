@@ -16,6 +16,7 @@
      <globalvariable name="Balance of the Force" value="" /> 
      <globalvariable name="Engaged Objective" value="None" />      
      <globalvariable name="Active Player" value="" />      
+     <globalvariable name="Existing Units" value="{}" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
 		<property name="Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
@@ -43,6 +44,7 @@
          <groupaction menu="Switch Phase Automation ON/OFF" default="false" execute="switchPhaseAutomation" />  
          <groupaction menu="Switch Automatic Triggers ON/OFF" default="false" execute="switchTriggersAutomation" />  
          <groupaction menu="Switch Custom Forms ON/OFF" default="false" execute="switchWinForms" />  
+         <groupaction menu="Switch Automatic Placement ON/OFF" default="false" execute="switchPlacement" />  
          <groupaction menu="Re-Download all card automations" default="false" execute="fetchCardScripts" />
          <groupaction menu="Debug" default="false" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
       </groupactions>
@@ -105,6 +107,7 @@
       <globalvariable name="specialCards" value="{}" /> 
       <globalvariable name="currentObjectives" value="[]" /> 
       <globalvariable name="gameVersion" value="" /> 
+      <globalvariable name="freePositions" value="[]" /> 
 		<hand name="Hand" visibility="me" ordered="false" width="63" height="88" icon="r11">
 			<cardaction menu="Play Card" default="true" execute="play" />
 			<cardaction menu="Place as Edge Card" default="false" shortcut="Ctrl+E" execute="playEdge" />

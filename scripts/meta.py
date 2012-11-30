@@ -21,6 +21,7 @@ Automations = {'Play'    : True, # If True, game will automatically trigger card
                'Phase'                  : True, # If True, game will automatically trigger effects happening at the start of the player's phase, from cards they control.                
                'Triggers'               : True, # If True, game will search the table for triggers based on player's actions, such as installing a card, or discarding one.
                'WinForms'               : True, # If True, game will use the custom Windows Forms for displaying multiple-choice menus and information pop-ups
+               'Placement'              : True, # If True, game will try to auto-place cards on the table after you paid for them.
               }
 
 
@@ -127,8 +128,32 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    edgeRevealed = False
    firstTurn = True
    debugVerbosity = -1 # Reset means normal game.
+   unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
+   unitAmount[me.name] = 0  # This variable is used for unit placement
+   setGlobalVariable('Existing Units',str(unitAmount))
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
 
+def placeCard(card): 
+   if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
+   if Automations['Placement']:
+      if card.Type == 'Unit': # For now we only place Units
+         unitAmount = eval(getGlobalVariable('Existing Units'))
+         if debugVerbosity >= 2: notify("### my unitAmount is: {}.".format(unitAmount[me.name])) #Debug
+         freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
+         if debugVerbosity >= 2: notify("### my freePositions is: {}.".format(freePositions)) #Debug
+         if freePositions != []: # We use this variable to see if there were any discarded units and we use their positions first.
+            positionC = freePositions.pop() # This returns the last position in the list of positions and deletes it from the list.
+            if debugVerbosity >= 2: notify("### positionC is: {}.".format(positionC)) #Debug
+            card.moveToTable(positionC[0],positionC[1])
+            me.setGlobalVariable('freePositions',str(freePositions))
+         else:
+            if unitAmount[me.name] == 0: xoffset = 0
+            else: xoffset = playerside * (1 - (2 * (unitAmount[me.name] % 2))) * ((unitAmount[me.name] + 1) / 2) * cwidth(card,5)
+            if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
+            card.moveToTable(xoffset,yaxisMove(card) + (cheight(card) * playerside))
+         unitAmount[me.name] += 1
+         setGlobalVariable('Existing Units',str(unitAmount)) # We update the amount of units we have
+   if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------
@@ -158,6 +183,10 @@ def switchTriggersAutomation(group,x=0,y=0):
 def switchWinForms(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchWinForms(){}".format(extraASDebug())) #Debug
    switchAutomation('WinForms')
+
+def switchPlacement(group,x=0,y=0):
+   if debugVerbosity >= 1: notify(">>> switchPlacement(){}".format(extraASDebug())) #Debug
+   switchAutomation('Placement')
    
 def switchUniCode(group,x=0,y=0,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchUniCode(){}".format(extraASDebug())) #Debug
