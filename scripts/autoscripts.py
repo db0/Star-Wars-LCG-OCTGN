@@ -80,13 +80,12 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
                # If both of these are true, then the card is retained as a valid target for our action.
                   if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
                   if targetC: break # If the card is a valid target from a previous restrictions group, we just chose it.
-                  if len(restrictionsGroup[0]) == 0: 
-                     targetC = targetLookup # If there are no positive restrictions, any targeted card is acceptable
-                     if debugVerbosity >= 4: notify("### No positive restrictions")
-                  else:
+                  targetC = targetLookup
+                  if len(restrictionsGroup[0]) > 0: 
                      for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
                         if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
-                        if validtargetCHK in cardProperties: targetC = targetLookup
+                        if validtargetCHK not in cardProperties: targetC = None
+                  elif debugVerbosity >= 4: notify("### No positive restrictions")
                   if len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
                      for invalidtargetCHK in restrictionsGroup[1]:
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug

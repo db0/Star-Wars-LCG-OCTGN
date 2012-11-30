@@ -605,6 +605,7 @@ def play(card):
    if debugVerbosity >= 1: notify(">>> play(){}".format(extraASDebug())) #Debug
    global unpaidCard
    mute()
+   extraTXT = ''
    if card.Type == 'Enhancement':
       hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
       if hostType:
@@ -613,15 +614,13 @@ def play(card):
          if host == []: 
             whisper("ABORTING!")
             return
-         else: 
-            x,y = host[0].position
-            card.moveToTable(x, y - (cwidth(card) / 4 * playerside))
-            card.sendToBack()
-      else: card.moveToTable(0, 0 + yaxisMove(card))
-   else: card.moveToTable(0, 0 + yaxisMove(card))
-   card.highlight = UnpaidColor
-   unpaidCard = card
-   notify("{} attempts to play {}.".format(me, card))
+         else: extraTXT = ' on {}'.format(host[0])
+   card.moveToTable(0, 0 + yaxisMove(card))
+   if num(card.Cost) > 0: 
+      card.highlight = UnpaidColor
+      unpaidCard = card
+      notify("{} attempts to play {}{}.".format(me, card,extraTXT))
+   else: notify("{} plays {}{}.".format(me, card,extraTXT))
 
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
