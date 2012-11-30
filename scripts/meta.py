@@ -156,6 +156,11 @@ def placeCard(card):
             card.moveToTable(xoffset,yoffset)
          unitAmount[me.name] += 1
          setGlobalVariable('Existing Units',str(unitAmount)) # We update the amount of units we have
+      elif card.Type == 'Enhancement':
+         hostType = re.search(r'Placement:([A-Za-z1-9 ]+)', card.AutoScript)
+         if hostType:
+            if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
+            host = findTarget('Targeted-at{}'.format(hostType.group(1)))
    if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
 #------------------------------------------------------------------------------
 # Switches
@@ -295,8 +300,8 @@ def TrialError(group, x=0, y=0): # Debugging
    global Side, debugVerbosity
    mute()
    ######## Testing Corner ########
-#   BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
-#   BotD.moveToTable(0,0) 
+   findTarget('Targeted-atVehicle_and_Fighter_or_Character_and_nonWookie')
+   #BotD.moveToTable(0,0) 
    ###### End Testing Corner ######
    if debugVerbosity >=0: 
       if debugVerbosity == 0: 

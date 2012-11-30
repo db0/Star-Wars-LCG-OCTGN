@@ -19,21 +19,25 @@
      <globalvariable name="Existing Units" value="{}" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
-		<property name="Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Block" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Block Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Unique" type="String" hidden="false" ignoreText="False" textKind="Free" />
+		<property name="Type" type="String" hidden="false" ignoreText="False" textKind="Enum" />
+		<property name="Side" type="String" hidden="false" ignoreText="False" textKind="Enum" />
+		<property name="Affiliation" type="String" hidden="false" ignoreText="False" textKind="Enum" />
 		<property name="Cost" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Edge Priority" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Force" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Side" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Affiliation" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Type" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Combat Icons" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Traits" type="String" hidden="false" ignoreText="False" textKind="Free" />
-		<property name="Text" type="String" hidden="false" ignoreText="False" textKind="Free" />
+		<property name="Edge Priority" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Damage Capacity" type="String" hidden="false" ignoreText="False" textKind="Free" />
 		<property name="Resources" type="String" hidden="false" ignoreText="False" textKind="Free" />
+		<property name="Text" type="String" hidden="false" ignoreText="False" textKind="Free" />
+		<property name="Flavor" type="String" hidden="false" ignoreText="True" textKind="Free" />
+		<property name="Instructions" type="String" hidden="false" ignoreText="True" textKind="Free" />
+		<property name="Number" type="String" hidden="false" ignoreText="False" textKind="Free" />
+
+      <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
+      <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
 	</card>
 	<table name="Table" visibility="undefined" ordered="false" width="800" height="600" background="r3">
       <groupactions menu="Game...">
