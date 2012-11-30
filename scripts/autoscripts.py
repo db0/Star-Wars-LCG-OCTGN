@@ -57,14 +57,20 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
             # * The player who controls this card is supposed to be me or the enemy.
                if debugVerbosity >= 3: notify("### Checking {}".format(targetLookup)) #Debug
                del cardProperties[:] # Cleaning the previous entries
+               if debugVerbosity >= 4: notify("### Appending name") #Debug                
                cardProperties.append(targetLookup.name) # We are going to check its name
+               if debugVerbosity >= 4: notify("### Appending Type") #Debug                
                cardProperties.append(targetLookup.Type) # We are going to check its Type
+               if debugVerbosity >= 4: notify("### Appending Affiliation") #Debug                
                cardProperties.append(targetLookup.Affiliation) # We are going to check its Affiliation
-               cardSubtypes = card.Traits.split('-') # And each individual trait. Traits are separated by " - "
+               if debugVerbosity >= 4: notify("### Appending Traits") #Debug                
+               cardSubtypes = targetLookup.Traits.split('-') # And each individual trait. Traits are separated by " - "
                for cardSubtype in cardSubtypes:
                   strippedCS = cardSubtype.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
                   if strippedCS: cardProperties.append(strippedCS) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.
-               cardProperties.append(c.Side) # We are also going to check if the card is for Dark or Light Side
+               if debugVerbosity >= 4: notify("### Appending Side") #Debug                
+               cardProperties.append(targetLookup.Side) # We are also going to check if the card is for Dark or Light Side
+               if debugVerbosity >= 2: notify("### Card Properties: {}".format(cardProperties)) #Debug                
                for restrictionsGroup in targetGroups: 
                # We check each card against each restrictions group of valid + invalid properties.
                # Each Restrictions group is a tuple of two lists. First list (tuple[0]) is the valid properties, and the second list is the invalid properties
@@ -72,20 +78,25 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
                # We check if all the properties from the valid list are in the card properties
                # And then we check if no properties from the invalid list are in the properties
                # If both of these are true, then the card is retained as a valid target for our action.
+                  if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
                   if targetC: break # If the card is a valid target from a previous restrictions group, we just chose it.
-                  if len(restrictionsGroup[0]) > 0: targetC = targetLookup # If there are no positive restrictions, any targeted card is acceptable
+                  if len(restrictionsGroup[0]) == 0: 
+                     targetC = targetLookup # If there are no positive restrictions, any targeted card is acceptable
+                     if debugVerbosity >= 4: notify("### No positive restrictions")
                   else:
                      for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
                         if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
-                        if validtargetCHK not in cardProperties: targetC = None
+                        if validtargetCHK in cardProperties: targetC = targetLookup
                   if len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
                      for invalidtargetCHK in restrictionsGroup[1]:
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
+                  elif debugVerbosity >= 4: notify("### No negative restrictions")
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
+               targetC = None
          if foundTargets == [] and not re.search(r'AutoTargeted', Autoscript): 
             targetsText = ''
             mergedList = []
@@ -105,7 +116,7 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
                allegiance = re.search(r'by(Opponent|Me)', Autoscript)
                requiredAllegiances.append(allegiance.group(1))
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
-            whisper("You need to target a valid card before using this action{}.".format(targetsText))
+            whisper(":::ERROR::: You need to target a valid card before using this action{}.".format(targetsText))
       if debugVerbosity >= 3: # Debug
          tlist = []
          for foundTarget in foundTargets: tlist.append(foundTarget.name) # Debug

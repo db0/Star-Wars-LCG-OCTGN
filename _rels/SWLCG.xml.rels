@@ -16,4 +16,5 @@
   <Relationship Target="/scripts/generic.py" Id="r102" Type="http://schemas.octgn.org/script" />
   <Relationship Target="/scripts/meta.py" Id="r103" Type="http://schemas.octgn.org/script" />
   <Relationship Target="/scripts/autoscripts.py" Id="r104" Type="http://schemas.octgn.org/script" />
+  <Relationship Target="/scripts/CardScripts.py" Id="r105" Type="http://schemas.octgn.org/script" />
 </Relationships>

@@ -6,6 +6,7 @@
 		<script src="r102" />
 		<script src="r103" />
 		<script src="r104" />
+		<script src="r105" />
 	</scripts>
    <globalvariables> 
      <globalvariable name="fontsize" value="11"/> 
