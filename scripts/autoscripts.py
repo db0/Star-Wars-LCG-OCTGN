@@ -86,7 +86,7 @@ def findTarget(Autoscript): # Function for finding the target of an autoscript
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
-         if targetC == None and not re.search(r'AutoTargeted', Autoscript): 
+         if foundTargets == [] and not re.search(r'AutoTargeted', Autoscript): 
             targetsText = ''
             mergedList = []
             for posRestrictions in targetGroups: 

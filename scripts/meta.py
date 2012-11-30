@@ -35,6 +35,9 @@ gameGUID = None # A Unique Game ID that is fetched during game launch.
 #totalInfluence = 0 # Used when reporting online
 #gameEnded = False # A variable keeping track if the players have submitted the results of the current game already.
 turn = 0 # used during game reporting to report how many turns the game lasted
+
+CardsAA = {} # Dictionary holding all the AutoAction scripts for all cards
+CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
     
 def storeSpecial(card): 
 # Function stores into a shared variable some special cards that other players might look up.
@@ -156,11 +159,6 @@ def placeCard(card):
             card.moveToTable(xoffset,yoffset)
          unitAmount[me.name] += 1
          setGlobalVariable('Existing Units',str(unitAmount)) # We update the amount of units we have
-      elif card.Type == 'Enhancement':
-         hostType = re.search(r'Placement:([A-Za-z1-9 ]+)', card.AutoScript)
-         if hostType:
-            if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
-            host = findTarget('Targeted-at{}'.format(hostType.group(1)))
    if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
 #------------------------------------------------------------------------------
 # Switches
@@ -291,7 +289,45 @@ def MOTDdisplay(MOTD,DYK):
                 \n-------------------\
               \n\nWould you like to see the next tip?".format(MOTD,DYK)): return 'MORE'
    return 'STOP'
-      
+
+def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all scripts for all cards stored, based on a web URL or the local version if that doesn't exist.
+   if debugVerbosity >= 1: notify(">>> fetchCardScripts()") #Debug
+   global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card AutoScripts for all cards.
+   whisper("+++ Fetching fresh scripts. Please Wait...")
+   (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/scripts/CardScripts.py')
+   if debugVerbosity >= 4: notify("### code:{}, text: {}".format(code, ScriptsDownload)) #Debug
+   if code != 200 or not ScriptsDownload or (ScriptsDownload and not re.search(r'ANR CARD SCRIPTS', ScriptsDownload)) or debugVerbosity >= 0: 
+      whisper(":::WARNING::: Cannot download card scripts at the moment. Will use localy stored ones.")
+      Split_Main = ScriptsLocal.split('=====') # Split_Main is separating the file description from the rest of the code
+   else: 
+      #WHAT THE FUUUUUCK? Why does it gives me a "value cannot be null" when it doesn't even come into this path with a broken connection?!
+      #WHY DOES IT WORK IF I COMMENT THE NEXT LINE. THIS MAKES NO SENSE AAAARGH!
+      #ScriptsLocal = ScriptsDownload #If we found the scripts online, then we use those for our scripts
+      Split_Main = ScriptsDownload.split('=====')
+   if debugVerbosity >= 5:  #Debug
+      notify(Split_Main[1])
+      notify('=====')
+   Split_Cards = Split_Main[1].split('.....') # Split Cards is making a list of a different cards
+   if debugVerbosity >= 5: #Debug
+      notify(Split_Cards[0]) 
+      notify('.....')
+   for Full_Card_String in Split_Cards:
+      if re.search(r'ENDSCRIPTS',Full_Card_String): break # If we have this string in the Card Details, it means we have no more scripts to load.
+      Split_Details = Full_Card_String.split('-----') # Split Details is splitting the card name from its scripts
+      if debugVerbosity >= 5:  #Debug
+         notify(Split_Details[0])
+         notify('-----')
+      # A split from the Full_Card_String always should result in a list with 2 entries.
+      if debugVerbosity >= 2: notify(Split_Details[0].strip()) # If it's the card name, notify us of it.
+      Split_Scripts = Split_Details[2].split('+++++') # List item [1] always holds the two scripts. AutoScripts and AutoActions.
+      CardsAS[Split_Details[1].strip()] = Split_Scripts[0].strip()
+      CardsAA[Split_Details[1].strip()] = Split_Scripts[1].strip()
+   if turn > 0: whisper("+++ All card scripts refreshed!")
+   if debugVerbosity >= 4: # Debug
+      notify("CardsAS Dict:\n{}".format(str(CardsAS)))
+      notify("CardsAA Dict:\n{}".format(str(CardsAA))) 
+   if debugVerbosity >= 3: notify("<<< fetchCardScripts()") #Debug
+   
 #------------------------------------------------------------------------------
 # Debugging
 #------------------------------------------------------------------------------
@@ -300,7 +336,7 @@ def TrialError(group, x=0, y=0): # Debugging
    global Side, debugVerbosity
    mute()
    ######## Testing Corner ########
-   findTarget('Targeted-atVehicle_and_Fighter_or_Character_and_nonWookie')
+   #findTarget('Targeted-atVehicle_and_Fighter_or_Character_and_nonWookie')
    #BotD.moveToTable(0,0) 
    ###### End Testing Corner ######
    if debugVerbosity >=0: 

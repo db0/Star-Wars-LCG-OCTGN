@@ -271,8 +271,8 @@ def gameSetup(group, x = 0, y = 0):
    global SetupPhase, Side, Affiliation
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
-   #if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
-   #versionCheck()
+   if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
+   versionCheck()
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
       if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
       global opponent
@@ -606,6 +606,16 @@ def play(card):
    global unpaidCard
    mute()
    card.moveToTable(0, 0 + yaxisMove(card))
+   if card.Type == 'Enhancement':
+      hostType = re.search(r'Placement:([A-Za-z1-9 ]+)', CardsAS.get(card.model,''))
+      if hostType:
+         if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
+         host = findTarget('Targeted-at{}'.format(hostType.group(1)))
+         if host == []: 
+            whisper("ABORTING!")
+         else: 
+            x,y = host[0].position
+            card.moveToTable(x, y - (cwidth(card,4) * playerside))
    card.highlight = UnpaidColor
    unpaidCard = card
    notify("{} attempts to play {}.".format(me, card))
