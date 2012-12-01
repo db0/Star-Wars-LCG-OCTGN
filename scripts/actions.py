@@ -259,7 +259,7 @@ def finishEngagement(group = table, x=0, y=0):
    notify("The engagement at {} is finished".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
-      if card.owner == me and card.highlight == EdgeColor: discard(card)
+      if card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
    if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
@@ -382,12 +382,12 @@ def strike(card, x = 0, y = 0):
    Unit_DamageTXT = ''
    TacticsTXT = ''
    targetUnit = None
-   UD = re.search(r'(?<!-)UD:([0-9])',card.properties['Combat Icons'])
-   EEUD = re.search(r'EE-UD:([0-9])',card.properties['Combat Icons'])
-   BD = re.search(r'(?<!-)BD:([0-9])',card.properties['Combat Icons'])
-   EEBD = re.search(r'EE-BD:([0-9])',card.properties['Combat Icons'])
-   T = re.search(r'(?<!-)T:([0-9])',card.properties['Combat Icons'])
-   EET = re.search(r'EE-T:([0-9])',card.properties['Combat Icons'])
+   UD = re.search(r'(?<!-)UD:([1-9])',card.properties['Combat Icons'])
+   EEUD = re.search(r'EE-UD:([1-9])',card.properties['Combat Icons'])
+   BD = re.search(r'(?<!-)BD:([1-9])',card.properties['Combat Icons'])
+   EEBD = re.search(r'EE-BD:([1-9])',card.properties['Combat Icons'])
+   T = re.search(r'(?<!-)T:([1-9])',card.properties['Combat Icons'])
+   EET = re.search(r'EE-T:([1-9])',card.properties['Combat Icons'])
    if UD: Unit_Damage += num(UD.group(1))
    if EEUD and gotEdge(): Unit_Damage += num(EEUD.group(1))
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
@@ -402,7 +402,7 @@ def strike(card, x = 0, y = 0):
       targetUnit.markers[mdict['Damage']] += Unit_Damage
       Unit_DamageTXT = " to {}".format(targetUnit)
    elif not Unit_Damage and Tactics == 1 and targetUnit:  # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
-      targetUnit.markers[mdict['Damage']] += Unit_Damage
+      targetUnit.markers[mdict['Focus']] += Tactics
       TacticsTXT = " (exhausting {})".format(targetUnit)
    elif ((Unit_Damage and Tactics) or Tactics > 1) and targetUnit: # We inform the user why we didn't assign markers automatically.
       whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
@@ -621,7 +621,9 @@ def play(card):
       card.highlight = UnpaidColor
       unpaidCard = card
       notify("{} attempts to play {}{}.".format(me, card,extraTXT))
-   else: notify("{} plays {}{}.".format(me, card,extraTXT))
+   else: 
+      placeCard(card)
+      notify("{} plays {}{}.".format(me, card,extraTXT))
 
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug

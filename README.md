@@ -19,6 +19,14 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.1
+
+* Finishing the engagement now clears the opponent's edge cards as well
+* Tactic:1 strikes now focus the target unit
+* Spread out the objectives a bit
+* Free units/enhancements now are autoplaced.
+* Can now manually shuffle the objective deck
+
 ### 1.0.0
 
 First working version for the public. It has basic gameplay functionality but not card scripting (i.e. individual card effects are not automated)

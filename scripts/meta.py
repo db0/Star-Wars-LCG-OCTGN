@@ -63,7 +63,7 @@ def storeObjective(card):
    if debugVerbosity >= 2: notify("About to iterate the list: {}".format(currentObjectives))
    for iter in range(len(currentObjectives)):
       Objective = Card(currentObjectives[iter])
-      Objective.moveToTable(playerside * -400, (playerside * 95) + (55 * iter * playerside) + yaxisMove(Objective))
+      Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective))
       #Objective.orientation = Rot90
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
    setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
