@@ -1,9 +1,8 @@
-1.0.1||
+1.0.2||
 ======New Version Information======
 
-There's no way you're actually reading this.
+Sorry, I introduced a small bug in 1.0.1
 
-Have fun!
 ===============================
 ||
 Latest Core Set: 1.0.0

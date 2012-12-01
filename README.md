@@ -11,9 +11,11 @@ Screenshots
 (Click for larger size)
 
 The Dark side destroys the last objective to win the game
+
 [![](http://i.imgur.com/Ooq0Vl.png)](http://i.imgur.com/Ooq0V.png)
 
 Demo game at v1.0.0
+
 [![](http://i.imgur.com/GutHll.jpg)](http://i.imgur.com/GutHl.jpg)
 
 Changelog

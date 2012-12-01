@@ -259,7 +259,7 @@ def finishEngagement(group = table, x=0, y=0):
    notify("The engagement at {} is finished".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
-      if card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
+      if card.owner == me and card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
    if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
