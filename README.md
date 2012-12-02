@@ -23,7 +23,7 @@ Changelog
 
 ### 1.0.3
 
-
+* Engagements now also has their own phase circle. You progress through them with Ctrl+Enter as always as long as an Engagement is active. These phases will also do some automation like calculate you edge or end the engagement.
 * Fixed various bugs during Edge calculations, such as cards not being revealed
 * Now unopposed attacker wins the edge struggle automatically
 * Fate cards now have a different highlight when revealed. Once they've been used, they switch to the normal silver highlight for the calculation

@@ -400,6 +400,10 @@ def num (s):
    except ValueError:
       return 0
 
+def delayed_whisper(text): # Because whispers for some reason execute before notifys
+   rnd(1,10)
+   whisper(text)
+   
 def chooseSide(): # Called from many functions to check if the player has chosen a side for this game.
    if debugVerbosity >= 1: notify(">>> chooseSide(){}".format(extraASDebug())) #Debug
    mute()

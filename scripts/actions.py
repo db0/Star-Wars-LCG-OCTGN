@@ -45,19 +45,19 @@ def showCurrentPhase(): # Just say a nice notification about which phase you're 
    else: 
       notify(phases[num(me.getGlobalVariable('Phase'))])
    
-def nextPhase(group, x = 0, y = 0):  
+def nextPhase(group = table, x = 0, y = 0, setTo = None):  
 # Function to take you to the next phase. 
    if debugVerbosity >= 1: notify(">>> nextPhase(){}".format(extraASDebug())) #Debug
    mute()
    if getGlobalVariable('Engaged Objective') != 'None':
       phase = num(getGlobalVariable('Engagement Phase'))
-      phase += 1
+      if setTo: phase = setTo
+      else: phase += 1
       if phase == 4: revealEdge(forceCalc = True) # Just to make sure it wasn't forgotten.
       setGlobalVariable('Engagement Phase',str(phase))
       showCurrentPhase()
-      if phase == 1: 
-         rnd(1,10) # To avoid whisper
-         whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
+      if phase == 1 and not setTo: 
+         delayed_whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
       elif phase == 5: finishEngagement() # If it's the reward unopposed phase, we simply end the engagement immediately after
    else:
       phase = num(me.getGlobalVariable('Phase'))
@@ -176,7 +176,7 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() # If the playes jump to the force phase after engagement, we make sure we clear the engagement.
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()
-   whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
+   delayed_whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
    mute()
@@ -258,14 +258,18 @@ def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
    rnd(1,10)
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
-def finishEngagement(group = table, x=0, y=0):
+def finishEngagement(group = table, x=0, y=0, automated = False):
    mute()
    if debugVerbosity >= 1: notify(">>> finishEngagement(){}".format(extraASDebug())) #Debug
    # First we check for unopposed bonus
+   if not automated and getGlobalVariable('Engaged Objective') == 'None': 
+      whisper(":::ERROR::: You are not currently in an engagement")
+      return
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
    if getGlobalVariable('Engaged Objective') == 'None': 
       whisper(":::ERROR::: There is no engagement currently.")
       return
+   if num(getGlobalVariable('Engagement Phase')) < 5: nextPhase(setTo = 5)
    unopposed = True
    for card in table:
       if card.orientation == Rot90 and card.owner == currentTarget.owner: unopposed = False
@@ -399,6 +403,7 @@ def strike(card, x = 0, y = 0):
          and not confirm("Unit is already exhausted. Bypass?")):
       return 
    #notify("{} strikes with {}.".format(me, card))
+   if num(getGlobalVariable('Engagement Phase')) < 4: nextPhase(setTo = 4)
    card.markers[mdict['Focus']] += 1
    if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
    Unit_Damage = 0
@@ -431,9 +436,9 @@ def strike(card, x = 0, y = 0):
       targetUnit.markers[mdict['Focus']] += Tactics
       TacticsTXT = " (exhausting {})".format(targetUnit)
    elif ((Unit_Damage and Tactics) or Tactics > 1) and targetUnit: # We inform the user why we didn't assign markers automatically.
-      whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
+      delayed_whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
    elif not targetUnit and (Unit_Damage or Tactics): # We give some informatory whispers to the players to help them perform strikes faster in the future
-      whisper(":::ATTENTION::: You had no units targeted with shift+click, so no counters were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
+      delayed_whisper(":::ATTENTION::: You had no units targeted with shift+click, so no counters were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
    if Unit_Damage: AnnounceText += ' {} Unit Damage{}'.format(Unit_Damage,Unit_DamageTXT)
    if Tactics: 
       if AnnounceText == '': AnnounceText += ' {} Tactics{}'.format(Tactics,TacticsTXT)
@@ -466,14 +471,10 @@ def participate(card, x = 0, y = 0):
       return
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))      
    if currentTarget.owner == opponent:
-      if num(getGlobalVariable('Engagement Phase')) < 1:
-         setGlobalVariable('Engagement Phase','1')
-         showCurrentPhase()
+      if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       notify("{} selects {} as an attacker.".format(me, card))
    else:
-      if num(getGlobalVariable('Engagement Phase')) < 2:
-         setGlobalVariable('Engagement Phase','2')
-         showCurrentPhase()
+      if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
       notify("{} selects {} as a defender.".format(me, card))
    card.orientation = Rot90
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
@@ -565,11 +566,11 @@ def commit(card, x = 0, y = 0):
    if Side == 'Light': commitColor = LightForceColor
    else: commitColor = DarkForceColor
    if card.Type != 'Unit':
-      whisper(":::ATTENTION::: You can only commit units to the force. ABORTING!")
+      whisper(":::ERROR::: You can only commit units to the force.")
       return      
    commitedCards = [c for c in table if c.controller == me and c.highlight == commitColor]
    if len(commitedCards) >= 3:
-      whisper(":::ATTENTION::: You already have 3 cards committed to the source. You cannot commit any more without losing on of those. ABORTING!")
+      whisper(":::ERROR::: You already have 3 cards committed to the source. You cannot commit any more without losing on of those. ABORTING!")
       return
    notify("{} commits {} to the force.".format(me, card))
    card.highlight = commitColor
@@ -700,6 +701,7 @@ def playEdge(card):
    if getGlobalVariable('Engaged Objective') == 'None': 
       whisper(":::ERROR::: You have to be in an engagement to play edge cards. ABORTING!")
       return
+   if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    global edgeCount
    mute()
    card.moveToTable(playerside * 450, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
@@ -714,6 +716,7 @@ def playEdge(card):
 def revealEdge(group = table, x=0, y=0, forceCalc = False):
    mute()
    if debugVerbosity >= 1: notify(">>> revealEdge(){}".format(extraASDebug())) #Debug
+   if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    if not edgeRevealed.get(me.name,False) and not forceCalc:
       fateNr = 0
@@ -850,7 +853,7 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    if count == None: return 0
    if count > SSize : 
       count = SSize
-      whisper("You do not have enough cards in your deck to complete this action. Will draw as many as possible")
+      delayed_whisper("You do not have enough cards in your deck to complete this action. Will draw as many as possible")
    for c in group.top(count): 
       c.moveTo(destination)
    if not silent: notify("{} draws {} cards.".format(me, count))
