@@ -23,7 +23,15 @@ Changelog
 
 ### 1.0.3
 
-* Engagements now also has their own phase circle. You progress through them with Ctrl+Enter as always as long as an Engagement is active. These phases will also do some automation like calculate you edge or end the engagement.
+New version improves engagement by separating it into steps (i.e. phases) as well. 
+This means that you can easily communicate who's turn it is to declare participants or when you're ready to start playing edge cards and so on.
+
+The steps work as always, once you're in an engagement, simple press Ctrl+Enter to move to the next step.
+The game is also smart enough to auto-announce a phase when you take an action that belongs to it
+(For example if you play an edge card, the game will announce the "Edge Battle" step). 
+
+This also includes some extra automation to make things faster and more robust. Reaching the "Reward Unopposed" step will automatically end the engagement, and reaching the strikes step will make sure the edge battle is resolved.
+
 * Fixed various bugs during Edge calculations, such as cards not being revealed
 * Now unopposed attacker wins the edge struggle automatically
 * Fate cards now have a different highlight when revealed. Once they've been used, they switch to the normal silver highlight for the calculation
