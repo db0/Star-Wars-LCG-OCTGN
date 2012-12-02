@@ -40,44 +40,58 @@ forceStruggleDone = False # A variable which tracks if the player's have actuall
 #---------------------------------------------------------------------------
 
 def showCurrentPhase(): # Just say a nice notification about which phase you're on.
-   notify(phases[num(me.getGlobalVariable('Phase'))].format(me))
+   if getGlobalVariable('Engaged Objective') != 'None':
+      notify(engagementPhases[num(getGlobalVariable('Engagement Phase'))])
+   else: 
+      notify(phases[num(me.getGlobalVariable('Phase'))])
    
 def nextPhase(group, x = 0, y = 0):  
 # Function to take you to the next phase. 
    if debugVerbosity >= 1: notify(">>> nextPhase(){}".format(extraASDebug())) #Debug
    mute()
-   phase = num(me.getGlobalVariable('Phase'))
-   if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
-   if phase == 6: 
-      if not forceStruggleDone: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
-      me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
-      setGlobalVariable('Active Player', opponent.name)
-      notify("=== {} has ended their turn ===.".format(me))
-      if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
-      return
-   elif getGlobalVariable('Active Player') != me.name:
-      if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
-      if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
-      me.setGlobalVariable('Phase','1')
-      setGlobalVariable('Active Player', me.name)
-      phase = 1
-   else: 
+   if getGlobalVariable('Engaged Objective') != 'None':
+      phase = num(getGlobalVariable('Engagement Phase'))
       phase += 1
-      me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
-   if phase == 1: goToBalance()
-   elif phase == 2: goToRefresh()
-   elif phase == 3: goToDraw()
-   elif phase == 4: 
-      if not handRefillDone: refillHand() # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
-      goToDeployment()
-   elif phase == 5:
-      if firstTurn and Side == 'Dark':
-         global firstTurn
-         notify(":::NOTICE::: {} skips his first conflict phase".format(me))
-         firstTurn = False
-         goToForce()
-      else: goToConflict()
-   elif phase == 6: goToForce()
+      if phase == 4: revealEdge(forceCalc = True) # Just to make sure it wasn't forgotten.
+      setGlobalVariable('Engagement Phase',str(phase))
+      showCurrentPhase()
+      if phase == 1: 
+         rnd(1,10) # To avoid whisper
+         whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
+      elif phase == 5: finishEngagement() # If it's the reward unopposed phase, we simply end the engagement immediately after
+   else:
+      phase = num(me.getGlobalVariable('Phase'))
+      if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
+      if phase == 6: 
+         if not forceStruggleDone: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
+         me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
+         setGlobalVariable('Active Player', opponent.name)
+         notify("=== {} has ended their turn ===.".format(me))
+         if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
+         return
+      elif getGlobalVariable('Active Player') != me.name:
+         if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
+         if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
+         me.setGlobalVariable('Phase','1')
+         setGlobalVariable('Active Player', me.name)
+         phase = 1
+      else: 
+         phase += 1
+         me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
+      if phase == 1: goToBalance()
+      elif phase == 2: goToRefresh()
+      elif phase == 3: goToDraw()
+      elif phase == 4: 
+         if not handRefillDone: refillHand() # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
+         goToDeployment()
+      elif phase == 5:
+         if firstTurn and Side == 'Dark':
+            global firstTurn
+            notify(":::NOTICE::: {} skips his first conflict phase".format(me))
+            firstTurn = False
+            goToForce()
+         else: goToConflict()
+      elif phase == 6: goToForce()
 
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
@@ -237,10 +251,11 @@ def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
    targetObjective.highlight = DefendColor
    if debugVerbosity >= 2: notify("About set the global variable") #Debug
    setGlobalVariable('Engaged Objective',str(targetObjective._id))
+   showCurrentPhase()
+   #setGlobalVariable('Engagement Phase','1')
    if debugVerbosity >= 2: notify("About to announce") #Debug
    notify("{} forces have engaged {}'s {}".format(me,targetObjective.owner, targetObjective))
    rnd(1,10)
-   whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
 def finishEngagement(group = table, x=0, y=0):
@@ -249,19 +264,20 @@ def finishEngagement(group = table, x=0, y=0):
    # First we check for unopposed bonus
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
    if getGlobalVariable('Engaged Objective') == 'None': 
-      whisper(":::ERROR::: There is no engagement currently")
+      whisper(":::ERROR::: There is no engagement currently.")
       return
    unopposed = True
    for card in table:
       if card.orientation == Rot90 and card.owner == currentTarget.owner: unopposed = False
    if unopposed and currentTarget in table: 
-      notify("{} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective".format(me,currentTarget))
+      notify(":> {} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective.".format(me,currentTarget))
       currentTarget.markers[mdict['Damage']] += 1
    for card in table:
       if card.orientation == Rot90: card.orientation = Rot0
       if card.highlight == DefendColor: card.highlight = None
-   notify("The engagement at {} is finished".format(Card(num(getGlobalVariable('Engaged Objective')))))
+   notify("The engagement at {} is finished.".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
+   setGlobalVariable('Engagement Phase','0')
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
       if card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
@@ -445,7 +461,20 @@ def participate(card, x = 0, y = 0):
          and card.markers[mdict['Focus']] >= 1
          and not confirm("Unit is not ready. Bypass?")):
       return 
-   notify("{} selects {} as an engagement participant.".format(me, card))
+   if getGlobalVariable('Engaged Objective') == 'None':
+      whisper(":::ERROR::: Please start an engagement first!")
+      return
+   currentTarget = Card(num(getGlobalVariable('Engaged Objective')))      
+   if currentTarget.owner == opponent:
+      if num(getGlobalVariable('Engagement Phase')) < 1:
+         setGlobalVariable('Engagement Phase','1')
+         showCurrentPhase()
+      notify("{} selects {} as an attacker.".format(me, card))
+   else:
+      if num(getGlobalVariable('Engagement Phase')) < 2:
+         setGlobalVariable('Engagement Phase','2')
+         showCurrentPhase()
+      notify("{} selects {} as a defender.".format(me, card))
    card.orientation = Rot90
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
@@ -682,11 +711,11 @@ def playEdge(card):
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
    notify("{} places a card in their edge stack.".format(me, card))
    
-def revealEdge(group = table, x=0, y=0):
+def revealEdge(group = table, x=0, y=0, forceCalc = False):
    mute()
    if debugVerbosity >= 1: notify(">>> revealEdge(){}".format(extraASDebug())) #Debug
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
-   if not edgeRevealed.get(me.name,False):
+   if not edgeRevealed.get(me.name,False) and not forceCalc:
       fateNr = 0
       edgeNr = 0
       if debugVerbosity >= 2: notify("Edge cards not revealed yet. About to do that") #Debug
@@ -719,7 +748,7 @@ def revealEdge(group = table, x=0, y=0):
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             Affiliation.markers[mdict['Edge']] = 1
             notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
-         else: whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
+         elif not forceCalc: whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          if debugVerbosity >= 2: notify("### Opponent has the edge") #Debug
          oppAffiliation = getSpecial('Affiliation',opponent)
@@ -728,7 +757,7 @@ def revealEdge(group = table, x=0, y=0):
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             oppAffiliation.markers[mdict['Edge']] = 1
             notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
-         else: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
+         elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
          currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
@@ -743,14 +772,14 @@ def revealEdge(group = table, x=0, y=0):
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                Affiliation.markers[mdict['Edge']] = 1
                notify("The engagement of {} is unopposed, so {} automatically gains edge as the attacker.".format(currentTarget,me))
-            else: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
+            elif not forceCalc: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
          else:
             if debugVerbosity >= 2: notify("### Defender's Advantage") #Debug
             if not (defenderAffiliation.markers[mdict['Edge']] and defenderAffiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                defenderAffiliation.markers[mdict['Edge']] = 1
                notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.owner))
-            else: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
+            elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
 def declarePass(group, x=0, y=0):

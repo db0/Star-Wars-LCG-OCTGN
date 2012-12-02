@@ -61,3 +61,12 @@ phases = [
     "=== Deployment Phase: {} ===".format(me),
     "=== Conflict Phase: {} ===".format(me),
     "=== Force Phase: {} ===".format(me)]
+
+engagementPhases = [
+    "+++ Engagement: Declare Objective +++",
+    "+++ Engagement: Declare Attackers +++",
+    "+++ Engagement: Declare Defenders +++",
+    "+++ Engagement: Edge Battle: +++",
+    "+++ Engagement: Resolve Strikes +++",
+    "+++ Engagement: Reward Unopposed +++"]
+    

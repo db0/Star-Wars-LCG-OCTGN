@@ -140,6 +140,8 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
+   setGlobalVariable('Engaged Objective','None')
+   setGlobalVariable('Engagement Phase','0')
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
 
 def placeCard(card): 
