@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.2" markersize="20">
+<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.3" markersize="20">
 	<scripts>
 		<script src="r100" />
 		<script src="r101" />
@@ -18,6 +18,7 @@
      <globalvariable name="Engaged Objective" value="None" />      
      <globalvariable name="Active Player" value="" />      
      <globalvariable name="Existing Units" value="{}" />      
+     <globalvariable name="Revealed Edge" value="{}" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
 		<property name="Block" type="String" hidden="false" ignoreText="False" textKind="Free" />
@@ -54,13 +55,15 @@
          <groupaction menu="Debug" default="false" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
       </groupactions>
 <!--		<cardaction menu="DebugTest" default="true" execute="flipcard" /> -->
-		<groupaction menu="Clear targets" default="false" execute="clearAll" />
 		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="true" shortcut="Ctrl+S" execute="defaultAction" />
       <cardactions menu="Manual Actions">
          <cardaction menu="Strike" default="false" execute="strike" />
          <cardaction menu="Participate in current engagement" default="false" execute="participate" />
+         <cardaction menu="Clear Participation" default="false" execute="clearParticipation" />
          <cardaction menu="Generate Resources" default="false" execute="generate" />
          <cardaction menu="Complete Payment" default="false" execute="purchaseCard" />
+         <cardaction menu="Gain The Edge" default="false" shortcut="Alt+E" execute="gainEdge" />
+         <cardaction menu="Clear commitment to the force" default="false" execute="clearCommit" />
       </cardactions>
 <!--		<cardaction menu="Generate Resources" shortcut="Ctrl+G" execute="generate" /> -->
 		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
@@ -105,6 +108,7 @@
          <groupaction menu="Force Phase" default="false" execute="HELP_ForcePhase" />
       </groupactions>
       <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
+      <groupaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectTargetCard" />
 	</table>
 	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
       <globalvariable name="Side" value="" /> 
@@ -120,7 +124,7 @@
 			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="refillHand" />
 			<groupaction menu="Random Discard" default="false" execute="randomDiscard" />
          <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
-         <cardaction menu="Discard" default="false" shortcut="del" execute="handDiscard" />           
+         <cardaction menu="Discard/Remove 4th Obejctive" default="false" shortcut="del" execute="handDiscard" />           
 		</hand>
 		<group name="Command Deck" visibility="none" ordered="false" width="63" height="88" icon="r12" collapsed="false">
 			<groupaction menu="Draw" default="true" shortcut="Ctrl+D" execute="drawCommand" />

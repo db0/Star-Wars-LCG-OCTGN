@@ -137,9 +137,13 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
    unitAmount[me.name] = 0  # This variable is used for unit placement
    setGlobalVariable('Existing Units',str(unitAmount))
+   edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
+   for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
+   setGlobalVariable('Revealed Edge',str(edgeRevealed))
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
 
 def placeCard(card): 
+   mute()
    if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
    if Automations['Placement']:
       if card.Type == 'Unit': # For now we only place Units

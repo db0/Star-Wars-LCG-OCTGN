@@ -244,9 +244,13 @@ def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
 def finishEngagement(group = table, x=0, y=0):
+   mute()
    if debugVerbosity >= 1: notify(">>> finishEngagement(){}".format(extraASDebug())) #Debug
    # First we check for unopposed bonus
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
+   if getGlobalVariable('Engaged Objective') == 'None': 
+      whisper(":::ERROR::: There is no engagement currently")
+      return
    unopposed = True
    for card in table:
       if card.orientation == Rot90 and card.owner == currentTarget.owner: unopposed = False
@@ -259,7 +263,10 @@ def finishEngagement(group = table, x=0, y=0):
    notify("The engagement at {} is finished".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
-      if card.owner == me and card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
+      if card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
+   edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
+   for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
+   setGlobalVariable('Revealed Edge',str(edgeRevealed))
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
    if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
@@ -346,11 +353,11 @@ def gameSetup(group, x = 0, y = 0):
 def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
-   if card.highlight == EdgeColor: 
-      if card.isFaceUp: 
-         if card.Type == 'Fate': whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
-         else: revealEdge()
-      else: revealEdge()
+   if card.highlight == FateColor: 
+      whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
+      notify("{} resolves the ability of fate card {}".format(me,card))
+      card.highlight = EdgeColor # Rot270 orientation means the fate card has been used already.
+   elif card.highlight == EdgeColor: revealEdge()
    elif card.highlight == UnpaidColor: purchaseCard(card)
    elif num(card.Resources) > 0 and findUnpaidCard(): 
       if debugVerbosity >= 2: notify("Card has resources") # Debug
@@ -359,6 +366,9 @@ def defaultAction(card, x = 0, y = 0):
       if debugVerbosity >= 2: notify("Card is Unit and it's engagement time") # Debug
       if card.orientation == Rot0: participate(card)
       else: strike(card)
+   elif card.model == 'e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc': 
+      card.switchImage # If the players double click on the Balance of the Force, we assume they want to flip it.
+      notify(":::ATTENTION::: {} flipped the balance of the force manually".format(me))
    else: whisper(":::ERROR::: There is nothing to do with this card at this moment!")
    if debugVerbosity >= 3: notify("<<< defaultAction()") #Debug
      
@@ -439,6 +449,12 @@ def participate(card, x = 0, y = 0):
    card.orientation = Rot90
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
+def clearParticipation(card,x=0,y=0): # Clears a unit from participating in a battle, to undo mistakes
+   if card.orientation == Rot90: 
+      card.orientation = Rot0
+      notify("{} takes {} out of the engagement.".format(me, card))
+   else: whisper(":::ERROR::: Unit is not currently participating in battle")
+        
 def generate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
    mute()
@@ -530,6 +546,19 @@ def commit(card, x = 0, y = 0):
    card.highlight = commitColor
    if debugVerbosity >= 3: notify("<<< commit()") #Debug
 
+def clearCommit(card, x=0, y=0): # Clears a unit from participating in a battle, to undo mistakes
+   mute()
+   if debugVerbosity >= 1: notify(">>> clearCommit(){}".format(extraASDebug())) #Debug
+   if Side == 'Light': commitColor = LightForceColor
+   else: commitColor = DarkForceColor
+   if debugVerbosity >= 2: notify("### Checking for commitColor: {}".format(commitColor)) #Debug
+   if card.highlight == commitColor:
+      if debugVerbosity >= 2: notify("### commitColor found!") #Debug
+      card.highlight = None
+      if debugVerbosity >= 2: notify("### About to notify!") #Debug
+      notify(":::ATTENTION::: {} takes {} out of its commitment to the force.".format(me, card))
+   else: whisper(":::ERROR::: Unit is not currently committed to the force.")
+
 def handDiscard(card):
    if debugVerbosity >= 1: notify(">>> handDiscard(){}".format(extraASDebug())) #Debug
    mute()
@@ -569,9 +598,7 @@ def discard(card, x = 0, y = 0):
          else: notify("{} thwarts {}.".format(me,card))
    elif card.Type == "Affiliation" or card.Type == "BotD": whisper("This isn't the card you're looking for...")
    elif card.highlight == EdgeColor:
-      global edgeRevealed, edgeCount
-      edgeRevealed = False # Clearing some variables just in case they were left over. 
-      # (I've put this here, because it's one of the few places during engagement, where the opponent has to take an action as well)
+      global edgeCount
       edgeCount = 0
       card.moveTo(card.owner.piles['Discard Pile'])
    elif card.Type == 'Unit':
@@ -592,8 +619,22 @@ def discard(card, x = 0, y = 0):
 def inspectCard(card, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.
    if debugVerbosity >= 1: notify(">>> inspectCard(){}".format(extraASDebug())) #Debug
    #if debugVerbosity > 0: finalTXT = 'AutoScript: {}\n\n AutoAction: {}'.format(CardsAS.get(card.model,''),CardsAA.get(card.model,''))
-   finalTXT = "{}\n\nCard Text: {}".format(card.name, card.Text)
-   confirm("{}".format(finalTXT))
+   if card.model == "e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc": 
+      information("This is the Balance of the Force card.\
+                 \nIt automatically flips during the force resolution depending on who has the most force commited\
+               \n\nIf for some reason the force struffle calculation did not give an accurate result, you can simply double click this card to flip it manually.")
+   elif card.Type == 'Affiliation':
+      information("This is the {} affiliation card.\
+                 \nIt does not have any abilities other than providing {} resources.\
+               \n\nTo produce the resources simply attempt to play a card from your hand and then double click this card.".format(card.Affiliation, card.Affiliation))
+   else:                  
+      finalTXT = "{}\n\nTraits:{}\n\nCard Text: {}".format(card.name, card.Traits, card.Text)
+      information("{}".format(finalTXT))
+
+def inspectTargetCard(group, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.
+   if debugVerbosity >= 1: notify(">>> inspectTargetCard(){}".format(extraASDebug())) #Debug
+   for card in table:
+      if card.targetedBy and card.targetedBy == me: inspectCard(card)
 
 def rulings(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> rulings(){}".format(extraASDebug())) #Debug
@@ -627,38 +668,52 @@ def play(card):
 
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
+   if getGlobalVariable('Engaged Objective') == 'None': 
+      whisper(":::ERROR::: You have to be in an engagement to play edge cards. ABORTING!")
+      return
    global edgeCount
    mute()
    card.moveToTable(playerside * 450, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    card.highlight = EdgeColor
    edgeCount += 1
+   if edgeCount > 7: edgeCount = 0 # Just in case.
+   edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
+   edgeRevealed[card.owner.name] = False # Clearing some variables just in case they were left over. 
+   setGlobalVariable('Revealed Edge',str(edgeRevealed))
    notify("{} places a card in their edge stack.".format(me, card))
    
 def revealEdge(group = table, x=0, y=0):
    mute()
    if debugVerbosity >= 1: notify(">>> revealEdge(){}".format(extraASDebug())) #Debug
-   global edgeRevealed
-   fateNr = 0
-   if not edgeRevealed:
+   edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
+   if not edgeRevealed.get(me.name,False):
+      fateNr = 0
+      edgeNr = 0
       if debugVerbosity >= 2: notify("Edge cards not revealed yet. About to do that") #Debug
       for card in table:
          if card.highlight == EdgeColor and not card.isFaceUp and card.owner == me:
             card.isFaceUp = True
-            if card.Type == 'Fate': fateNr += 1
+            if card.Type == 'Fate': 
+               fateNr += 1
+               card.highlight = FateColor
+            edgeNr += 1
       if fateNr > 0: extraTXT = " They have {} fate cards".format(fateNr)
       else: extraTXT = ''
-      notify("{} reveals their edge stack.{}".format(me,extraTXT))
-      edgeRevealed = True
+      if edgeNr > 0: notify("{} reveals their edge stack.{}".format(me,extraTXT))
+      else: notify("{} has played no edge cards for this engagement.".format(me))
+      edgeRevealed[me.name] = True
+      setGlobalVariable('Revealed Edge',str(edgeRevealed))
    else:
       if debugVerbosity >= 2: notify("Edge cards already revealed. Gonna calculate edge") #Debug
       myEdgeTotal = 0
       opponentEdgeTotal = 0
       for card in table:
-         if card.highlight == EdgeColor and card.isFaceUp:
+         if (card.highlight == EdgeColor or card.highlight == FateColor) and card.isFaceUp:
             if card.owner == me: myEdgeTotal += num(card.Force)
             else: opponentEdgeTotal += num(card.Force)
+            if card.highlight == FateColor: notify(":::WARNING::: {} has not yet resolved their {}".format(card.owner,card))
       if myEdgeTotal > opponentEdgeTotal:
-         if debugVerbosity >= 2: notify("I've got the edge") #Debug
+         if debugVerbosity >= 2: notify("### I've got the edge") #Debug
          if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
          # We check to see if we already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
@@ -666,7 +721,7 @@ def revealEdge(group = table, x=0, y=0):
             notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
          else: whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
-         if debugVerbosity >= 2: notify("Opponent has the edge") #Debug
+         if debugVerbosity >= 2: notify("### Opponent has the edge") #Debug
          oppAffiliation = getSpecial('Affiliation',opponent)
          if not (oppAffiliation.markers[mdict['Edge']] and oppAffiliation.markers[mdict['Edge']] == 1): 
          # We check to see if our opponent already have the edge marker on our affiliation card (from our opponent running the same script)
@@ -675,15 +730,27 @@ def revealEdge(group = table, x=0, y=0):
             notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
          else: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
-         if debugVerbosity >= 2: notify("Edge is a Tie") #Debug
+         if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
          currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
-         if debugVerbosity >= 2: notify("Finding defender's Affiliation card.") #Debug
+         if debugVerbosity >= 2: notify("### Finding defender's Affiliation card.") #Debug
          defenderAffiliation = getSpecial('Affiliation',currentTarget.owner)
-         if not (defenderAffiliation.markers[mdict['Edge']] and defenderAffiliation.markers[mdict['Edge']] == 1): 
-            clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
-            defenderAffiliation.markers[mdict['Edge']] = 1
-            notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.owner))
-         else: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
+         unopposed = True
+         for card in table:
+            if card.orientation == Rot90 and card.owner == currentTarget.owner: unopposed = False
+         if unopposed: 
+            if debugVerbosity >= 2: notify("### Unopposed Attacker") #Debug
+            if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
+               clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
+               Affiliation.markers[mdict['Edge']] = 1
+               notify("The engagement of {} is unopposed, so {} automatically gains edge as the attacker.".format(currentTarget,me))
+            else: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
+         else:
+            if debugVerbosity >= 2: notify("### Defender's Advantage") #Debug
+            if not (defenderAffiliation.markers[mdict['Edge']] and defenderAffiliation.markers[mdict['Edge']] == 1): 
+               clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
+               defenderAffiliation.markers[mdict['Edge']] = 1
+               notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.owner))
+            else: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
 def declarePass(group, x=0, y=0):
@@ -860,3 +927,9 @@ def clearEdgeMarker():
    for card in table:
       if card.Type == 'Affiliation' and card.markers[mdict['Edge']] and card.markers[mdict['Edge']] == 1:
          card.markers[mdict['Edge']] = 0
+         
+def gainEdge(card, x = 0, y = 0):
+   mute()
+   clearEdgeMarker()
+   notify("{} gains the Egde.".format(me))
+   Affiliation.markers[mdict['Edge']] = 1             

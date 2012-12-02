@@ -21,6 +21,15 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.3
+
+
+* Fixed various bugs during Edge calculations, such as cards not being revealed
+* Now unopposed attacker wins the edge struggle automatically
+* Fate cards now have a different highlight when revealed. Once they've been used, they switch to the normal silver highlight for the calculation
+* You can now clear participants form the battle or remove units from the force. Normally the game does not allow you, but this is in case you've done a mistake
+* Added an option to grab the Edge manually, if for some reason the edge calculation was incorrect
+
 ### 1.0.1
 
 * Finishing the engagement now clears the opponent's edge cards as well

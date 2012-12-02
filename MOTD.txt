@@ -2,6 +2,9 @@
 
 Welcome to the very first version of the Star Wars LCG plugin! 
 
-More automations will be coming soon!
+We now have a video tutorial on how to use this plugin!
+Would you like to be redirected to its page?
 
 ===============================
+&&
+http://youtu.be/Ll5TFxR1TK4

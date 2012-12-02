@@ -48,6 +48,7 @@ CapturedColor = "#888888" # Cards which are in play but captured by the dark sid
 AttackColor = "#ff0000"
 DefendColor = "#0000ff"
 EdgeColor = "#c0c0c0"
+FateColor = "#ae39d4"
 
 Xaxis = 'x'
 Yaxis = 'y'
