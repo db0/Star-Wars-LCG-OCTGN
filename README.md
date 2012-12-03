@@ -6,6 +6,11 @@ More instructions will be forthcoming soon. Stay tuned...
 
 Enjoy!
 
+Tutorials
+---------
+
+[Step-by-Step Tutorial Video (v.1.0.2)](http://www.youtube.com/watch?v=Ll5TFxR1TK4)
+
 Screenshots
 ---------
 (Click for larger size)
@@ -20,6 +25,13 @@ Demo game at v1.0.0
 
 Changelog
 ---------
+
+### 1.0.4 
+
+* Fixed bug where finishing an unopposed engagement would assign 2 damage
+* Thwarting an objective will now ask for confirmation to avoid mistakes
+* Renamed the card discard function to point out that it also thwarts objectives.
+* Balance of the Force will now spawn on the light side to avoid confusion
 
 ### 1.0.3
 

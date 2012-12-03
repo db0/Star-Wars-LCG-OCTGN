@@ -56,9 +56,9 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       if phase == 4: revealEdge(forceCalc = True) # Just to make sure it wasn't forgotten.
       setGlobalVariable('Engagement Phase',str(phase))
       showCurrentPhase()
-      if phase == 1 and not setTo: 
-         delayed_whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
-      elif phase == 5: finishEngagement() # If it's the reward unopposed phase, we simply end the engagement immediately after
+      if not setTo:
+         if phase == 1: delayed_whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
+         elif phase == 5: finishEngagement() # If it's the reward unopposed phase, we simply end the engagement immediately after
    else:
       phase = num(me.getGlobalVariable('Phase'))
       if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
@@ -353,7 +353,7 @@ def gameSetup(group, x = 0, y = 0):
          return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
-      if Side == 'Dark': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
+      if Side == 'Light': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
          BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
          BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
          setGlobalVariable('Balance of the Force', str(BotD._id))
@@ -604,6 +604,7 @@ def discard(card, x = 0, y = 0):
    mute()
    if card.Type == "Objective":
       if card.owner == me:
+         if not confirm("Did your opponent thwart {}?".format(card.name)): return
          if debugVerbosity >= 2: notify("About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
          currentObjectives.remove(card._id)
@@ -615,6 +616,7 @@ def discard(card, x = 0, y = 0):
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
          else: notify("{} thwarts {}.".format(opponent,card))
       else:
+         if not confirm("Are you sure you want to thwart {}?".format(card.name)): return
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
          # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
          # Then when the other player tries to refresh, it first removes any destroyed objectives from their list.

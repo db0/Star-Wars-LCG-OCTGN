@@ -1,8 +1,10 @@
 =====Message of the Day======
 
-Welcome to the very first version of the Star Wars LCG plugin! 
+Welcome to the very first Star Wars LCG plugin! 
 
-We now have a video tutorial on how to use this plugin!
+We now have a step-by-step video tutorial on how to use this plugin!
+This should be very useful if you are new to this plugin on OCTGN 
+
 Would you like to be redirected to its page?
 
 ===============================

@@ -1,4 +1,4 @@
-1.0.3||
+1.0.4||
 ======New Version Information======
 
 New version improves engagement by separating it into steps (i.e. phases) as well. 
@@ -13,6 +13,8 @@ This also includes some extra automation to make things faster and more robust. 
 Other than that, there's a bunch of important bug fixes and all around improvement. 
 
 Enjoy!
+
+UPDATE v1.0.4 fixed an annoying bug that made unopposed engagements do 2 damage.
 
 ===============================
 ||
