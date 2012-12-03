@@ -9,7 +9,7 @@ Enjoy!
 Tutorials
 ---------
 
-[Step-by-Step Tutorial Video (v.1.0.2)](http://www.youtube.com/watch?v=Ll5TFxR1TK4)
+[Step-by-Step Tutorial Video (v.1.0.2)](https://vimeo.com/54797455)
 
 Screenshots
 ---------
