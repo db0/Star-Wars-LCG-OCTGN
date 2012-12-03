@@ -187,6 +187,20 @@ def placeCard(card):
                card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachements[host[0]._id]))
                card.sendToBack()
    if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
+   
+def findMarker(card, markerDesc): # Goes through the markers on the card and looks if one exist with a specific description
+   if debugVerbosity >= 1: notify(">>> findMarker(){}".format(extraASDebug())) #Debug
+   foundKey = None
+   if markerDesc in mdict: markerDesc = mdict[markerDesc][0] # If the marker description is the code of a known marker, then we need to grab the actual name of that.
+   for key in card.markers:
+      if debugVerbosity >= 3: notify("### Key: {}\nmarkerDesc: {}".format(key[0],markerDesc)) # Debug
+      if re.search(r'{}'.format(markerDesc),key[0]) or markerDesc == key[0]:
+         foundKey = key
+         if debugVerbosity >= 2: notify("### Found {} on {}".format(key[0],card))
+         break
+   if debugVerbosity >= 3: notify("<<< findMarker() by returning: {}".format(foundKey))
+   return foundKey
+   
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
     # Python Scripts for the Star Wars LCG definition for OCTGN
-    # Copyright (C) 2012  Konstantine Thoukydides & JMCB
+    # Copyright (C) 2012  Konstantine Thoukydides
 
     # This python script is free software: you can redistribute it and/or modify
     # it under the terms of the GNU General Public License as published by
@@ -406,6 +406,7 @@ def strike(card, x = 0, y = 0):
    if num(getGlobalVariable('Engagement Phase')) < 4: nextPhase(setTo = 4)
    card.markers[mdict['Focus']] += 1
    if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
+   executePlayScripts(card, 'STRIKE') # Strike effects almost universally happen after focus.
    Unit_Damage = 0
    Blast_Damage = 0
    Tactics = 0
@@ -473,10 +474,13 @@ def participate(card, x = 0, y = 0):
    if currentTarget.owner == opponent:
       if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       notify("{} selects {} as an attacker.".format(me, card))
+      executePlayScripts(card, 'ATTACK')   
    else:
       if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
       notify("{} selects {} as a defender.".format(me, card))
+      executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
+   executePlayScripts(card, 'PARTICIPATE')   
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
 def clearParticipation(card,x=0,y=0): # Clears a unit from participating in a battle, to undo mistakes
@@ -558,6 +562,7 @@ def purchaseCard(card, x=0, y=0):
       unpaidCard = None
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has acquired {} by skipping its full cost".format(me,card))
+      executePlayScripts(card, 'PLAY')
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
@@ -574,6 +579,7 @@ def commit(card, x = 0, y = 0):
       return
    notify("{} commits {} to the force.".format(me, card))
    card.highlight = commitColor
+   executePlayScripts(card, 'COMMIT')
    if debugVerbosity >= 3: notify("<<< commit()") #Debug
 
 def clearCommit(card, x=0, y=0): # Clears a unit from participating in a battle, to undo mistakes
@@ -599,12 +605,12 @@ def handDiscard(card):
       card.moveTo(me.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
       
-def discard(card, x = 0, y = 0):
+def discard(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 1: notify(">>> discard(){}".format(extraASDebug())) #Debug
    mute()
    if card.Type == "Objective":
       if card.owner == me:
-         if not confirm("Did your opponent thwart {}?".format(card.name)): return
+         if not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
          if debugVerbosity >= 2: notify("About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
          currentObjectives.remove(card._id)
@@ -615,8 +621,9 @@ def discard(card, x = 0, y = 0):
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
          else: notify("{} thwarts {}.".format(opponent,card))
+         executePlayScripts(card, 'THWART')
       else:
-         if not confirm("Are you sure you want to thwart {}?".format(card.name)): return
+         if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
          # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
          # Then when the other player tries to refresh, it first removes any destroyed objectives from their list.
@@ -628,7 +635,10 @@ def discard(card, x = 0, y = 0):
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: notify("{} thwarts {}.".format(me,card))
-   elif card.Type == "Affiliation" or card.Type == "BotD": whisper("This isn't the card you're looking for...")
+         executePlayScripts(card, 'THWART')
+   elif card.Type == "Affiliation" or card.Type == "BotD": 
+      whisper("This isn't the card you're looking for...")
+      return 'ABORT'
    elif card.highlight == EdgeColor:
       global edgeCount
       edgeCount = 0
@@ -647,6 +657,21 @@ def discard(card, x = 0, y = 0):
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
+   return 'OK'
+ 
+def exileCard(card, silent = False):
+   if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
+   # Puts the removed card in the player's removed form game pile.
+   mute()
+   storeProperties(card)
+   if card.Type == "Affiliation" or card.Type == "BotD": 
+      whisper("This isn't the card you're looking for...")
+      return 'ABORT'
+   else:
+      if card.highlight != CapturedColor: executePlayScripts(card,'TRASH') # We don't want to run automations on simply revealed cards.
+      card.moveTo(me.piles['Removed from Game'])
+   if not silent: notify("{} removed {} from play{}.".format(me,card))
+   executePlayScripts(card, 'DISCARD')
  
 def inspectCard(card, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.
    if debugVerbosity >= 1: notify(">>> inspectCard(){}".format(extraASDebug())) #Debug
@@ -697,6 +722,7 @@ def play(card):
    else: 
       placeCard(card)
       notify("{} plays {}{}.".format(me, card,extraTXT))
+      executePlayScripts(card, 'PLAY')
 
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
@@ -787,8 +813,15 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
-def declarePass(group, x=0, y=0):
-   notify("{} Passes".format(me))
+def groupToDeck (group = me.hand, player = me, silent = False):
+   if debugVerbosity >= 1: notify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
+   mute()
+   deck = player.piles['R&D/Stack']
+   count = len(group)
+   for c in group: c.moveTo(deck)
+   if not silent: notify ("{} moves their whole {} to their {}.".format(player,pileName(group),pileName(deck)))
+   if debugVerbosity >= 3: notify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(pileName(group),pileName(deck),count)) #Debug
+   return(pileName(group),pileName(deck),count) # Return a tuple with the names of the groups.
    
 def mulligan(group):
    if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
@@ -883,7 +916,7 @@ def shuffle(group):
 	group.shuffle()
 
 #---------------------------------------------------------------------------
-# Tokena and Markers
+# Tokens and Markers
 #---------------------------------------------------------------------------
 	
 def addFocus(card, x = 0, y = 0):
@@ -967,3 +1000,32 @@ def gainEdge(card, x = 0, y = 0):
    clearEdgeMarker()
    notify("{} gains the Egde.".format(me))
    Affiliation.markers[mdict['Edge']] = 1             
+   
+def findCounterPrevention(count, counter, targetPL): # Find out if the player has any markers preventing them form gaining specific counters (Credits, Agenda Points etc)
+   if debugVerbosity >= 1: notify(">>> findCounterPrevention(){}".format(extraASDebug())) #Debug
+   preventionFound = 0
+   forfeit = None
+   preventionType = 'preventCounter:{}'.format(counter)
+   forfeitType = 'forfeitCounter:{}'.format(counter)
+   cardList = [c for c in table
+               if c.controller == targetPL
+               and c.markers]
+   for card in sortPriority(cardList):
+      foundMarker = findMarker(card, preventionType)
+      if not foundMarker: foundMarker = findMarker(card, forfeitType)
+      if foundMarker: # If we found a counter prevention marker of the specific type we're looking for...
+         while count > 0 and card.markers[foundMarker] > 0: # For each point of damage we do.
+            preventionFound += 1 # We increase the prevention found by 1
+            count -= 1 # We reduce how much counter we still need to add by 1
+            card.markers[foundMarker] -= 1 # We reduce the specific counter prevention counters by 1
+         if count == 0: break # If we've found enough protection to alleviate all counters, stop the search.
+   if debugVerbosity >= 3: notify("<<< findCounterPrevention() by returning: {}".format(preventionFound))
+   return preventionFound   
+ 
+#---------------------------------------------------------------------------
+# Announcements
+#--------------------------------------------------------------------------- 
+
+def declarePass(group, x=0, y=0):
+   notify("{} Passes".format(me))
+

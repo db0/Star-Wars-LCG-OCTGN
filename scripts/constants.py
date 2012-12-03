@@ -69,4 +69,26 @@ engagementPhases = [
     "+++ Engagement: Edge Battle: +++",
     "+++ Engagement: Resolve Strikes +++",
     "+++ Engagement: Reward Unopposed +++"]
+
+regexHooks = dict( # A dictionary which holds the regex that then trigger each core command. 
+                   # This is so that I can modify these "hooks" only in one place as I add core commands and modulators.
+                  GainX =              re.compile(r'\b(Gain|Lose|SetTo)([0-9]+)'),
+                  CreateDummy =        re.compile(r'\bCreateDummy'),
+                  ReshuffleX =         re.compile(r'\bReshuffle([A-Za-z& ]+)'),
+                  RollX =              re.compile(r'\bRoll([0-9]+)'),
+                  RequestInt =         re.compile(r'\bRequestInt'),
+                  DiscardX =           re.compile(r'\bDiscard[0-9]+'),
+                  TokensX =            re.compile(r'\b(Put|Remove|Refill|Use|Infect)([0-9]+)'),
+                  TransferX =          re.compile(r'\bTransfer([0-9]+)'),
+                  DrawX =              re.compile(r'\bDraw([0-9]+)'),
+                  ShuffleX =           re.compile(r'\bShuffle([A-Za-z& ]+)'),
+                  RunX =               re.compile(r'\bRun([A-Za-z& ]+)'),
+                  TraceX =             re.compile(r'\bTrace([0-9]+)'),
+                  InflictX =           re.compile(r'\bInflict([0-9]+)'),
+                  ModifyStatus =       re.compile(r'(Rez|Derez|Expose|Trash|Uninstall|Possess|Exile)'),
+                  SimplyAnnounce =     re.compile(r'\bSimplyAnnounce'),
+                  ChooseKeyword =      re.compile(r'\bChooseKeyword'),
+                  CustomScript =       re.compile(r'\bCustomScript'),
+                  UseCustomAbility =   re.compile(r'\bUseCustomAbility'))
+
     
