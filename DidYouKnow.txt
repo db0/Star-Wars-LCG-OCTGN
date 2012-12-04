@@ -71,3 +71,12 @@ Even if you don't own a mic, take the time to install the mumble client and setu
 Would you like to learn more?
 &&
 http://octgn.gamersjudgement.com/viewtopic.php?f=52&t=545
+||
+There is a video that will teach you the basics of using this plugin.
+
+It will explain the best way to go through your turn, tips & tricks on using the automation and the most useful keyboard shortcuts.
+If you're a new player, we strongly suggest you check it out.
+
+Would you like to learn more?
+&&
+https://vimeo.com/54797455

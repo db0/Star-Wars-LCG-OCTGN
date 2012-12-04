@@ -174,7 +174,7 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
    if debugVerbosity >= 2: notify("### Gainx() about to announce")
    if notification == 'Quick': announceString = "{}{} {} {}{}".format(announceText, otherTXT, verb, closureTXT,extraTXT)
    else: announceString = "{}{} {} {}{}".format(announceText, otherTXT, verb, closureTXT,extraTXT)
-   if notification and multiplier > 0: notify('--> {}.'.format(announceString))
+   if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< Gain() total: {}".format(total))
    return (announceString,total)
    
@@ -247,7 +247,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    else: total = abs(modtokens)
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
    announceString = "{} {}{} {} {} counters{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],targetCardlist,preventTXT)
-   if notification == 'Automatic' and modtokens != 0: notify('--> {}.'.format(announceString))
+   if notification == 'Automatic' and modtokens != 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 2: notify("### TokensX() String: {}".format(announceString)) #Debug
    if debugVerbosity >= 3: notify("<<< TokensX()")
    return announceString
@@ -258,9 +258,11 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    destiVerb = 'draw'
    action = re.search(r'\bDraw([0-9]+)Card', Autoscript)
    targetPL = ofwhom(Autoscript, card.controller)
+   if debugVerbosity >= 3: notify("### Setting Source")
    if targetPL != me: destiVerb = 'move'
    if re.search(r'-fromDiscard', Autoscript): source = targetPL.piles['Discard Pile']
    else: source = targetPL.piles['Command Deck']
+   if debugVerbosity >= 3: notify("### Setting Destination")
    if re.search(r'-toDeck', Autoscript): 
       destination = targetPL.piles['Command Deck']
       destiVerb = 'move'
@@ -268,6 +270,7 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
       destination = targetPL.piles['Discard Pile']
       destiVerb = 'discard'   
    else: destination = targetPL.hand
+   if debugVerbosity >= 3: notify("### Setting Destination")
    if destiVerb == 'draw' and ModifyDraw > 0 and not confirm("You have a card effect in play that modifies the amount of cards you draw. Do you want to continue as normal anyway?\n\n(Answering 'No' will abort this action so that you can prepare for the special changes that happen to your draw."): return 'ABORT'
    draw = num(action.group(1))
    if draw == 999:
@@ -290,7 +293,7 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    if notification == 'Quick': announceString = "{} draws {} cards".format(announceText, count)
    elif targetPL == me: announceString = "{} {} {} cards from their {}{}".format(announceText, destiVerb, count, pileName(source), destPath)
    else: announceString = "{} {} {} cards from {}'s {}".format(announceText, destiVerb, count, targetPL, pileName(source), destPath)
-   if notification and multiplier > 0: notify('--> {}.'.format(announceString))
+   if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< DrawX()")
    return announceString
 
@@ -314,7 +317,7 @@ def DiscardX(Autoscript, announceText, card, targetCards = None, notification = 
    if count == 0: return (announceText,count) # If there are no cards, then we effectively did nothing, so we don't change the notification.
    if notification == 'Quick': announceString = "{} discards {} cards".format(announceText, count)
    else: announceString = "{}{} discard {} cards from their hand".format(announceText,otherTXT, count)
-   if notification and multiplier > 0: notify('--> {}.'.format(announceString))
+   if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< DiscardX()")
    return (announceString,count)
          
@@ -336,7 +339,7 @@ def ReshuffleX(Autoscript, announceText, card, targetCards = None, notification 
    shuffle(targetPL.piles['Command Deck'])
    if notification == 'Quick': announceString = "{} shuffles their {} into their {}".format(announceText, namestuple[0], namestuple[1])
    else: announceString = "{} shuffle their {} into their {}".format(announceText, namestuple[0], namestuple[1])
-   if notification: notify('--> {}.'.format(announceString))
+   if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< ReshuffleX() return with X = {}".format(X))
    return (announceString, X)
 
@@ -354,7 +357,7 @@ def ShuffleX(Autoscript, announceText, card, targetCards = None, notification = 
    if notification == 'Quick': announceString = "{} shuffles their {}".format(announceText, pile.name)
    elif targetPL == me: announceString = "{} shuffle their {}".format(announceText, pile.name)
    else: announceString = "{} shuffle {}' {}".format(announceText, targetPL, pile.name)
-   if notification: notify('--> {}.'.format(announceString))
+   if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< ShuffleX()")
    return announceString
    
@@ -378,7 +381,7 @@ def RollX(Autoscript, announceText, card, targetCards = None, notification = Non
       if debugVerbosity >= 2: notify("### iter:{} with roll {} and total result: {}".format(d,d6,result))
    if notification == 'Quick': announceString = "{} rolls {} on {} dice".format(announceText, d6list, count)
    else: announceString = "{} roll {} dice with the following results: {}".format(announceText,count, d6list)
-   if notification: notify('--> {}.'.format(announceString))
+   if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< RollX() with result: {}".format(result))
    return (announceString, result)
 
@@ -431,7 +434,7 @@ def SimplyAnnounce(Autoscript, announceText, card, targetCards = None, notificat
    if re.search(r'break',Autoscript) and re.search(r'subroutine',Autoscript): penaltyNoisy(card)
    if notification == 'Quick': announceString = "{} {}".format(announceText, action.group(1))
    else: announceString = "{} {}".format(announceText, action.group(1))
-   if notification: notify('--> {}.'.format(announceString))
+   if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< SimplyAnnounce()")
    return announceString
 
@@ -507,7 +510,7 @@ def ChooseTrait(Autoscript, announceText, card, targetCards = None, notification
       else: TokensX('Put1Trait:{}'.format(traits[choice]), '', targetCard)
    if notification == 'Quick': announceString = "{} marks {} as being {} now".format(announceText, targetCardlist, traits[choice])
    else: announceString = "{} mark {} as being {} now".format(announceText, targetCardlist, traits[choice])
-   if notification: notify('--> {}.'.format(announceString))
+   if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< ChooseTrait()")
    return announceString
             
@@ -539,7 +542,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
       if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
    if notification == 'Quick': announceString = "{} {}es {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
    else: announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist, extraTXT)
-   if notification: notify('--> {}.'.format(announceString))
+   if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< ModifyStatus()")
    return announceString
             
@@ -694,22 +697,22 @@ def chkWarn(card, Autoscript): # Function for checking that an autoscript announ
    if warning:
       if warning.group(1) == 'Discard': 
          if not confirm("This action requires that you discard some cards. Have you done this already?"):
-            whisper("--> Aborting action. Please discard the necessary amount of cards and run this action again")
+            whisper(":> Aborting action. Please discard the necessary amount of cards and run this action again")
             return 'ABORT'
       if warning.group(1) == 'ReshuffleOpponent': 
          if not confirm("This action will reshuffle your opponent's pile(s). Are you sure?\n\n[Important: Please ask your opponent not to take any clicks with their piles until this clicks is complete or the game might crash]"):
-            whisper("--> Aborting action.")
+            whisper(":> Aborting action.")
             return 'ABORT'
       if warning.group(1) == 'GiveToOpponent': confirm('This card has an effect which if meant for your opponent. Please use the menu option "pass control to" to give them control.')
       if warning.group(1) == 'Reshuffle': 
          if not confirm("This action will reshuffle your piles. Are you sure?"):
-            whisper("--> Aborting action.")
+            whisper(":> Aborting action.")
             return 'ABORT'
       if warning.group(1) == 'Workaround':
          notify(":::Note:::{} is using a workaround autoscript".format(me))
       if warning.group(1) == 'LotsofStuff': 
          if not confirm("This card performs a lot of complex clicks that will very difficult to undo. Are you sure you want to proceed?"):
-            whisper("--> Aborting action.")
+            whisper(":> Aborting action.")
             return 'ABORT'
    if debugVerbosity >= 3: notify("<<< chkWarn() gracefully") 
    return 'OK'

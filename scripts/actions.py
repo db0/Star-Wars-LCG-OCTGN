@@ -34,6 +34,7 @@ edgeRevealed = False # Remembers if the player has revealed their edge cards yet
 firstTurn = True # A variable to allow the engine to skip some phases on the first turn.
 handRefillDone = False # A variable which tracks if the player has refilled their hand during the draw phase. Allows the game to go faster.
 forceStruggleDone = False # A variable which tracks if the player's have actually done the force struggle for this turn (just in case it's forgotten)
+ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
 
 #---------------------------------------------------------------------------
 # Phases
@@ -406,7 +407,9 @@ def strike(card, x = 0, y = 0):
    if num(getGlobalVariable('Engagement Phase')) < 4: nextPhase(setTo = 4)
    card.markers[mdict['Focus']] += 1
    if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
+   if debugVerbosity >= 2: notify("Focus Added") #Debug
    executePlayScripts(card, 'STRIKE') # Strike effects almost universally happen after focus.
+   if debugVerbosity >= 2: notify("PlayScripts done. Calculating Icons") #Debug
    Unit_Damage = 0
    Blast_Damage = 0
    Tactics = 0
