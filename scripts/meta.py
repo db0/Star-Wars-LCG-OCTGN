@@ -115,7 +115,7 @@ def ofwhom(Autoscript, controller = me):
          if controller != me: targetPL = controller         
          else: targetPL = me
       else: targetPL = me
-   if debugVerbosity >= 3: notify("<<< ofwhom()")
+   if debugVerbosity >= 3: notify("<<< ofwhom() returns {}".format(targetPL))
    return targetPL
 
 def modifyDial(value):
