@@ -50,6 +50,7 @@ AttackColor = "#ff0000"
 DefendColor = "#0000ff"
 EdgeColor = "#c0c0c0"
 FateColor = "#ae39d4"
+DummyColor = "#005566"
 
 Xaxis = 'x'
 Yaxis = 'y'
