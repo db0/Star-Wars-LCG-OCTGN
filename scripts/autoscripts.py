@@ -130,6 +130,177 @@ def executePlayScripts(card, action):
          if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
 
 #------------------------------------------------------------------------------
+# Other Player trigger
+#------------------------------------------------------------------------------
+   
+def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Function that triggers effects based on the opponent's cards.
+# This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
+# For example a card that would produce credits whenever a trace was attempted. 
+   if not Automations['Triggers']: return
+   if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {}".format(lookup)) #Debug
+   if not Automations['Play']: return # If automations have been disabled, do nothing.
+   for card in table:
+      if debugVerbosity >= 2: notify('Checking {}'.format(card)) # Debug
+      if not card.isFaceUp: continue # Don't take into accounts cards that are face down for some reason. 
+      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return # We do not care about inactive cards.
+      costText = '{} activates {} to'.format(card.controller, card) 
+      Autoscripts = CardsAS.get(card.model,'').split('||')
+      if debugVerbosity >= 4: notify("### {}'s AS: {}".format(card,Autoscripts)) # Debug
+      AutoScriptSnapshot = list(Autoscripts)
+      for autoS in AutoScriptSnapshot: # Checking and removing anything other than whileRezzed or whileScored.
+         if not re.search(r'while(Played|Scored)', autoS): Autoscripts.remove(autoS)
+      if len(Autoscripts) == 0: continue
+      for AutoS in Autoscripts:
+         if debugVerbosity >= 2: notify('Checking AutoS: {}'.format(AutoS)) # Debug
+         if not re.search(r'{}'.format(lookup), AutoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
+         if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
+         chkType = re.search(r'-type([A-Za-z ]+)',autoS)
+         if chkType: #If we have this modulator in the script, then need ot check what type of property it's looking for
+            if debugVerbosity >= 4: notify("### Looking for : {}".format(chkType.group(1)))
+            cardProperties = []
+            del cardProperties [:] # Just in case
+            cardProperties.append(origin_card.Type) # Its type
+            cardSubtypes = getKeywords(origin_card).split('-') # And each individual trait. Traits are separated by " - "
+            for cardSubtype in cardSubtypes:
+               strippedCS = cardSubtype.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
+               if strippedCS: cardProperties.append(strippedCS) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.
+            cardProperties.append(origin_card.Side) # We are also going to check if the card is for runner or corp.
+            if debugVerbosity >= 4: notify("### card Properies: {}".format(cardProperties))
+            if not chkType.group(1) in cardProperties: continue 
+         if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
+         else: targetCard = None
+         if debugVerbosity >= 2: notify("### Automatic Autoscripts: {}".format(AutoS)) # Debug
+         #effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{} -]*)', AutoS)
+         #passedScript = "{}".format(effect.group(0))
+         #confirm('effects: {}'.format(passedScript)) #Debug
+         if regexHooks['GainX'].search(AutoS):
+            gainTuple = GainX(AutoS, costText, card, targetCard, notification = 'Automatic', n = count)
+            if gainTuple == 'ABORT': break
+         elif regexHooks['TokensX'].search(AutoS): 
+            if TokensX(AutoS, costText, card, targetCard, notification = 'Automatic', n = count) == 'ABORT': break
+         elif regexHooks['DrawX'].search(AutoS):
+            if DrawX(AutoS, costText, card, targetCard, notification = 'Automatic', n = count) == 'ABORT': break
+   if debugVerbosity >= 3: notify("<<< autoscriptOtherPlayers()") # Debug
+
+#------------------------------------------------------------------------------
+# Start/End of Turn/Phase trigger
+#------------------------------------------------------------------------------
+   
+def atTimedEffects(Time = 'Start'): # Function which triggers card effects at the start or end of the turn.
+   mute()
+   if debugVerbosity >= 1: notify(">>> atTimedEffects() at time: {}".format(Time)) #Debug
+   if not Automations['Start/End-of-Turn']: return
+   TitleDone = False
+   X = 0
+   for card in table:
+      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return # We do not care about inactive cards.
+      if not card.isFaceUp: continue
+      Autoscripts = CardsAS.get(card.model,'').split('||')
+      for autoS in Autoscripts:
+         if debugVerbosity >= 3: notify("### Processing {} Autoscript: {}".format(card, autoS))
+         if re.search(r'after([A-za-z]+)',Time): effect = re.search(r'(after[A-za-z]+):(.*)', autoS) # Putting Run in a group, only to retain the search results groupings later
+         else: effect = re.search(r'atTurn(Start|End):(.*)', autoS) #Putting "Start" or "End" in a group to compare with the Time variable later
+         if not effect: continue
+         if debugVerbosity >= 3: notify("### Time maches. Script triggers on: {}".format(effect.group(1)))
+         if chkPlayer(effect.group(2), card.controller,False) == 0: continue # Check that the effect's origninator is valid. 
+         if effect.group(1) != Time: continue # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
+         if debugVerbosity >= 3: notify("### split Autoscript: {}".format(autoS))
+         if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
+         if re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: continue
+         if re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: continue
+         if re.search(r'isOptional', effect.group(2)):
+            extraCountersTXT = '' 
+            for cmarker in card.markers: # If the card has any markers, we mention them do that the player can better decide which one they wanted to use (e.g. multiple bank jobs)
+               extraCountersTXT += " {}x {}\n".format(card.markers[cmarker],cmarker[0])
+            if extraCountersTXT != '': extraCountersTXT = "\n\nThis card has the following counters on it\n" + extraCountersTXT
+            if not confirm("{} can have its optional ability take effect at this point. Do you want to activate it?{}".format(fetchProperty(card, 'name'),extraCountersTXT)): continue         
+         if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue
+         splitAutoscripts = effect.group(2).split('$$')
+         for passedScript in splitAutoscripts:
+            if not TitleDone: 
+               if re.search(r'after([A-za-z]+)',Time): 
+                  Phase = re.search(r'after([A-za-z]+)',Time)
+                  title = "{}'s Post-{} Effects".format(me,Phase.group(1))
+               else: title = "{}'s {}-of-Turn Effects".format(me,effect.group(1))
+               notify("{:=^36}".format(title))
+            TitleDone = True
+            if debugVerbosity >= 2: notify("### passedScript: {}".format(passedScript))
+            if card.highlight == DummyColor: announceText = "{}'s lingering effects:".format(card)
+            else: announceText = "{}:".format(card)
+            if regexHooks['GainX'].search(passedScript):
+               gainTuple = GainX(passedScript, announceText, card, notification = 'Automatic', n = X)
+               if gainTuple == 'ABORT': break
+               X = gainTuple[1] 
+            elif regexHooks['DrawX'].search(passedScript):
+               if DrawX(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
+            elif regexHooks['RollX'].search(passedScript):
+               rollTuple = RollX(passedScript, announceText, card, notification = 'Automatic', n = X)
+               if rollTuple == 'ABORT': break
+               X = rollTuple[1] 
+            elif regexHooks['TokensX'].search(passedScript):
+               if TokensX(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
+            elif regexHooks['ModifyStatus'].search(passedScript):
+               if ModifyStatus(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
+            elif regexHooks['DiscardX'].search(passedScript): 
+               discardTuple = DiscardX(passedScript, announceText, card, notification = 'Automatic', n = X)
+               if discardTuple == 'ABORT': break
+               X = discardTuple[1] 
+            elif regexHooks['RequestInt'].search(passedScript): 
+               numberTuple = RequestInt(passedScript, announceText, card) # Returns like reshuffleX()
+               if numberTuple == 'ABORT': break
+               X = numberTuple[1] 
+            elif regexHooks['CustomScript'].search(passedScript):
+               if CustomScript(card, action = 'Turn{}'.format(Time)) == 'ABORT': break
+            if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
+   #markerEffects(Time) 
+   if TitleDone: notify(":::{:=^30}:::".format('='))   
+   if debugVerbosity >= 3: notify("<<< atTimedEffects()") # Debug
+
+def markerEffects(Time = 'Start'):
+   if debugVerbosity >= 1: notify(">>> markerEffects() at time: {}".format(Time)) #Debug
+### Following is not yet implemented. It's from Netrunner classic. Commented out just in case I need it.
+#   CounterHold = getSpecial('Identity')
+   ### Checking triggers from markers in our own Counter Hold.
+#   for marker in CounterHold.markers: # Not used in ANR (yet)
+#      count = CounterHold.markers[marker]
+#      if debugVerbosity >= 3: notify("### marker: {}".format(marker[0])) # Debug
+#      if re.search(r'virusScaldan',marker[0]) and Time == 'Start':
+#         total = 0
+#         for iter in range(count):
+#            rollTuple = RollX('Roll1Dice', 'Scaldan virus:', CounterHold, notification = 'Automatic')
+#            if rollTuple[1] >= 5: total += 1
+#         me.counters['Bad Publicity'].value += total
+#         if total: notify("--> {} receives {} Bad Publicity due to their Scaldan virus infestation".format(me,total))
+#      if re.search(r'virusSkivviss',marker[0]) and Time == 'Start':
+#         passedScript = 'Draw{}Cards'.format(count)
+#         DrawX(passedScript, "Skivviss virus:", CounterHold, notification = 'Automatic')
+#      if re.search(r'virusTax',marker[0]) and Time == 'Start':
+#         GainX('Lose1Credits-perMarker{virusTax}-div2', "Tax virus:", CounterHold, notification = 'Automatic')
+#      if re.search(r'Doppelganger',marker[0]) and Time == 'Start':
+#         GainX('Lose1Credits-perMarker{Doppelganger}', "{}:".format(marker[0]), CounterHold, notification = 'Automatic')
+#      if re.search(r'virusPipe',marker[0]) and Time == 'Start':
+#         passedScript = 'Infect{}forfeitCounter:Clicks'.format(count)
+#         TokensX(passedScript, "Pipe virus:", CounterHold, notification = 'Automatic')
+#      if re.search(r'Data Raven',marker[0]) and Time == 'Start':
+#         GainX('Gain1Tags-perMarker{Data Raven}', "{}:".format(marker[0]), CounterHold, notification = 'Automatic')
+#      if re.search(r'Mastiff',marker[0]) and Time == 'Run':
+#         InflictX('Inflict1BrainDamage-perMarker{Mastiff}', "{}:".format(marker[0]), CounterHold, notification = 'Automatic')
+#      if re.search(r'Cerberus',marker[0]) and Time == 'Run':
+#         InflictX('Inflict2NetDamage-perMarker{Cerberus}', "{}:".format(marker[0]), CounterHold, notification = 'Automatic')
+#      if re.search(r'Baskerville',marker[0]) and Time == 'Run':
+#         InflictX('Inflict2NetDamage-perMarker{Baskerville}', "{}:".format(marker[0]), CounterHold, notification = 'Automatic')
+#   targetPL = ofwhom('-ofOpponent')          
+   ### Checking triggers from markers in opponent's Counter Hold.
+#   CounterHold = getSpecial('Identity', targetPL) # Some viruses also trigger on our opponent's turns
+#   for marker in CounterHold.markers:
+#      count = CounterHold.markers[marker]
+#      if marker == mdict['virusButcherBoy'] and Time == 'Start':
+#         GainX('Gain1Credits-onOpponent-perMarker{virusButcherBoy}-div2', "Opponent's Butcher Boy virus:", OpponentCounterHold, notification = 'Automatic')
+   ### Checking triggers from markers the rest of our cards.
+   
+   
+#------------------------------------------------------------------------------
 # Core Commands
 #------------------------------------------------------------------------------
    
@@ -291,8 +462,9 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    if debugVerbosity >= 2: notify("### About to announce.")
    if count == 0: return announceText # If there are no cards, then we effectively did nothing, so we don't change the notification.
    if notification == 'Quick': announceString = "{} draws {} cards".format(announceText, count)
-   elif targetPL == me: announceString = "{} {} {} cards from their {}{}".format(announceText, destiVerb, count, pileName(source), destPath)
-   else: announceString = "{} {} {} cards from {}'s {}".format(announceText, destiVerb, count, targetPL, pileName(source), destPath)
+   elif targetPL == me: announceString = "{} {} {} cards from their {}{}".format(announceText, destiVerb, count, source.name, destPath)
+   elif source = targetPL.piles['Command Deck'] and destination == targetPL.hand: announceString = "{} draw {} cards.".format(announceText, destiVerb, count)
+   else: announceString = "{} {} {} cards from {}'s {}".format(announceText, destiVerb, count, targetPL, source.name, destPath)
    if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< DrawX()")
    return announceString

@@ -447,14 +447,14 @@ def sortPriority(cardList):
 def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
    if debugVerbosity >= 1: notify(">>> oncePerTurn(){}".format(extraASDebug())) #Debug
    mute()
-   if card.orientation == Rot90:
+   if card.markers[mdict['Activation']] and card.markers[mdict['Activation']] >= 1:
       if act != 'manual': return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
       elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(fetchProperty(card, 'name'))): return 'ABORT'
       else: 
          if not silent: notify('{} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
       if not silent: notify('{} activates the once-per-turn ability of {}'.format(me, card))
-   card.orientation = Rot90
+   card.markers[mdict['Activation']] += 1
 
 #---------------------------------------------------------------------------
 # Card Placement functions

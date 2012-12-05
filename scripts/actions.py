@@ -68,6 +68,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
          setGlobalVariable('Active Player', opponent.name)
          notify("=== {} has ended their turn ===.".format(me))
+         if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
          if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
          return
       elif getGlobalVariable('Active Player') != me.name:
@@ -97,6 +98,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
    mute()
+   atTimedEffects(Time = 'Start') # Scripted events at the start of the player's turn
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
    BotD = getSpecial('BotD')
@@ -118,16 +120,18 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          chosenObj = Card(opponentObjectives[choice])
          chosenObj.markers[mdict['Damage']] += 1
          notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(chosenObj))      
+   atTimedEffects(Time = 'afterBalance')   
 
 def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
    mute()
+   global firstTurn
    me.setGlobalVariable('Phase','2')
    showCurrentPhase()
+   if not firstTurn: notify(":> {} refreshed all their cards".format(me))   
    for card in table:
       if card.owner == me and card.controller == me and card.highlight != CapturedColor:
          if firstTurn and Side == 'Light':
-            global firstTurn
             notify(":::NOTICE::: {} skips his first card refresh".format(me))
             firstTurn = False
          else:
@@ -146,7 +150,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
       card = me.piles['Objective Deck'].top()
       storeObjective(card)
       currentObjectives = eval(me.getGlobalVariable('currentObjectives')) # We don't need to clear destroyed objectives anymore, since that is taken care of during storeObjective()
-   notify(":> {} refreshed all their cards".format(me))   
+   atTimedEffects(Time = 'afterRefresh')   
 
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
@@ -156,18 +160,21 @@ def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    me.setGlobalVariable('Phase','3')
    showCurrentPhase()
    if len(me.hand) == 0: refillHand() # If the player's hand is empty, there's no option to take. Just refill.
+   atTimedEffects(Time = 'afterDraw')   
    
 def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment phase
    if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','4')
    showCurrentPhase()   
+   atTimedEffects(Time = 'afterDeployment')   
    
 def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
    if debugVerbosity >= 1: notify(">>> goToConflict(){}".format(extraASDebug())) #Debug
    mute()
    me.setGlobalVariable('Phase','5')
    showCurrentPhase()   
+   atTimedEffects(Time = 'afterConflict')   
 
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
@@ -178,6 +185,7 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()
    delayed_whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
+   atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
    mute()
