@@ -50,6 +50,7 @@
          <groupaction menu="Switch Play Automation ON/OFF" default="false" execute="switchPlayAutomation" />  
          <groupaction menu="Switch Phase Automation ON/OFF" default="false" execute="switchPhaseAutomation" />  
          <groupaction menu="Switch Automatic Triggers ON/OFF" default="false" execute="switchTriggersAutomation" />  
+         <groupaction menu="Switch Start/End-of-Turn/Phase Automation ON/OFF" default="false" execute="switchStartEndAutomation" />  
          <groupaction menu="Switch Custom Forms ON/OFF" default="false" execute="switchWinForms" />  
          <groupaction menu="Switch Automatic Placement ON/OFF" default="false" execute="switchPlacement" />  
          <groupaction menu="Re-Download all card automations" default="false" execute="fetchCardScripts" />

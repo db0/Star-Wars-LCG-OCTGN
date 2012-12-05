@@ -22,6 +22,7 @@ Automations = {'Play'    : True, # If True, game will automatically trigger card
                'Triggers'               : True, # If True, game will search the table for triggers based on player's actions, such as installing a card, or discarding one.
                'WinForms'               : True, # If True, game will use the custom Windows Forms for displaying multiple-choice menus and information pop-ups
                'Placement'              : True, # If True, game will try to auto-place cards on the table after you paid for them.
+               'Start/End-of-Turn/Phase': True, # If True, game will automatically trigger effects happening at the start of the player's turn, from cards they control.                
               }
 
 
@@ -226,6 +227,10 @@ def switchPhaseAutomation(group,x=0,y=0):
 def switchTriggersAutomation(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchTriggersAutomation(){}".format(extraASDebug())) #Debug
    switchAutomation('Triggers')
+
+def switchStartEndAutomation(group,x=0,y=0):
+   if debugVerbosity >= 1: notify(">>> switchStartEndAutomation(){}".format(extraASDebug())) #Debug
+   switchAutomation('Start/End-of-Turn/Phase')
    
 def switchWinForms(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchWinForms(){}".format(extraASDebug())) #Debug

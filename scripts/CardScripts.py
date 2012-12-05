@@ -1034,7 +1034,7 @@ Mission Briefing
 -----
 ff4fb461-8060-457a-9c16-000000000010
 -----
-atTurnStart:Draw1Card-onOpponent-byOpponent
+atTurnStart:Draw1Card
 +++++
 
 .....

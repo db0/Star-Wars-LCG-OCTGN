@@ -190,7 +190,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
 def atTimedEffects(Time = 'Start'): # Function which triggers card effects at the start or end of the turn.
    mute()
    if debugVerbosity >= 1: notify(">>> atTimedEffects() at time: {}".format(Time)) #Debug
-   if not Automations['Start/End-of-Turn']: return
+   if not Automations['Start/End-of-Turn/Phase']: return
    TitleDone = False
    X = 0
    for card in table:
@@ -233,6 +233,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
                if gainTuple == 'ABORT': break
                X = gainTuple[1] 
             elif regexHooks['DrawX'].search(passedScript):
+               if debugVerbosity >= 2: notify("### About to DrawX()")
                if DrawX(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
             elif regexHooks['RollX'].search(passedScript):
                rollTuple = RollX(passedScript, announceText, card, notification = 'Automatic', n = X)
@@ -463,7 +464,7 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    if count == 0: return announceText # If there are no cards, then we effectively did nothing, so we don't change the notification.
    if notification == 'Quick': announceString = "{} draws {} cards".format(announceText, count)
    elif targetPL == me: announceString = "{} {} {} cards from their {}{}".format(announceText, destiVerb, count, source.name, destPath)
-   elif source = targetPL.piles['Command Deck'] and destination == targetPL.hand: announceString = "{} draw {} cards.".format(announceText, destiVerb, count)
+   elif source == targetPL.piles['Command Deck'] and destination == targetPL.hand: announceString = "{} draw {} cards.".format(announceText, destiVerb, count)
    else: announceString = "{} {} {} cards from {}'s {}".format(announceText, destiVerb, count, targetPL, source.name, destPath)
    if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< DrawX()")
