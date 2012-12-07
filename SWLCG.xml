@@ -74,6 +74,7 @@
 		<groupaction menu="Reveal Edge Cards/Resolve Edge Battle" default="false" shortcut="Ctrl+Shift+E" execute="revealEdge" />
 		<groupaction menu="Declare Pass" default="false" shortcut="Ctrl+Space" execute="declarePass" />
 		<cardaction menu="Discard Card/Thwart Objective" default="false" shortcut="Del" execute="discard" />
+		<cardaction menu="Send to bottom of deck (random order)" default="false" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		<groupaction menu="Move to Next phase." default="false" shortcut="Ctrl+Enter" execute="nextPhase" />
 		<groupactions menu="Phases...">
 			<groupaction menu="Jump to Balance Phase." default="false" shortcut="F1" execute="goToBalance" />
@@ -127,10 +128,11 @@
 			<groupaction menu="Random Discard" default="false" execute="randomDiscard" />
          <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
          <cardaction menu="Discard/Remove 4th Obejctive" default="false" shortcut="del" execute="handDiscard" />           
+         <cardaction menu="Send to bottom of deck (random order)" default="false" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		</hand>
 		<group name="Command Deck" visibility="none" ordered="false" width="63" height="88" icon="r12" collapsed="false">
 			<groupaction menu="Draw" default="true" shortcut="Ctrl+D" execute="drawCommand" />
-			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="refillHand" />
+			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+Shift+R" execute="refillHand" />
 			<groupaction menu="Draw X..." default="false" shortcut="Ctrl+X" execute="drawMany" />
 			<groupaction menu="Draw from Bottom" default="false" shortcut="Ctrl+Alt+D" execute="drawBottom" />
 			<groupaction menu="Shuffle" default="false" execute="shuffle" />

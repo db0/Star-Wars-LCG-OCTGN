@@ -19,7 +19,7 @@
 # Many of them are also called from the autoscripts.
 ###=================================================================================================================###
 
-import re
+import re, random
 #---------------------------------------------------------------------------
 # Global variables
 #---------------------------------------------------------------------------
@@ -864,6 +864,18 @@ def randomDiscard(group):
 	if card == None: return
 	notify("{} randomly discards {}.".format(me,card.name))
 	card.moveTo(me.piles['Discard Pile'])
+
+def sendToBottom(cards,x=0,y=0):
+   if debugVerbosity >= 1: notify(">>> sendToBottom(){}".format(extraASDebug())) #Debug
+	mute()
+   if debugVerbosity >= 2: notify("### Original List: {}".format([card.name for card in cards])) #Debug
+	random.shuffle(cards)
+   if debugVerbosity >= 2: notify("### Randomized List: {}".format([card.name for card in cards])) #Debug
+   if cards[0].group = me.hand:
+      notify("{} sends {} cards from their hand to the bottom of their deck in random order.".format(me,len(cards)))
+   else:
+      notify("{} sends {} to the bottom of their deck in random order.".format(me,[card.name for card in cards]))
+   for card in cards: card.moveToBottom(me.piles['Command Deck'])
 
 def drawCommand(group, silent = False):
    if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
