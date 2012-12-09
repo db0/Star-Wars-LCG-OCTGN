@@ -116,7 +116,10 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          objectiveList = []
          for objectve_ID in opponentObjectives:
             objective = Card(objectve_ID)
-            objectiveList.append(objective.name)
+            if objective.markers[mdict['Damage']] and objective.markers[mdict['Damage']] >= 1: 
+               extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
+            else: extraTXT = ''
+            objectiveList.append(objective.name + extraTXT)
          choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage", objectiveList, type = 'radio', default = 0)
          chosenObj = Card(opponentObjectives[choice])
          chosenObj.markers[mdict['Damage']] += 1
@@ -671,7 +674,46 @@ def discard(card, x = 0, y = 0, silent = False):
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
    return 'OK'
- 
+
+def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the table or the oppomnent's hand to capture
+   if debugVerbosity >= 1: notify(">>> capture(){}".format(extraASDebug())) #Debug
+   mute()
+   targetC = None
+   for card in table:
+      if debugVerbosity >= 2: notify("### Searching table") #Debug
+      if card.targetedBy and card.targetedBy == me and card.Type != "Objective": targetC = card
+   if not targetC:
+      if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
+      for card in opponent.hand:
+         if card.targetedBy and card.targetedBy == me: targetC = card
+   if not targetC:
+      if debugVerbosity >= 2: notify("### Searching command deck") #Debug
+      for card in opponent.piles['Command Deck'].top(3):
+         if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
+         if card.targetedBy and card.targetedBy == me: targetC = card
+   if not targetC: whisper(":::ERROR::: You need to target a card in the table or your opponent's hand or deck before taking this action")
+   else: 
+      myObjectives = eval(me.getGlobalVariable('currentObjectives'))
+      objectiveList = []
+      for objectve_ID in myObjectives:
+         objective = Card(objectve_ID)
+         if objective.markers[mdict['Damage']] and objective.markers[mdict['Damage']] >= 1: 
+            extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
+         else: extraTXT = ''
+         objectiveList.append(objective.name + extraTXT)
+      choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
+      chosenObj = Card(myObjectives[choice])
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      capturedCards[targetC._id] = chosenObj._id
+      xPos, yPos = chosenObj.position
+      countCaptures = 0 
+      for capturedC in capturedCards:
+         if capturedCards[capturedC] == chosenObj._id: countCaptures += 1
+      targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
+      targetC.sendToBack()
+      targetC.isFaceUp = False
+      setGlobalVariable('Captured Cards',str(capturedCards))
+
 def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.

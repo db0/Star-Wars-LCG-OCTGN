@@ -20,6 +20,7 @@
      <globalvariable name="Existing Units" value="{}" />      
      <globalvariable name="Revealed Edge" value="{}" />      
      <globalvariable name="Engagement Phase" value="0" />      
+     <globalvariable name="Captured Cards" value="{}" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">
 		<property name="Block" type="String" hidden="false" ignoreText="False" textKind="Free" />
@@ -74,6 +75,7 @@
 		<groupaction menu="Reveal Edge Cards/Resolve Edge Battle" default="false" shortcut="Ctrl+Shift+E" execute="revealEdge" />
 		<groupaction menu="Declare Pass" default="false" shortcut="Ctrl+Space" execute="declarePass" />
 		<cardaction menu="Discard Card/Thwart Objective" default="false" shortcut="Del" execute="discard" />
+		<groupaction menu="Capture Target" default="false" shortcut="Ctrl+C" execute="capture" />
 		<cardaction menu="Send to bottom of deck (random order)" default="false" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		<groupaction menu="Move to Next phase." default="false" shortcut="Ctrl+Enter" execute="nextPhase" />
 		<groupactions menu="Phases...">
