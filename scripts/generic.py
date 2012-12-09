@@ -456,6 +456,10 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
       if not silent: notify('{} activates the once-per-turn ability of {}'.format(me, card))
    card.markers[mdict['Activation']] += 1
 
+def clearTargets():
+   for card in table:
+      if card.targetedBy: card.target(False)
+      
 #---------------------------------------------------------------------------
 # Card Placement functions
 #---------------------------------------------------------------------------

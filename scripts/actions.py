@@ -94,6 +94,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
             goToForce()
          else: goToConflict()
       elif phase == 6: goToForce()
+   clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
 
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
@@ -297,6 +298,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
+   clearTargets() # We clear the targets in case they were forgotten.
    if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
 # Rest
