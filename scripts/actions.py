@@ -630,13 +630,16 @@ def discard(card, x = 0, y = 0, silent = False):
          if debugVerbosity >= 2: notify("About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
          currentObjectives.remove(card._id)
+         rescuedCount = rescueFromObjective(card)
+         if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
+         else: extraTXT = ''
          me.setGlobalVariable('currentObjectives', str(currentObjectives))
          card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
          opponent.counters['Objectives Destroyed'].value += 1         
          if Side == 'Light': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
-         else: notify("{} thwarts {}.".format(opponent,card))
+         else: notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
          executePlayScripts(card, 'THWART')
       else:
          if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
@@ -644,13 +647,16 @@ def discard(card, x = 0, y = 0, silent = False):
          # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
          # Then when the other player tries to refresh, it first removes any destroyed objectives from their list.
          destroyedObjectives.append(card._id)
+         rescuedCount = rescueFromObjective(card)
+         if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
+         else: extraTXT = ''
          setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
          me.counters['Objectives Destroyed'].value += 1
          if Side == 'Dark': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
-         else: notify("{} thwarts {}.".format(me,card))
+         else: notify("{} thwarts {}{}.".format(me,card,extraTXT))
          executePlayScripts(card, 'THWART')
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
@@ -659,6 +665,9 @@ def discard(card, x = 0, y = 0, silent = False):
       global edgeCount
       edgeCount = 0
       card.moveTo(card.owner.piles['Discard Pile'])
+   elif card.highlight == CapturedColor:
+      removeCapturedCard(card)
+      card.moveTo(card.owner.piles['Discard Pile'])   
    elif card.Type == 'Unit':
       if Automations['Placement']:
          if card.owner == me:
@@ -681,17 +690,20 @@ def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the t
    targetC = None
    for card in table:
       if debugVerbosity >= 2: notify("### Searching table") #Debug
-      if card.targetedBy and card.targetedBy == me and card.Type != "Objective": targetC = card
-   if not targetC:
+      if card.targetedBy and card.targetedBy == me and card.Type != "Objective" and card.highlight != CapturedColor: targetC = card
+   if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
+   else:
       if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
       for card in opponent.hand:
          if card.targetedBy and card.targetedBy == me: targetC = card
-   if not targetC:
-      if debugVerbosity >= 2: notify("### Searching command deck") #Debug
-      for card in opponent.piles['Command Deck'].top(3):
-         if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
-         if card.targetedBy and card.targetedBy == me: targetC = card
-   if not targetC: whisper(":::ERROR::: You need to target a card in the table or your opponent's hand or deck before taking this action")
+      if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner,targetC)
+      else:
+         if debugVerbosity >= 2: notify("### Searching command deck") #Debug
+         for card in opponent.piles['Command Deck'].top(3):
+            if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
+            if card.targetedBy and card.targetedBy == me: targetC = card
+         if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner,targetC)
+   if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
       myObjectives = eval(me.getGlobalVariable('currentObjectives'))
       objectiveList = []
@@ -703,6 +715,9 @@ def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the t
          objectiveList.append(objective.name + extraTXT)
       choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
       chosenObj = Card(myObjectives[choice])
+      captureTXT += " as part of their {} objective".format(chosenObj)
+      notify(captureTXT)
+      rnd(1,10)
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       capturedCards[targetC._id] = chosenObj._id
       xPos, yPos = chosenObj.position
@@ -712,8 +727,30 @@ def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the t
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
+      targetC.highlight = CapturedColor
       setGlobalVariable('Captured Cards',str(capturedCards))
 
+def removeCapturedCard(card):
+   try: 
+      mute()
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      if capturedCards[card._id]: del capturedCards[card._id]
+      card.highlight = None
+   except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
+
+def rescueFromObjective(obj):
+   try:
+      count = 0
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      for capturedC in capturedCards:
+         if capturedCards[capturedC] == obj._id:
+            count += 1
+            rescuedC = Card(capturedC)
+            removeCapturedCard(rescuedC)
+            rescuedC.moveTo(rescuedC.owner.hand)
+      return count
+   except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
+   
 def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.

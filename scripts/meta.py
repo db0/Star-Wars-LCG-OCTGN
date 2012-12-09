@@ -138,11 +138,15 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
    unitAmount[me.name] = 0  # This variable is used for unit placement
    setGlobalVariable('Existing Units',str(unitAmount))
+   capturedCards = eval(getGlobalVariable('Captured Cards')) # This variable is for captured cards.
+   capturedCards.clear()
+   setGlobalVariable('Captured Cards',str(capturedCards))
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
    setGlobalVariable('Engaged Objective','None')
    setGlobalVariable('Engagement Phase','0')
+   me.setGlobalVariable('currentObjectives', '[]')
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
 
 def placeCard(card): 
