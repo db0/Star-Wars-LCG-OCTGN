@@ -19,7 +19,7 @@
 # Many of them are also called from the autoscripts.
 ###=================================================================================================================###
 
-import re, random
+import re
 #---------------------------------------------------------------------------
 # Global variables
 #---------------------------------------------------------------------------
@@ -867,11 +867,13 @@ def randomDiscard(group):
 
 def sendToBottom(cards,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> sendToBottom(){}".format(extraASDebug())) #Debug
-	mute()
+   mute()
    if debugVerbosity >= 2: notify("### Original List: {}".format([card.name for card in cards])) #Debug
-	random.shuffle(cards)
+   for iter in range(len(cards)):
+      swap = rnd(iter,len(cards) - 1)
+      cards[iter], cards[swap] = cards[swap], cards[iter]
    if debugVerbosity >= 2: notify("### Randomized List: {}".format([card.name for card in cards])) #Debug
-   if cards[0].group = me.hand:
+   if cards[0].group == me.hand:
       notify("{} sends {} cards from their hand to the bottom of their deck in random order.".format(me,len(cards)))
    else:
       notify("{} sends {} to the bottom of their deck in random order.".format(me,[card.name for card in cards]))
