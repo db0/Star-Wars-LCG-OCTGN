@@ -160,10 +160,10 @@ def placeCard(card):
             card.moveToTable(positionC[0],positionC[1])
             me.setGlobalVariable('freePositions',str(freePositions))
          else:
-            loopsNR = unitAmount[me.name] / 9
-            loopback = 9 * loopsNR
+            loopsNR = unitAmount[me.name] / 8
+            loopback = 8 * loopsNR
             if unitAmount[me.name] == 0: xoffset = 0
-            else: xoffset = playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cwidth(card,5)
+            else: xoffset = -playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)
             if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
             yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR + 1) * playerside)
             card.moveToTable(xoffset,yoffset)
