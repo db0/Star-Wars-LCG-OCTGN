@@ -293,7 +293,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    setGlobalVariable('Engaged Objective','None')
    setGlobalVariable('Engagement Phase','0')
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
-      if card.highlight == EdgeColor: discard(card) # We remove both player's edge cards
+      if card.highlight == EdgeColor or card.highlight == FateColor: discard(card) # We remove both player's edge cards
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
