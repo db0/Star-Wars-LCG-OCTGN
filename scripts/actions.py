@@ -844,7 +844,7 @@ def play(card):
    else: 
       placeCard(card)
       notify("{} plays {}{}.".format(me, card,extraTXT))
-      executePlayScripts(card, 'PLAY')
+      executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
 
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug

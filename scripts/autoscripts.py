@@ -365,7 +365,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    foundKey = False # We use this to see if the marker used in the AutoAction is already defined.
    infectTXT = '' # We only inject this into the announcement when this is an infect AutoAction.
    preventTXT = '' # Again for virus infections, to note down how much was prevented.
-   action = re.search(r'\b(Put|Remove|Refill|Use|Infect)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
+   action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
    #confirm("{}".format(action.group(3))) # Debug
    if action.group(3) in mdict: token = mdict[action.group(3)]
    else: # If the marker we're looking for it not defined, then either create a new one with a random color, or look for a token with the custom name we used above.
@@ -389,7 +389,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    multiplier = per(Autoscript, card, n, targetCards, notification)
    for targetCard in targetCards:
       #confirm("TargetCard ID: {}".format(targetCard._id)) # Debug
-      if action.group(1) == 'Put': modtokens = count * multiplier
+      if action.group(1) == 'Put' or action.group(1) == 'Deal': modtokens = count * multiplier
       elif action.group(1) == 'Refill': modtokens = count - targetCard.markers[token]
       elif action.group(1) == 'Infect':
          targetCardlist = '' #We don't want to mention the target card for infections. It's always the same.
@@ -767,10 +767,10 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                   targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
          if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\ntargetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in group: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
-            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or (re.search(r'AutoTargeted', Autoscript) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor)) and chkPlayer(Autoscript, targetLookup.controller, False): # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
+            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or (re.search(r'AutoTargeted', Autoscript) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor and targetLookup.highlight !=FateColor)) and chkPlayer(Autoscript, targetLookup.controller, False): # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
             # OK the above target check might need some decoding:
             # Look through all the cards on the group and start checking only IF...
-            # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Dummy, Revealed or Inactive.
+            # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
             # * The player who controls this card is supposed to be me or the enemy.
                if debugVerbosity >= 3: notify("### Checking {}".format(targetLookup)) #Debug
                del cardProperties[:] # Cleaning the previous entries
@@ -808,6 +808,9 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
+                  if not chkPlayer(Autoscript, targetLookup.controller, False): targetC = None
+                  if re.search(r'isCurrentObjective',Autoscript):
+                     if card.highlight != DefendColor: targetC = None
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
@@ -817,7 +820,7 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
             targetsText = ''
             mergedList = []
             for posRestrictions in targetGroups: 
-               if debugVerbosity >= 2: notify("### About to chkPlayer()")# Debug
+               if debugVerbosity >= 2: notify("### About to notify on restrictions")# Debug
                if targetsText == '': targetsText = '\nYou need: '
                else: targetsText += ', or '
                del mergedList[:]

@@ -10,7 +10,7 @@ ScriptsLocal = '''
 -----
 ff4fb461-8060-457a-9c16-000000000050
 -----
-
+onPlay:Deal1Damage-AutoTargeted-atObjective-isOptional-isCurrentObjective
 +++++
 
 .....
