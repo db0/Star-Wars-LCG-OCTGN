@@ -1063,6 +1063,7 @@ def addDamage(card, x = 0, y = 0):
     
 def addShield(card, x = 0, y = 0):
    mute()
+   if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type): return
    notify("{} adds a Shield token on {}.".format(me, card))
    card.markers[mdict['Shield']] += 1        
 
@@ -1084,6 +1085,7 @@ def addShieldTarget(group, x = 0, y = 0):
    mute()
    for card in table:
       if card.targetedBy and card.targetedBy == me:
+         if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("{} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.name): return
          card.markers[mdict['Shield']] += 1        
          notify("{} adds a Shield token on {}.".format(me, card))
 
