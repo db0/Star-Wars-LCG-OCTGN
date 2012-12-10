@@ -36,6 +36,7 @@ def executePlayScripts(card, action):
    for autoS in AutoScriptsSnapshot: # Checking and removing any "AtTurnStart" clicks.
       if (re.search(r'atTurn(Start|End)', autoS) or 
           re.search(r'atPhaseStart', autoS) or 
+          re.search(r'ConstantEffect', autoS) or 
           re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
           re.search(r'-isTrigger', autoS)): Autoscripts.remove(autoS)
       elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)

@@ -90,7 +90,7 @@ Ancient Monument
 -----
 ff4fb461-8060-457a-9c16-000000000170
 -----
-
+ConstantEffect:Force1Bonus
 +++++
 
 .....
@@ -946,7 +946,7 @@ Jedi Training
 -----
 ff4fb461-8060-457a-9c16-000000000167
 -----
-
+whilePlayed:Force1Bonus
 +++++
 
 .....

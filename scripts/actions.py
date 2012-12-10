@@ -220,6 +220,11 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       try: 
          if card.markers[mdict['Focus']] == 0: opponentStruggleTotal += num(card.Force)
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
+   for c in table:
+      bonusForce = re.search(r'Force([0-9])Bonus',CardsAS.get(card.model,''))
+      if bonusForce:
+         if c.controller == me: myStruggleTotal += num(bonusForce.group(1))
+         else: opponentStruggleTotal += num(bonusForce.group(1))
    if debugVerbosity >= 2: notify("Checking Struggle") #Debug
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
