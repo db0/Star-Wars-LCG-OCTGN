@@ -421,8 +421,12 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if abs(num(action.group(2))) == abs(999): total = 'all'
    else: total = abs(modtokens)
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
-   announceString = "{} {}{} {} {} counters{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],targetCardlist,preventTXT)
-   if notification == 'Automatic' and modtokens != 0: notify(':> {}.'.format(announceString))
+   if action.group(1) == 'Deal': countersTXT = '' # If we "deal damage" we do not want to be writing "deals 1 damage counters"
+   else: countersTXT = 'counters'
+   if notification == 'Quick' and action.group(1) == 'Deal': 
+         announceString = "{}'s {} {}s{} {} {} {}{}{}".format(announceText, card, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
+   else: announceString = "{} {}{} {} {} {}{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
+   if notification and modtokens != 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 2: notify("### TokensX() String: {}".format(announceString)) #Debug
    if debugVerbosity >= 3: notify("<<< TokensX()")
    return announceString
@@ -810,9 +814,8 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
-                  if not chkPlayer(Autoscript, targetLookup.controller, False): targetC = None
                   if re.search(r'isCurrentObjective',Autoscript):
-                     if card.highlight != DefendColor: targetC = None
+                     if targetLookup.highlight != DefendColor: targetC = None
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
