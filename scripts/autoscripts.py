@@ -816,6 +816,8 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
                   if re.search(r'isCurrentObjective',Autoscript):
                      if targetLookup.highlight != DefendColor: targetC = None
+                  if re.search(r'isCommited',Autoscript):
+                     if targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: targetC = None
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
