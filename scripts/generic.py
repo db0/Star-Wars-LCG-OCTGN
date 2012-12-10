@@ -48,6 +48,14 @@ def calcStringLabelSize(STRING):
    STRINGwidth = 200 + (len(STRING) / 4)
    STRINGheight = 30 + ((20 - newlines) * newlines) + (30 * (STRINGwidth / 100))
    return (STRINGwidth, STRINGheight)
+ 
+def calcStringButtonHeight(STRING): 
+# A function which returns a slowly expansing size for a label. The more characters, the more the width expands to allow more characters on the same line.
+   newlines = 0
+   for char in STRING:
+      if char == '\n': newlines += 1
+   STRINGheight = 30 + (7 * newlines) + (7 * (len(STRING) / 35))
+   return STRINGheight
    
 def formStringEscape(STRING): # A function to escape some characters that are not otherwise displayed by WinForms, like amperasands '&'
    slist = list(STRING)
@@ -191,7 +199,7 @@ class SingleChoiceWindow(Form):
             btn.CheckedChanged += self.checkedChanged
          else: 
             btn = Button()
-            btn.Height = 40 
+            btn.Height = calcStringButtonHeight(formStringEscape(option))
             btn.Click += self.choiceMade
          btn.Name = str(self.index)
          self.index = self.index + 1

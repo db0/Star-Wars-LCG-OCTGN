@@ -734,23 +734,39 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    if debugVerbosity >= 1: notify(">>> CustomScript() with action: {}".format(action)) #Debug
    mute()
    discard = me.piles['Discard Pile']
-   objectives = me.piles['Objectives Deck']
+   objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
    if card.model == 'ff4fb461-8060-457a-9c16-000000000149' and action == 'THWART' and card.owner == me:
+      if not confirm("Do you want to use the optional interrupt of Journey To Dagobath?"): return
+      if debugVerbosity >= 2: notify("### Journey to Dagobath Script")
       objList = []
+      if debugVerbosity >= 2: notify("### Moving objectives to removed from game pile")
       for c in objectives:
          c.moveTo(me.piles['Removed from Game'])
          objList.append(c._id)
       rnd(1,10)
       objNames = []
+      objDetails = []
+      if debugVerbosity >= 2: notify("### Storing objective properties and moving them back")
       for obj in objList:
-         if Card(obj).name in objNames: objList.remove(obj)
-         else: objNames.append(Card(obj).name)
-         Card(obj).name.moveTo(objectives)
-      choice = SingleChoice("Which objective do you want to put into play from your deck?", objNames, type = 'radio', default = 0)
+         if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(obj).name))
+         if Card(obj).name in objNames: 
+            objList.remove(obj)
+         else: 
+            objNames.append(Card(obj).name)
+            objDetails.append((Card(obj).Resources,Card(obj).properties['Damage Capacity'], Card(obj).Text)) # Creating a tuple with some details per objective
+         Card(obj).moveTo(objectives)
+      objChoices = []
+      for iter in range(len(objList)):
+         objChoices.append("{}\
+                          \nResources {}, Damage Capacity: {}\
+                          \nText: {}\
+                          ".format(objNames[iter], objDetails[iter][0], objDetails[iter][1], objDetails[iter][2]))
+      choice = SingleChoice("Which objective do you want to put into play from your deck?", objChoices, type = 'button', default = 0)
       storeObjective(Card(objList[choice]))
       shuffle(objectives)
-      notify("{} uses the ability of {} to replace it with {}".format(card,Card(objList[choice])))
+      if debugVerbosity >= 2: notify("#### About to announce")
+      notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
       
 #------------------------------------------------------------------------------
 # Helper Functions

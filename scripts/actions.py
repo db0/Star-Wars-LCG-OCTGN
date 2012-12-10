@@ -650,7 +650,10 @@ def discard(card, x = 0, y = 0, silent = False):
          if Side == 'Light': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
-         else: notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
+         else: 
+            notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
+            if me.counters['Objectives Destroyed'].value >= 3: 
+               notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
       else:
          if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
@@ -667,7 +670,10 @@ def discard(card, x = 0, y = 0, silent = False):
          if Side == 'Dark': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
-         else: notify("{} thwarts {}{}.".format(me,card,extraTXT))
+         else: 
+            notify("{} thwarts {}{}.".format(me,card,extraTXT))
+            if opponent.counters['Objectives Destroyed'].value >= 3: 
+               notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")

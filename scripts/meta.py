@@ -120,6 +120,8 @@ def ofwhom(Autoscript, controller = me):
 
 def modifyDial(value):
    for player in players: player.counters['Death Star Dial'].value += value
+   if me.counters['Death Star Dial'].value >= 12:
+      notify("===::: The Dark Side wins the Game! :::====")
 
 def resetAll(): # Clears all the global variables in order to start a new game.
    if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
