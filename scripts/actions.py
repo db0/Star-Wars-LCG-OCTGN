@@ -893,11 +893,26 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if plAffiliation.markers[mdict['Edge']] and plAffiliation.markers[mdict['Edge']] == 1: return
       myEdgeTotal = 0
       opponentEdgeTotal = 0
+      
+      for c in table:
+         if debugVerbosity >= 4: notify("#### Checking {}".format(c)) #Debug
+         bonusForce = re.search(r'Force([0-9])Bonus',CardsAS.get(c.model,''))
+         if bonusForce:
+            if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
+            if c.controller == me: myStruggleTotal += num(bonusForce.group(1))
+            else: opponentStruggleTotal += num(bonusForce.group(1))
+         
       for card in table:
+         if debugVerbosity >= 4: notify("#### Checking {}".format(card)) #Debug
          if (card.highlight == EdgeColor or card.highlight == FateColor) and card.isFaceUp:
             if card.owner == me: myEdgeTotal += num(card.Force)
             else: opponentEdgeTotal += num(card.Force)
             if card.highlight == FateColor: notify(":::WARNING::: {} has not yet resolved their {}".format(card.owner,card))
+         bonusEdge = re.search(r'Edge([0-9])Bonus',CardsAS.get(c.model,''))
+         if bonusEdge and card.orientation == Rot90:
+            if debugVerbosity >= 2: notify("### Found card with Bonus edge") #Debug
+            if card.controller == me: myEdgeTotal += num(bonusEdge.group(1))
+            else: opponentEdgeTotal += num(bonusEdge.group(1))
       if myEdgeTotal > opponentEdgeTotal:
          if debugVerbosity >= 2: notify("### I've got the edge") #Debug
          if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
