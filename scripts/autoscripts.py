@@ -57,6 +57,8 @@ def executePlayScripts(card, action):
           (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
           (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
           (effectType.group(1) == 'onThwart' and action != 'THWART')): continue 
+      if re.search(r'-onlyDuringEngagement', AutoS) and getGlobalVariable('Engaged Objective') == 'None': 
+         return 'ABORT' # If this is an optional ability only for engagements, then we abort
       if re.search(r'-isOptional', AutoS):
          if not confirm("This card has an optional ability you can activate at this point. Do you want to do so?"): 
             notify("{} opts not to activate {}'s optional ability".format(me,card))
