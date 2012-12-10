@@ -21,7 +21,7 @@ Shield = ("Shield", "e9a419ff-5154-41cf-b84f-95149cc19a2a") # Temp
 
     
 mdict = dict( # A dictionary which holds all the hard coded markers (in the markers file)
-             Focus =                   ("Resource", "c93d4582-16a0-4e2d-9e63-71be20fbfa0c"),
+             Focus =                   ("Focus", "c93d4582-16a0-4e2d-9e63-71be20fbfa0c"),
              Damage =                  ("Damage", "224b865d-173b-49fd-9aed-17df678259b0"),
              Shield =                  ("Shield", "8559643f-7a15-4605-937d-0f39d59c9eda"),
              PlusOnePerm =             ("Permanent +1", "2246648d-1581-4be9-9636-1b75129313a6"),
