@@ -207,33 +207,36 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
    else: 
       commitColor = DarkForceColor
       commitOpponent = LightForceColor
-   if debugVerbosity >= 2: notify("Counting my committed cards") #Debug
+   if debugVerbosity >= 2: notify("### Counting my committed cards") #Debug
    commitedCards = [c for c in table if c.controller == me and c.highlight == commitColor]
-   if debugVerbosity >= 2: notify("About to loop") #Debug
+   if debugVerbosity >= 2: notify("### About to loop") #Debug
    for card in commitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0: myStruggleTotal += num(card.Force)
       except: myStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   if debugVerbosity >= 2: notify("Counting my opponents cards") #Debug
+   if debugVerbosity >= 2: notify("### Counting my opponents cards") #Debug
    opponentCommitedCards  = [c for c in table if c.controller == opponent and c.highlight == commitOpponent]
    for card in opponentCommitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0: opponentStruggleTotal += num(card.Force)
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
+   if debugVerbosity >= 2: notify("### About to check for bonus force cards") #Debug
    for c in table:
-      bonusForce = re.search(r'Force([0-9])Bonus',CardsAS.get(card.model,''))
+      if debugVerbosity >= 4: notify("#### Checking {}".format(c)) #Debug
+      bonusForce = re.search(r'Force([0-9])Bonus',CardsAS.get(c.model,''))
       if bonusForce:
+         if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
          if c.controller == me: myStruggleTotal += num(bonusForce.group(1))
          else: opponentStruggleTotal += num(bonusForce.group(1))
-   if debugVerbosity >= 2: notify("Checking Struggle") #Debug
+   if debugVerbosity >= 2: notify("### Checking Struggle") #Debug
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
-      if debugVerbosity >= 2: notify("struggleTotal Positive") #Debug
+      if debugVerbosity >= 2: notify("### struggleTotal Positive") #Debug
       if (Side == 'Light' and BotD.isAlternateImage) or (Side == 'Dark' and not BotD.isAlternateImage):
-         if debugVerbosity >= 2: notify("About to flip BotD due to my victory") #Debug
+         if debugVerbosity >= 2: notify("### About to flip BotD due to my victory") #Debug
          BotD.switchImage
          x,y = Affiliation.position
-         if debugVerbosity >= 2: notify("My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
+         if debugVerbosity >= 2: notify("### My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
          BotD.moveToTable(x - (playerside * 70), y)
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
@@ -1068,7 +1071,7 @@ def addDamage(card, x = 0, y = 0):
     
 def addShield(card, x = 0, y = 0):
    mute()
-   if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type): return
+   if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type)): return
    notify("{} adds a Shield token on {}.".format(me, card))
    card.markers[mdict['Shield']] += 1        
 
@@ -1090,7 +1093,7 @@ def addShieldTarget(group, x = 0, y = 0):
    mute()
    for card in table:
       if card.targetedBy and card.targetedBy == me:
-         if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("{} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.name): return
+         if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("{} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.name)): return
          card.markers[mdict['Shield']] += 1        
          notify("{} adds a Shield token on {}.".format(me, card))
 
