@@ -35,6 +35,7 @@ firstTurn = True # A variable to allow the engine to skip some phases on the fir
 handRefillDone = False # A variable which tracks if the player has refilled their hand during the draw phase. Allows the game to go faster.
 forceStruggleDone = False # A variable which tracks if the player's have actually done the force struggle for this turn (just in case it's forgotten)
 ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
+limitedPlayed = False # A Variable which records if the player has played a limited card this turn
 
 #---------------------------------------------------------------------------
 # Phases
@@ -103,6 +104,8 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
    BotD = getSpecial('BotD')
+   global limitedPlayed
+   limitedPlayed = False # Player can now play another limited card.
    if Side == 'Dark': 
       if BotD.isAlternateImage:
          modifyDial(2)
@@ -806,6 +809,25 @@ def play(card):
             whisper("ABORTING!")
             return
          else: extraTXT = ' on {}'.format(host[0])
+   if re.search(r'Limited\.',card.Text):
+      global limitedPlayed
+      if limitedPlayed:
+         if confirm("You've already played a limited card this turn. Bypass?"):
+            extraTXT += " (Bypassing Limit!)"
+         else: return
+      else: limitedPlayed = True
+   if re.search(r'Unique',card.Traits):
+      foundUnique = None
+      for c in table:
+         if c.name == card.name: 
+            foundUnique = c
+            break
+      if foundUnique:
+         if foundUnique.owner == me: confirmTXT = "This card is unique and you already have a copy of {} in play.\n\nBypass uniqueness restriction?".format(foundUnique.name)
+         else: confirmTXT = "This card is unique and {} already has a copy of {} in play.\n\nBypass uniqueness restriction?".format(foundUnique.owner.name,foundUnique.name)
+         if confirm(confirmTXT):
+            extraTXT += " (Bypassing Uniqueness Restriction!)"
+         else: return         
    card.moveToTable(0, 0 + yaxisMove(card))
    if num(card.Cost) > 0: 
       card.highlight = UnpaidColor

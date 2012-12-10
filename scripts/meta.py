@@ -124,7 +124,7 @@ def modifyDial(value):
 def resetAll(): # Clears all the global variables in order to start a new game.
    if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
    global unpaidCard, edgeCount, edgeRevealed, firstTurn, debugVerbosity
-   global Side, Affiliation, opponent
+   global Side, Affiliation, opponent, limitedPlayed
    mute()
    Side = None
    Affiliation = None
@@ -133,6 +133,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    edgeCount = 0 
    edgeRevealed = False
    firstTurn = True
+   limitedPlayed = False
    cardAttachements.clear()
    debugVerbosity = -1 # Reset means normal game.
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
