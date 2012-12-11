@@ -106,7 +106,7 @@ AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000002
 -----
-
+onPlay:Draw1Card
 +++++
 
 .....
@@ -114,7 +114,7 @@ AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000060
 -----
-
+onPlay:Draw1Card
 +++++
 
 .....
@@ -130,7 +130,7 @@ Battlefield Engineers
 -----
 ff4fb461-8060-457a-9c16-000000000015
 -----
-
+onAttack:Remove1Focus-AutoTargeted-atEnhancement-choose1-hasMarker{Focus}
 +++++
 
 .....

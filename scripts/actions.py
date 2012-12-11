@@ -676,10 +676,22 @@ def discard(card, x = 0, y = 0, silent = False):
          unitAmount[card.owner.name] -= 1
          setGlobalVariable('Existing Units',str(unitAmount))
       card.moveTo(card.owner.piles['Discard Pile'])
-      notify("{} discards {}".format(me,card))   
+      notify("{} discards {}".format(me,card))
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
+   if debugVerbosity >= 2: notify("Checking if the card has attachments to discard as well.")      
+   global cardAttachementsNR, hostCards
+   attachmentsNR = cardAttachementsNR.get(card._id,0)
+   if attachmentsNR >= 1:
+      hostCardSnapshot = dict(hostCards)
+      for attachment in hostCardSnapshot:
+         if hostCardSnapshot[attachment] == card._id and Card(attachment) in table:
+            discard(Card(attachment))
+            cardAttachementsNR[card._id] -= 1
+   if debugVerbosity >= 2: notify("Checking if the card is attached to unlink.")      
+   if hostCards.get(card._id,'None') != 'None': del hostCards[card._id] # If the card was an attachment, delete the link
+   if debugVerbosity >= 1: notify("<<< discard()") #Debug
    return 'OK'
 
 def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the table or the oppomnent's hand to capture
