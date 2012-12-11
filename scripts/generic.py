@@ -54,7 +54,7 @@ def calcStringButtonHeight(STRING):
    newlines = 0
    for char in STRING:
       if char == '\n': newlines += 1
-   STRINGheight = 30 + (7 * newlines) + (7 * (len(STRING) / 35))
+   STRINGheight = 30 + (8 * newlines) + (7 * (len(STRING) / 35))
    return STRINGheight
    
 def formStringEscape(STRING): # A function to escape some characters that are not otherwise displayed by WinForms, like amperasands '&'

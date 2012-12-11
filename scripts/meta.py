@@ -208,7 +208,23 @@ def findMarker(card, markerDesc): # Goes through the markers on the card and loo
          break
    if debugVerbosity >= 3: notify("<<< findMarker() by returning: {}".format(foundKey))
    return foundKey
-   
+
+def parseCombatIcons(STRING):
+   parsedIcons = ''
+   UD = re.search(r'(?<!-)UD:([1-9])',STRING)
+   EEUD = re.search(r'EE-UD:([1-9])',STRING)
+   BD = re.search(r'(?<!-)BD:([1-9])',STRING)
+   EEBD = re.search(r'EE-BD:([1-9])',STRING)
+   T = re.search(r'(?<!-)T:([1-9])',STRING)
+   EET = re.search(r'EE-T:([1-9])',STRING)
+   if UD: parsedIcons += 'UD:{}. '.format(UD.group(1))
+   if EEUD: parsedIcons += 'EE-UD:{}. '.format(EEUD.group(1))
+   if BD: parsedIcons += 'BD:{}. '.format(BD.group(1))
+   if EEBD: parsedIcons += 'EE-BD:{}. '.format(EEBD.group(1))
+   if T: parsedIcons += 'T:{}. '.format(T.group(1))
+   if EET: parsedIcons += 'EE-T:{}.'.format(EET.group(1))
+   return parsedIcons
+
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

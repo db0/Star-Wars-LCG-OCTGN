@@ -35,7 +35,7 @@ def executePlayScripts(card, action):
    AutoScriptsSnapshot = list(Autoscripts) # Need to work on a snapshot, because we'll be modifying the list.
    for autoS in AutoScriptsSnapshot: # Checking and removing any "AtTurnStart" clicks.
       if (re.search(r'atTurn(Start|End)', autoS) or 
-          re.search(r'atPhaseStart', autoS) or 
+          re.search(r'after([A-za-z]+)', autoS) or 
           re.search(r'ConstantEffect', autoS) or 
           re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
           re.search(r'-isTrigger', autoS)): Autoscripts.remove(autoS)
@@ -145,7 +145,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
    for card in table:
       if debugVerbosity >= 2: notify('Checking {}'.format(card)) # Debug
       if not card.isFaceUp: continue # Don't take into accounts cards that are face down for some reason. 
-      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return # We do not care about inactive cards.
+      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == FateColor or card.highlight == UnpaidColor: return # We do not care about inactive cards.
       costText = '{} activates {} to'.format(card.controller, card) 
       Autoscripts = CardsAS.get(card.model,'').split('||')
       if debugVerbosity >= 4: notify("### {}'s AS: {}".format(card,Autoscripts)) # Debug
@@ -221,37 +221,38 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue
          splitAutoscripts = effect.group(2).split('$$')
          for passedScript in splitAutoscripts:
-            if not TitleDone: 
+            targetC = findTarget(passedScript)
+            if not TitleDone and not (len(targetC) == 0 and re.search(r'AutoTargeted',passedScript)): # We don't want to put a title if we have a card effect that activates only if we have some valid targets (e.g. Admiral Motti)
                if re.search(r'after([A-za-z]+)',Time): 
                   Phase = re.search(r'after([A-za-z]+)',Time)
                   title = "{}'s Post-{} Effects".format(me,Phase.group(1))
                else: title = "{}'s {}-of-Turn Effects".format(me,effect.group(1))
                notify("{:=^36}".format(title))
-            TitleDone = True
+               TitleDone = True
             if debugVerbosity >= 2: notify("### passedScript: {}".format(passedScript))
             if card.highlight == DummyColor: announceText = "{}'s lingering effects:".format(card)
             else: announceText = "{}:".format(card)
             if regexHooks['GainX'].search(passedScript):
-               gainTuple = GainX(passedScript, announceText, card, notification = 'Automatic', n = X)
+               gainTuple = GainX(passedScript, announceText, card, targetC, notification = 'Automatic', n = X)
                if gainTuple == 'ABORT': break
                X = gainTuple[1] 
             elif regexHooks['DrawX'].search(passedScript):
                if debugVerbosity >= 2: notify("### About to DrawX()")
-               if DrawX(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
+               if DrawX(passedScript, announceText, card, targetC, notification = 'Automatic', n = X) == 'ABORT': break
             elif regexHooks['RollX'].search(passedScript):
-               rollTuple = RollX(passedScript, announceText, card, notification = 'Automatic', n = X)
+               rollTuple = RollX(passedScript, announceText, card, targetC, notification = 'Automatic', n = X)
                if rollTuple == 'ABORT': break
                X = rollTuple[1] 
             elif regexHooks['TokensX'].search(passedScript):
-               if TokensX(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
+               if TokensX(passedScript, announceText, card, targetC, notification = 'Automatic', n = X) == 'ABORT': break
             elif regexHooks['ModifyStatus'].search(passedScript):
-               if ModifyStatus(passedScript, announceText, card, notification = 'Automatic', n = X) == 'ABORT': break
+               if ModifyStatus(passedScript, announceText, card, targetC, notification = 'Automatic', n = X) == 'ABORT': break
             elif regexHooks['DiscardX'].search(passedScript): 
-               discardTuple = DiscardX(passedScript, announceText, card, notification = 'Automatic', n = X)
+               discardTuple = DiscardX(passedScript, announceText, card, targetC, notification = 'Automatic', n = X)
                if discardTuple == 'ABORT': break
                X = discardTuple[1] 
             elif regexHooks['RequestInt'].search(passedScript): 
-               numberTuple = RequestInt(passedScript, announceText, card) # Returns like reshuffleX()
+               numberTuple = RequestInt(passedScript, announceText, card, targetC) # Returns like reshuffleX()
                if numberTuple == 'ABORT': break
                X = numberTuple[1] 
             elif regexHooks['CustomScript'].search(passedScript):
@@ -836,18 +837,27 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                   if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
                   if targetC: break # If the card is a valid target from a previous restrictions group, we just chose it.
                   targetC = targetLookup
-                  if len(restrictionsGroup[0]) > 0: 
+                  if len(targetGroups) > 0 and len(restrictionsGroup[0]) > 0: 
                      for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
                         if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
                         if validtargetCHK not in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No positive restrictions")
-                  if len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
+                  if len(targetGroups) > 0 and len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
                      for invalidtargetCHK in restrictionsGroup[1]:
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
+                  markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
+                  if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
+                     if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
+                     if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
+                     marker = findMarker(targetLookup, markerName.group(1))
+                     if not marker: targetC = None
+                  elif debugVerbosity >= 2: notify("### No marker restrictions.")
                   if re.search(r'isCurrentObjective',Autoscript):
                      if targetLookup.highlight != DefendColor: targetC = None
+                  if re.search(r'isParticipating',Autoscript):
+                     if targetLookup.orientation != Rot90: targetC = None
                   if re.search(r'isCommited',Autoscript):
                      if targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: targetC = None
                if targetC and not targetC in foundTargets: 
@@ -855,7 +865,7 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
                targetC = None
-         if foundTargets == [] and not re.search(r'AutoTargeted', Autoscript): 
+         if len(foundTargets) == 0 and not re.search(r'AutoTargeted', Autoscript): 
             targetsText = ''
             mergedList = []
             for posRestrictions in targetGroups: 
@@ -875,6 +885,28 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                requiredAllegiances.append(allegiance.group(1))
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
             whisper(":::ERROR::: You need to target a valid card before using this action{}.".format(targetsText))
+         elif len(foundTargets) >= 1 and re.search(r'-choose',Autoscript):
+            if debugVerbosity >= 2: notify("### Going for a choice menu")# Debug
+            choiceType = re.search(r'-choose([0-9]+)',Autoscript)
+            targetChoices = []
+            if debugVerbosity >= 2: notify("### About to prepare choices list.")# Debug
+            for T in foundTargets:
+               markers = 'Counters:'
+               if T.markers[mdict['Damage']] and T.markers[mdict['Damage']] >= 1: markers += " {} Damage,".format(T.markers[mdict['Damage']])
+               if T.markers[mdict['Focus']] and T.markers[mdict['Focus']] >= 1: markers += " {} Focus,".format(T.markers[mdict['Focus']])
+               if T.markers[mdict['Shield']] and T.markers[mdict['Shield']] >= 1: markers += " {} Shield.".format(T.markers[mdict['Shield']])
+               if markers != '': markers += '\n'
+               stats = ''
+               if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
+               if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
+               if T.Type == 'Unit': combatIcons = parseCombatIcons(T.properties['Combat Icons'])
+               else: combatIcons = ''
+               choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
+               targetChoices.append(choiceTXT)
+            if debugVerbosity >= 2: notify("### Checking for SingleChoice")# Debug
+            if choiceType.group(1) == '1': 
+               choice = SingleChoice("Choose one of the valid targets for this effect", targetChoices, type = 'button', default = 0)
+               foundTargets = [foundTargets.pop(choice)] # if we select the target we want, we make our list only hold that target
       if debugVerbosity >= 3: # Debug
          tlist = []
          for foundTarget in foundTargets: tlist.append(foundTarget.name) # Debug

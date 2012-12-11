@@ -58,7 +58,7 @@ Admiral Ackbar
 -----
 ff4fb461-8060-457a-9c16-000000000187
 -----
-
+onPlay:Deal1Damage-AutoTargeted-atUnit-byOpponent-isParticipating-onlyDuringEngagement-isOptional
 +++++
 
 .....
@@ -66,7 +66,7 @@ Admiral Motti
 -----
 ff4fb461-8060-457a-9c16-000000000070
 -----
-
+afterRefresh:Remove1Focus-AutoTargeted-atUnit-choose1-hasMarker{Focus}
 +++++
 
 .....
