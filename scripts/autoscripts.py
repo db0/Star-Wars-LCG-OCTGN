@@ -27,11 +27,11 @@ def executePlayScripts(card, action):
    global failedRequirement
    if not Automations['Play']: return
    if not card.isFaceUp: return
-   if CardsAS.get(card.model,'') == '': return
+   #if CardsAS.get(card.model,'') == '': return # Commented in order to allow scripts in attacked cards to trigger
    if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return
    failedRequirement = False
    X = 0
-   Autoscripts = CardsAS.get(card.model,'').split('||') # When playing cards, the || is used as an "and" separator, rather than "or". i.e. we don't do choices (yet)
+   Autoscripts = CardsAS.get(card.model,'Empty').split('||') # When playing cards, the || is used as an "and" separator, rather than "or". i.e. we don't do choices (yet)
    AutoScriptsSnapshot = list(Autoscripts) # Need to work on a snapshot, because we'll be modifying the list.
    for autoS in AutoScriptsSnapshot: # Checking and removing any "AtTurnStart" clicks.
       if (re.search(r'atTurn(Start|End)', autoS) or 
@@ -39,108 +39,110 @@ def executePlayScripts(card, action):
           re.search(r'Placement', autoS) or 
           re.search(r'ConstantEffect', autoS) or 
           re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
-          re.search(r'-isTrigger', autoS)): Autoscripts.remove(autoS)
+          re.search(r'-isTrigger', autoS) or
+          re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
       elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
       elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
       elif re.search(r'CustomScript', autoS): 
          CustomScript(card,action)
          Autoscripts.remove(autoS)
-   if len(Autoscripts) == 0: return
-   for AutoS in Autoscripts:
-      if debugVerbosity >= 2: notify("### First Processing: {}".format(AutoS)) # Debug
-      effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', AutoS)
-      scriptHostCHK = re.search(r'onHost([A-Za-z]+)',effectType.group(1))
-      actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
-      if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
-      if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
-      if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
-      if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
-          (effectType.group(1) == 'onScore' and action != 'SCORE') or
-          (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
-          (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
-          (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
-          (effectType.group(1) == 'onAttack' and action != 'ATTACK') or
-          (effectType.group(1) == 'onParticipation' and action != 'PARTICIPATION') or
-          (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
-          (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
-          (effectType.group(1) == 'onThwart' and action != 'THWART')):
-         if debugVerbosity >= 2: notify("### Skipping AutoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
-         continue 
-      if re.search(r'-onlyDuringEngagement', AutoS) and getGlobalVariable('Engaged Objective') == 'None': 
-         return 'ABORT' # If this is an optional ability only for engagements, then we abort
-      if re.search(r'-isOptional', AutoS):
-         if not confirm("This card has an optional ability you can activate at this point. Do you want to do so?"): 
-            notify("{} opts not to activate {}'s optional ability".format(me,card))
-            return 'ABORT'
-         else: notify("{} activates {}'s optional ability".format(me,card))
-      selectedAutoscripts = AutoS.split('$$')
-      if debugVerbosity >= 2: notify ('### selectedAutoscripts: {}'.format(selectedAutoscripts)) # Debug
-      for activeAutoscript in selectedAutoscripts:
-         if debugVerbosity >= 2: notify("### Second Processing: {}".format(activeAutoscript)) # Debug
-         #if chkWarn(card, activeAutoscript) == 'ABORT': return
-         if re.search(r':Pass\b', activeAutoscript): return # Pass is a simple command of doing nothing ^_^
-         effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{}\|: -]*)', activeAutoscript)
-         if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
-         if effectType.group(1) == 'whilePlayed' or effectType.group(1) == 'whileScored':
-            if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileRezzed and whileScored affect in execute Automations is GainX scripts (for now). All else is onTrash, onPlay etc
-            if action == 'TRASH': Removal = True
+   if len(Autoscripts) != 0:
+      for AutoS in Autoscripts:
+         if debugVerbosity >= 2: notify("### First Processing: {}".format(AutoS)) # Debug
+         effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', AutoS)
+         scriptHostCHK = re.search(r'onHost([A-Za-z]+)',effectType.group(1))
+         actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
+         if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
+         if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
+         if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
+         if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
+             (effectType.group(1) == 'onScore' and action != 'SCORE') or
+             (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
+             (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
+             (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
+             (effectType.group(1) == 'onAttack' and action != 'ATTACK') or
+             (effectType.group(1) == 'onParticipation' and action != 'PARTICIPATION') or
+             (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
+             (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
+             (effectType.group(1) == 'onThwart' and action != 'THWART')):
+            if debugVerbosity >= 2: notify("### Skipping AutoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
+            continue 
+         if re.search(r'-onlyDuringEngagement', AutoS) and getGlobalVariable('Engaged Objective') == 'None': 
+            return 'ABORT' # If this is an optional ability only for engagements, then we abort
+         if re.search(r'-isOptional', AutoS):
+            if not confirm("This card has an optional ability you can activate at this point. Do you want to do so?"): 
+               notify("{} opts not to activate {}'s optional ability".format(me,card))
+               return 'ABORT'
+            else: notify("{} activates {}'s optional ability".format(me,card))
+         selectedAutoscripts = AutoS.split('$$')
+         if debugVerbosity >= 2: notify ('### selectedAutoscripts: {}'.format(selectedAutoscripts)) # Debug
+         for activeAutoscript in selectedAutoscripts:
+            if debugVerbosity >= 2: notify("### Second Processing: {}".format(activeAutoscript)) # Debug
+            #if chkWarn(card, activeAutoscript) == 'ABORT': return
+            if re.search(r':Pass\b', activeAutoscript): return # Pass is a simple command of doing nothing ^_^
+            effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{}\|: -]*)', activeAutoscript)
+            if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
+            if effectType.group(1) == 'whilePlayed' or effectType.group(1) == 'whileScored':
+               if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileRezzed and whileScored affect in execute Automations is GainX scripts (for now). All else is onTrash, onPlay etc
+               if action == 'TRASH': Removal = True
+               else: Removal = False
+            elif action == 'TRASH': return # If it's just a one-off event, and we're trashing it, then do nothing.
             else: Removal = False
-         elif action == 'TRASH': return # If it's just a one-off event, and we're trashing it, then do nothing.
-         else: Removal = False
-         targetC = findTarget(activeAutoscript)
-         targetPL = ofwhom(activeAutoscript,card.controller) # So that we know to announce the right person the effect, affects.
-         announceText = "{}".format(targetPL)
-         if debugVerbosity >= 3: notify("#### targetC: {}".format(targetC)) # Debug
-         if effect.group(1) == 'Gain' or effect.group(1) == 'Lose':
-            if Removal: 
-               if effect.group(1) == 'Gain': passedScript = "Lose{}{}".format(effect.group(2),effect.group(3))
-               elif effect.group(1) == 'SetTo': passedScript = "SetTo{}{}".format(effect.group(2),effect.group(3))
-               else: passedScript = "Gain{}{}".format(effect.group(2),effect.group(3))
+            targetC = findTarget(activeAutoscript,card = card)
+            targetPL = ofwhom(activeAutoscript,card.controller) # So that we know to announce the right person the effect, affects.
+            announceText = "{}".format(targetPL)
+            if debugVerbosity >= 3: notify("#### targetC: {}".format(targetC)) # Debug
+            if effect.group(1) == 'Gain' or effect.group(1) == 'Lose':
+               if Removal: 
+                  if effect.group(1) == 'Gain': passedScript = "Lose{}{}".format(effect.group(2),effect.group(3))
+                  elif effect.group(1) == 'SetTo': passedScript = "SetTo{}{}".format(effect.group(2),effect.group(3))
+                  else: passedScript = "Gain{}{}".format(effect.group(2),effect.group(3))
+               else: 
+                  if effect.group(1) == 'Gain': passedScript = "Gain{}{}".format(effect.group(2),effect.group(3))
+                  elif effect.group(1) == 'SetTo': passedScript = "SetTo{}{}".format(effect.group(2),effect.group(3))
+                  else: passedScript = "Lose{}{}".format(effect.group(2),effect.group(3))
+               if effect.group(4): passedScript += effect.group(4)
+               if debugVerbosity >= 2: notify("### passedscript: {}".format(passedScript)) # Debug
+               gainTuple = GainX(passedScript, announceText, card, targetC, notification = 'Quick', n = X, actionType = action)
+               if gainTuple == 'ABORT': return
+               X = gainTuple[1] 
             else: 
-               if effect.group(1) == 'Gain': passedScript = "Gain{}{}".format(effect.group(2),effect.group(3))
-               elif effect.group(1) == 'SetTo': passedScript = "SetTo{}{}".format(effect.group(2),effect.group(3))
-               else: passedScript = "Lose{}{}".format(effect.group(2),effect.group(3))
-            if effect.group(4): passedScript += effect.group(4)
-            if debugVerbosity >= 2: notify("### passedscript: {}".format(passedScript)) # Debug
-            gainTuple = GainX(passedScript, announceText, card, targetC, notification = 'Quick', n = X, actionType = action)
-            if gainTuple == 'ABORT': return
-            X = gainTuple[1] 
-         else: 
-            passedScript = effect.group(0)
-            if debugVerbosity >= 2: notify("### passedscript: {}".format(passedScript)) # Debug
-            if regexHooks['CreateDummy'].search(passedScript): 
-               if CreateDummy(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-            elif regexHooks['DrawX'].search(passedScript): 
-               if DrawX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-            elif regexHooks['TokensX'].search(passedScript): 
-               if TokensX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-            elif regexHooks['RollX'].search(passedScript): 
-               rollTuple = RollX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
-               if rollTuple == 'ABORT': return
-               X = rollTuple[1] 
-            elif regexHooks['RequestInt'].search(passedScript): 
-               numberTuple = RequestInt(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
-               if numberTuple == 'ABORT': return
-               X = numberTuple[1] 
-            elif regexHooks['DiscardX'].search(passedScript): 
-               discardTuple = DiscardX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
-               if discardTuple == 'ABORT': return
-               X = discardTuple[1] 
-            elif regexHooks['ReshuffleX'].search(passedScript): 
-               reshuffleTuple = ReshuffleX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
-               if reshuffleTuple == 'ABORT': return
-               X = reshuffleTuple[1]
-            elif regexHooks['ShuffleX'].search(passedScript): 
-               if ShuffleX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-            elif regexHooks['ChooseKeyword'].search(passedScript): 
-               if ChooseKeyword(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-            elif regexHooks['InflictX'].search(passedScript): 
-               if InflictX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-            elif regexHooks['ModifyStatus'].search(passedScript): 
-               if ModifyStatus(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-         if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
-         if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
-   if re.search(r'HOST-',action): executeAttachmentScripts(card, action) # if the automation we're doing now is not for an attachment, then we check the current card's attachments for more scripts
+               passedScript = effect.group(0)
+               if debugVerbosity >= 2: notify("### passedscript: {}".format(passedScript)) # Debug
+               if regexHooks['CreateDummy'].search(passedScript): 
+                  if CreateDummy(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['DrawX'].search(passedScript): 
+                  if DrawX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['TokensX'].search(passedScript): 
+                  if TokensX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['RollX'].search(passedScript): 
+                  rollTuple = RollX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
+                  if rollTuple == 'ABORT': return
+                  X = rollTuple[1] 
+               elif regexHooks['RequestInt'].search(passedScript): 
+                  numberTuple = RequestInt(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
+                  if numberTuple == 'ABORT': return
+                  X = numberTuple[1] 
+               elif regexHooks['DiscardX'].search(passedScript): 
+                  discardTuple = DiscardX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
+                  if discardTuple == 'ABORT': return
+                  X = discardTuple[1] 
+               elif regexHooks['ReshuffleX'].search(passedScript): 
+                  reshuffleTuple = ReshuffleX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
+                  if reshuffleTuple == 'ABORT': return
+                  X = reshuffleTuple[1]
+               elif regexHooks['ShuffleX'].search(passedScript): 
+                  if ShuffleX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['ChooseKeyword'].search(passedScript): 
+                  if ChooseKeyword(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['InflictX'].search(passedScript): 
+                  if InflictX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['ModifyStatus'].search(passedScript): 
+                  if ModifyStatus(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+            if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
+            if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
+   if debugVerbosity >= 2: notify("#### About to go check if I'm to go into executeAttachmentScripts()") # Debug
+   if not re.search(r'HOST-',action): executeAttachmentScripts(card, action) # if the automation we're doing now is not for an attachment, then we check the current card's attachments for more scripts
 
 #------------------------------------------------------------------------------
 # Attached cards triggers
@@ -150,7 +152,7 @@ def executeAttachmentScripts(card, action):
    if debugVerbosity >= 1: notify(">>> executeEnhancementScripts() with action: {}".format(action)) #Debug
    for attachment in hostCards:
       if hostCards[attachment] == card._id:
-         executePlayScripts(card, 'HOST-' + action)
+         executePlayScripts(Card(attachment), 'HOST-' + action)
    if debugVerbosity >= 3: notify("<<< executeEnhancementScripts{}") # Debug
          
 #------------------------------------------------------------------------------
@@ -814,7 +816,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             if debugVerbosity >= 2: notify("### Creating empty list tuple") #Debug            
             targetGroups.insert(iter,([],[])) # We create a tuple of two list. The first list is the valid properties, the second the invalid ones
             multiConditionTargets = ValidTargetsSnapshot[iter].split('_and_') # We put all the mutliple conditions in a new list, separating each element.
-            if debugVerbosity >= 2: notify("###Splitting on _and_. _or_ ") #Debug
+            if debugVerbosity >= 2: notify("###Splitting on _and_ & _or_ ") #Debug
             if debugVerbosity >= 4: notify("### multiConditionTargets is: {}".format(multiConditionTargets)) #Debug
             for chkCondition in multiConditionTargets:
                if debugVerbosity >= 4: notify("### Checking: {}".format(chkCondition)) #Debug
@@ -874,11 +876,17 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                      if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
                      marker = findMarker(targetLookup, markerName.group(1))
                      if not marker: targetC = None
-                  elif debugVerbosity >= 2: notify("### No marker restrictions.")
+                  markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
+                  if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
+                     if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug
+                     if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
+                     marker = findMarker(targetLookup, markerNeg.group(1))
+                     if marker: targetC = None
+                  elif debugVerbosity >= 4: notify("### No marker restrictions.")
                   if re.search(r'isCurrentObjective',Autoscript):
                      if targetLookup.highlight != DefendColor: targetC = None
                   if re.search(r'isParticipating',Autoscript):
-                     if targetLookup.orientation != Rot90 or targetLookup.highlight != DefendColor: targetC = None
+                     if targetLookup.orientation != Rot90 and targetLookup.highlight != DefendColor: targetC = None
                   if re.search(r'isCommited',Autoscript):
                      if targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: targetC = None
                if targetC and not targetC in foundTargets: 
