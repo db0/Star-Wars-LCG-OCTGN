@@ -98,7 +98,7 @@ Astromech Droid Upgrade
 -----
 ff4fb461-8060-457a-9c16-000000000175
 -----
-Placement:Vehicle_and_Unit
+Placement:Vehicle_and_Unit||BonusIcons:UD:1, BD:1
 +++++
 
 .....

@@ -212,6 +212,8 @@ def findMarker(card, markerDesc): # Goes through the markers on the card and loo
    return foundKey
 
 def parseCombatIcons(STRING):
+   # This function takes the printed combat icons of a card and returns a string that contains only the non-zero ones.
+   if debugVerbosity >= 1: notify(">>> parseCombatIcons() with action: {}".format(action)) #Debug
    parsedIcons = ''
    UD = re.search(r'(?<!-)UD:([1-9])',STRING)
    EEUD = re.search(r'EE-UD:([1-9])',STRING)
@@ -225,7 +227,44 @@ def parseCombatIcons(STRING):
    if EEBD: parsedIcons += 'EE-BD:{}. '.format(EEBD.group(1))
    if T: parsedIcons += 'T:{}. '.format(T.group(1))
    if EET: parsedIcons += 'EE-T:{}.'.format(EET.group(1))
+   if debugVerbosity >= 3: notify("<<< parseCombatIcons() with return: {}".format(parsedIcons)) # Debug
    return parsedIcons
+
+def calculateCombatIcons(card = None, CIString = None):
+   # This function calculates how many combat icons a unit is supposed to have in a battle by adding bonuses from attachments as well.
+   if debugVerbosity >= 1: notify(">>> calculateCombatIcons() with action: {}".format(action)) #Debug
+   if card: combatIcons = card.properties['Combat Icons']
+   else: combatIcons = CIString
+   Unit_Damage = 0
+   Blast_Damage = 0
+   Tactics = 0
+   UD = re.search(r'(?<!-)UD:([1-9])',combatIcons)
+   EEUD = re.search(r'EE-UD:([1-9])',combatIcons)
+   BD = re.search(r'(?<!-)BD:([1-9])',combatIcons)
+   EEBD = re.search(r'EE-BD:([1-9])',combatIcons)
+   T = re.search(r'(?<!-)T:([1-9])',combatIcons)
+   EET = re.search(r'EE-T:([1-9])',combatIcons)
+   if UD: Unit_Damage += num(UD.group(1))
+   if EEUD and gotEdge(): Unit_Damage += num(EEUD.group(1))
+   if BD and currentTarget.owner == opponent: Blast_Damage += num(BD.group(1))
+   if EEBD and gotEdge() and currentTarget.owner == opponent: Blast_Damage += num(EEBD.group(1))
+   if T: Tactics += num(T.group(1))
+   if EET and gotEdge(): Tactics += num(EET.group(1))
+   for attachment in hostCards:
+      if hostCards[attachment] == card._id:
+         AS = CardsAS.get(Card(attachment).model,'')
+         if AS == '': continue
+         Autoscripts = AS.split('||')
+         for AutoS in Autoscripts:
+            if re.search(r'BonusIcons:',AutoS):
+               UD, BD, T = calculateCombatIcons(CIString = AutoS) # Recursion FTW!
+               Unit_Damage += UD
+               Blast_Damage += BD
+               Tactics += T
+   if debugVerbosity >= 3: notify("<<< calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
+   return (Unit_Damage,Blast_Damage,Tactics)
+
+   
 
 #------------------------------------------------------------------------------
 # Switches

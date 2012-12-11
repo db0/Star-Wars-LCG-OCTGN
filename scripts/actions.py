@@ -434,26 +434,13 @@ def strike(card, x = 0, y = 0):
    if debugVerbosity >= 2: notify("Focus Added") #Debug
    executePlayScripts(card, 'STRIKE') # Strike effects almost universally happen after focus.
    if debugVerbosity >= 2: notify("PlayScripts done. Calculating Icons") #Debug
-   Unit_Damage = 0
-   Blast_Damage = 0
-   Tactics = 0
    AnnounceText = ''
    Unit_DamageTXT = ''
    TacticsTXT = ''
    targetUnit = None
-   UD = re.search(r'(?<!-)UD:([1-9])',card.properties['Combat Icons'])
-   EEUD = re.search(r'EE-UD:([1-9])',card.properties['Combat Icons'])
-   BD = re.search(r'(?<!-)BD:([1-9])',card.properties['Combat Icons'])
-   EEBD = re.search(r'EE-BD:([1-9])',card.properties['Combat Icons'])
-   T = re.search(r'(?<!-)T:([1-9])',card.properties['Combat Icons'])
-   EET = re.search(r'EE-T:([1-9])',card.properties['Combat Icons'])
-   if UD: Unit_Damage += num(UD.group(1))
-   if EEUD and gotEdge(): Unit_Damage += num(EEUD.group(1))
+   if debugVerbosity >= 2: notify("About to go into calculateCombatIcons()") #Debug   
+   Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
-   if BD and currentTarget.owner == opponent: Blast_Damage += num(BD.group(1))
-   if EEBD and gotEdge() and currentTarget.owner == opponent: Blast_Damage += num(EEBD.group(1))
-   if T: Tactics += num(T.group(1))
-   if EET and gotEdge(): Tactics += num(EET.group(1))
    currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
    for c in table: # We check to see if the attacking player has already selected a target.
       if c.targetedBy and c.targetedBy == me and c.Type == 'Unit': targetUnit = c

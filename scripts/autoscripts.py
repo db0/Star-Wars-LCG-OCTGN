@@ -156,7 +156,7 @@ def executeAttachmentScripts(card, action):
    for attachment in hostCards:
       if hostCards[attachment] == card._id:
          executePlayScripts(Card(attachment), 'HOST-' + action)
-   if debugVerbosity >= 3: notify("<<< executeEnhancementScripts{}") # Debug
+   if debugVerbosity >= 3: notify("<<< executeEnhancementScripts()") # Debug
          
 #------------------------------------------------------------------------------
 # Other Player trigger
@@ -929,7 +929,8 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                if T.markers[mdict['Damage']] and T.markers[mdict['Damage']] >= 1: markers += " {} Damage,".format(T.markers[mdict['Damage']])
                if T.markers[mdict['Focus']] and T.markers[mdict['Focus']] >= 1: markers += " {} Focus,".format(T.markers[mdict['Focus']])
                if T.markers[mdict['Shield']] and T.markers[mdict['Shield']] >= 1: markers += " {} Shield.".format(T.markers[mdict['Shield']])
-               if markers != '': markers += '\n'
+               if markers != 'Counters:': markers += '\n'
+               else: markers = ''
                stats = ''
                if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
                if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
