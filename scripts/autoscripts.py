@@ -39,6 +39,7 @@ def executePlayScripts(card, action):
          if (re.search(r'atTurn(Start|End)', autoS) or 
              re.search(r'after([A-za-z]+)', autoS) or 
              re.search(r'Placement', autoS) or 
+             re.search(r'BonusIcons', autoS) or 
              re.search(r'ConstantEffect', autoS) or 
              re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
              re.search(r'-isTrigger', autoS) or

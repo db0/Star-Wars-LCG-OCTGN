@@ -95,7 +95,6 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
             goToForce()
          else: goToConflict()
       elif phase == 6: goToForce()
-   clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
 
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
@@ -438,10 +437,9 @@ def strike(card, x = 0, y = 0):
    Unit_DamageTXT = ''
    TacticsTXT = ''
    targetUnit = None
-   if debugVerbosity >= 2: notify("About to go into calculateCombatIcons()") #Debug   
    Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
-   currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
+   if currentTarget.owner == opponent: currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
    for c in table: # We check to see if the attacking player has already selected a target.
       if c.targetedBy and c.targetedBy == me and c.Type == 'Unit': targetUnit = c
    if Unit_Damage and not Tactics and targetUnit:  # if our strike only does unit damage, and we've already targeted a unit, then just automatically apply it to it.
@@ -464,12 +462,7 @@ def strike(card, x = 0, y = 0):
       else: AnnounceText += ' and {} Blast Damage'.format(Blast_Damage)
    if AnnounceText == '': AnnounceText = " no effect"
    notify("{} strikes with {} for{}.".format(me,card,AnnounceText))
-   if debugVerbosity >= 2: notify("UD is: {}. EE-UD is: {}. Total is: {}".format(UD, EEUD, Unit_Damage)) #Debug
    if debugVerbosity >= 3: notify("<<< strike()") #Debug
-
-def gotEdge():
-   if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: return True
-   else: return False
    
 def participate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
@@ -494,7 +487,8 @@ def participate(card, x = 0, y = 0):
       notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
-   executePlayScripts(card, 'PARTICIPATION')   
+   executePlayScripts(card, 'PARTICIPATION')
+   clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
 def clearParticipation(card,x=0,y=0): # Clears a unit from participating in a battle, to undo mistakes
