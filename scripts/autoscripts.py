@@ -47,13 +47,21 @@ def executePlayScripts(card, action):
    if len(Autoscripts) == 0: return
    for AutoS in Autoscripts:
       if debugVerbosity >= 2: notify("### First Processing: {}".format(AutoS)) # Debug
-      effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', AutoS) 
-      if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
+      effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', AutoS)
+      scriptHostCHK = re.search(r'onHost([A-Za-z]+)',effectType.group(1))
+      actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
+      if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
+      if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
+      if ( not ((scriptHostCHK and actionHostCHK) and
+                ((scriptHostCHK.group(1).upper() == actionHostCHK.group(1)) or
+                 (scriptHostCHK.group(1) == 'Participation' and (actionHostCHK.group(1) == 'ATTACK' or actionHostCHK.group(1) == 'DEFENSE')))) or
+          (effectType.group(1) == 'onPlay' and action != 'PLAY') or 
           (effectType.group(1) == 'onScore' and action != 'SCORE') or
           (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
           (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
           (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
           (effectType.group(1) == 'onAttack' and action != 'ATTACK') or
+          (effectType.group(1) == 'onParticipation' and (action != 'ATTACK' and action != 'DEFENSE')) or
           (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
           (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
           (effectType.group(1) == 'onThwart' and action != 'THWART')): continue 
@@ -131,7 +139,19 @@ def executePlayScripts(card, action):
                if ModifyStatus(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
          if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
          if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
+   if re.search(r'HOST-',action): executeAttachmentScripts(card, action) # if the automation we're doing now is not for an attachment, then we check the current card's attachments for more scripts
 
+#------------------------------------------------------------------------------
+# Attached cards triggers
+#------------------------------------------------------------------------------
+
+def executeAttachmentScripts(card, action):
+   if debugVerbosity >= 1: notify(">>> executeEnhancementScripts() with action: {}".format(action)) #Debug
+   for attachment in hostCards:
+      if hostCards[attachment] == card._id:
+         executePlayScripts(card, 'HOST-' + action)
+   if debugVerbosity >= 3: notify("<<< executeEnhancementScripts{}") # Debug
+         
 #------------------------------------------------------------------------------
 # Other Player trigger
 #------------------------------------------------------------------------------
@@ -857,7 +877,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   if re.search(r'isCurrentObjective',Autoscript):
                      if targetLookup.highlight != DefendColor: targetC = None
                   if re.search(r'isParticipating',Autoscript):
-                     if targetLookup.orientation != Rot90: targetC = None
+                     if targetLookup.orientation != Rot90 or targetLookup.highlight != DefendColor: targetC = None
                   if re.search(r'isCommited',Autoscript):
                      if targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: targetC = None
                if targetC and not targetC in foundTargets: 

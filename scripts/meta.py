@@ -40,7 +40,8 @@ turn = 0 # used during game reporting to report how many turns the game lasted
 CardsAA = {} # Dictionary holding all the AutoAction scripts for all cards
 CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
 
-cardAttachements = {}
+cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
+hostCards = {} # A dictionary which holds which is the host of each attachment
     
 def storeSpecial(card): 
 # Function stores into a shared variable some special cards that other players might look up.
@@ -136,7 +137,8 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    edgeRevealed = False
    firstTurn = True
    limitedPlayed = False
-   cardAttachements.clear()
+   cardAttachementsNR.clear()
+   hostCards.clear()
    debugVerbosity = -1 # Reset means normal game.
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
    unitAmount[me.name] = 0  # This variable is used for unit placement
@@ -185,14 +187,14 @@ def placeCard(card):
                whisper("ABORTING!")
                return
             else:
-               if debugVerbosity >= 2: notify("### About to update cardAttachements dict") #Debug
-               global cardAttachements
-               cardAttachements[card._id] = host[0]
-               try: cardAttachements[host[0]._id] += 1
-               except: cardAttachements[host[0]._id] = 1
+               if debugVerbosity >= 2: notify("### About to update cardAttachementsNR dict") #Debug
+               global cardAttachementsNR, hostCards
+               hostCards[card._id] = host[0]._id
+               try: cardAttachementsNR[host[0]._id] += 1
+               except: cardAttachementsNR[host[0]._id] = 1
                if debugVerbosity >= 2: notify("### About to move into position") #Debug
                x,y = host[0].position
-               card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachements[host[0]._id]))
+               card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR[host[0]._id]))
                card.sendToBack()
    if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
    
