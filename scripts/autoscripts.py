@@ -221,7 +221,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue
          splitAutoscripts = effect.group(2).split('$$')
          for passedScript in splitAutoscripts:
-            targetC = findTarget(passedScript)
+            targetC = findTarget(passedScript, card = card)
             if not TitleDone and not (len(targetC) == 0 and re.search(r'AutoTargeted',passedScript)): # We don't want to put a title if we have a card effect that activates only if we have some valid targets (e.g. Admiral Motti)
                if re.search(r'after([A-za-z]+)',Time): 
                   Phase = re.search(r'after([A-za-z]+)',Time)
@@ -773,7 +773,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
 # Helper Functions
 #------------------------------------------------------------------------------
        
-def findTarget(Autoscript, fromHand = False): # Function for finding the target of an autoscript
+def findTarget(Autoscript, fromHand = False, card = None): # Function for finding the target of an autoscript
    if debugVerbosity >= 1: notify(">>> findTarget(){}".format(extraASDebug(Autoscript))) #Debug
    try:
       if fromHand == True: group = me.hand
@@ -901,11 +901,14 @@ def findTarget(Autoscript, fromHand = False): # Function for finding the target 
                if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
                if T.Type == 'Unit': combatIcons = parseCombatIcons(T.properties['Combat Icons'])
                else: combatIcons = ''
-               choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
+               choiceTXT = "{}\n{}{}\nIcons: {}".format(T.name,markers,stats,combatIcons)
                targetChoices.append(choiceTXT)
+            if not card: choiceTitle = "Choose one of the valid targets for this effect"
+            else: choiceTitle = "Choose one of the valid targets for {}'s ability".format(card.name)
             if debugVerbosity >= 2: notify("### Checking for SingleChoice")# Debug
-            if choiceType.group(1) == '1': 
-               choice = SingleChoice("Choose one of the valid targets for this effect", targetChoices, type = 'button', default = 0)
+            if choiceType.group(1) == '1':
+               if len(foundTargets) == 1: choice = 0 # If we only have one valid target, autoselect it.
+               else: choice = SingleChoice(choiceTitle, targetChoices, type = 'button', default = 0)
                foundTargets = [foundTargets.pop(choice)] # if we select the target we want, we make our list only hold that target
       if debugVerbosity >= 3: # Debug
          tlist = []
