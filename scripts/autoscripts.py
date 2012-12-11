@@ -36,6 +36,7 @@ def executePlayScripts(card, action):
    for autoS in AutoScriptsSnapshot: # Checking and removing any "AtTurnStart" clicks.
       if (re.search(r'atTurn(Start|End)', autoS) or 
           re.search(r'after([A-za-z]+)', autoS) or 
+          re.search(r'Placement', autoS) or 
           re.search(r'ConstantEffect', autoS) or 
           re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
           re.search(r'-isTrigger', autoS)): Autoscripts.remove(autoS)
@@ -52,19 +53,19 @@ def executePlayScripts(card, action):
       actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
       if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
       if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
-      if ( not ((scriptHostCHK and actionHostCHK) and
-                ((scriptHostCHK.group(1).upper() == actionHostCHK.group(1)) or
-                 (scriptHostCHK.group(1) == 'Participation' and (actionHostCHK.group(1) == 'ATTACK' or actionHostCHK.group(1) == 'DEFENSE')))) or
-          (effectType.group(1) == 'onPlay' and action != 'PLAY') or 
+      if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
+      if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
           (effectType.group(1) == 'onScore' and action != 'SCORE') or
           (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
           (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
           (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
           (effectType.group(1) == 'onAttack' and action != 'ATTACK') or
-          (effectType.group(1) == 'onParticipation' and (action != 'ATTACK' and action != 'DEFENSE')) or
+          (effectType.group(1) == 'onParticipation' and action != 'PARTICIPATION') or
           (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
           (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
-          (effectType.group(1) == 'onThwart' and action != 'THWART')): continue 
+          (effectType.group(1) == 'onThwart' and action != 'THWART')):
+         if debugVerbosity >= 2: notify("### Skipping AutoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
+         continue 
       if re.search(r'-onlyDuringEngagement', AutoS) and getGlobalVariable('Engaged Objective') == 'None': 
          return 'ABORT' # If this is an optional ability only for engagements, then we abort
       if re.search(r'-isOptional', AutoS):

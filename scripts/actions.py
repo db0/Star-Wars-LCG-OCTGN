@@ -507,7 +507,7 @@ def participate(card, x = 0, y = 0):
       notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
-   executePlayScripts(card, 'PARTICIPATE')   
+   executePlayScripts(card, 'PARTICIPATION')   
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
 def clearParticipation(card,x=0,y=0): # Clears a unit from participating in a battle, to undo mistakes

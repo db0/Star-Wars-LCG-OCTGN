@@ -82,9 +82,9 @@ Aft Armor Plating
 -----
 ff4fb461-8060-457a-9c16-000000000061
 -----
-Placement:Vehicle_and_Unit
+Placement:Vehicle_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1
 +++++
-onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1
+
 .....
 Ancient Monument
 -----
