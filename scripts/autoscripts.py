@@ -27,26 +27,29 @@ def executePlayScripts(card, action):
    global failedRequirement
    if not Automations['Play']: return
    if not card.isFaceUp: return
-   #if CardsAS.get(card.model,'') == '': return # Commented in order to allow scripts in attacked cards to trigger
-   if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return
-   failedRequirement = False
-   X = 0
-   Autoscripts = CardsAS.get(card.model,'Empty').split('||') # When playing cards, the || is used as an "and" separator, rather than "or". i.e. we don't do choices (yet)
-   AutoScriptsSnapshot = list(Autoscripts) # Need to work on a snapshot, because we'll be modifying the list.
-   for autoS in AutoScriptsSnapshot: # Checking and removing any "AtTurnStart" clicks.
-      if (re.search(r'atTurn(Start|End)', autoS) or 
-          re.search(r'after([A-za-z]+)', autoS) or 
-          re.search(r'Placement', autoS) or 
-          re.search(r'ConstantEffect', autoS) or 
-          re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
-          re.search(r'-isTrigger', autoS) or
-          re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
-      elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
-      elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
-      elif re.search(r'CustomScript', autoS): 
-         CustomScript(card,action)
-         Autoscripts.remove(autoS)
-   if len(Autoscripts) != 0:
+   if CardsAS.get(card.model,'') != '': # Commented in order to allow scripts in attacked cards to trigger
+      if debugVerbosity >= 2: notify("#### We have AutoScripts!") # Debug
+      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return
+      failedRequirement = False
+      X = 0
+      Autoscripts = CardsAS.get(card.model,'').split('||') # When playing cards, the || is used as an "and" separator, rather than "or". i.e. we don't do choices (yet)
+      AutoScriptsSnapshot = list(Autoscripts) # Need to work on a snapshot, because we'll be modifying the list.
+      if debugVerbosity >= 2: notify("#### List of autoscripts before scrubbing: {}".format(Autoscripts)) # Debug
+      for autoS in AutoScriptsSnapshot: # Checking and removing any "AtTurnStart" clicks.
+         if (re.search(r'atTurn(Start|End)', autoS) or 
+             re.search(r'after([A-za-z]+)', autoS) or 
+             re.search(r'Placement', autoS) or 
+             re.search(r'ConstantEffect', autoS) or 
+             re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
+             re.search(r'-isTrigger', autoS) or
+             re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
+         elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
+         elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
+         elif re.search(r'CustomScript', autoS): 
+            CustomScript(card,action)
+            Autoscripts.remove(autoS)
+      if debugVerbosity >= 2: notify("#### List of autoscripts after scrubbing: {}".format(Autoscripts)) # Debug
+      if len(Autoscripts) == 0: return
       for AutoS in Autoscripts:
          if debugVerbosity >= 2: notify("### First Processing: {}".format(AutoS)) # Debug
          effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', AutoS)
@@ -90,7 +93,7 @@ def executePlayScripts(card, action):
             else: Removal = False
             targetC = findTarget(activeAutoscript,card = card)
             targetPL = ofwhom(activeAutoscript,card.controller) # So that we know to announce the right person the effect, affects.
-            announceText = "{}".format(targetPL)
+            announceText = "{} uses {} to".format(targetPL,card)
             if debugVerbosity >= 3: notify("#### targetC: {}".format(targetC)) # Debug
             if effect.group(1) == 'Gain' or effect.group(1) == 'Lose':
                if Removal: 
@@ -381,8 +384,10 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if debugVerbosity >= 1: notify(">>> TokensX(){}".format(extraASDebug(Autoscript))) #Debug
    if targetCards is None: targetCards = []
    if len(targetCards) == 0:
-      targetCards.append(card) # If there's been to target card given, assume the target is the card itself.
-      targetCardlist = ' on it' 
+      if re.search(r'AutoTargeted',Autoscript): return 'ABORT' # We abort if we need an automatic target but have no valid one
+      else: #Otherwise we just put it on ourself and assume the player forgot to target first. They can move the marker manually if they need to.
+         targetCards.append(card) # If there's been to target card given, assume the target is the card itself.
+         targetCardlist = ' on it' 
    else:
       targetCardlist = ' on' # A text field holding which cards are going to get tokens.
       for targetCard in targetCards:
@@ -928,9 +933,9 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                stats = ''
                if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
                if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
-               if T.Type == 'Unit': combatIcons = parseCombatIcons(T.properties['Combat Icons'])
+               if T.Type == 'Unit': combatIcons = "Icons: " + parseCombatIcons(T.properties['Combat Icons'])
                else: combatIcons = ''
-               choiceTXT = "{}\n{}{}\nIcons: {}".format(T.name,markers,stats,combatIcons)
+               choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
                targetChoices.append(choiceTXT)
             if not card: choiceTitle = "Choose one of the valid targets for this effect"
             else: choiceTitle = "Choose one of the valid targets for {}'s ability".format(card.name)
