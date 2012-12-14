@@ -66,6 +66,15 @@ def storeObjective(card):
    for iter in range(len(currentObjectives)):
       Objective = Card(currentObjectives[iter])
       Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective))
+      xPos, yPos = Objective.position
+      countCaptures = 0 
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
+         if capturedCards[capturedC] == Objective._id:
+            if debugVerbosity >= 2: notify("Moved Objective has Captured cards. Moving them...")
+            countCaptures += 1
+            Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
+            Card(capturedC).sendToBack()
       #Objective.orientation = Rot90
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
    setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
@@ -303,6 +312,10 @@ def switchTriggersAutomation(group,x=0,y=0):
 
 def switchStartEndAutomation(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchStartEndAutomation(){}".format(extraASDebug())) #Debug
+   if Automations['Start/End-of-Turn/Phase'] and not confirm(":::WARNING::: Disabling these automations means that you'll have to do each phase's effects manually.\
+                                                            \nThis means removing a focus from each card, increasing the dial and refreshing your hand.\
+                                                            \nThis can add a significant amount of time to each turn's busywork.\
+                                                            \nAre you sure you want to disable? (You can re-enable again by using the same menu option)"): return
    switchAutomation('Start/End-of-Turn/Phase')
    
 def switchWinForms(group,x=0,y=0):

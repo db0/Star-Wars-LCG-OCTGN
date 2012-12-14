@@ -65,11 +65,12 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       phase = num(me.getGlobalVariable('Phase'))
       if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
       if phase == 6: 
-         if not forceStruggleDone: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
+         if not forceStruggleDone and Automations['Start/End-of-Turn/Phase']: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
          me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
          setGlobalVariable('Active Player', opponent.name)
          notify("=== {} has ended their turn ===.".format(me))
-         if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
+         for card in table:
+            if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
          if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
          return
       elif getGlobalVariable('Active Player') != me.name:
@@ -85,7 +86,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       elif phase == 2: goToRefresh()
       elif phase == 3: goToDraw()
       elif phase == 4: 
-         if not handRefillDone: refillHand() # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
+         if not handRefillDone and Automations['Start/End-of-Turn/Phase']: refillHand() # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
          goToDeployment()
       elif phase == 5:
          if firstTurn and Side == 'Dark':
@@ -102,6 +103,7 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    atTimedEffects(Time = 'Start') # Scripted events at the start of the player's turn
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
+   if not Automations['Start/End-of-Turn/Phase']: return
    BotD = getSpecial('BotD')
    global limitedPlayed
    limitedPlayed = False # Player can now play another limited card.
@@ -134,6 +136,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    global firstTurn
    me.setGlobalVariable('Phase','2')
    showCurrentPhase()
+   if not Automations['Start/End-of-Turn/Phase']: return
    if not firstTurn: notify(":> {} refreshed all their cards".format(me))   
    for card in table:
       if card.owner == me and card.controller == me and card.highlight != CapturedColor:
@@ -165,6 +168,7 @@ def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    handRefillDone = False
    me.setGlobalVariable('Phase','3')
    showCurrentPhase()
+   if not Automations['Start/End-of-Turn/Phase']: return
    if len(me.hand) == 0: refillHand() # If the player's hand is empty, there's no option to take. Just refill.
    atTimedEffects(Time = 'afterDraw')   
    
@@ -173,6 +177,7 @@ def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment
    mute()
    me.setGlobalVariable('Phase','4')
    showCurrentPhase()   
+   if not Automations['Start/End-of-Turn/Phase']: return
    atTimedEffects(Time = 'afterDeployment')   
    
 def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
@@ -180,6 +185,7 @@ def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict pha
    mute()
    me.setGlobalVariable('Phase','5')
    showCurrentPhase()   
+   if not Automations['Start/End-of-Turn/Phase']: return
    atTimedEffects(Time = 'afterConflict')   
 
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
@@ -191,6 +197,7 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    me.setGlobalVariable('Phase','6')
    showCurrentPhase()
    delayed_whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
+   if not Automations['Start/End-of-Turn/Phase']: return
    atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle

@@ -27,7 +27,7 @@ mdict = dict( # A dictionary which holds all the hard coded markers (in the mark
              PlusOnePerm =             ("Permanent +1", "2246648d-1581-4be9-9636-1b75129313a6"),
              PlusOne =                 ("Temporary +1", "987d0d3f-0965-49ae-a96c-03394783d47a"),
              MinusOne =                ("Temporary -1", "21487438-e108-4f0c-a804-bd2a7f9a1ae5"),
-             Activated =               ("Activated", "ea7418bc-6847-4e8a-9cc3-0230dc27d19b"),
+             Activation =              ("Activation", "ea7418bc-6847-4e8a-9cc3-0230dc27d19b"),
              Edge =                    ("The Edge", "6ca2a796-1023-4ccf-9946-2fe4d2252c0c"))
 
 resdict = {
