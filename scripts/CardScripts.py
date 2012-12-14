@@ -154,7 +154,6 @@ Black Squadron Assault
 -----
 ff4fb461-8060-457a-9c16-000000000126
 -----
-
 +++++
 
 .....
@@ -162,7 +161,7 @@ Black Squadron Pilot
 -----
 ff4fb461-8060-457a-9c16-000000000129
 -----
-
+onPlay:CustomScript||BonusIcons:UD:1, BD:1
 +++++
 
 .....

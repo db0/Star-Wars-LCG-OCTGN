@@ -797,6 +797,20 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       shuffle(objectives)
       if debugVerbosity >= 2: notify("#### About to announce")
       notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000000129' and action == 'PLAY':
+      if len(findTarget('AutoTargeted-atFighter_and_Unit-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
+         fighter = findTarget('AutoTargeted-atFighter_and_Unit-byMe-choose1')
+         if len(fighter) == 0: return
+         if debugVerbosity >= 2: notify("### About to update cardAttachementsNR dict") #Debug
+         global cardAttachementsNR, hostCards
+         hostCards[card._id] = fighter[0]._id
+         try: cardAttachementsNR[fighter[0]._id] += 1
+         except: cardAttachementsNR[fighter[0]._id] = 1
+         if debugVerbosity >= 2: notify("### About to move into position") #Debug
+         x,y = fighter[0].position
+         card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR[fighter[0]._id]))
+         card.sendToBack()
+      
       
 #------------------------------------------------------------------------------
 # Helper Functions
