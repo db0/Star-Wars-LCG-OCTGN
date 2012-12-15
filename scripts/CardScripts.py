@@ -330,7 +330,7 @@ Dark Precognition
 -----
 ff4fb461-8060-457a-9c16-000000000118
 -----
-
+onPlay:Draw2Cards
 +++++
 
 .....
@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-
+whilePlayed:Deal1Damage-perCardPlay-typeEvent-byMe-AutoTargeted-atUnit-choose1
 +++++
 
 .....

@@ -443,6 +443,7 @@ def strike(card, x = 0, y = 0):
    if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
    if debugVerbosity >= 2: notify("Focus Added") #Debug
    executePlayScripts(card, 'STRIKE') # Strike effects almost universally happen after focus.
+   autoscriptOtherPlayers('UnitStrike',card)
    if debugVerbosity >= 2: notify("PlayScripts done. Calculating Icons") #Debug
    AnnounceText = ''
    Unit_DamageTXT = ''
@@ -499,6 +500,7 @@ def participate(card, x = 0, y = 0):
       executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
    executePlayScripts(card, 'PARTICIPATION')
+   autoscriptOtherPlayers('UnitParticipates',card)
    clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
@@ -534,6 +536,8 @@ def generate(card, x = 0, y = 0):
    except: unpaidC.markers[resdict['Resource:Neutral']] += count
    card.markers[mdict['Focus']] += count
    notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
+   executePlayScripts(card, 'GENERATE')
+   autoscriptOtherPlayers('ResourceGenerated',card)
    if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC)
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
@@ -582,6 +586,7 @@ def purchaseCard(card, x=0, y=0):
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has acquired {} by skipping its full cost".format(me,card))
       executePlayScripts(card, 'PLAY')
+      autoscriptOtherPlayers('CardPlay',card)
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
@@ -599,6 +604,7 @@ def commit(card, x = 0, y = 0):
    notify("{} commits {} to the force.".format(me, card))
    card.highlight = commitColor
    executePlayScripts(card, 'COMMIT')
+   autoscriptOtherPlayers('ForceCommit',card)
    if debugVerbosity >= 3: notify("<<< commit()") #Debug
 
 def clearCommit(card, x=0, y=0): # Clears a unit from participating in a battle, to undo mistakes
@@ -757,6 +763,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Trie
       targetC.isFaceUp = False
       targetC.highlight = CapturedColor
       setGlobalVariable('Captured Cards',str(capturedCards))
+      autoscriptOtherPlayers('UnitCaptured',card)
 
 def removeCapturedCard(card):
    try: 
@@ -776,6 +783,7 @@ def rescueFromObjective(obj):
             rescuedC = Card(capturedC)
             removeCapturedCard(rescuedC)
             rescuedC.moveTo(rescuedC.owner.hand)
+            autoscriptOtherPlayers('UnitRescured',card)
       return count
    except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
    
@@ -862,6 +870,7 @@ def play(card):
       placeCard(card)
       notify("{} plays {}{}.".format(me, card,extraTXT))
       executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
+      autoscriptOtherPlayers('CardPlayed',card)
 
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
