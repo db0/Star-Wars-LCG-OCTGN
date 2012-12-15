@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whilePlayed:Deal1Damage-perCardPlay-typeEvent_and_Sith-byMe-AutoTargeted-atUnit-choose1-targetOpponent
+whilePlayed:Deal1Damage-perCardPlayed-typeEvent_and_Sith-byMe-AutoTargeted-atUnit-choose1-targetOpponent
 +++++
 
 .....

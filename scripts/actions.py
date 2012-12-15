@@ -586,7 +586,7 @@ def purchaseCard(card, x=0, y=0):
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has acquired {} by skipping its full cost".format(me,card))
       executePlayScripts(card, 'PLAY')
-      autoscriptOtherPlayers('CardPlay',card)
+      autoscriptOtherPlayers('CardPlayed',card)
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):

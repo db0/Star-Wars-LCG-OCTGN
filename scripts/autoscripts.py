@@ -914,7 +914,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
                   if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
                      if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug
-                     if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
+                     if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
                      marker = findMarker(targetLookup, markerNeg.group(1))
                      if marker: targetC = None
                   elif debugVerbosity >= 4: notify("### No marker restrictions.")
@@ -929,6 +929,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
                targetC = None
+         if debugVerbosity >= 2: notify("### Finished seeking. foundTargets List = {}".format(foundTargets))
          if len(foundTargets) == 0 and not re.search(r'AutoTargeted', Autoscript): 
             targetsText = ''
             mergedList = []
@@ -955,17 +956,20 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             targetChoices = []
             if debugVerbosity >= 2: notify("### About to prepare choices list.")# Debug
             for T in foundTargets:
+               if debugVerbosity >= 4: notify("### Checking {}".format(T))# Debug
                markers = 'Counters:'
                if T.markers[mdict['Damage']] and T.markers[mdict['Damage']] >= 1: markers += " {} Damage,".format(T.markers[mdict['Damage']])
                if T.markers[mdict['Focus']] and T.markers[mdict['Focus']] >= 1: markers += " {} Focus,".format(T.markers[mdict['Focus']])
                if T.markers[mdict['Shield']] and T.markers[mdict['Shield']] >= 1: markers += " {} Shield.".format(T.markers[mdict['Shield']])
                if markers != 'Counters:': markers += '\n'
                else: markers = ''
+               if debugVerbosity >= 4: notify("### Finished Adding Markers. Adding stats...")# Debug               
                stats = ''
                if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
                if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
                if T.Type == 'Unit': combatIcons = "Icons: " + parseCombatIcons(T.properties['Combat Icons'])
                else: combatIcons = ''
+               if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
                choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
                targetChoices.append(choiceTXT)
             if not card: choiceTitle = "Choose one of the valid targets for this effect"
