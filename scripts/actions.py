@@ -103,10 +103,13 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    atTimedEffects(Time = 'Start') # Scripted events at the start of the player's turn
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
-   if not Automations['Start/End-of-Turn/Phase']: return
-   BotD = getSpecial('BotD')
    global limitedPlayed
    limitedPlayed = False # Player can now play another limited card.
+   turn = num(getGlobalVariable('Turn'))
+   turn += 1 # Increase the counter for how many turns the player has played.
+   setGlobalVariable('Turn',str(turn))
+   if not Automations['Start/End-of-Turn/Phase']: return
+   BotD = getSpecial('BotD')
    if Side == 'Dark': 
       if BotD.isAlternateImage:
          modifyDial(2)
@@ -701,25 +704,25 @@ def discard(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 1: notify("<<< discard()") #Debug
    return 'OK'
 
-def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the table or the oppomnent's hand to capture
+def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Tries to find a targeted card in the table or the oppomnent's hand to capture
    if debugVerbosity >= 1: notify(">>> capture(){}".format(extraASDebug())) #Debug
    mute()
-   targetC = None
-   for card in table:
-      if debugVerbosity >= 2: notify("### Searching table") #Debug
-      if card.targetedBy and card.targetedBy == me and card.Type != "Objective" and card.highlight != CapturedColor: targetC = card
-   if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
-   else:
-      if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
-      for card in opponent.hand:
-         if card.targetedBy and card.targetedBy == me: targetC = card
-      if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner,targetC)
+   if not targetC:
+      for card in table:
+         if debugVerbosity >= 2: notify("### Searching table") #Debug
+         if card.targetedBy and card.targetedBy == me and card.Type != "Objective" and card.highlight != CapturedColor: targetC = card
+      if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
       else:
-         if debugVerbosity >= 2: notify("### Searching command deck") #Debug
-         for card in opponent.piles['Command Deck'].top(3):
-            if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
+         if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
+         for card in opponent.hand:
             if card.targetedBy and card.targetedBy == me: targetC = card
-         if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner,targetC)
+         if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner,targetC)
+         else:
+            if debugVerbosity >= 2: notify("### Searching command deck") #Debug
+            for card in opponent.piles['Command Deck'].top(3):
+               if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
+               if card.targetedBy and card.targetedBy == me: targetC = card
+            if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner,targetC)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
       myObjectives = eval(me.getGlobalVariable('currentObjectives'))
@@ -730,8 +733,9 @@ def capture(group = table,x = 0,y = 0): # Tries to find a targeted card in the t
             extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
          else: extraTXT = ''
          objectiveList.append(objective.name + extraTXT)
-      choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
-      chosenObj = Card(myObjectives[choice])
+      if not chosenObj:
+         choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
+         chosenObj = Card(myObjectives[choice])
       captureTXT += " as part of their {} objective".format(chosenObj)
       notify(captureTXT)
       rnd(1,10)

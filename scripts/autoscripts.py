@@ -766,7 +766,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    discard = me.piles['Discard Pile']
    objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
-   if card.model == 'ff4fb461-8060-457a-9c16-000000000149' and action == 'THWART' and card.owner == me:
+   if card.name == 'A Journey to Dagobah' and action == 'THWART' and card.owner == me:
       if not confirm("Do you want to use the optional interrupt of Journey To Dagobath?"): return
       if debugVerbosity >= 2: notify("### Journey to Dagobath Script")
       objList = []
@@ -797,7 +797,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       shuffle(objectives)
       if debugVerbosity >= 2: notify("#### About to announce")
       notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
-   elif card.model == 'ff4fb461-8060-457a-9c16-000000000129' and action == 'PLAY':
+   elif card.name == 'Black Squadron Pilot' and action == 'PLAY':
       if len(findTarget('AutoTargeted-atFighter_and_Unit-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
          fighter = findTarget('AutoTargeted-atFighter_and_Unit-byMe-choose1')
          if len(fighter) == 0: return
@@ -810,6 +810,13 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          x,y = fighter[0].position
          card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR[fighter[0]._id]))
          card.sendToBack()
+   elif card.name == 'Cruel Interrogations' and action == 'PLAY':
+      if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return
+      turn = num(getGlobalVariable('Turn'))
+      while turn == 0 and len(opponent.hand) < 5: 
+         if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
+      captureTarget = opponent.hand.random()
+      capture(chosenObj = card, targetC = captureTarget)
       
       
 #------------------------------------------------------------------------------

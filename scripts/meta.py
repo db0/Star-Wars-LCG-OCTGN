@@ -35,7 +35,6 @@ startupMsg = False # Used to check if the player has checked for the latest vers
 gameGUID = None # A Unique Game ID that is fetched during game launch.
 #totalInfluence = 0 # Used when reporting online
 #gameEnded = False # A variable keeping track if the players have submitted the results of the current game already.
-turn = 0 # used during game reporting to report how many turns the game lasted
 
 CardsAA = {} # Dictionary holding all the AutoAction scripts for all cards
 CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
@@ -76,6 +75,7 @@ def storeObjective(card):
             Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
             Card(capturedC).sendToBack()
       #Objective.orientation = Rot90
+   executePlayScripts(card, 'PLAY')
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
    setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
 
@@ -160,6 +160,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
    setGlobalVariable('Engaged Objective','None')
    setGlobalVariable('Engagement Phase','0')
+   setGlobalVariable('Turn','0')
    me.setGlobalVariable('currentObjectives', '[]')
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
 

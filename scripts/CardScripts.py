@@ -154,6 +154,7 @@ Black Squadron Assault
 -----
 ff4fb461-8060-457a-9c16-000000000126
 -----
+
 +++++
 
 .....
@@ -169,7 +170,7 @@ Blaster Pistol
 -----
 ff4fb461-8060-457a-9c16-000000000079
 -----
-Placement:Character_and_Unit
+Placement:Character_and_Unit||BonusIcons:UD:1
 +++++
 
 .....
@@ -233,7 +234,7 @@ Corellian Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000163
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -249,7 +250,7 @@ Coruscant Defense Fleet
 -----
 ff4fb461-8060-457a-9c16-000000000023
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -257,7 +258,7 @@ Counsel of the Sith
 -----
 ff4fb461-8060-457a-9c16-000000000114
 -----
-
+atTurnStart:Draw1Card-byOpponent
 +++++
 
 .....
@@ -273,7 +274,7 @@ Covering Fire
 -----
 ff4fb461-8060-457a-9c16-000000000007
 -----
-
+onPlay:DiscardTarget-Targeted-atUnit$$Put1Shield-AutoTargeted-atUnit-byMe-isParticipating-hasntMarker{Shield}
 +++++
 
 .....
@@ -289,7 +290,7 @@ Cruel Interrogations
 -----
 ff4fb461-8060-457a-9c16-000000000120
 -----
-
+onPlay:CustomScript
 +++++
 
 .....
@@ -649,7 +650,7 @@ Guardian of Peace
 -----
 ff4fb461-8060-457a-9c16-000000000159
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -865,7 +866,7 @@ ISB Interrogators
 -----
 ff4fb461-8060-457a-9c16-000000000125
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -1353,7 +1354,7 @@ Superlaser Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000030
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
 +++++
 
 .....
