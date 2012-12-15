@@ -302,7 +302,7 @@ def markerEffects(Time = 'Start'):
    for card in cardList:
       for marker in card.markers:
          if re.search(r'Death from Above',marker[0]) and Time == 'afterEngagement':
-            TokensX('Remove1'+marker[0], "Death from Above:", card)
+            TokensX('Remove999'+marker[0], "Death from Above:", card)
             notify("--> {} removes Death from Above effect from {}".format(me,card))
 
    

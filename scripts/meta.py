@@ -265,6 +265,11 @@ def calculateCombatIcons(card = None, CIString = None):
    if EEBD and gotEdge(): Blast_Damage += num(EEBD.group(1))
    if T: Tactics += num(T.group(1))
    if EET and gotEdge(): Tactics += num(EET.group(1))
+   if debugVerbosity >= 2: notify("### Checking Markers") #Debug
+   for marker in card.markers:
+      if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
+      if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
+      if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
    if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
    if card: # We only check attachments if we're checking a host's Combat Icons.
       for attachment in hostCards:
