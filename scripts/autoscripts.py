@@ -185,19 +185,26 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if not re.search(r'{}'.format(lookup), AutoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
          if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
-         chkType = re.search(r'-type([A-Za-z ]+)',autoS)
-         if chkType: #If we have this modulator in the script, then need ot check what type of property it's looking for
-            if debugVerbosity >= 4: notify("### Looking for : {}".format(chkType.group(1)))
-            cardProperties = []
-            del cardProperties [:] # Just in case
-            cardProperties.append(origin_card.Type) # Its type
-            cardSubtypes = getKeywords(origin_card).split('-') # And each individual trait. Traits are separated by " - "
-            for cardSubtype in cardSubtypes:
-               strippedCS = cardSubtype.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
-               if strippedCS: cardProperties.append(strippedCS) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.
-            cardProperties.append(origin_card.Side) # We are also going to check if the card is for runner or corp.
-            if debugVerbosity >= 4: notify("### card Properies: {}".format(cardProperties))
-            if not chkType.group(1) in cardProperties: continue 
+         chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
+         if chkTypeRegex: 
+            if debugVerbosity >= 4: notify("### chkTypeRegex : {}".format(chkTypeRegex.groups()))
+            chkTypeList = chkTypeRegex.group(1).split('_and_') # We do not need an _or_ clause, as we can do it simply in another autoscript in the same card, separated by ||
+            correctType = True
+            for chkType in chkTypeList: # If we have this modulator in the script, then need ot check what type of property it's looking for
+               if debugVerbosity >= 4: notify("### Looking for : {}".format(chkType))
+               cardProperties = []
+               del cardProperties [:] # Just in case
+               cardProperties.append(origin_card.Type) # Its type
+               cardSubtypes = getKeywords(origin_card).split('-') # And each individual trait. Traits are separated by " - "
+               for cardSubtype in cardSubtypes:
+                  strippedCS = cardSubtype.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
+                  if strippedCS: cardProperties.append(strippedCS) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.
+               cardProperties.append(origin_card.Side) # We are also going to check if the card is for DS or LS
+               cardProperties.append(origin_card.Affiliation) # and its affiliation
+               if debugVerbosity >= 4: notify("### card Properies: {}".format(cardProperties))
+               if not chkType in cardProperties: correctType = False
+            if not correctType: continue # If the types we're looking for are not in the origin card, abort this script.
+         elif debugVerbosity >= 2: notify("### Not Looking for specific type")
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
          else: targetCard = findTarget(AutoS, card = card)
          if debugVerbosity >= 2: notify("### Automatic Autoscripts: {}".format(AutoS)) # Debug
@@ -897,6 +904,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
+                  if not chkPlayer(Autoscript, targetLookup.controller, False, True): targetC = None
                   markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
                   if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
                      if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
@@ -936,7 +944,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                if len(mergedList) > 0: targetsText += "not {}".format(mergedList)
                if targetsText.endswith(' and '): targetsText = targetsText[:-len(' and ')]
             if debugVerbosity >= 2: notify("### About to chkPlayer()")# Debug
-            if not chkPlayer(Autoscript, targetLookup.controller, False): 
+            if not chkPlayer(Autoscript, targetLookup.controller, False, True): 
                allegiance = re.search(r'by(Opponent|Me)', Autoscript)
                requiredAllegiances.append(allegiance.group(1))
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
@@ -974,14 +982,18 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
       return foundTargets
    except: notify("!!!ERROR!!! on findTarget()")
 
-def chkPlayer(Autoscript, controller, manual): # Function for figuring out if an autoscript is supposed to target an opponent's cards or ours.
+def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for figuring out if an autoscript is supposed to target an opponent's cards or ours.
 # Function returns 1 if the card is not only for rivals, or if it is for rivals and the card being activated it not ours.
 # This is then multiplied by the multiplier, which means that if the card activated only works for Rival's cards, our cards will have a 0 gain.
 # This will probably make no sense when I read it in 10 years...
    if debugVerbosity >= 1: notify(">>> chkPlayer(). Controller is: {}".format(controller)) #Debug
    try:
-      byOpponent = re.search(r'byOpponent', Autoscript)
-      byMe = re.search(r'byMe', Autoscript)
+      if targetChk: # If set to true, it means we're checking from the findTarget() function, which needs a different keyword in case we end up with two checks on a card's controller on the same script (e.g. Darth Vader)
+         byOpponent = re.search(r'targetOpponent', Autoscript)
+         byMe = re.search(r'targetMe', Autoscript)
+      else:
+         byOpponent = re.search(r'byOpponent', Autoscript)
+         byMe = re.search(r'byMe', Autoscript)
       if manual: 
          if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (Manual)")
          return 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.

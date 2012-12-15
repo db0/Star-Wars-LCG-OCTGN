@@ -58,7 +58,7 @@ Admiral Ackbar
 -----
 ff4fb461-8060-457a-9c16-000000000187
 -----
-onPlay:Deal1Damage-AutoTargeted-atUnit-byOpponent-isParticipating-onlyDuringEngagement-isOptional
+onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponent-isParticipating-onlyDuringEngagement-isOptional
 +++++
 
 .....
@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whilePlayed:Deal1Damage-perCardPlay-typeEvent-byMe-AutoTargeted-atUnit-choose1
+whilePlayed:Deal1Damage-perCardPlay-typeEvent_and_Sith-byMe-AutoTargeted-atUnit-choose1-targetOpponent
 +++++
 
 .....
