@@ -228,14 +228,13 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
       if not card.isFaceUp: continue
       Autoscripts = CardsAS.get(card.model,'').split('||')
       for autoS in Autoscripts:
-         if debugVerbosity >= 3: notify("### Processing {} Autoscript: {}".format(card, autoS))
+         if debugVerbosity >= 2: notify("### Processing {} Autoscript: {}".format(card, autoS))
          if re.search(r'after([A-za-z]+)',Time): effect = re.search(r'(after[A-za-z]+):(.*)', autoS) # Putting Run in a group, only to retain the search results groupings later
          else: effect = re.search(r'atTurn(Start|End):(.*)', autoS) #Putting "Start" or "End" in a group to compare with the Time variable later
          if not effect: continue
          if debugVerbosity >= 3: notify("### Time maches. Script triggers on: {}".format(effect.group(1)))
          if chkPlayer(effect.group(2), card.controller,False) == 0: continue # Check that the effect's origninator is valid. 
          if effect.group(1) != Time: continue # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
-         if debugVerbosity >= 3: notify("### split Autoscript: {}".format(autoS))
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
          if re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: continue
          if re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: continue
@@ -248,6 +247,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue
          splitAutoscripts = effect.group(2).split('$$')
          for passedScript in splitAutoscripts:
+            if debugVerbosity >= 2: notify("### passedScript: {}".format(passedScript))
             targetC = findTarget(passedScript, card = card)
             if not TitleDone and not (len(targetC) == 0 and re.search(r'AutoTargeted',passedScript)): # We don't want to put a title if we have a card effect that activates only if we have some valid targets (e.g. Admiral Motti)
                if re.search(r'after([A-za-z]+)',Time): 

@@ -342,6 +342,7 @@ def gameSetup(group, x = 0, y = 0):
          whisper("Please wait until your opponent has drawn their objectives before proceeding")
          return
       if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
+      opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
       for card in me.hand:
          if card.Type != 'Objective': 
             whisper(":::Warning::: You are not supposed to have any non-Objective cards in your hand at this point")
@@ -350,7 +351,6 @@ def gameSetup(group, x = 0, y = 0):
          else: storeObjective(card)
       shuffle(deck)
       drawMany(deck, 6, silent = True)
-      opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
       notify("{} has played their objectives and drawn their starting commands".format(me))
       SetupPhase = False
       if Side == 'Dark': 
@@ -387,7 +387,8 @@ def gameSetup(group, x = 0, y = 0):
          return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
-      if Side == 'Light': #We create the balance of the force card during the dark side's setup, to avoid duplicates.
+      if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
+                                               # We also create it if there's only one player for debug purposes
          BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
          BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
          setGlobalVariable('Balance of the Force', str(BotD._id))
@@ -706,8 +707,11 @@ def discard(card, x = 0, y = 0, silent = False):
 
 def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Tries to find a targeted card in the table or the oppomnent's hand to capture
    if debugVerbosity >= 1: notify(">>> capture(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 2 and chosenObj: notify("### chosenObj = {}".format(chosenObj)) #Debug
+   if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
    mute()
    if not targetC:
+      if debugVerbosity >= 2: notify("Don't have preset target. Seeking...")
       for card in table:
          if debugVerbosity >= 2: notify("### Searching table") #Debug
          if card.targetedBy and card.targetedBy == me and card.Type != "Objective" and card.highlight != CapturedColor: targetC = card
@@ -723,19 +727,22 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Trie
                if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
                if card.targetedBy and card.targetedBy == me: targetC = card
             if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner,targetC)
+   else: captureTXT = "{} has captured one card from {}'s {}".format(me,targetC.owner,targetC,targetC.group)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
-      myObjectives = eval(me.getGlobalVariable('currentObjectives'))
-      objectiveList = []
-      for objectve_ID in myObjectives:
-         objective = Card(objectve_ID)
-         if objective.markers[mdict['Damage']] and objective.markers[mdict['Damage']] >= 1: 
-            extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
-         else: extraTXT = ''
-         objectiveList.append(objective.name + extraTXT)
       if not chosenObj:
+         if debugVerbosity >= 2: notify("Don't have preset objective. Seeking...")
+         myObjectives = eval(me.getGlobalVariable('currentObjectives'))
+         objectiveList = []
+         for objectve_ID in myObjectives:
+            objective = Card(objectve_ID)
+            if objective.markers[mdict['Damage']] and objective.markers[mdict['Damage']] >= 1: 
+               extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
+            else: extraTXT = ''
+            objectiveList.append(objective.name + extraTXT)
          choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
          chosenObj = Card(myObjectives[choice])
+      if debugVerbosity >= 2: notify("About to capture")
       captureTXT += " as part of their {} objective".format(chosenObj)
       notify(captureTXT)
       rnd(1,10)

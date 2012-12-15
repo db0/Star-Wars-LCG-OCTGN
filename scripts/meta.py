@@ -75,9 +75,9 @@ def storeObjective(card):
             Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
             Card(capturedC).sendToBack()
       #Objective.orientation = Rot90
-   executePlayScripts(card, 'PLAY')
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
    setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
+   executePlayScripts(card, 'PLAY')
 
 def getSpecial(cardType,player = me):
 # Functions takes as argument the name of a special card, and the player to whom it belongs, and returns the card object.
@@ -455,7 +455,8 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
       Split_Scripts = Split_Details[2].split('+++++') # List item [1] always holds the two scripts. AutoScripts and AutoActions.
       CardsAS[Split_Details[1].strip()] = Split_Scripts[0].strip()
       CardsAA[Split_Details[1].strip()] = Split_Scripts[1].strip()
-   if turn > 0: whisper("+++ All card scripts refreshed!")
+      if debugVerbosity >= 4: notify(Split_Details[0].strip() + "-- STORED")
+   if num(getGlobalVariable('Turn')) > 0: whisper("+++ All card scripts refreshed!")
    if debugVerbosity >= 4: # Debug
       notify("CardsAS Dict:\n{}".format(str(CardsAS)))
       notify("CardsAA Dict:\n{}".format(str(CardsAA))) 
