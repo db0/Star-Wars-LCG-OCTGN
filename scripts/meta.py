@@ -38,6 +38,7 @@ gameGUID = None # A Unique Game ID that is fetched during game launch.
 
 CardsAA = {} # Dictionary holding all the AutoAction scripts for all cards
 CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
+Stored_Keywords = {} # A Dictionary holding all the Keywords a card has.
 
 cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
 hostCards = {} # A dictionary which holds which is the host of each attachment
@@ -284,6 +285,37 @@ def calculateCombatIcons(card = None, CIString = None):
 def gotEdge():
    if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: return True
    else: return False
+
+def getKeywords(card): # A function which combines the existing card keywords, with markers which give it extra ones.
+   if debugVerbosity >= 1: notify(">>> getKeywords(){}".format(extraASDebug())) #Debug
+   global Stored_Keywords
+   #confirm("getKeywords") # Debug
+   keywordsList = []
+   cKeywords = card.Traits
+   strippedKeywordsList = cKeywords.split('-')
+   for cardKW in strippedKeywordsList:
+      strippedKW = cardKW.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
+      if strippedKW: keywordsList.append(strippedKW) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.   
+   if card.markers:
+      for key in card.markers:
+         markerKeyword = re.search('Trait:([\w ]+)',key[0])
+         if markerKeyword:
+            #confirm("marker found: {}\n key: {}".format(markerKeyword.groups(),key[0])) # Debug
+            #if markerKeyword.group(1) == 'Barrier' or markerKeyword.group(1) == 'Sentry' or markerKeyword.group(1) == 'Code Gate': #These keywords are mutually exclusive. An Ice can't be more than 1 of these
+               #if 'Barrier' in keywordsList: keywordsList.remove('Barrier') # It seems in ANR, they are not so mutually exclusive. See: Tinkering
+               #if 'Sentry' in keywordsList: keywordsList.remove('Sentry') 
+               #if 'Code Gate' in keywordsList: keywordsList.remove('Code Gate')
+            if re.search(r'Breaker',markerKeyword.group(1)):
+               if 'Barrier Breaker' in keywordsList: keywordsList.remove('Barrier Breaker')
+               if 'Sentry Breaker' in keywordsList: keywordsList.remove('Sentry Breaker')
+               if 'Code Gate Breaker' in keywordsList: keywordsList.remove('Code Gate Breaker')
+            keywordsList.append(markerKeyword.group(1))
+   keywords = ''
+   for KW in keywordsList:
+      keywords += '{}-'.format(KW)
+   Stored_Keywords[card._id] = keywords[:-1] # We also update the global variable for this card, which is used by many functions.
+   if debugVerbosity >= 3: notify("<<< getKeywords() by returning: {}.".format(keywords[:-1]))
+   return keywords[:-1] # We need to remove the trailing dash '-'
 
 #------------------------------------------------------------------------------
 # Switches

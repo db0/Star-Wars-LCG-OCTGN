@@ -199,7 +199,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
             if debugVerbosity >= 4: notify("### card Properies: {}".format(cardProperties))
             if not chkType.group(1) in cardProperties: continue 
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
-         else: targetCard = None
+         else: targetCard = findTarget(AutoS, card = card)
          if debugVerbosity >= 2: notify("### Automatic Autoscripts: {}".format(AutoS)) # Debug
          #effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{} -]*)', AutoS)
          #passedScript = "{}".format(effect.group(0))
