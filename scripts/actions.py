@@ -322,6 +322,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
    clearTargets() # We clear the targets in case they were forgotten.
+   atTimedEffects('afterEngagement')
    if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
 # Rest
