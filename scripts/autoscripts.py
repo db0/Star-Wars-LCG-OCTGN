@@ -994,7 +994,9 @@ def chkPlayer(Autoscript, controller, manual): # Function for figuring out if an
       elif byMe and controller == me: 
          if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (byMe)")   
          return 1 # If the card needs to be played by us.
-      if debugVerbosity >= 3: notify("<<< chkPlayer() with return 0") # Debug
+      if debugVerbosity >= 3: 
+         notify("<<< chkPlayer() with return 0") # Debug
+         return 0
       else: return 0 # If all the above fail, it means that we're not supposed to be triggering, so we'll return 0 whic
    except: notify("!!!ERROR!!! Null value on chkPlayer()")
 
