@@ -316,7 +316,6 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
    if targetCards is None: targetCards = []
    gain = 0
    extraTXT = ''
-   reduction = 0
    action = re.search(r'\b(Gain|Lose|SetTo)([0-9]+)([A-Z][A-Za-z &]+)-?', Autoscript)
    if debugVerbosity >= 2: notify("### action groups: {}. Autoscript: {}".format(action.groups(0),Autoscript)) # Debug
    gain += num(action.group(2))
@@ -338,24 +337,22 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
       whisper("Gain what?! (Bad autoscript)")
       return 'ABORT'
    if debugVerbosity >= 2: notify("### Gainx() Finished counter manipulation")
-   if notification != 'Automatic': # Since the verb is in the middle of the sentence, we want it lowercase.
-      if action.group(1) == 'Gain': 
-         if action.group(3) == 'Dial': verb = 'increase'
-         else: verb = 'gain'
-      elif action.group(1) == 'Lose': 
-         if action.group(3) == 'Dial': verb = 'decrease'
-         elif re.search(r'isCost', Autoscript): verb = 'pay'
-         else: verb = 'lose'
-      else: verb = 'set to'
-      if notification == 'Quick':
-         if verb == 'gain' or verb == 'lose' or verb == 'pay': verb += 's'
-         else: verb = 'sets to'      
-   else: verb = action.group(1) # Automatic notifications start with the verb, so it needs to be capitaliszed. 
+   if action.group(1) == 'Gain': # Since the verb is in the middle of the sentence, we want it lowercase. 
+      if action.group(3) == 'Dial': verb = 'increase'
+      else: verb = 'gain'
+   elif action.group(1) == 'Lose': 
+      if action.group(3) == 'Dial': verb = 'decrease'
+      elif re.search(r'isCost', Autoscript): verb = 'pay'
+      else: verb = 'lose'
+   else: verb = 'set to'
+   if notification == 'Quick':
+      if verb != 'setTo': verb += 's'
+      else: verb = 'sets to'      
+   if debugVerbosity >= 2: notify("### Gainx() Finished preparing verb ({}). Notification was: {}".format(verb,notification))
    if abs(gain) == abs(999): total = 'all' # If we have +/-999 as the count, then this mean "all" of the particular counter.
-   elif action.group(1) == 'Lose' and not re.search(r'isPenalty', Autoscript): total = abs(gain * multiplier) - overcharge
-   else: total = abs(gain * multiplier) - reduction# Else it's just the absolute value which we announce they "gain" or "lose"
-   if action.group(3) == 'Dial': closureTXT = "the Death Star Dial by {}".format(gain * multiplier)
-   else: closureTXT = "{} {}".format(gain * multiplier, action.group(3))
+   else: total = abs(gain * multiplier) # Else it's just the absolute value which we announce they "gain" or "lose"
+   if action.group(3) == 'Dial': closureTXT = "the Death Star Dial by {}".format(total)
+   else: closureTXT = "{} {}".format(total, action.group(3))
    if debugVerbosity >= 2: notify("### Gainx() about to announce")
    if notification == 'Quick': announceString = "{}{} {} {}{}".format(announceText, otherTXT, verb, closureTXT,extraTXT)
    else: announceString = "{}{} {} {}{}".format(announceText, otherTXT, verb, closureTXT,extraTXT)
