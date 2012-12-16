@@ -324,6 +324,7 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
    if targetPL != me and not notification: otherTXT = ' force {} to'.format(targetPL)
    else: otherTXT = ''
    multiplier = per(Autoscript, card, n, targetCards) # We check if the card provides a gain based on something else, such as favour bought, or number of dune fiefs controlled by rivals.
+   if action.group(1) == 'Lose': gain *= -1 
    if debugVerbosity >= 3: notify("### GainX() after per") #Debug
    gainReduce = findCounterPrevention(gain * multiplier, action.group(3), targetPL) # If we're going to gain counter, then we check to see if we have any markers which might reduce the cost.
    #confirm("multiplier: {}, gain: {}, reduction: {}".format(multiplier, gain, gainReduce)) # Debug
@@ -331,14 +332,19 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
       if action.group(1) == 'SetTo': targetPL.counters['Reserves'].value = 0 # If we're setting to a specific value, we wipe what it's currently.
       targetPL.counters['Reserves'].value += gain * multiplier
       if targetPL.counters['Reserves'].value < 0: targetPL.counters['Reserves'].value = 0
+   elif re.match(r'Dial', action.group(3)):
+      modifyDial(gain * multiplier)
    else: 
       whisper("Gain what?! (Bad autoscript)")
       return 'ABORT'
    if debugVerbosity >= 2: notify("### Gainx() Finished counter manipulation")
    if notification != 'Automatic': # Since the verb is in the middle of the sentence, we want it lowercase.
-      if action.group(1) == 'Gain': verb = 'gain'
+      if action.group(1) == 'Gain': 
+         if action.group(3) == 'Dial': verb = 'increase'
+         else: verb = 'gain'
       elif action.group(1) == 'Lose': 
-         if re.search(r'isCost', Autoscript): verb = 'pay'
+         if action.group(3) == 'Dial': verb = 'decrease'
+         elif re.search(r'isCost', Autoscript): verb = 'pay'
          else: verb = 'lose'
       else: verb = 'set to'
       if notification == 'Quick':
@@ -348,7 +354,8 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
    if abs(gain) == abs(999): total = 'all' # If we have +/-999 as the count, then this mean "all" of the particular counter.
    elif action.group(1) == 'Lose' and not re.search(r'isPenalty', Autoscript): total = abs(gain * multiplier) - overcharge
    else: total = abs(gain * multiplier) - reduction# Else it's just the absolute value which we announce they "gain" or "lose"
-   closureTXT = ASclosureTXT(action.group(3), total)
+   if action.group(3) == 'Dial': closureTXT = "the Death Star Dial by {}".format(gain * multiplier)
+   else: closureTXT = "{} {}".format(gain * multiplier, action.group(3))
    if debugVerbosity >= 2: notify("### Gainx() about to announce")
    if notification == 'Quick': announceString = "{}{} {} {}{}".format(announceText, otherTXT, verb, closureTXT,extraTXT)
    else: announceString = "{}{} {} {}{}".format(announceText, otherTXT, verb, closureTXT,extraTXT)

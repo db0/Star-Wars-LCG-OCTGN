@@ -654,6 +654,7 @@ def discard(card, x = 0, y = 0, silent = False):
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
+         autoscriptOtherPlayers('ObjectiveThwarted',card)
       else:
          if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
@@ -674,6 +675,7 @@ def discard(card, x = 0, y = 0, silent = False):
             if opponent.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
+         autoscriptOtherPlayers('ObjectiveThwarted',card)
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
