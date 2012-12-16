@@ -264,8 +264,9 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
                notify("{:=^36}".format(title))
                TitleDone = True
             if debugVerbosity >= 2: notify("### passedScript: {}".format(passedScript))
+            targetPL = ofwhom(passedScript,card.controller) # So that we know to announce the right person the effect, affects.
             if card.highlight == DummyColor: announceText = "{}'s lingering effects:".format(card)
-            else: announceText = "{}:".format(card)
+            else: announceText = "{} uses {} to".format(targetPL,card)
             if regexHooks['GainX'].search(passedScript):
                gainTuple = GainX(passedScript, announceText, card, targetC, notification = 'Automatic', n = X)
                if gainTuple == 'ABORT': break
@@ -302,6 +303,9 @@ def markerEffects(Time = 'Start'):
    for card in cardList:
       for marker in card.markers:
          if re.search(r'Death from Above',marker[0]) and Time == 'afterEngagement':
+            TokensX('Remove999'+marker[0], "Death from Above:", card)
+            notify("--> {} removes Death from Above effect from {}".format(me,card))
+         if re.search(r'Defense Upgrade',marker[0]) and Time == 'atTurnEnd':
             TokensX('Remove999'+marker[0], "Death from Above:", card)
             notify("--> {} removes Death from Above effect from {}".format(me,card))
 
@@ -382,7 +386,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    else: # If the marker we're looking for it not defined, then either create a new one with a random color, or look for a token with the custom name we used above.
       if action.group(1) == 'Infect': 
          victim = ofwhom(Autoscript, card.controller)
-         if targetCards[0] == card: targetCards[0] = getSpecial('Identity',victim)
+         if targetCards[0] == card: targetCards[0] = getSpecial('Affiliation',victim)
       if targetCards[0].markers:
          for key in targetCards[0].markers:
             #confirm("Key: {}\n\naction.group(3): {}".format(key[0],action.group(3))) # Debug
@@ -435,10 +439,11 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if notification == 'Quick' and action.group(1) == 'Deal': 
          announceString = "{}'s {} {}s{} {} {} {}{}{}".format(announceText, card, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
    else: announceString = "{} {}{} {} {} {}{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
-   if notification and modtokens != 0: notify(':> {}.'.format(announceString))
+   if notification and modtokens != 0 and not re.search(r'isSilent', Autoscript): notify(':> {}.'.format(announceString))
    if debugVerbosity >= 2: notify("### TokensX() String: {}".format(announceString)) #Debug
    if debugVerbosity >= 3: notify("<<< TokensX()")
-   return announceString
+   if re.search(r'isSilent', Autoscript): return announceText # If it's a silent marker, we don't want to announce anything. Returning the original announceText will be processed by any receiving function as having done nothing.
+   else: return announceString
  
 def DrawX(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for drawing X Cards from the house deck to your hand.
    if debugVerbosity >= 1: notify(">>> DrawX(){}".format(extraASDebug(Autoscript))) #Debug

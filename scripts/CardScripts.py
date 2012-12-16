@@ -66,7 +66,7 @@ Admiral Motti
 -----
 ff4fb461-8060-457a-9c16-000000000070
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atUnit-choose1-hasMarker{Focus}
+afterRefresh:Remove1Focus-byMe-AutoTargeted-atUnit-choose1-hasMarker{Focus}
 +++++
 
 .....
@@ -394,7 +394,7 @@ Decoy at Dantooine
 -----
 ff4fb461-8060-457a-9c16-000000000192
 -----
-whilePlayed:Lose1Dial-perObjectiveThwarted
+whilePlayed:Lose1Dial-perObjectiveThwarted-byOpponent
 +++++
 
 .....
@@ -402,7 +402,7 @@ Defense Protocol
 -----
 ff4fb461-8060-457a-9c16-000000000040
 -----
-
+afterBalance:Lose1Reserves-isOptional-byMe$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponent||afterDraw:Remove1Activation-byMe-isCost-isSilent$$Gain1Reserves
 +++++
 
 .....
@@ -412,7 +412,6 @@ ff4fb461-8060-457a-9c16-000000000038
 -----
 Placement:Objective
 +++++
-
 .....
 Detained
 -----

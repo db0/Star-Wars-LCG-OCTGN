@@ -431,7 +431,7 @@ def displaymatch(match):
    return '<Match: {}, groups={}>'.format(match.group(), match.groups())
       
 def sortPriority(cardList):
-   if debugVerbosity >= 1: notify(">>> sortPriority()") #Debug
+   if debugVerbosity >= 1: notify(">>> sortPriority() with cardList: {}".format(cardList)) #Debug
    priority1 = []
    priority2 = []
    priority3 = []
@@ -448,7 +448,7 @@ def sortPriority(cardList):
    sortedList.extend(priority3)
    if debugVerbosity >= 3: 
       tlist = []
-      for sortTarget in sortedList: tlist.append(fetchProperty(sortTarget, 'name')) # Debug   
+      for sortTarget in sortedList: tlist.append(card.name) # Debug   
       notify("<<< sortPriority() returning {}".format(tlist)) #Debug
    return sortedList
    
@@ -457,7 +457,7 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
    mute()
    if card.markers[mdict['Activation']] and card.markers[mdict['Activation']] >= 1:
       if act != 'manual': return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
-      elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(fetchProperty(card, 'name'))): return 'ABORT'
+      elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): return 'ABORT'
       else: 
          if not silent: notify('{} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
@@ -467,6 +467,45 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
 def clearTargets():
    for card in table:
       if card.targetedBy: card.target(False)
+
+def fetchProperty(card, property): 
+   mute()
+   coverExists = False
+   if debugVerbosity >= 1: notify(">>> fetchProperty(){}".format(extraASDebug())) #Debug
+   if property == 'name': currentValue = card.name
+   else: currentValue = card.properties[property]
+   if currentValue == '?' or currentValue == 'Card':
+      if debugVerbosity >= 4: notify("### Card properties unreadable") #Debug
+      if not card.isFaceUp and card.group == table:
+         if debugVerbosity >= 3: notify("### Need to flip card up to read its properties.") #Debug
+         #x,y = card.position
+         #cover = table.create("ac3a3d5d-7e3a-4742-b9b2-7f72596d9c1b",x,y,1,False)
+         #cover.moveToTable(x,y,False)
+         #if card.orientation == Rot90: cover.orientation = Rot90
+         coverExists = True
+         card.isFaceUp = True
+         loopChk(card)
+      if debugVerbosity >= 3: notify("### Ready to grab real properties.") #Debug
+      if property == 'name': currentValue = card.name # Now that we had a chance to flip the card face up temporarily, we grab its property again.
+      else: currentValue = card.properties[property]
+   if coverExists: 
+      card.isFaceUp = False
+#      rnd(1,10) # To give time to the card facedown automation to complete.
+#      cover.moveTo(shared.exile) # now destorying cover card
+   if debugVerbosity >= 3: notify("<<< fetchProperty() by returning: {}".format(currentValue))
+   return currentValue
+      
+def loopChk(card,property = 'Type'):
+   if debugVerbosity >= 1: notify(">>> loopChk(){}".format(extraASDebug())) #Debug
+   loopcount = 0
+   while card.properties[property] == '?':
+      rnd(1,10)
+      loopcount += 1
+      if loopcount == 5:
+         whisper(":::Error::: Card property can't be grabbed. Aborting!")
+         return 'ABORT'
+   if debugVerbosity >= 4: notify("<<< loopChk()") #Debug
+   return 'OK'         
       
 #---------------------------------------------------------------------------
 # Card Placement functions
