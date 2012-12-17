@@ -274,7 +274,7 @@ Covering Fire
 -----
 ff4fb461-8060-457a-9c16-000000000007
 -----
-onPlay:DiscardTarget-Targeted-atUnit$$Put1Shield-AutoTargeted-atUnit-targetMine-isParticipating-hasntMarker{Shield}
+onPlay:DestroyTarget-Targeted-atUnit$$Put1Shield-AutoTargeted-atUnit-targetMine-isParticipating-hasntMarker{Shield}
 +++++
 
 .....
@@ -412,12 +412,13 @@ ff4fb461-8060-457a-9c16-000000000038
 -----
 Placement:Objective
 +++++
+
 .....
 Detained
 -----
 ff4fb461-8060-457a-9c16-000000000055
 -----
-
+onPlay:CaptureTarget-Targeted-atCharacter_or_Droid
 +++++
 
 .....
@@ -433,7 +434,7 @@ Double Strike
 -----
 ff4fb461-8060-457a-9c16-000000000153
 -----
-
+onPlay:Remove1Focus-Targeted-atCharacter-hasMarker{Focus}
 +++++
 
 .....
@@ -457,7 +458,7 @@ Emergency Repair
 -----
 ff4fb461-8060-457a-9c16-000000000165
 -----
-
+onPlay:Remove999Damage-Targeted-atObjective
 +++++
 
 .....
@@ -521,7 +522,7 @@ Ewok Scout
 -----
 ff4fb461-8060-457a-9c16-000000000205
 -----
-
+onAttack:Put1Ewok Scouted-DemiAutoTargeted-atUnit-hasntMarker{Focus}-targetOpponents-choose1
 +++++
 
 .....
@@ -529,11 +530,11 @@ Ewok Scout
 -----
 ff4fb461-8060-457a-9c16-000000000206
 -----
-
+onAttack:Put1Ewok Scouted-DemiAutoTargeted-atUnit-hasntMarker{Focus}-targetOpponents-choose1
 +++++
 
 .....
-Fall Back&#33;
+Fall Back!
 -----
 ff4fb461-8060-457a-9c16-000000000196
 -----

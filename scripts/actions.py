@@ -773,7 +773,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Trie
       setGlobalVariable('Captured Cards',str(capturedCards))
       autoscriptOtherPlayers('UnitCaptured',card)
 
-def removeCapturedCard(card):
+def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
    try: 
       mute()
       capturedCards = eval(getGlobalVariable('Captured Cards'))
@@ -781,17 +781,17 @@ def removeCapturedCard(card):
       card.highlight = None
    except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
 
-def rescueFromObjective(obj):
+def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
    try:
       count = 0
-      capturedCards = eval(getGlobalVariable('Captured Cards'))
-      for capturedC in capturedCards:
-         if capturedCards[capturedC] == obj._id:
-            count += 1
-            rescuedC = Card(capturedC)
-            removeCapturedCard(rescuedC)
-            rescuedC.moveTo(rescuedC.owner.hand)
-            autoscriptOtherPlayers('UnitRescured',card)
+      capturedCards = eval(getGlobalVariable('Captured Cards')) # This is a dictionary holding how many and which cards are captured at each objective.
+      for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
+         if capturedCards[capturedC] == obj._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
+            count += 1 # We count how many captured cards we found
+            rescuedC = Card(capturedC) # We generate the card object by the card's unique ID
+            removeCapturedCard(rescuedC) # We remove the card from the dictionary
+            rescuedC.moveTo(rescuedC.owner.hand) # We return the card to its owner's hand
+            autoscriptOtherPlayers('UnitRescured',card) # We check if any card on the table has a trigger out of rescued cards.
       return count
    except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
    
@@ -820,8 +820,9 @@ def inspectCard(card, x = 0, y = 0): # This function shows the player the card t
       information("This is the {} affiliation card.\
                  \nIt does not have any abilities other than providing {} resources.\
                \n\nTo produce the resources simply attempt to play a card from your hand and then double click this card.".format(card.Affiliation, card.Affiliation))
-   else:                  
-      finalTXT = "{}\n\nTraits:{}\n\nCard Text: {}".format(card.name, card.Traits, card.Text)
+   else:          
+      if debugVerbosity >= 0: finalTXT = "{}\n\nTraits:{}\n\nCard Text: {}\n\nAS: {}\n\nAA: {}".format(card.name, card.Traits, card.Text,CardsAS.get(card.model,'N/A'),CardsAA.get(card.model,'N/A'))
+      else: finalTXT = "{}\n\nTraits:{}\n\nCard Text: {}".format(card.name, card.Traits, card.Text)
       information("{}".format(finalTXT))
 
 def inspectTargetCard(group, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.

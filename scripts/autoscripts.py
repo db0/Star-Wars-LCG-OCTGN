@@ -302,9 +302,11 @@ def markerEffects(Time = 'Start'):
    cardList = [c for c in table if c.markers]
    for card in cardList:
       for marker in card.markers:
-         if re.search(r'Death from Above',marker[0]) and Time == 'afterEngagement':
-            TokensX('Remove999'+marker[0], "Death from Above:", card)
-            notify("--> {} removes Death from Above effect from {}".format(me,card))
+         if ((re.search(r'Death from Above',marker[0])
+              or re.search(r'Ewok Scouted',marker[0]))
+              and Time == 'afterEngagement'):
+            TokensX('Remove999'+marker[0], marker[0] + ':', card)
+            notify("--> {} removes {} effect from {}".format(me,marker[0],card))
          if re.search(r'Defense Upgrade',marker[0]) and Time == 'atTurnEnd':
             TokensX('Remove999'+marker[0], "Death from Above:", card)
             notify("--> {} removes Death from Above effect from {}".format(me,card))
@@ -713,25 +715,31 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if targetCards is None: targetCards = []
    targetCardlist = '' # A text field holding which cards are going to get tokens.
    extraTXT = ''
-   action = re.search(r'\b(Discard|Exile)(Target|Parent|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
+   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return)(Target|Parent|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
    if action.group(3): dest = action.group(3)
    else: dest = 'hand'
    for targetCard in targetCards: 
-      if action.group(1) == 'Derez': targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Derez saves the name because by the time we announce the action, the card will be face down.
+      if action.group(1) == 'Capture': targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
       else: targetCardlist += '{},'.format(targetCard)
    targetCardlist = targetCardlist.strip(',') # Re remove the trailing comma
    for targetCard in targetCards:
-      if re.search(r'-ifEmpty',Autoscript) and targetCard.markers[mdict['Credits']] and targetCard.markers[mdict['Credits']] > 0: 
-         if len(targetCards) > 1: continue #If the modification only happens when the card runs out of credits, then we abort if it still has any
-         else: return announceText # If there's only 1 card and it's not supposed to be trashed yet, do nothing.
-      if action.group(1) == 'Trash':
+      if action.group(1) == 'Destroy':
          trashResult = Discard(targetCard, silent = True)
          if trashResult == 'ABORT': return 'ABORT'
          elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
       elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
+      elif action.group(1) == 'Return': targetCard.moveTo(targetCard.owner.hand)
+      elif action.group(1) == 'Capture' and capture(targetC = targetCard) != 'ABORT': pass
+      elif action.group(1) == 'Rescue':
+         if card.isFaceUp: 
+            notify(":::ERROR::: Target Card was not captured!")
+            return 'ABORT'
+         else:
+            removeCapturedCard(card) 
+            targetCard.moveTo(targetCard.owner.hand)
       else: return 'ABORT'
       if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
    if notification == 'Quick': announceString = "{} {}es {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
@@ -840,7 +848,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
          if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\ntargetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in group: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
-            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or (re.search(r'AutoTargeted', Autoscript) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor and targetLookup.highlight !=FateColor)): # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
+            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or re.search(r'AutoTargeted', Autoscript)) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor and targetLookup.highlight !=FateColor: # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
             # OK the above target check might need some decoding:
             # Look through all the cards on the group and start checking only IF...
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
@@ -904,7 +912,22 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
                targetC = None
          if debugVerbosity >= 2: notify("### Finished seeking. foundTargets List = {}".format(foundTargets))
-         if len(foundTargets) == 0 and not re.search(r'AutoTargeted', Autoscript): 
+         if re.search(r'DemiAutoTargeted', Autoscript):
+            if debugVerbosity >= 2: notify("### Checking DemiAutoTargeted switches")# Debug
+            targetNRregex = re.search(r'-choose([1-9])',Autoscript)
+            targetedCards = 0
+            foundTargetsTargeted = []
+            if debugVerbosity >= 2: notify("### About to count targeted cards")# Debug
+            for targetC in foundTargets:
+               if targetC.targetedBy and targetC.targetedBy == me: foundTargetsTargeted.append(targetC)
+            if targetNRregex:
+               if debugVerbosity >= 2: notify("!!! targetNRregex exists")# Debug
+               if num(targetNRregex.group(1)) > len(foundTargetsTargeted): pass # Not implemented yet. Once I have choose2 etc I'll work on this
+               else: # If we have the same amount of cards targeted as the amount we need, then we just select the targeted cards
+                  foundTargets = foundTargetsTargeted # This will also work if the player has targeted more cards than they need. The later choice will be simply between those cards.
+            else: # If we do not want to choose, then it's probably a bad script. In any case we make sure that the player has targeted something (as the alternative it giving them a random choice of the valid targets)
+               del foundTargets[:]
+         if len(foundTargets) == 0 and not re.search(r'(?<!Demi)AutoTargeted', Autoscript): 
             targetsText = ''
             mergedList = []
             for posRestrictions in targetGroups: 
