@@ -400,7 +400,8 @@ def versionCheck():
    global startupMsg
    me.setGlobalVariable('gameVersion',gameVersion)
    if not startupMsg and len(players) > 1:
-      whisper("+++ Checking Version. Please Wait...")
+      #whisper("+++ Checking Version. Please Wait...")
+      #rnd(1,10) # Need to pause a bit, otherwise the above notice will appear after urls have been fetched.
       (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt')
       if debugVerbosity >= 2: notify("### url:{}, code: {}".format(url,code)) #Debug
       if code != 200 or not url:

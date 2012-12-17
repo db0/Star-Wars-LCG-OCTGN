@@ -36,6 +36,7 @@ handRefillDone = False # A variable which tracks if the player has refilled thei
 forceStruggleDone = False # A variable which tracks if the player's have actually done the force struggle for this turn (just in case it's forgotten)
 ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
 limitedPlayed = False # A Variable which records if the player has played a limited card this turn
+reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
 
 #---------------------------------------------------------------------------
 # Phases
@@ -654,7 +655,10 @@ def discard(card, x = 0, y = 0, silent = False):
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
-         autoscriptOtherPlayers('ObjectiveThwarted',card,reversePlayerChk = True)
+         global reversePlayerChk
+         reversePlayerChk = True
+         autoscriptOtherPlayers('ObjectiveThwarted',card)
+         reversePlayerChk = False
       else:
          if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 

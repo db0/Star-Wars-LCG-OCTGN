@@ -163,10 +163,9 @@ def executeAttachmentScripts(card, action):
 # Other Player trigger
 #------------------------------------------------------------------------------
    
-def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, reversePlayerChk = False): # Function that triggers effects based on the opponent's cards.
+def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Function that triggers effects based on the opponent's cards.
 # This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
 # For example a card that would produce credits whenever a trace was attempted. 
-# The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
    if not Automations['Triggers']: return
    if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {}".format(lookup)) #Debug
    if not Automations['Play']: return # If automations have been disabled, do nothing.
@@ -184,10 +183,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, reverse
       for AutoS in Autoscripts:
          if debugVerbosity >= 2: notify('Checking AutoS: {}'.format(AutoS)) # Debug
          if not re.search(r'{}'.format(lookup), AutoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
-         if not reversePlayerChk:
-            if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
-         else: 
-            if chkPlayer(AutoS, card.controller,False) == 1: continue # In this case the effect's originator must be reversed.
+         if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
@@ -487,7 +483,7 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
       else: destPath = ''
    if debugVerbosity >= 2: notify("### About to announce.")
    if count == 0: return announceText # If there are no cards, then we effectively did nothing, so we don't change the notification.
-   if notification == 'Quick': announceString = "{} draws {} cards".format(announceText, count)
+   if notification == 'Quick': announceString = "{} draw {} cards".format(announceText, count)
    elif targetPL == me: announceString = "{} {} {} cards from their {}{}".format(announceText, destiVerb, count, source.name, destPath)
    elif source == targetPL.piles['Command Deck'] and destination == targetPL.hand: announceString = "{} {} draws {} cards.".format(announceText, targetPL, count)
    else: announceString = "{} {} {} cards from {}'s {}".format(announceText, destiVerb, count, targetPL, source.name, destPath)
@@ -977,21 +973,27 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          byOpponent = re.search(r'(byOpponent|duringOpponentTurn)', Autoscript)
          byMe = re.search(r'(byMe|duringMyTurn)', Autoscript)
       if manual or len(players) == 1: # If there's only one player, we always return true for debug purposes.
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (Manual/Debug)")
-         return 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.
+         if debugVerbosity >= 2: notify("### Succeeded at Manual/Debug")
+         validPlayer = 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.
       elif not byOpponent and not byMe: 
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (Neutral)")   
-         return 1 # If the card has no restrictions on being us or a rival.
+         if debugVerbosity >= 2: notify("### Succeeded at Neutral")   
+         validPlayer = 1 # If the card has no restrictions on being us or a rival.
       elif byOpponent and controller != me: 
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (byOpponent)")   
-         return 1 # If the card needs to be played by a rival.
+         if debugVerbosity >= 2: notify("### Succeeded at byOpponent")   
+         validPlayer =  1 # If the card needs to be played by a rival.
       elif byMe and controller == me: 
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (byMe)")   
-         return 1 # If the card needs to be played by us.
-      if debugVerbosity >= 3: 
-         notify("<<< chkPlayer() with return 0") # Debug
-         return 0
-      else: return 0 # If all the above fail, it means that we're not supposed to be triggering, so we'll return 0 whic
+         if debugVerbosity >= 2: notify("### Succeeded at byMe")   
+         validPlayer =  1 # If the card needs to be played by us.
+      else: 
+         if debugVerbosity >= 2: notify("### Failed all checks") # Debug
+         validPlayer =  0 # If all the above fail, it means that we're not supposed to be triggering, so we'll return 0 whic
+      if not reversePlayerChk: 
+         if debugVerbosity >= 3: notify("<<< chkPlayer() with validPlayer") # Debug
+         return validPlayer
+      else: # In case reversePlayerChk is set to true, we want to return the opposite result. This means that if a scripts expect the one running the effect to be the player, we'll return 1 only if the one running the effect is the opponent. See Decoy at Dantoine for a reason
+         if debugVerbosity >= 3: notify("<<< chkPlayer() reversed!") # Debug      
+         if validPlayer == 0: return 1
+         else: return 0
    except: notify("!!!ERROR!!! Null value on chkPlayer()")
 
 def chkWarn(card, Autoscript): # Function for checking that an autoscript announces a warning to the player
