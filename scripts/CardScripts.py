@@ -58,7 +58,7 @@ Admiral Ackbar
 -----
 ff4fb461-8060-457a-9c16-000000000187
 -----
-onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponent-isParticipating-onlyDuringEngagement-isOptional
+onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponents-isParticipating-onlyDuringEngagement-isOptional
 +++++
 
 .....
@@ -66,7 +66,7 @@ Admiral Motti
 -----
 ff4fb461-8060-457a-9c16-000000000070
 -----
-afterRefresh:Remove1Focus-byMe-AutoTargeted-atUnit-choose1-hasMarker{Focus}
+afterRefresh:Remove1Focus-AutoTargeted-atUnit-targetMine-choose1-hasMarker{Focus}-duringMyTurn
 +++++
 
 .....
@@ -82,7 +82,7 @@ Aft Armor Plating
 -----
 ff4fb461-8060-457a-9c16-000000000061
 -----
-Placement:Vehicle_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
+Placement:Vehicle_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -234,7 +234,7 @@ Corellian Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000163
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -250,7 +250,7 @@ Coruscant Defense Fleet
 -----
 ff4fb461-8060-457a-9c16-000000000023
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -258,7 +258,7 @@ Counsel of the Sith
 -----
 ff4fb461-8060-457a-9c16-000000000114
 -----
-atTurnStart:Draw1Card-byOpponent
+atTurnStart:Draw1Card-duringOpponentTurn
 +++++
 
 .....
@@ -274,7 +274,7 @@ Covering Fire
 -----
 ff4fb461-8060-457a-9c16-000000000007
 -----
-onPlay:DiscardTarget-Targeted-atUnit$$Put1Shield-AutoTargeted-atUnit-byMe-isParticipating-hasntMarker{Shield}
+onPlay:DiscardTarget-Targeted-atUnit$$Put1Shield-AutoTargeted-atUnit-targetMine-isParticipating-hasntMarker{Shield}
 +++++
 
 .....
@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whilePlayed:Deal1Damage-perCardPlayed-typeEvent_and_Sith-byMe-AutoTargeted-atUnit-choose1-targetOpponent
+whilePlayed:Deal1Damage-perCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce
 +++++
 
 .....
@@ -402,7 +402,7 @@ Defense Protocol
 -----
 ff4fb461-8060-457a-9c16-000000000040
 -----
-afterBalance:Lose1Reserves-isOptional-byMe$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponent||afterDraw:Remove1Activation-byMe-isCost-isSilent$$Gain1Reserves
+afterRefresh:Lose1Reserves-isOptional-duringMyTurn$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
 +++++
 
 .....
@@ -649,7 +649,7 @@ Guardian of Peace
 -----
 ff4fb461-8060-457a-9c16-000000000159
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -865,7 +865,7 @@ ISB Interrogators
 -----
 ff4fb461-8060-457a-9c16-000000000125
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -1353,7 +1353,7 @@ Superlaser Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000030
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-byMe-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....

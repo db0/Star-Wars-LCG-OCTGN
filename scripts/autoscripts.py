@@ -163,9 +163,10 @@ def executeAttachmentScripts(card, action):
 # Other Player trigger
 #------------------------------------------------------------------------------
    
-def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Function that triggers effects based on the opponent's cards.
+def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, reversePlayerChk = False): # Function that triggers effects based on the opponent's cards.
 # This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
 # For example a card that would produce credits whenever a trace was attempted. 
+# The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
    if not Automations['Triggers']: return
    if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {}".format(lookup)) #Debug
    if not Automations['Play']: return # If automations have been disabled, do nothing.
@@ -183,7 +184,10 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
       for AutoS in Autoscripts:
          if debugVerbosity >= 2: notify('Checking AutoS: {}'.format(AutoS)) # Debug
          if not re.search(r'{}'.format(lookup), AutoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
-         if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         if not reversePlayerChk:
+            if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         else: 
+            if chkPlayer(AutoS, card.controller,False) == 1: continue # In this case the effect's originator must be reversed.
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
@@ -840,12 +844,29 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
          if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\ntargetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in group: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
-            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or (re.search(r'AutoTargeted', Autoscript) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor and targetLookup.highlight !=FateColor)) and chkPlayer(Autoscript, targetLookup.controller, False): # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
+            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or (re.search(r'AutoTargeted', Autoscript) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor and targetLookup.highlight !=FateColor)): # The card needs to be targeted by the player. If the card needs to belong to a specific player (me or rival) this also is taken into account.
             # OK the above target check might need some decoding:
             # Look through all the cards on the group and start checking only IF...
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
             # * The player who controls this card is supposed to be me or the enemy.
-               if debugVerbosity >= 3: notify("### Checking {}".format(targetLookup)) #Debug
+               if re.search(r'isCurrentObjective',Autoscript) and targetLookup.highlight != DefendColor: continue
+               if re.search(r'isParticipating',Autoscript) and targetLookup.orientation != Rot90 and targetLookup.highlight != DefendColor: continue
+               if re.search(r'isCommited',Autoscript) and targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: continue
+               if not chkPlayer(Autoscript, targetLookup.controller, False, True): continue
+               markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
+               if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
+                  if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
+                  if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
+                  marker = findMarker(targetLookup, markerName.group(1))
+                  if not marker: continue
+               markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
+               if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
+                  if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug
+                  if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
+                  marker = findMarker(targetLookup, markerNeg.group(1))
+                  if marker: continue
+               elif debugVerbosity >= 4: notify("### No marker restrictions.")
+               if debugVerbosity >= 3: notify("### Checking {} Properties".format(targetLookup)) #Debug
                del cardProperties[:] # Cleaning the previous entries
                if debugVerbosity >= 4: notify("### Appending name") #Debug                
                cardProperties.append(targetLookup.name) # We are going to check its name
@@ -869,7 +890,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                # And then we check if no properties from the invalid list are in the properties
                # If both of these are true, then the card is retained as a valid target for our action.
                   if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
-                  if targetC: break # If the card is a valid target from a previous restrictions group, we just chose it.
+                  if targetC: break # If the card is a valid target from a previous restrictions group, we just choose it.
                   targetC = targetLookup
                   if len(targetGroups) > 0 and len(restrictionsGroup[0]) > 0: 
                      for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
@@ -881,26 +902,6 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
-                  if not chkPlayer(Autoscript, targetLookup.controller, False, True): targetC = None
-                  markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
-                  if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
-                     if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
-                     if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
-                     marker = findMarker(targetLookup, markerName.group(1))
-                     if not marker: targetC = None
-                  markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
-                  if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
-                     if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug
-                     if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
-                     marker = findMarker(targetLookup, markerNeg.group(1))
-                     if marker: targetC = None
-                  elif debugVerbosity >= 4: notify("### No marker restrictions.")
-                  if re.search(r'isCurrentObjective',Autoscript):
-                     if targetLookup.highlight != DefendColor: targetC = None
-                  if re.search(r'isParticipating',Autoscript):
-                     if targetLookup.orientation != Rot90 and targetLookup.highlight != DefendColor: targetC = None
-                  if re.search(r'isCommited',Autoscript):
-                     if targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: targetC = None
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.
@@ -970,13 +971,13 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
    if debugVerbosity >= 1: notify(">>> chkPlayer(). Controller is: {}".format(controller)) #Debug
    try:
       if targetChk: # If set to true, it means we're checking from the findTarget() function, which needs a different keyword in case we end up with two checks on a card's controller on the same script (e.g. Darth Vader)
-         byOpponent = re.search(r'targetOpponent', Autoscript)
-         byMe = re.search(r'targetMe', Autoscript)
+         byOpponent = re.search(r'targetOpponents', Autoscript)
+         byMe = re.search(r'targetMine', Autoscript)
       else:
-         byOpponent = re.search(r'byOpponent', Autoscript)
-         byMe = re.search(r'byMe', Autoscript)
-      if manual: 
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (Manual)")
+         byOpponent = re.search(r'(byOpponent|duringOpponentTurn)', Autoscript)
+         byMe = re.search(r'(byMe|duringMyTurn)', Autoscript)
+      if manual or len(players) == 1: # If there's only one player, we always return true for debug purposes.
+         if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (Manual/Debug)")
          return 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.
       elif not byOpponent and not byMe: 
          if debugVerbosity >= 3: notify("<<< chkPlayer() with return 1 (Neutral)")   

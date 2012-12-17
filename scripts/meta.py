@@ -224,7 +224,7 @@ def findMarker(card, markerDesc): # Goes through the markers on the card and loo
 
 def parseCombatIcons(STRING):
    # This function takes the printed combat icons of a card and returns a string that contains only the non-zero ones.
-   if debugVerbosity >= 1: notify(">>> parseCombatIcons() with action: {}".format(action)) #Debug
+   if debugVerbosity >= 1: notify(">>> parseCombatIcons() with STRING: {}".format(STRING)) #Debug
    parsedIcons = ''
    UD = re.search(r'(?<!-)UD:([1-9])',STRING)
    EEUD = re.search(r'EE-UD:([1-9])',STRING)
@@ -400,6 +400,7 @@ def versionCheck():
    global startupMsg
    me.setGlobalVariable('gameVersion',gameVersion)
    if not startupMsg and len(players) > 1:
+      whisper("+++ Checking Version. Please Wait...")
       (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt')
       if debugVerbosity >= 2: notify("### url:{}, code: {}".format(url,code)) #Debug
       if code != 200 or not url:

@@ -68,6 +68,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          if not forceStruggleDone and Automations['Start/End-of-Turn/Phase']: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
          me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
          setGlobalVariable('Active Player', opponent.name)
+         atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
          notify("=== {} has ended their turn ===.".format(me))
          for card in table:
             if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
@@ -131,10 +132,10 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          chosenObj = Card(opponentObjectives[choice])
          chosenObj.markers[mdict['Damage']] += 1
          notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(chosenObj))      
-   atTimedEffects(Time = 'afterBalance')   
 
 def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
+   atTimedEffects(Time = 'afterBalance')   
    mute()
    global firstTurn
    me.setGlobalVariable('Phase','2')
@@ -162,10 +163,10 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
       card = me.piles['Objective Deck'].top()
       storeObjective(card)
       currentObjectives = eval(me.getGlobalVariable('currentObjectives')) # We don't need to clear destroyed objectives anymore, since that is taken care of during storeObjective()
-   atTimedEffects(Time = 'afterRefresh')   
 
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
+   atTimedEffects(Time = 'afterRefresh')   
    mute()
    global handRefillDone
    handRefillDone = False
@@ -173,26 +174,26 @@ def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    showCurrentPhase()
    if not Automations['Start/End-of-Turn/Phase']: return
    if len(me.hand) == 0: refillHand() # If the player's hand is empty, there's no option to take. Just refill.
-   atTimedEffects(Time = 'afterDraw')   
    
 def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment phase
    if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
+   atTimedEffects(Time = 'afterDraw')
    mute()
    me.setGlobalVariable('Phase','4')
    showCurrentPhase()   
    if not Automations['Start/End-of-Turn/Phase']: return
-   atTimedEffects(Time = 'afterDeployment')   
    
 def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
    if debugVerbosity >= 1: notify(">>> goToConflict(){}".format(extraASDebug())) #Debug
+   atTimedEffects(Time = 'afterDeployment')   
    mute()
    me.setGlobalVariable('Phase','5')
    showCurrentPhase()   
    if not Automations['Start/End-of-Turn/Phase']: return
-   atTimedEffects(Time = 'afterConflict')   
 
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
+   atTimedEffects(Time = 'afterConflict')   
    mute()
    global forceStruggleDone
    forceStruggleDone = False # At the start of the force phase, the force struggle is obviously not done yet.
@@ -201,7 +202,6 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    showCurrentPhase()
    delayed_whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
    if not Automations['Start/End-of-Turn/Phase']: return
-   atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
    mute()
@@ -654,7 +654,7 @@ def discard(card, x = 0, y = 0, silent = False):
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
-         autoscriptOtherPlayers('ObjectiveThwarted',card)
+         autoscriptOtherPlayers('ObjectiveThwarted',card,reversePlayerChk = True)
       else:
          if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
