@@ -37,6 +37,7 @@ forceStruggleDone = False # A variable which tracks if the player's have actuall
 ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
 limitedPlayed = False # A Variable which records if the player has played a limited card this turn
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
+warnZeroCostEvents = True # Warns the player about zero cost events.
 
 #---------------------------------------------------------------------------
 # Phases
@@ -565,7 +566,7 @@ def checkPaidResources(card):
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
                affiliationMatch = True # We set that we've also got a matching resource affiliation
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
-   if count >= num(card.Cost) and (card.Affiliation == 'Neutral' or affiliationMatch):
+   if count >= num(card.Cost) and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and num(card.Cost)) == 0):
       if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
       return 'OK'
    else:
@@ -869,10 +870,16 @@ def play(card):
             extraTXT += " (Bypassing Uniqueness Restriction!)"
          else: return         
    card.moveToTable(0, 0 + yaxisMove(card))
-   if num(card.Cost) > 0: 
-      card.highlight = UnpaidColor
+   if num(card.Cost) > 0 or card.Type == 'Event': # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
+      card.highlight = UnpaidColor                # We let everything else, as I'm not aware of cards which cancel units or enhancements coming into play.
       unpaidCard = card
       notify("{} attempts to play {}{}.".format(me, card,extraTXT))
+      global warnZeroCostEvents
+      if num(card.Cost) == 0 and card.Type == 'Event' and warnZeroCostEvents: 
+         information("This event may have 0 cost, but we've set it as unpaid in order to allow your opponent to play interrupts.\
+                    \nOnce your opponent had the chance to play any interrupts, double click on the event to triggers finalize playing it.\
+                  \n\n(This message will not appear again")
+         warnZeroCostEvents = False
    else: 
       placeCard(card)
       notify("{} plays {}{}.".format(me, card,extraTXT))
