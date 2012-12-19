@@ -165,10 +165,10 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
       card = me.piles['Objective Deck'].top()
       storeObjective(card)
       currentObjectives = eval(me.getGlobalVariable('currentObjectives')) # We don't need to clear destroyed objectives anymore, since that is taken care of during storeObjective()
+   atTimedEffects(Time = 'afterRefresh') # We put "afterRefresh" in the refresh phase, as cards trigger immediately after refreshing. Not afte the refresh phase as a whole.
 
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
-   atTimedEffects(Time = 'afterRefresh')   
    mute()
    global handRefillDone
    handRefillDone = False
@@ -414,9 +414,9 @@ def defaultAction(card, x = 0, y = 0):
    if card.highlight == FateColor: 
       #whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
       notify("{} resolves the ability of fate card {}".format(me,card))
-      card.highlight = EdgeColor # Rot270 orientation means the fate card has been used already.
       executePlayScripts(card, 'RESOLVEFATE')
       autoscriptOtherPlayers('ResolveFate',card)
+      card.highlight = EdgeColor
    elif card.highlight == EdgeColor: revealEdge()
    elif card.highlight == UnpaidColor: purchaseCard(card)
    elif num(card.Resources) > 0 and findUnpaidCard(): 
@@ -880,7 +880,7 @@ def play(card):
       global warnZeroCostEvents
       if num(card.Cost) == 0 and card.Type == 'Event' and warnZeroCostEvents: 
          information("This event may have 0 cost, but we've set it as unpaid in order to allow your opponent to play interrupts.\
-                    \nOnce your opponent had the chance to play any interrupts, double click on the event to triggers finalize playing it.\
+                    \nOnce your opponent had the chance to play any interrupts, double click on the event to finalize playing it and trigger any effects.\
                   \n\n(This message will not appear again")
          warnZeroCostEvents = False
    else: 

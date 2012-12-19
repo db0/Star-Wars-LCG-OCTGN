@@ -762,7 +762,7 @@ Hit and Run
 -----
 ff4fb461-8060-457a-9c16-000000000210
 -----
-whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perAttackerEdgeWin-ifAttacker
+whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perAttackerEdgeWin-ifAttacker-onlyOnce
 +++++
 
 .....
@@ -770,7 +770,7 @@ Home One
 -----
 ff4fb461-8060-457a-9c16-000000000181
 -----
-afterStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifAttacker
+onStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifAttacker
 +++++
 
 .....

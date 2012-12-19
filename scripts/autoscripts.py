@@ -58,9 +58,15 @@ def executePlayScripts(card, action):
          actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
-            if re.search(r'-ifAttacker', AutoS) and Card(currObjID).owner != opponent: continue
-            if re.search(r'-ifDefender', AutoS) and Card(currObjID).owner != me: continue
-         elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): continue # If we're looking for attakcer or defender and we're not in an enagement, return.
+            if re.search(r'-ifAttacker', AutoS) and Card(num(currObjID)).owner != opponent: 
+               if debugVerbosity >= 2: notify("### Rejected onAttack script for defender")
+               continue
+            if re.search(r'-ifDefender', AutoS) and Card(num(currObjID)).owner != me: 
+               if debugVerbosity >= 2: notify("### Rejected onDefense script for attacker")
+               continue
+         elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): 
+            if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
+            continue # If we're looking for attakcer or defender and we're not in an enagement, return.
          if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
@@ -120,35 +126,44 @@ def executePlayScripts(card, action):
                passedScript = effect.group(0)
                if debugVerbosity >= 2: notify("### passedscript: {}".format(passedScript)) # Debug
                if regexHooks['CreateDummy'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in CreateDummy hook")
                   if CreateDummy(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif regexHooks['DrawX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in DrawX hook")
                   if DrawX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif regexHooks['TokensX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in TokensX hook")
                   if TokensX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif regexHooks['RollX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in RollX hook")
                   rollTuple = RollX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
                   if rollTuple == 'ABORT': return
                   X = rollTuple[1] 
                elif regexHooks['RequestInt'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in RequestInt hook")
                   numberTuple = RequestInt(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
                   if numberTuple == 'ABORT': return
                   X = numberTuple[1] 
                elif regexHooks['DiscardX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in DiscardX hook")
                   discardTuple = DiscardX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
                   if discardTuple == 'ABORT': return
                   X = discardTuple[1] 
                elif regexHooks['ReshuffleX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in ReshuffleX hook")
                   reshuffleTuple = ReshuffleX(passedScript, announceText, card, targetC, notification = 'Quick', n = X)
                   if reshuffleTuple == 'ABORT': return
                   X = reshuffleTuple[1]
                elif regexHooks['ShuffleX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in ShuffleX hook")
                   if ShuffleX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif regexHooks['ChooseKeyword'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in ChooseKeyword hook")
                   if ChooseKeyword(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
-               elif regexHooks['InflictX'].search(passedScript): 
-                  if InflictX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif regexHooks['ModifyStatus'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in ModifyStatus hook")
                   if ModifyStatus(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif debugVerbosity >= 2: notify("### No hooks found for autoscript")
             if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
             if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
    if debugVerbosity >= 2: notify("#### About to go check if I'm to go into executeAttachmentScripts()") # Debug
@@ -192,9 +207,15 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
-            if re.search(r'-ifAttacker', AutoS) and Card(currObjID).owner == card.owner: continue
-            if re.search(r'-ifDefender', AutoS) and Card(currObjID).owner != card.owner: continue
-         elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): continue # If we're looking for attakcer or defender and we're not in an enagement, return.
+            if re.search(r'-ifAttacker', AutoS) and Card(num(currObjID)).owner == card.owner: 
+               if debugVerbosity >= 2: notify("### Rejected onAttack script for defender")
+               continue
+            if re.search(r'-ifDefender', AutoS) and Card(num(currObjID)).owner != card.owner: 
+               if debugVerbosity >= 2: notify("### Rejected onDefense script for attacker")
+               continue
+         elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): 
+            if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
+            continue # If we're looking for attakcer or defender and we're not in an enagement, return.
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
@@ -451,9 +472,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
    if action.group(1) == 'Deal': countersTXT = '' # If we "deal damage" we do not want to be writing "deals 1 damage counters"
    else: countersTXT = 'counters'
-   if notification == 'Quick' and action.group(1) == 'Deal': 
-         announceString = "{}'s {} {}s{} {} {} {}{}{}".format(announceText, card, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
-   else: announceString = "{} {}{} {} {} {}{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
+   announceString = "{} {}{} {} {} {}{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
    if notification and modtokens != 0 and not re.search(r'isSilent', Autoscript): notify(':> {}.'.format(announceString))
    if debugVerbosity >= 2: notify("### TokensX() String: {}".format(announceString)) #Debug
    if debugVerbosity >= 3: notify("<<< TokensX()")
@@ -737,10 +756,11 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    for targetCard in targetCards: 
       if action.group(1) == 'Capture': targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
       else: targetCardlist += '{},'.format(targetCard)
+   if debugVerbosity >= 3: notify("### Preparing targetCardlist")      
    targetCardlist = targetCardlist.strip(',') # Re remove the trailing comma
    for targetCard in targetCards:
       if action.group(1) == 'Destroy':
-         trashResult = Discard(targetCard, silent = True)
+         trashResult = discard(targetCard, silent = True)
          if trashResult == 'ABORT': return 'ABORT'
          elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
       elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
@@ -868,7 +888,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             # * The player who controls this card is supposed to be me or the enemy.
                if re.search(r'isCurrentObjective',Autoscript) and targetLookup.highlight != DefendColor: continue
                if re.search(r'isParticipating',Autoscript) and targetLookup.orientation != Rot90 and targetLookup.highlight != DefendColor: continue
-               if re.search(r'isNotParticipating',Autoscript) and not targetLookup.orientation == Rot0 and not targetLookup.highlight == DefendColor: continue
+               if re.search(r'isNotParticipating',Autoscript) and (targetLookup.orientation == Rot90 or targetLookup.highlight == DefendColor): continue
                if re.search(r'isCommited',Autoscript) and targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: continue
                if not chkPlayer(Autoscript, targetLookup.controller, False, True): continue
                markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
