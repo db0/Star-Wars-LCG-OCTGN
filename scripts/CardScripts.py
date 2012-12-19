@@ -858,7 +858,7 @@ Intimidated
 -----
 ff4fb461-8060-457a-9c16-000000000124
 -----
-Placement:Character_and_Unit-byOpponent
+Placement:Character_and_Unit-byOpponent||onHostStrike:Put1Focus-atHost
 +++++
 
 .....

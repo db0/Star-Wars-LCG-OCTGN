@@ -216,7 +216,6 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): 
             if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
             continue # If we're looking for attakcer or defender and we're not in an enagement, return.
-         if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
             if debugVerbosity >= 4: notify("### chkTypeRegex : {}".format(chkTypeRegex.groups()))
@@ -237,6 +236,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                if not chkType in cardProperties: correctType = False
             if not correctType: continue # If the types we're looking for are not in the origin card, abort this script.
          elif debugVerbosity >= 2: notify("### Not Looking for specific type")
+         if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
          else: targetCard = findTarget(AutoS, card = card)
          if debugVerbosity >= 2: notify("### Automatic Autoscripts: {}".format(AutoS)) # Debug
@@ -403,6 +403,9 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
 def TokensX(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for adding tokens to cards
    if debugVerbosity >= 1: notify(">>> TokensX(){}".format(extraASDebug(Autoscript))) #Debug
    if targetCards is None: targetCards = []
+   if re.search(r'atHost', Autoscript):
+      for attachment in hostCards: # We check out attachments dictionary to find out who this card's host is.
+         if attachment == card._id: targetCards.append(Card(hostCards[attachment]))
    if len(targetCards) == 0:
       if re.search(r'AutoTargeted',Autoscript): return 'ABORT' # We abort if we need an automatic target but have no valid one
       else: #Otherwise we just put it on ourself and assume the player forgot to target first. They can move the marker manually if they need to.
