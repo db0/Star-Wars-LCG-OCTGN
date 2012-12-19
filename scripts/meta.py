@@ -322,6 +322,70 @@ def getKeywords(card): # A function which combines the existing card keywords, w
    if debugVerbosity >= 3: notify("<<< getKeywords() by returning: {}.".format(keywords[:-1]))
    return keywords[:-1] # We need to remove the trailing dash '-'
 
+def reduceCost(card, action = 'PLAY', fullCost = 0):
+   type = action.capitalize()
+   if debugVerbosity >= 1: notify(">>> reduceCost(). Action is: {}. FullCost = {}".format(type,fullCost)) #Debug
+   if fullCost == 0: return 0 # If there's no cost, there's no use checking the table.
+   fullCost = abs(fullCost)
+   reduction = 0
+   ### First we check if the card has an innate reduction. 
+   Autoscripts = CardsAS.get(card.model,'').split('||') 
+   if debugVerbosity >= 2: notify("### About to check if there's any onPay triggers on the card")
+   if len(Autoscripts): 
+      for autoS in Autoscripts:
+         if not re.search(r'onPay', autoS): 
+            if debugVerbosity >= 2: notify("### No onPay trigger found in {}!".format(autoS))
+            continue
+         elif debugVerbosity >= 2: notify("### onPay trigger found in {}!".format(autoS))
+         reductionSearch = re.search(r'Reduce([0-9]+)Cost({}|All)'.format(type), autoS)
+         if debugVerbosity >= 2: #Debug
+            if reductionSearch: notify("!!! self-reduce regex groups: {}".format(reductionSearch.groups()))
+            else: notify("!!! No self-reduce regex Match!")
+         reduction += num(reductionSearch.group(1))
+         fullCost -= 1
+   if debugVerbosity >= 2: notify("### About to gather cards on the table")
+   ### Now we check if we're in a run and we have bad publicity credits to spend
+   cardList = sortPriority([c for c in table
+                           if c.controller == me
+                           and c.isFaceUp])
+   if debugVerbosity >= 2: notify("### About to iterate cards on the table")
+   for c in cardList: # Then check if there's other cards in the table that reduce its costs.
+      if fullCost == 0: 
+         if debugVerbosity >= 2: notify("### No more cost. Aborting")
+         break # If we don't have any more reduction to do, just break out.
+      Autoscripts = CardsAS.get(c.model,'').split('||')
+      if len(Autoscripts) == 0: continue
+      for autoS in Autoscripts:
+         if debugVerbosity >= 2: notify("### Checking {} with AS: {}".format(c, autoS)) #Debug
+         reductionSearch = re.search(r'Reduce([0-9#X]+)Cost({}|All)-for([A-Z][A-Za-z ]+)(-not[A-Za-z_& ]+)?'.format(type), autoS) 
+         if debugVerbosity >= 2: #Debug
+            if reductionSearch: notify("!!! Regex is {}".format(reductionSearch.groups()))
+            else: notify("!!! No reduceCost regex Match!") 
+         if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue 
+         if reductionSearch: # If the above search matches (i.e. we have a card with reduction for Rez and a condition we continue to check if our card matches the condition)
+            if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug         
+            if reductionSearch.group(4): 
+               exclusion = re.search(r'-not([A-Za-z_& ]+)'.format(type), reductionSearch.group(4))
+               if exclusion and (re.search(r'{}'.format(exclusion.group(1)), fetchProperty(card, 'Type')) or re.search(r'{}'.format(exclusion.group(1)), fetchProperty(card, 'Keywords'))): continue
+            if reductionSearch.group(3) == 'All' or re.search(r'{}'.format(reductionSearch.group(3)), card.Type) or re.search(r'{}'.format(reductionSearch.group(3)), card.Traits) or re.search(r'{}'.format(reductionSearch.group(3)), card.Affiliation): #Looking for the type of card being reduced into the properties of the card we're currently paying.
+               if debugVerbosity >= 3: notify(" ### Search match! Group is {}".format(reductionSearch.group(1))) # Debug
+               if re.search(r'onlyOnce',autoS) and oncePerTurn(c, silent = True, act = 'automatic') == 'ABORT': continue # if the card's effect has already been used, check the next one
+               if reductionSearch.group(1) == '#': 
+                  while fullCost > 0 and c.markers[mdict['Credits']] > 0:
+                     if debugVerbosity >= 2: notify("### Reducing Cost with and Markers from {}".format(c)) # Debug
+                     reduction += 1
+                     fullCost -= 1
+                     c.markers[mdict['Credits']] -= 1
+               elif reductionSearch.group(1) == 'X':
+                  markerName = re.search(r'-perMarker{([\w ]+)}', autoS)
+                  try: 
+                     marker = findMarker(c, markerName.group(1))
+                     if marker: reduction = c.markers[marker]
+                  except: notify("!!!ERROR!!! ReduceXCost - Bad Script")
+               else:
+                  reduction += num(reductionSearch.group(1)) # if there is a match, the total reduction for this card's cost is increased.
+   if debugVerbosity >= 3: notify("<<< reduceCost() with reduction: {}".format(reduction))
+   return reduction   
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

@@ -568,7 +568,8 @@ def checkPaidResources(card):
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
                affiliationMatch = True # We set that we've also got a matching resource affiliation
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
-   if count >= num(card.Cost) and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and num(card.Cost)) == 0):
+   reduction = reduceCost(card, 'PLAY', num(card.Cost) - count)
+   if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and num(card.Cost)) - reduction == 0):
       if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
       return 'OK'
    else:

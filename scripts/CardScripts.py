@@ -794,7 +794,7 @@ I'm On the Leader
 -----
 ff4fb461-8060-457a-9c16-000000000130
 -----
-
+onPlay:Put1Focus-Targeted-atFighter
 +++++
 
 .....
@@ -826,7 +826,7 @@ In You Must Go
 -----
 ff4fb461-8060-457a-9c16-000000000137
 -----
-
+whilePlayed:Reduce1CostPlay-forEnhancement-onlyOnce
 +++++
 
 .....
