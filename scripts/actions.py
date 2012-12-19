@@ -412,9 +412,11 @@ def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
    if card.highlight == FateColor: 
-      whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
+      #whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
       notify("{} resolves the ability of fate card {}".format(me,card))
       card.highlight = EdgeColor # Rot270 orientation means the fate card has been used already.
+      executePlayScripts(card, 'RESOLVEFATE')
+      autoscriptOtherPlayers('ResolveFate',card)
    elif card.highlight == EdgeColor: revealEdge()
    elif card.highlight == UnpaidColor: purchaseCard(card)
    elif num(card.Resources) > 0 and findUnpaidCard(): 
@@ -945,6 +947,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if debugVerbosity >= 2: notify("### Found card with Bonus edge") #Debug
             if card.controller == me: myEdgeTotal += num(bonusEdge.group(1))
             else: opponentEdgeTotal += num(bonusEdge.group(1))
+      currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find out what the current objective as we can use it to figure out if we're an attacker or defender.
       if myEdgeTotal > opponentEdgeTotal:
          if debugVerbosity >= 2: notify("### I've got the edge") #Debug
          if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
@@ -952,6 +955,8 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             Affiliation.markers[mdict['Edge']] = 1
             notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
+            if currentTarget.owner == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
+            else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
          elif not forceCalc: whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          if debugVerbosity >= 2: notify("### Opponent has the edge") #Debug
@@ -961,10 +966,11 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             oppAffiliation.markers[mdict['Edge']] = 1
             notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
+            if currentTarget.owner == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
+            else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
          elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
-         currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
          if debugVerbosity >= 2: notify("### Finding defender's Affiliation card.") #Debug
          defenderAffiliation = getSpecial('Affiliation',currentTarget.owner)
          unopposed = True
@@ -976,6 +982,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                Affiliation.markers[mdict['Edge']] = 1
                notify("The engagement of {} is unopposed, so {} automatically gains edge as the attacker.".format(currentTarget,me))
+               autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
             elif not forceCalc: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
          else:
             if debugVerbosity >= 2: notify("### Defender's Advantage") #Debug
@@ -983,6 +990,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                defenderAffiliation.markers[mdict['Edge']] = 1
                notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.owner))
+               autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 

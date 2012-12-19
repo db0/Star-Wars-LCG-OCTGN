@@ -538,7 +538,7 @@ Fall Back!
 -----
 ff4fb461-8060-457a-9c16-000000000196
 -----
-
+onPlay:ReturnTarget-Targeted-atUnit
 +++++
 
 .....
@@ -554,7 +554,7 @@ False Lead
 -----
 ff4fb461-8060-457a-9c16-000000000195
 -----
-Placement:Objective
+Placement:Objective||onHostObjectiveThwarted:Lose1Dial
 +++++
 
 .....
@@ -562,7 +562,7 @@ Fleeing the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000132
 -----
-
+afterRefresh:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -586,7 +586,7 @@ Force Choke
 -----
 ff4fb461-8060-457a-9c16-000000000101
 -----
-
+onPlay:Deal1Damage-Targeted-atCharacter_or_Creature
 +++++
 
 .....
@@ -594,7 +594,7 @@ Force Choke
 -----
 ff4fb461-8060-457a-9c16-000000000106
 -----
-
+onPlay:Deal1Damage-Targeted-atCharacter_or_Creature
 +++++
 
 .....
@@ -602,7 +602,7 @@ Force Lightning
 -----
 ff4fb461-8060-457a-9c16-000000000100
 -----
-
+onPlay:DestroyTarget-Targeted-atUnit-hasMarker{Focus}
 +++++
 
 .....
@@ -610,7 +610,7 @@ Force Rejuvenation
 -----
 ff4fb461-8060-457a-9c16-000000000166
 -----
-
+onPlay:Remove999Focus$$Remove999Damage-Targeted-atCharacter
 +++++
 
 .....
@@ -618,7 +618,7 @@ Force Stasis
 -----
 ff4fb461-8060-457a-9c16-000000000026
 -----
-
+onPlay:Put1Force Stasis-Targeted-atCharacter_or_Creature
 +++++
 
 .....
@@ -626,7 +626,7 @@ Forgotten Heroes
 -----
 ff4fb461-8060-457a-9c16-000000000144
 -----
-
+whilePlayed:Draw1Card-perCardPlayed-byMe-typeForce User
 +++++
 
 .....
@@ -642,7 +642,7 @@ Guardian of Peace
 -----
 ff4fb461-8060-457a-9c16-000000000158
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -658,7 +658,7 @@ Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000017
 -----
-
+onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponent-choose1
 +++++
 
 .....
@@ -666,7 +666,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000011
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
 +++++
 
 .....
@@ -674,7 +674,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000039
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
 +++++
 
 .....
@@ -682,7 +682,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000090
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
 +++++
 
 .....
@@ -690,7 +690,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000107
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
 +++++
 
 .....
@@ -698,7 +698,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000148
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
 +++++
 
 .....
@@ -706,7 +706,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000213
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
 +++++
 
 .....
@@ -738,7 +738,7 @@ Heroic Sacrifice
 -----
 ff4fb461-8060-457a-9c16-000000000191
 -----
-
+onPlay:DestroyMulti-Targeted-atVehicle
 +++++
 
 .....
@@ -762,7 +762,7 @@ Hit and Run
 -----
 ff4fb461-8060-457a-9c16-000000000210
 -----
-
+whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perAttackerEdgeWin-ifAttacker
 +++++
 
 .....
@@ -770,7 +770,7 @@ Home One
 -----
 ff4fb461-8060-457a-9c16-000000000181
 -----
-
+afterStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifAttacker
 +++++
 
 .....

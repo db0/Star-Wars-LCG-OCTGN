@@ -56,11 +56,17 @@ def executePlayScripts(card, action):
          effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', AutoS)
          scriptHostCHK = re.search(r'onHost([A-Za-z]+)',effectType.group(1))
          actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
+         currObjID = getGlobalVariable('Engaged Objective')
+         if currObjID != 'None':
+            if re.search(r'-ifAttacker', AutoS) and Card(currObjID).owner != opponent: continue
+            if re.search(r'-ifDefender', AutoS) and Card(currObjID).owner != me: continue
+         elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): continue # If we're looking for attakcer or defender and we're not in an enagement, return.
          if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
          if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
              (effectType.group(1) == 'onScore' and action != 'SCORE') or
+             (effectType.group(1) == 'onResolveFate' and action != 'RESOLVEFATE') or
              (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
              (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
              (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
@@ -184,6 +190,11 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if debugVerbosity >= 2: notify('Checking AutoS: {}'.format(AutoS)) # Debug
          if not re.search(r'{}'.format(lookup), AutoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
          if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         currObjID = getGlobalVariable('Engaged Objective')
+         if currObjID != 'None':
+            if re.search(r'-ifAttacker', AutoS) and Card(currObjID).owner == card.owner: continue
+            if re.search(r'-ifDefender', AutoS) and Card(currObjID).owner != card.owner: continue
+         elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): continue # If we're looking for attakcer or defender and we're not in an enagement, return.
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
@@ -302,12 +313,14 @@ def markerEffects(Time = 'Start'):
    cardList = [c for c in table if c.markers]
    for card in cardList:
       for marker in card.markers:
-         if ((re.search(r'Death from Above',marker[0])
-              or re.search(r'Ewok Scouted',marker[0]))
-              and Time == 'afterEngagement'):
+         if (Time == 'afterEngagement'
+               and (re.search(r'Death from Above',marker[0])
+                 or re.search(r'Ewok Scouted',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
-         if re.search(r'Defense Upgrade',marker[0]) and Time == 'atTurnEnd':
+         if (Time == 'atTurnEnd'
+               and (re.search(r'Defense Upgrade',marker[0])
+                 or re.search(r'Force Stasis',marker[0]))):
             TokensX('Remove999'+marker[0], "Death from Above:", card)
             notify("--> {} removes Death from Above effect from {}".format(me,card))
 
@@ -855,6 +868,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             # * The player who controls this card is supposed to be me or the enemy.
                if re.search(r'isCurrentObjective',Autoscript) and targetLookup.highlight != DefendColor: continue
                if re.search(r'isParticipating',Autoscript) and targetLookup.orientation != Rot90 and targetLookup.highlight != DefendColor: continue
+               if re.search(r'isNotParticipating',Autoscript) and not targetLookup.orientation == Rot0 and not targetLookup.highlight == DefendColor: continue
                if re.search(r'isCommited',Autoscript) and targetLookup.highlight != LightForceColor and targetLookup.highlight != DarkForceColor: continue
                if not chkPlayer(Autoscript, targetLookup.controller, False, True): continue
                markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
