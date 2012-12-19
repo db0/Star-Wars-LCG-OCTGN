@@ -339,7 +339,7 @@ def markerEffects(Time = 'Start'):
                  or re.search(r'Ewok Scouted',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
-         if (Time == 'atTurnEnd'
+         if (Time == 'End' # Time = 'End' means End of Turn
                and (re.search(r'Defense Upgrade',marker[0])
                  or re.search(r'Force Stasis',marker[0]))):
             TokensX('Remove999'+marker[0], "Death from Above:", card)

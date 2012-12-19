@@ -128,7 +128,7 @@
 			<cardaction menu="Place as Edge Card" default="false" shortcut="Ctrl+E" execute="playEdge" />
 			<groupaction menu="Mulligan" default="false" execute="mulligan" />
 			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="refillHand" />
-			<groupaction menu="Random Discard" default="false" execute="randomDiscard" />
+			<groupaction menu="Random Discard" default="false" execute="handRandomDiscard" />
          <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
          <cardaction menu="Discard/Remove 4th Obejctive" default="false" shortcut="del" execute="handDiscard" />           
          <cardaction menu="Send to bottom of deck (random order)" default="false" shortcut="Ctrl+B" batchExecute="sendToBottom" />

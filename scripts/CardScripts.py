@@ -842,7 +842,7 @@ Interrogation Droid
 -----
 ff4fb461-8060-457a-9c16-000000000122
 -----
-
+onPlay:Discard1Card-ofOpponent
 +++++
 
 .....
@@ -850,7 +850,7 @@ Interrogation Droid
 -----
 ff4fb461-8060-457a-9c16-000000000123
 -----
-
+onPlay:Discard1Card-ofOpponent
 +++++
 
 .....

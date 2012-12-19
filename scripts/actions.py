@@ -1028,6 +1028,27 @@ def groupToDeck (group = me.hand, player = me, silent = False):
    if not silent: notify ("{} moves their whole {} to their {}.".format(player,group.name,deck.name))
    if debugVerbosity >= 3: notify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(group.name,deck.name,count)) #Debug
    return(group.name,deck.name,count) # Return a tuple with the names of the groups.
+
+def handRandomDiscard(group, count = None, player = None, destination = None, silent = False):
+   if debugVerbosity >= 1: notify(">>> handRandomDiscard(){}".format(extraASDebug())) #Debug
+   mute()
+   if not player: player = me
+   if not destination: destination = player.piles['Discard Pile']
+   SSize = len(group)
+   if SSize == 0: return 0
+   if count == None: count = askInteger("Discard how many cards?", 1)
+   if count == None: return 0
+   if count > SSize : 
+      count = SSize
+      whisper("You do not have enough cards in your hand to complete this action. Will discard as many as possible")   
+   for iter in range(count):
+      if debugVerbosity >= 3: notify("#### : handRandomDiscard() iter: {}".format(iter + 1)) # Debug
+      card = group.random()
+      if card == None: return iter + 1 # If we have no more cards, then return how many we managed to discard.
+      card.moveTo(destination)
+      if not silent: notify("{} discards {} at random.".format(player,card))
+   if debugVerbosity >= 2: notify("<<< handRandomDiscard() with return {}".format(iter + 1)) #Debug
+   return iter + 1 #We need to increase the iter by 1 because it starts iterating from 0
    
 def randomDiscard(group):
 	mute()
