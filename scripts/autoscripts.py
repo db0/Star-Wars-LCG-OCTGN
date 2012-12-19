@@ -90,6 +90,8 @@ def executePlayScripts(card, action):
                notify("{} opts not to activate {}'s optional ability".format(me,card))
                return 'ABORT'
             else: notify("{} activates {}'s optional ability".format(me,card))
+         if re.search(r'-ifHaveForce', AutoS) and not haveForce(): continue
+         if re.search(r'-ifHaventForce', AutoS) and haveForce(): continue         
          selectedAutoscripts = AutoS.split('$$')
          if debugVerbosity >= 2: notify ('### selectedAutoscripts: {}'.format(selectedAutoscripts)) # Debug
          for activeAutoscript in selectedAutoscripts:
@@ -216,6 +218,8 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          elif re.search(r'-ifAttacker', AutoS) or re.search(r'-ifDefender', AutoS): 
             if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
             continue # If we're looking for attakcer or defender and we're not in an enagement, return.
+         if re.search(r'-ifHaveForce', AutoS) and not haveForce(): continue
+         if re.search(r'-ifHaventForce', AutoS) and haveForce(): continue         
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
             if debugVerbosity >= 4: notify("### chkTypeRegex : {}".format(chkTypeRegex.groups()))
@@ -277,6 +281,8 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
          if re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: continue
          if re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: continue
+         if re.search(r'-ifHaveForce', AutoS) and not haveForce(): continue
+         if re.search(r'-ifHaventForce', AutoS) and haveForce(): continue         
          if re.search(r'isOptional', effect.group(2)):
             extraCountersTXT = '' 
             for cmarker in card.markers: # If the card has any markers, we mention them do that the player can better decide which one they wanted to use (e.g. multiple bank jobs)
@@ -490,8 +496,12 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    targetPL = ofwhom(Autoscript, card.controller)
    if debugVerbosity >= 3: notify("### Setting Source")
    if targetPL != me: destiVerb = 'move'
-   if re.search(r'-fromDiscard', Autoscript): source = targetPL.piles['Discard Pile']
-   else: source = targetPL.piles['Command Deck']
+   if re.search(r'-fromDiscard', Autoscript):
+      source = targetPL.piles['Discard Pile']
+      sourcePath =  " from their Discard Pile"
+   else: 
+      source = targetPL.piles['Command Deck']
+      sourcePath =  ""
    if debugVerbosity >= 3: notify("### Setting Destination")
    if re.search(r'-toDeck', Autoscript): 
       destination = targetPL.piles['Command Deck']
@@ -520,8 +530,8 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
       else: destPath = ''
    if debugVerbosity >= 2: notify("### About to announce.")
    if count == 0: return announceText # If there are no cards, then we effectively did nothing, so we don't change the notification.
-   if notification == 'Quick': announceString = "{} draw {} cards".format(announceText, count)
-   elif targetPL == me: announceString = "{} {} {} cards from their {}{}".format(announceText, destiVerb, count, source.name, destPath)
+   if notification == 'Quick': announceString = "{} draw {} cards{}".format(announceText, count,sourcePath)
+   elif targetPL == me: announceString = "{} {} {} cards{}{}".format(announceText, destiVerb, count, sourcePath, destPath)
    elif source == targetPL.piles['Command Deck'] and destination == targetPL.hand: announceString = "{} {} draws {} cards.".format(announceText, targetPL, count)
    else: announceString = "{} {} {} cards from {}'s {}".format(announceText, destiVerb, count, targetPL, source.name, destPath)
    if notification and multiplier > 0: notify(':> {}.'.format(announceString))

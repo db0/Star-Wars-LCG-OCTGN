@@ -112,16 +112,15 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    turn += 1 # Increase the counter for how many turns the player has played.
    setGlobalVariable('Turn',str(turn))
    if not Automations['Start/End-of-Turn/Phase']: return
-   BotD = getSpecial('BotD')
    if Side == 'Dark': 
-      if BotD.isAlternateImage:
+      if haveForce():
          modifyDial(2)
          notify(":> The Force is with the Dark Side! The Death Star dial advances by 2")
       else:
          modifyDial(1)
          notify(":> The Death Star dial advances by 1")
    else:
-      if not BotD.isAlternateImage:
+      if haveForce():
          opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
          objectiveList = []
          for objectve_ID in opponentObjectives:
@@ -593,6 +592,7 @@ def purchaseCard(card, x=0, y=0):
       else: notify(":::ATTENTION::: {} has acquired {} by skipping its full cost".format(me,card))
       executePlayScripts(card, 'PLAY')
       autoscriptOtherPlayers('CardPlayed',card)
+      if card.Type == "Event": card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
