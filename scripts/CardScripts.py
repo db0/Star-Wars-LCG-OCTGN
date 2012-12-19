@@ -890,7 +890,7 @@ It's Worse
 -----
 ff4fb461-8060-457a-9c16-000000000222
 -----
-
+onPlay:Deal1Damage-Targeted-atUnit
 +++++
 
 .....
@@ -922,7 +922,7 @@ Jedi Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000066
 -----
-Placement:Force User_and_Unit_or_Force Sensitive_and_Unit
+Placement:Force User_or_Force Sensitive||BonusIcons:UD:1, BD:1
 +++++
 
 .....
@@ -930,7 +930,7 @@ Jedi Mind Trick
 -----
 ff4fb461-8060-457a-9c16-000000000003
 -----
-
+onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaventForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce-ifHaveForce
 +++++
 
 .....
@@ -938,7 +938,7 @@ Jedi Mind Trick
 -----
 ff4fb461-8060-457a-9c16-000000000171
 -----
-
+onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaventForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce-ifHaveForce
 +++++
 
 .....
@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-
+afterRefresh:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-duringMyTurn
 +++++
 
 .....
@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-
+onDiscard:Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe$$CaptureMyself||onDiscard:Remove999Focus-AutoTargeted-targetOpponents-hasMarker{Focus}-byOppponent$$CaptureMyself
 +++++
 
 .....

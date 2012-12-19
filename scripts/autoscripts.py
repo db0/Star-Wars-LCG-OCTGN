@@ -413,7 +413,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       for attachment in hostCards: # We check out attachments dictionary to find out who this card's host is.
          if attachment == card._id: targetCards.append(Card(hostCards[attachment]))
    if len(targetCards) == 0:
-      if re.search(r'AutoTargeted',Autoscript): return 'ABORT' # We abort if we need an automatic target but have no valid one
+      if re.search(r'AutoTargeted',Autoscript): return announceText # We abort if we need an automatic target but have no valid one
       else: #Otherwise we just put it on ourself and assume the player forgot to target first. They can move the marker manually if they need to.
          targetCards.append(card) # If there's been to target card given, assume the target is the card itself.
          targetCardlist = ' on it' 
@@ -766,6 +766,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
       targetCards.append(card)
    if action.group(3): dest = action.group(3)
    else: dest = 'hand'
+   if debugVerbosity >= 2: notify("### targetCards(){}".format(targetCards)) #Debug   
    for targetCard in targetCards: 
       if action.group(1) == 'Capture': targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
       else: targetCardlist += '{},'.format(targetCard)
@@ -778,7 +779,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
       elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
       elif action.group(1) == 'Return': targetCard.moveTo(targetCard.owner.hand)
-      elif action.group(1) == 'Capture' and capture(targetC = targetCard) != 'ABORT': pass
+      elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
       elif action.group(1) == 'Rescue':
          if card.isFaceUp: 
             notify(":::ERROR::: Target Card was not captured!")
@@ -788,6 +789,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             targetCard.moveTo(targetCard.owner.hand)
       else: return 'ABORT'
       if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
+   if debugVerbosity >= 2: notify("### Finished Processing Modifications. About to announce")
    if notification == 'Quick': announceString = "{} {}es {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
    else: announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist, extraTXT)
    if notification: notify(':> {}.'.format(announceString))
@@ -933,6 +935,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                if debugVerbosity >= 4: notify("### Appending Side") #Debug                
                cardProperties.append(targetLookup.Side) # We are also going to check if the card is for Dark or Light Side
                if debugVerbosity >= 2: notify("### Card Properties: {}".format(cardProperties)) #Debug                
+               targetC = targetLookup
                for restrictionsGroup in targetGroups: 
                # We check each card against each restrictions group of valid + invalid properties.
                # Each Restrictions group is a tuple of two lists. First list (tuple[0]) is the valid properties, and the second list is the invalid properties
@@ -941,8 +944,6 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                # And then we check if no properties from the invalid list are in the properties
                # If both of these are true, then the card is retained as a valid target for our action.
                   if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
-                  if targetC: break # If the card is a valid target from a previous restrictions group, we just choose it.
-                  targetC = targetLookup
                   if len(targetGroups) > 0 and len(restrictionsGroup[0]) > 0: 
                      for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
                         if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
@@ -953,6 +954,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                         if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
                         if invalidtargetCHK in cardProperties: targetC = None
                   elif debugVerbosity >= 4: notify("### No negative restrictions")
+                  if targetC: break # If we already passed a restrictions check, we don't need to continue checking restrictions 
                if targetC and not targetC in foundTargets: 
                   if debugVerbosity >= 3: notify("### About to append {}".format(targetC)) #Debug
                   foundTargets.append(targetC) # I don't know why but the first match is always processed twice by the for loop.

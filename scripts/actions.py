@@ -705,10 +705,12 @@ def discard(card, x = 0, y = 0, silent = False):
          setGlobalVariable('Existing Units',str(unitAmount))
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
+      autoscriptOtherPlayers('UnitDestroyed',card)
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
-   if debugVerbosity >= 2: notify("Checking if the card has attachments to discard as well.")      
+   executePlayScripts(card, 'DISCARD')
+   if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    global cardAttachementsNR, hostCards
    attachmentsNR = cardAttachementsNR.get(card._id,0)
    if attachmentsNR >= 1:
@@ -717,12 +719,12 @@ def discard(card, x = 0, y = 0, silent = False):
          if hostCardSnapshot[attachment] == card._id and Card(attachment) in table:
             discard(Card(attachment))
             cardAttachementsNR[card._id] -= 1
-   if debugVerbosity >= 2: notify("Checking if the card is attached to unlink.")      
+   if debugVerbosity >= 2: notify("### Checking if the card is attached to unlink.")      
    if hostCards.get(card._id,'None') != 'None': del hostCards[card._id] # If the card was an attachment, delete the link
    if debugVerbosity >= 1: notify("<<< discard()") #Debug
    return 'OK'
 
-def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Tries to find a targeted card in the table or the oppomnent's hand to capture
+def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False): # Tries to find a targeted card in the table or the oppomnent's hand to capture
    if debugVerbosity >= 1: notify(">>> capture(){}".format(extraASDebug())) #Debug
    if debugVerbosity >= 2 and chosenObj: notify("### chosenObj = {}".format(chosenObj)) #Debug
    if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
@@ -731,7 +733,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Trie
       if debugVerbosity >= 2: notify("Don't have preset target. Seeking...")
       for card in table:
          if debugVerbosity >= 2: notify("### Searching table") #Debug
-         if card.targetedBy and card.targetedBy == me and card.Type != "Objective" and card.highlight != CapturedColor: targetC = card
+         if card.targetedBy and card.targetedBy == me and card.Type != "Objective": 
+            if card.highlight == CapturedColor and not confirm("Are you sure you want to move this captured card to a different objective?"): continue
+            targetC = card
       if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
       else:
          if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
@@ -747,9 +751,11 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Trie
    else: captureTXT = "{} has captured one card from {}'s {}".format(me,targetC.owner,targetC,targetC.group)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
-      if not chosenObj:
+      if Side == 'Light': captor = opponent # Only dark side can capture.
+      else: captor = me 
+      if not chosenObj or chosenObj.owner != captor:
          if debugVerbosity >= 2: notify("Don't have preset objective. Seeking...")
-         myObjectives = eval(me.getGlobalVariable('currentObjectives'))
+         myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
          objectiveList = []
          for objectve_ID in myObjectives:
             objective = Card(objectve_ID)
@@ -759,22 +765,27 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None): # Trie
             objectiveList.append(objective.name + extraTXT)
          choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
          chosenObj = Card(myObjectives[choice])
-      if debugVerbosity >= 2: notify("About to capture")
+      if debugVerbosity >= 2: notify("About to Announce")
       captureTXT += " as part of their {} objective".format(chosenObj)
-      notify(captureTXT)
+      if not silent: notify(captureTXT)
       rnd(1,10)
+      if debugVerbosity >= 2: notify("About evaluate capture cards")
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       capturedCards[targetC._id] = chosenObj._id
       xPos, yPos = chosenObj.position
       countCaptures = 0 
       for capturedC in capturedCards:
          if capturedCards[capturedC] == chosenObj._id: countCaptures += 1
+      if debugVerbosity >= 2: notify("About to move to objective")
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
       targetC.highlight = CapturedColor
+      if debugVerbosity >= 2: notify("About to reset shared variable")
       setGlobalVariable('Captured Cards',str(capturedCards))
-      autoscriptOtherPlayers('UnitCaptured',card)
+      if debugVerbosity >= 2: notify("About to initiate autoscripts")
+      autoscriptOtherPlayers('UnitCaptured',targetC)
+   if debugVerbosity >= 1: notify("<<< capture()") #Debug
 
 def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
    try: 
