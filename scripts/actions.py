@@ -566,6 +566,9 @@ def checkPaidResources(card):
             if debugVerbosity >= 2: notify("About to check resource found affiliaton") #Debug
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
                affiliationMatch = True # We set that we've also got a matching resource affiliation
+      if cMarkerKey[0] == "Ignores Affiliation Match": affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
+   for c in table:
+      if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')): affiliationMatch = True
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
    if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (num(card.Cost) - reduction) == 0)):

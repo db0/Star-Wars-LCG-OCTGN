@@ -40,7 +40,9 @@ def executePlayScripts(card, action):
              re.search(r'after([A-za-z]+)', autoS) or 
              re.search(r'Placement', autoS) or 
              re.search(r'BonusIcons', autoS) or 
+             re.search(r'Increase', autoS) or 
              re.search(r'ConstantEffect', autoS) or 
+             re.search(r'IgnoreAffiliationMatch', autoS) or 
              re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
              re.search(r'-isTrigger', autoS) or
              re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
@@ -1042,8 +1044,8 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          byOpponent = re.search(r'targetOpponents', Autoscript)
          byMe = re.search(r'targetMine', Autoscript)
       else:
-         byOpponent = re.search(r'(byOpponent|duringOpponentTurn)', Autoscript)
-         byMe = re.search(r'(byMe|duringMyTurn)', Autoscript)
+         byOpponent = re.search(r'(byOpponent|duringOpponentTurn|forOpponent)', Autoscript)
+         byMe = re.search(r'(byMe|duringMyTurn|forMe)', Autoscript)
       if manual or len(players) == 1: # If there's only one player, we always return true for debug purposes.
          if debugVerbosity >= 2: notify("### Succeeded at Manual/Debug")
          validPlayer = 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.

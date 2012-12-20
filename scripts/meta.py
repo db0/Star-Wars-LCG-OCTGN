@@ -270,6 +270,16 @@ def calculateCombatIcons(card = None, CIString = None):
       if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
       if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
       if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
+   if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
+   for c in table:
+      AutoSscripts = CardsAS.get(c.model,'').split('||')
+      for AutoS in AutoSscripts:
+         if chkPlayer(AutoS, c.controller, False): # If the effect is meant for our cards...
+            increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',AutoS)
+            if debugVerbosity >= 2: notify("### increaseRegex = {}".format(increaseRegex.groups())) #Debug
+            if increaseRegex.group(1) == 'UD': Unit_Damage += num(increaseRegex.group(2))
+            if increaseRegex.group(1) == 'BD': Blast_Damage += num(increaseRegex.group(2))
+            if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
    if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
    if card: # We only check attachments if we're checking a host's Combat Icons.
       for attachment in hostCards:

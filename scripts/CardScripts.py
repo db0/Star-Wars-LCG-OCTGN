@@ -562,7 +562,7 @@ Fleeing the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000132
 -----
-afterRefresh:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}
+afterRefresh:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn
 +++++
 
 .....
@@ -1010,7 +1010,7 @@ Looking for Droids
 -----
 ff4fb461-8060-457a-9c16-000000000217
 -----
-
+whilePlayed:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -1018,7 +1018,7 @@ Luke Skywalker
 -----
 ff4fb461-8060-457a-9c16-000000000064
 -----
-
+atTurnStart:Remove1Focus-duringOpponentTurn
 +++++
 
 .....
@@ -1034,7 +1034,7 @@ Mission Briefing
 -----
 ff4fb461-8060-457a-9c16-000000000010
 -----
-atTurnStart:Draw1Card-byOpponent
+atTurnStart:Draw1Card-duringOpponentTurn
 +++++
 
 .....
@@ -1042,7 +1042,7 @@ Mobilize the Squadrons
 -----
 ff4fb461-8060-457a-9c16-000000000004
 -----
-
+afterRefresh:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-choose1-duringMyTurn
 +++++
 
 .....
@@ -1058,7 +1058,7 @@ Nightsister
 -----
 ff4fb461-8060-457a-9c16-000000000109
 -----
-
+onCommit:Deal1Damage-DemiAutoTargeted-atObjective-choose1
 +++++
 
 .....
@@ -1066,7 +1066,7 @@ Nightsister
 -----
 ff4fb461-8060-457a-9c16-000000000110
 -----
-
+onCommit:Deal1Damage-DemiAutoTargeted-atObjective-choose1
 +++++
 
 .....
@@ -1082,7 +1082,7 @@ Orbital Bombardment
 -----
 ff4fb461-8060-457a-9c16-000000000074
 -----
-
+whilePlayed:IncreaseBD:1-byMe-forUnit
 +++++
 
 .....
