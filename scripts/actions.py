@@ -542,7 +542,7 @@ def generate(card, x = 0, y = 0):
    notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
-   if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC)
+   if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC, manual = False)
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
@@ -568,7 +568,7 @@ def checkPaidResources(card):
                affiliationMatch = True # We set that we've also got a matching resource affiliation
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
-   if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and num(card.Cost)) - reduction == 0):
+   if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (num(card.Cost) - reduction) == 0)):
       if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
       reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
       return 'OK'
@@ -576,10 +576,11 @@ def checkPaidResources(card):
       if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
       return 'NOK'
 
-def purchaseCard(card, x=0, y=0):
+def purchaseCard(card, x=0, y=0, manual = True):
    if debugVerbosity >= 1: notify(">>> purchaseCard(){}".format(extraASDebug())) #Debug
    global unpaidCard
-   checkPaid = checkPaidResources(card)
+   if manual: checkPaid = checkPaidResources(card) # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
+   else: checkPaid = 'OK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
    if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
       card.highlight = None

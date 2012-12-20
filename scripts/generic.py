@@ -453,16 +453,23 @@ def sortPriority(cardList):
    return sortedList
    
 def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
-   if debugVerbosity >= 1: notify(">>> oncePerTurn(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 1: notify(">>> oncePerTurn() with act = {}".format(act)) #Debug
    mute()
    if card.markers[mdict['Activation']] and card.markers[mdict['Activation']] >= 1:
-      if act != 'manual': return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
-      elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): return 'ABORT'
+      if act != 'manual': 
+         if debugVerbosity >= 3: notify("<<< oncePerTurn() exit NOK (not-manual)") #Debug
+         return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
+      elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): 
+         if debugVerbosity >= 3: notify("<<< oncePerTurn() exit NOK (manual confirm)") #Debug
+         return 'ABORT'
       else: 
          if not silent and act != 'dryRun': notify('{} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
       if not silent and act != 'dryRun': notify('{} activates the once-per-turn ability of {}'.format(me, card))
-   if act != 'dryRun': card.markers[mdict['Activation']] += 1 # On dry runs we do not want to activate the once-per turn abilities. We just want to see if they're available.
+   if act != 'dryRun': 
+      if debugVerbosity >= 2: notify("### Adding Activation Marker.") #Debug
+      card.markers[mdict['Activation']] += 1 # On dry runs we do not want to activate the once-per turn abilities. We just want to see if they're available.
+   if debugVerbosity >= 3: notify("<<< oncePerTurn() exit OK") #Debug
 
 def clearTargets():
    for card in table:
