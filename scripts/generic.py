@@ -459,10 +459,10 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
       if act != 'manual': return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
       elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): return 'ABORT'
       else: 
-         if not silent: notify('{} activates the once-per-turn ability of {} another time'.format(me, card))
+         if not silent and act != 'dryRun': notify('{} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
-      if not silent: notify('{} activates the once-per-turn ability of {}'.format(me, card))
-   card.markers[mdict['Activation']] += 1
+      if not silent and act != 'dryRun': notify('{} activates the once-per-turn ability of {}'.format(me, card))
+   if act != 'dryRun': card.markers[mdict['Activation']] += 1 # On dry runs we do not want to activate the once-per turn abilities. We just want to see if they're available.
 
 def clearTargets():
    for card in table:

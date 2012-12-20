@@ -322,7 +322,9 @@ def getKeywords(card): # A function which combines the existing card keywords, w
    if debugVerbosity >= 3: notify("<<< getKeywords() by returning: {}.".format(keywords[:-1]))
    return keywords[:-1] # We need to remove the trailing dash '-'
 
-def reduceCost(card, action = 'PLAY', fullCost = 0):
+def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
+# A Functiona that scours the table for cards which reduce the cost of other cards.
+# if dryRun is set to True, it means we're just checking what the total reduction is going to be and are not actually removing or adding any counters.
    type = action.capitalize()
    if debugVerbosity >= 1: notify(">>> reduceCost(). Action is: {}. FullCost = {}".format(type,fullCost)) #Debug
    if fullCost == 0: return 0 # If there's no cost, there's no use checking the table.
@@ -344,7 +346,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0):
          reduction += num(reductionSearch.group(1))
          fullCost -= 1
    if debugVerbosity >= 2: notify("### About to gather cards on the table")
-   ### Now we check if we're in a run and we have bad publicity credits to spend
+   ### Now we check if any card on the table has an ability that reduces costs
    cardList = sortPriority([c for c in table
                            if c.controller == me
                            and c.isFaceUp])
@@ -369,13 +371,19 @@ def reduceCost(card, action = 'PLAY', fullCost = 0):
                if exclusion and (re.search(r'{}'.format(exclusion.group(1)), fetchProperty(card, 'Type')) or re.search(r'{}'.format(exclusion.group(1)), fetchProperty(card, 'Keywords'))): continue
             if reductionSearch.group(3) == 'All' or re.search(r'{}'.format(reductionSearch.group(3)), card.Type) or re.search(r'{}'.format(reductionSearch.group(3)), card.Traits) or re.search(r'{}'.format(reductionSearch.group(3)), card.Affiliation): #Looking for the type of card being reduced into the properties of the card we're currently paying.
                if debugVerbosity >= 3: notify(" ### Search match! Group is {}".format(reductionSearch.group(1))) # Debug
-               if re.search(r'onlyOnce',autoS) and oncePerTurn(c, silent = True, act = 'automatic') == 'ABORT': continue # if the card's effect has already been used, check the next one
-               if reductionSearch.group(1) == '#': 
-                  while fullCost > 0 and c.markers[mdict['Credits']] > 0:
+               if re.search(r'onlyOnce',autoS):
+                  if dryRun and oncePerTurn(c, silent = True, act = 'dryRun') == 'ABORT': continue
+                  elif oncePerTurn(c, silent = True, act = 'automatic') == 'ABORT': continue # if the card's effect has already been used, check the next one
+               if reductionSearch.group(1) == '#': # Still code from ANR. Not used yet but might be.
+                  markersCount = c.markers[mdict['Credits']]
+                  markersRemoved = 0
+                  while fullCost > 0 and markersCount > 0:
                      if debugVerbosity >= 2: notify("### Reducing Cost with and Markers from {}".format(c)) # Debug
                      reduction += 1
                      fullCost -= 1
-                     c.markers[mdict['Credits']] -= 1
+                     markersCount -= 1
+                     markersRemoved += 1
+                  if not dryRun: c.markers[mdict['Credits']] -= markersRemoved # If we have a dryRun, we don't remove any tokens.
                elif reductionSearch.group(1) == 'X':
                   markerName = re.search(r'-perMarker{([\w ]+)}', autoS)
                   try: 

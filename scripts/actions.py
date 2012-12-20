@@ -567,9 +567,10 @@ def checkPaidResources(card):
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
                affiliationMatch = True # We set that we've also got a matching resource affiliation
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
-   reduction = reduceCost(card, 'PLAY', num(card.Cost) - count)
+   reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
    if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and num(card.Cost)) - reduction == 0):
       if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
+      reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
       return 'OK'
    else:
       if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug

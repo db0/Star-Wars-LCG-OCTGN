@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-onDiscard:Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe$$CaptureMyself||onDiscard:Remove999Focus-AutoTargeted-targetOpponents-hasMarker{Focus}-byOppponent$$CaptureMyself
+onDiscard:CaptureMyself$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe||onDiscard:CaptureMyself$$Remove999Focus-AutoTargeted-targetOpponents-hasMarker{Focus}-byOppponent
 +++++
 
 .....
@@ -994,7 +994,7 @@ Lightsaber Deflection
 -----
 ff4fb461-8060-457a-9c16-000000000157
 -----
-
+onPlay:Remove1Damage-Targeted-atUnit_and_nonVehicle-targetMine-isCost$$Deal1Damage-Targeted-atUnit-targetOpponents
 +++++
 
 .....

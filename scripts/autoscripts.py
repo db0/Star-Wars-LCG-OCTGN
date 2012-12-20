@@ -790,7 +790,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
       else: return 'ABORT'
       if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
    if debugVerbosity >= 2: notify("### Finished Processing Modifications. About to announce")
-   if notification == 'Quick': announceString = "{} {}es {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
+   if notification == 'Quick': announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
    else: announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist, extraTXT)
    if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< ModifyStatus()")
