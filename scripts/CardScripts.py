@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-
+whilePlayed:IncreaseBD:1-byMe-forTrooper-isAttacking||whilePlayed:IncreaseUD:1-byMe-forTrooper-isAttacking
 +++++
 
 .....
