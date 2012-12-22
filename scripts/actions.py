@@ -658,9 +658,9 @@ def discard(card, x = 0, y = 0, silent = False):
          opponent.counters['Objectives Destroyed'].value += 1         
          if Side == 'Light': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
-            notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
+            if not silent: notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
          else: 
-            notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
+            if not silent: notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
@@ -682,9 +682,9 @@ def discard(card, x = 0, y = 0, silent = False):
          me.counters['Objectives Destroyed'].value += 1
          if Side == 'Dark': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
-            notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
+            if not silent: notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: 
-            notify("{} thwarts {}{}.".format(me,card,extraTXT))
+            if not silent: notify("{} thwarts {}{}.".format(me,card,extraTXT))
             if opponent.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
@@ -709,11 +709,11 @@ def discard(card, x = 0, y = 0, silent = False):
          unitAmount[card.owner.name] -= 1
          setGlobalVariable('Existing Units',str(unitAmount))
       card.moveTo(card.owner.piles['Discard Pile'])
-      notify("{} discards {}".format(me,card))
+      if not silent: notify("{} discards {}".format(me,card))
       autoscriptOtherPlayers('UnitDestroyed',card)
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
-      notify("{} discards {}".format(me,card))
+      if not silent: notify("{} discards {}".format(me,card))
    executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    global cardAttachementsNR, hostCards

@@ -1090,7 +1090,7 @@ Our Most Desperate Hour
 -----
 ff4fb461-8060-457a-9c16-000000000146
 -----
-
+onPlay:Put1Shield-Targeted-atCharacter
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-
+afterRefresh:Put1Damage-isOptional-duringMyTurn$$Remove1Damage-AutoTargeted-atUnit-hasMarker(Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....
@@ -1122,7 +1122,7 @@ Rancor
 -----
 ff4fb461-8060-457a-9c16-000000000111
 -----
-
+afterRefresh:CustomScript
 +++++
 
 .....

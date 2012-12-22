@@ -283,9 +283,10 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
          if re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: continue
          if re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: continue
-         if re.search(r'-ifHaveForce', AutoS) and not haveForce(): continue
-         if re.search(r'-ifHaventForce', AutoS) and haveForce(): continue         
+         if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
+         if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
          if re.search(r'isOptional', effect.group(2)):
+            if debugVerbosity >= 2: notify("### Checking Optional Effect")
             extraCountersTXT = '' 
             for cmarker in card.markers: # If the card has any markers, we mention them do that the player can better decide which one they wanted to use (e.g. multiple bank jobs)
                extraCountersTXT += " {}x {}\n".format(card.markers[cmarker],cmarker[0])
@@ -331,7 +332,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
                if numberTuple == 'ABORT': break
                X = numberTuple[1] 
             elif regexHooks['CustomScript'].search(passedScript):
-               if CustomScript(card, action = 'Turn{}'.format(Time)) == 'ABORT': break
+               if CustomScript(card, action = Time) == 'ABORT': break
             if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
    markerEffects(Time) 
    if TitleDone: notify(":::{:=^30}:::".format('='))   
@@ -859,8 +860,26 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
       captureTarget = opponent.hand.random()
       capture(chosenObj = card, targetC = captureTarget)
-      
-      
+   elif card.name == 'Rancor' and action == 'afterRefresh' and card.controller == me:
+      possibleTargets = [c for c in table if c.Type == 'Unit' and not re.search('Vehicle',c.Traits)]
+      if len(possibleTargets) == 0: return 'ABORT' # Nothing to kill
+      minCost = 10 
+      currTargets = []
+      for c in possibleTargets:
+         if num(c.Cost) < minCost:
+            del currTargets[:]
+            currTargets.append(c)
+            minCost = num(c.Cost)
+         else: currTargets.append(c)
+      if debugVerbosity >= 2: notify("### Finished currTargets") #Debug         
+      if debugVerbosity >= 4 and len(currTargets) > 0: notify("### Minimum Cost Targets = {}".format([c.name for c in currTargets])) #Debug
+      if len(currTargets) == 1: finalTarget = currTargets[0]
+      else: 
+         choice = SingleChoice("Choose one unit to be destroyed by the Rancor", makeChoiceListfromCardList(currTargets), type = 'button', default = 0)
+         finalTarget = currTargets[choice]
+      if debugVerbosity >= 2: notify("### finalTarget = {}".format(finalTarget)) #Debug
+      discard(finalTarget)
+      notify("{}'s Rancor rampages and destroys {}".format(me,finalTarget))
 #------------------------------------------------------------------------------
 # Helper Functions
 #------------------------------------------------------------------------------
@@ -926,25 +945,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
          elif len(foundTargets) >= 1 and re.search(r'-choose',Autoscript):
             if debugVerbosity >= 2: notify("### Going for a choice menu")# Debug
             choiceType = re.search(r'-choose([0-9]+)',Autoscript)
-            targetChoices = []
-            if debugVerbosity >= 2: notify("### About to prepare choices list.")# Debug
-            for T in foundTargets:
-               if debugVerbosity >= 4: notify("### Checking {}".format(T))# Debug
-               markers = 'Counters:'
-               if T.markers[mdict['Damage']] and T.markers[mdict['Damage']] >= 1: markers += " {} Damage,".format(T.markers[mdict['Damage']])
-               if T.markers[mdict['Focus']] and T.markers[mdict['Focus']] >= 1: markers += " {} Focus,".format(T.markers[mdict['Focus']])
-               if T.markers[mdict['Shield']] and T.markers[mdict['Shield']] >= 1: markers += " {} Shield.".format(T.markers[mdict['Shield']])
-               if markers != 'Counters:': markers += '\n'
-               else: markers = ''
-               if debugVerbosity >= 4: notify("### Finished Adding Markers. Adding stats...")# Debug               
-               stats = ''
-               if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
-               if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
-               if T.Type == 'Unit': combatIcons = "Printed Icons: " + parseCombatIcons(T.properties['Combat Icons'])
-               else: combatIcons = ''
-               if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
-               choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
-               targetChoices.append(choiceTXT)
+            targetChoices = makeChoiceListfromCardList(foundTargets)
             if not card: choiceTitle = "Choose one of the valid targets for this effect"
             else: choiceTitle = "Choose one of the valid targets for {}'s ability".format(card.name)
             if debugVerbosity >= 2: notify("### Checking for SingleChoice")# Debug
@@ -1069,6 +1070,32 @@ def checkSpecialRestrictions(Autoscript,card):
    if debugVerbosity >= 3: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
    
+def makeChoiceListfromCardList(cardList):
+# A function that returns a list of strings suitable for a choice menu, out of a list of cards
+# Each member of the list includes a card's name, traits, resources, markers and, if applicable, combat icons
+   if debugVerbosity >= 1: notify(">>> makeChoiceListfromCardList()")
+   targetChoices = []
+   if debugVerbosity >= 2: notify("### About to prepare choices list.")# Debug
+   for T in cardList:
+      if debugVerbosity >= 4: notify("### Checking {}".format(T))# Debug
+      markers = 'Counters:'
+      if T.markers[mdict['Damage']] and T.markers[mdict['Damage']] >= 1: markers += " {} Damage,".format(T.markers[mdict['Damage']])
+      if T.markers[mdict['Focus']] and T.markers[mdict['Focus']] >= 1: markers += " {} Focus,".format(T.markers[mdict['Focus']])
+      if T.markers[mdict['Shield']] and T.markers[mdict['Shield']] >= 1: markers += " {} Shield.".format(T.markers[mdict['Shield']])
+      if markers != 'Counters:': markers += '\n'
+      else: markers = ''
+      if debugVerbosity >= 4: notify("### Finished Adding Markers. Adding stats...")# Debug               
+      stats = ''
+      if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
+      if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
+      if T.Type == 'Unit': combatIcons = "Printed Icons: " + parseCombatIcons(T.properties['Combat Icons'])
+      else: combatIcons = ''
+      if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
+      choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
+      targetChoices.append(choiceTXT)
+   return targetChoices
+   if debugVerbosity >= 3: notify("<<< makeChoiceListfromCardList()")
+
    
 def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for figuring out if an autoscript is supposed to target an opponent's cards or ours.
 # Function returns 1 if the card is not only for rivals, or if it is for rivals and the card being activated it not ours.
