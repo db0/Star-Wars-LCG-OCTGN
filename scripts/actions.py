@@ -642,7 +642,7 @@ def handDiscard(card):
       notify("{} discards {}".format(me,card))
       
 def discard(card, x = 0, y = 0, silent = False):
-   if debugVerbosity >= 1: notify(">>> discard(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 1: notify(">>> discard()") #Debug
    mute()
    if card.Type == "Objective":
       if card.owner == me:

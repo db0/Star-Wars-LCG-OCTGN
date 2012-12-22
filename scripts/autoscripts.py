@@ -806,7 +806,7 @@ def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notific
 def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly unique to specific cards, not worth making a whole generic function for them.
    if debugVerbosity >= 1: notify(">>> CustomScript() with action: {}".format(action)) #Debug
    mute()
-   discard = me.piles['Discard Pile']
+   discardPile = me.piles['Discard Pile']
    objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
    if card.name == 'A Journey to Dagobah' and action == 'THWART' and card.owner == me:
@@ -866,11 +866,13 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       minCost = 10 
       currTargets = []
       for c in possibleTargets:
+         if debugVerbosity >= 4: notify("### Checking {}".format(c))
          if num(c.Cost) < minCost:
             del currTargets[:]
             currTargets.append(c)
             minCost = num(c.Cost)
-         else: currTargets.append(c)
+         elif num(c.Cost) == minCost: currTargets.append(c)
+         else: pass
       if debugVerbosity >= 2: notify("### Finished currTargets") #Debug         
       if debugVerbosity >= 4 and len(currTargets) > 0: notify("### Minimum Cost Targets = {}".format([c.name for c in currTargets])) #Debug
       if len(currTargets) == 1: finalTarget = currTargets[0]
@@ -879,7 +881,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          finalTarget = currTargets[choice]
       if debugVerbosity >= 2: notify("### finalTarget = {}".format(finalTarget)) #Debug
       discard(finalTarget)
-      notify("{}'s Rancor rampages and destroys {}".format(me,finalTarget))
+      if finalTarget == card: notify("{}'s Rancor destroys itself in its wild rampage".format(me))
+      else: notify("{}'s Rancor rampages and destroys {}".format(me,finalTarget))
 #------------------------------------------------------------------------------
 # Helper Functions
 #------------------------------------------------------------------------------
