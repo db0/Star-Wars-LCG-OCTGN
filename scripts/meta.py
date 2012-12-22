@@ -276,10 +276,13 @@ def calculateCombatIcons(card = None, CIString = None):
       for AutoS in AutoSscripts:
          if chkPlayer(AutoS, c.controller, False): # If the effect is meant for our cards...
             increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',AutoS)
+         if increaseRegex:
             if debugVerbosity >= 2: notify("### increaseRegex = {}".format(increaseRegex.groups())) #Debug
             if increaseRegex.group(1) == 'UD': Unit_Damage += num(increaseRegex.group(2))
             if increaseRegex.group(1) == 'BD': Blast_Damage += num(increaseRegex.group(2))
             if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
+         else:
+            if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
    if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
    if card: # We only check attachments if we're checking a host's Combat Icons.
       for attachment in hostCards:
