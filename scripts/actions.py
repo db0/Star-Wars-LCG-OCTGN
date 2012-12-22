@@ -785,6 +785,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
+      targetC.orientation = Rot0
       targetC.highlight = CapturedColor
       if debugVerbosity >= 2: notify("About to reset shared variable")
       setGlobalVariable('Captured Cards',str(capturedCards))
