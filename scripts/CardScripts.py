@@ -1330,7 +1330,7 @@ Stolen Plans
 -----
 ff4fb461-8060-457a-9c16-000000000133
 -----
-Placement:Objective-byOpponent||
+Placement:Objective-byOpponent||onHostGenerate:Draw1Card-byOpponent
 +++++
 
 .....

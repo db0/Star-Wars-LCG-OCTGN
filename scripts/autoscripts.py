@@ -82,6 +82,7 @@ def executePlayScripts(card, action):
              (effectType.group(1) == 'onParticipation' and action != 'PARTICIPATION') or
              (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
              (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
+             (effectType.group(1) == 'onGenerate' and action != 'GENERATE') or
              (effectType.group(1) == 'onThwart' and action != 'THWART')):
             if debugVerbosity >= 2: notify("### Skipping AutoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
             continue 
@@ -846,16 +847,13 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if len(findTarget('AutoTargeted-atFighter_and_Unit-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
          fighter = findTarget('AutoTargeted-atFighter_and_Unit-byMe-choose1')
          if len(fighter) == 0: return
-         if debugVerbosity >= 2: notify("### About to update cardAttachementsNR dict") #Debug
-         global cardAttachementsNR
          hostCards = eval(getGlobalVariable('Host Cards'))
          hostCards[card._id] = fighter[0]._id
          setGlobalVariable('Host Cards',str(hostCards))
-         try: cardAttachementsNR[fighter[0]._id] += 1
-         except: cardAttachementsNR[fighter[0]._id] = 1
+         cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == fighter[0]._id])
          if debugVerbosity >= 2: notify("### About to move into position") #Debug
          x,y = fighter[0].position
-         card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR[fighter[0]._id]))
+         card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
          card.sendToBack()
    elif card.name == 'Cruel Interrogations' and action == 'PLAY':
       if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return

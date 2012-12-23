@@ -200,16 +200,15 @@ def placeCard(card):
                whisper("ABORTING!")
                return
             else:
-               if debugVerbosity >= 2: notify("### About to update cardAttachementsNR dict") #Debug
-               global cardAttachementsNR
+               if debugVerbosity >= 2: notify("### We have a host") #Debug
                hostCards = eval(getGlobalVariable('Host Cards'))
                hostCards[card._id] = host[0]._id
                setGlobalVariable('Host Cards',str(hostCards))
-               try: cardAttachementsNR[host[0]._id] += 1
-               except: cardAttachementsNR[host[0]._id] = 1
+               cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == host[0]._id])
                if debugVerbosity >= 2: notify("### About to move into position") #Debug
                x,y = host[0].position
-               card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR[host[0]._id]))
+               if host[0].Type == 'Objective': card.moveToTable(x + (playerside * cwidth(card,0) / 2 * cardAttachementsNR), y)
+               else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
                card.sendToBack()
    if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
    

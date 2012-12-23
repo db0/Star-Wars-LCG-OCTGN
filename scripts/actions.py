@@ -716,15 +716,13 @@ def discard(card, x = 0, y = 0, silent = False):
       if not silent: notify("{} discards {}".format(me,card))
    executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
-   global cardAttachementsNR
    hostCards = eval(getGlobalVariable('Host Cards'))
-   attachmentsNR = cardAttachementsNR.get(card._id,0)
-   if attachmentsNR >= 1:
+   cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
+   if cardAttachementsNR >= 1:
       hostCardSnapshot = dict(hostCards)
       for attachment in hostCardSnapshot:
          if hostCardSnapshot[attachment] == card._id and Card(attachment) in table:
             discard(Card(attachment))
-            cardAttachementsNR[card._id] -= 1
    if debugVerbosity >= 2: notify("### Checking if the card is attached to unlink.")      
    if hostCards.get(card._id,'None') != 'None': del hostCards[card._id] # If the card was an attachment, delete the link
    setGlobalVariable('Host Cards',str(hostCards))
