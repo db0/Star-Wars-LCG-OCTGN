@@ -21,6 +21,7 @@
      <globalvariable name="Revealed Edge" value="{}" />      
      <globalvariable name="Engagement Phase" value="0" />      
      <globalvariable name="Captured Cards" value="{}" />      
+     <globalvariable name="Host Cards" value="{}" />      
      <globalvariable name="Turn" value="0" />      
    </globalvariables>
 	<card back="r1" front="r2" width="63" height="88" cornerRadius="2">

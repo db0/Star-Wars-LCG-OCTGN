@@ -179,6 +179,7 @@ def executePlayScripts(card, action):
 
 def executeAttachmentScripts(card, action):
    if debugVerbosity >= 1: notify(">>> executeEnhancementScripts() with action: {}".format(action)) #Debug
+   hostCards = eval(getGlobalVariable('Host Cards'))
    for attachment in hostCards:
       if hostCards[attachment] == card._id:
          executePlayScripts(Card(attachment), 'HOST-' + action)
@@ -413,6 +414,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if debugVerbosity >= 1: notify(">>> TokensX(){}".format(extraASDebug(Autoscript))) #Debug
    if targetCards is None: targetCards = []
    if re.search(r'atHost', Autoscript):
+      hostCards = eval(getGlobalVariable('Host Cards'))
       for attachment in hostCards: # We check out attachments dictionary to find out who this card's host is.
          if attachment == card._id: targetCards.append(Card(hostCards[attachment]))
    if len(targetCards) == 0:
@@ -845,8 +847,10 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          fighter = findTarget('AutoTargeted-atFighter_and_Unit-byMe-choose1')
          if len(fighter) == 0: return
          if debugVerbosity >= 2: notify("### About to update cardAttachementsNR dict") #Debug
-         global cardAttachementsNR, hostCards
+         global cardAttachementsNR
+         hostCards = eval(getGlobalVariable('Host Cards'))
          hostCards[card._id] = fighter[0]._id
+         setGlobalVariable('Host Cards',str(hostCards))
          try: cardAttachementsNR[fighter[0]._id] += 1
          except: cardAttachementsNR[fighter[0]._id] = 1
          if debugVerbosity >= 2: notify("### About to move into position") #Debug

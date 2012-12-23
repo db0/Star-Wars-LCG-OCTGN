@@ -41,7 +41,7 @@ CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
 Stored_Keywords = {} # A Dictionary holding all the Keywords a card has.
 
 cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
-hostCards = {} # A dictionary which holds which is the host of each attachment
+#hostCards = {} # A dictionary which holds which is the host of each attachment
     
 def storeSpecial(card): 
 # Function stores into a shared variable some special cards that other players might look up.
@@ -148,7 +148,9 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    firstTurn = True
    limitedPlayed = False
    cardAttachementsNR.clear()
+   hostCards = eval(getGlobalVariable('Host Cards'))
    hostCards.clear()
+   setGlobalVariable('Host Cards',str(hostCards))
    debugVerbosity = -1 # Reset means normal game.
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
    unitAmount[me.name] = 0  # This variable is used for unit placement
@@ -199,8 +201,10 @@ def placeCard(card):
                return
             else:
                if debugVerbosity >= 2: notify("### About to update cardAttachementsNR dict") #Debug
-               global cardAttachementsNR, hostCards
+               global cardAttachementsNR
+               hostCards = eval(getGlobalVariable('Host Cards'))
                hostCards[card._id] = host[0]._id
+               setGlobalVariable('Host Cards',str(hostCards))
                try: cardAttachementsNR[host[0]._id] += 1
                except: cardAttachementsNR[host[0]._id] = 1
                if debugVerbosity >= 2: notify("### About to move into position") #Debug
@@ -286,6 +290,7 @@ def calculateCombatIcons(card = None, CIString = None):
             if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
    if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
    if card: # We only check attachments if we're checking a host's Combat Icons.
+      hostCards = eval(getGlobalVariable('Host Cards'))
       for attachment in hostCards:
          if hostCards[attachment] == card._id:
             if debugVerbosity >= 2: notify("### Found Attachment!") #Debug

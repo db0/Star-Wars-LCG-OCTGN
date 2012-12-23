@@ -716,7 +716,8 @@ def discard(card, x = 0, y = 0, silent = False):
       if not silent: notify("{} discards {}".format(me,card))
    executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
-   global cardAttachementsNR, hostCards
+   global cardAttachementsNR
+   hostCards = eval(getGlobalVariable('Host Cards'))
    attachmentsNR = cardAttachementsNR.get(card._id,0)
    if attachmentsNR >= 1:
       hostCardSnapshot = dict(hostCards)
@@ -726,6 +727,7 @@ def discard(card, x = 0, y = 0, silent = False):
             cardAttachementsNR[card._id] -= 1
    if debugVerbosity >= 2: notify("### Checking if the card is attached to unlink.")      
    if hostCards.get(card._id,'None') != 'None': del hostCards[card._id] # If the card was an attachment, delete the link
+   setGlobalVariable('Host Cards',str(hostCards))
    if debugVerbosity >= 1: notify("<<< discard()") #Debug
    return 'OK'
 
