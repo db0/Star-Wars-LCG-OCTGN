@@ -223,7 +223,8 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
             if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
             continue # If we're looking for attakcer or defender and we're not in an enagement, return.
          if re.search(r'-ifHaveForce', AutoS) and not haveForce(): continue
-         if re.search(r'-ifHaventForce', AutoS) and haveForce(): continue         
+         if re.search(r'-ifHaventForce', AutoS) and haveForce(): continue
+         if re.search(r'-ifParticipating', AutoS) and card.orientation != Rot90: continue
          chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
          if chkTypeRegex: 
             if debugVerbosity >= 4: notify("### chkTypeRegex : {}".format(chkTypeRegex.groups()))

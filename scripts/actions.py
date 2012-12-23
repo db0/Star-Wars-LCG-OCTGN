@@ -310,6 +310,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    if unopposed and currentTarget in table: 
       notify(":> {} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective.".format(me,currentTarget))
       currentTarget.markers[mdict['Damage']] += 1
+      autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    for card in table:
       if card.orientation == Rot90: card.orientation = Rot0
       if card.highlight == DefendColor: card.highlight = None
