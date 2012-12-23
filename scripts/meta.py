@@ -40,7 +40,7 @@ CardsAA = {} # Dictionary holding all the AutoAction scripts for all cards
 CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
 Stored_Keywords = {} # A Dictionary holding all the Keywords a card has.
 
-cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
+#cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
 #hostCards = {} # A dictionary which holds which is the host of each attachment
     
 def storeSpecial(card): 
@@ -147,7 +147,8 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    edgeRevealed = False
    firstTurn = True
    limitedPlayed = False
-   cardAttachementsNR.clear()
+   #cardAttachementsNR.clear()
+   #cardAttachementsNR.clear()
    hostCards = eval(getGlobalVariable('Host Cards'))
    hostCards.clear()
    setGlobalVariable('Host Cards',str(hostCards))

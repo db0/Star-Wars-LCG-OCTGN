@@ -937,7 +937,29 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       placeCard(Card(ForceUserList[choice]))
       if debugVerbosity >= 2: notify("#### About to announce")
       notify("{} returns into play".format(Card(ForceUserList[choice])))
-      
+   elif card.name == 'Superlaser Engineer' and action == 'PLAY': 
+      if not confirm("Do you want to activate the optional ability of reaction of Superlaser Engineer?"): return
+      cardList = []
+      sendToBottomList = []
+      iter = 0
+      for c in deck.top(5):
+         c.moveToTable((cwidth(c) * 2) - (iter * cwidth(c)),0)
+         cardList.append(c._id)
+         c.highlight = '#FF2222'
+         iter += 1
+      rnd(1,10)
+      revealedCards = ''
+      for cid in cardList: revealedCards += '{}, '.format(Card(cid))
+      notify("{} activates the ability of their Superlaser Engineer and reveals the top 5 cards of their deck: {}".format(me,revealedCards))      
+      for cid in cardList:
+         if (Card(cid).Type == 'Event' or Card(cid).Type == 'Enhancement') and num(Card(cid).Cost) >= 3:
+            notify(":> {} moves {} to their hand".format(me,Card(cid)))
+            Card(cid).moveTo(me.hand)
+         else:
+            sendToBottomList.append(Card(cid))
+      sendToBottom(sendToBottomList)
+            
+            
 #------------------------------------------------------------------------------
 # Helper Functions
 #------------------------------------------------------------------------------

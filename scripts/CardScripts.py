@@ -1346,7 +1346,7 @@ Superlaser Blast
 -----
 ff4fb461-8060-457a-9c16-000000000033
 -----
-
+onPlay:DestroyTarget-Targeted-atObjective
 +++++
 
 .....
@@ -1354,7 +1354,7 @@ Superlaser Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000030
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}||onPlay:CustomScript
 +++++
 
 .....
