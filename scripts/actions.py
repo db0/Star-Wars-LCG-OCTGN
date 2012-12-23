@@ -716,16 +716,7 @@ def discard(card, x = 0, y = 0, silent = False):
       if not silent: notify("{} discards {}".format(me,card))
    executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
-   hostCards = eval(getGlobalVariable('Host Cards'))
-   cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
-   if cardAttachementsNR >= 1:
-      hostCardSnapshot = dict(hostCards)
-      for attachment in hostCardSnapshot:
-         if hostCardSnapshot[attachment] == card._id and Card(attachment) in table:
-            discard(Card(attachment))
-   if debugVerbosity >= 2: notify("### Checking if the card is attached to unlink.")      
-   if hostCards.get(card._id,'None') != 'None': del hostCards[card._id] # If the card was an attachment, delete the link
-   setGlobalVariable('Host Cards',str(hostCards))
+   clearAttachLinks(card)
    if debugVerbosity >= 1: notify("<<< discard()") #Debug
    return 'OK'
 
@@ -756,6 +747,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
    else: captureTXT = "{} has captured one card from {}'s {}".format(me,targetC.owner,targetC,targetC.group)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
+      captureGroup = targetC.group.name
       if Side == 'Light': captor = opponent # Only dark side can capture.
       else: captor = me 
       if not chosenObj or chosenObj.owner != captor:
@@ -781,7 +773,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       countCaptures = 0 
       for capturedC in capturedCards:
          if capturedCards[capturedC] == chosenObj._id: countCaptures += 1
+      if captureGroup == 'Table': clearAttachLinks(targetC) # If the card was in the table, we check if it had any attachments to discard
       if debugVerbosity >= 2: notify("About to move to objective")
+      targetCType = targetC.Type # Used later for the autoscripting of other cards
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
@@ -791,9 +785,26 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if debugVerbosity >= 2: notify("About to reset shared variable")
       setGlobalVariable('Captured Cards',str(capturedCards))
       if debugVerbosity >= 2: notify("About to initiate autoscripts")
-      autoscriptOtherPlayers('UnitCaptured',targetC)
+      autoscriptOtherPlayers('{}CardCapturedFrom{}'.format(targetCType,captureGroup),targetC) # We send also the card type. Some capture hooks only trigger of a specific kind of captured card (e.g. bespin exchange)
    if debugVerbosity >= 1: notify("<<< capture()") #Debug
 
+def clearAttachLinks(card):
+# This function takes care to discard any attachments of a card that left play (discarded or captured)
+# It also clear the card from the host dictionary, if it was itself attached to another card
+   if debugVerbosity >= 1: notify(">>> clearAttachLinks()") #Debug
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
+   if cardAttachementsNR >= 1:
+      hostCardSnapshot = dict(hostCards)
+      for attachment in hostCardSnapshot:
+         if hostCardSnapshot[attachment] == card._id:
+            if Card(attachment) in table: discard(Card(attachment))
+            del hostCards[attachment]
+   if debugVerbosity >= 2: notify("### Checking if the card is attached to unlink.")      
+   if hostCards.has_key(card._id): del hostCards[card._id] # If the card was an attachment, delete the link
+   setGlobalVariable('Host Cards',str(hostCards))
+   if debugVerbosity >= 3: notify("<<< clearAttachLinks()") #Debug
+   
 def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
    if debugVerbosity >= 1: notify(">>> removeCapturedCard()") #Debug
    try: 

@@ -1378,7 +1378,7 @@ Tallon Roll
 -----
 ff4fb461-8060-457a-9c16-000000000043
 -----
-
+onPlay:Remove1Focus-Targeted-atFighter
 +++++
 
 .....
@@ -1386,7 +1386,7 @@ Tallon Roll
 -----
 ff4fb461-8060-457a-9c16-000000000051
 -----
-
+onPlay:Remove1Focus-Targeted-atFighter
 +++++
 
 .....
@@ -1394,7 +1394,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000062
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
 +++++
 
 .....
@@ -1402,7 +1402,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000091
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
 +++++
 
 .....
@@ -1410,7 +1410,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000131
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
 +++++
 
 .....
@@ -1418,7 +1418,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000154
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
 +++++
 
 .....
@@ -1426,7 +1426,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000185
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
 +++++
 
 .....
@@ -1434,7 +1434,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000215
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
 +++++
 
 .....
@@ -1442,7 +1442,7 @@ Tear This Ship Apart
 -----
 ff4fb461-8060-457a-9c16-000000000057
 -----
-
+onPlay:DestroyTarget-Targeted-atEnhancement
 +++++
 
 .....
@@ -1450,7 +1450,7 @@ The Bespin Exchange
 -----
 ff4fb461-8060-457a-9c16-000000000075
 -----
-
+whilePlayed:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-perUnitCardCapturedFromTable
 +++++
 
 .....
