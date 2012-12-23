@@ -1058,7 +1058,7 @@ Nightsister
 -----
 ff4fb461-8060-457a-9c16-000000000109
 -----
-onCommit:Deal1Damage-DemiAutoTargeted-atObjective-choose1
+onCommit:Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1
 +++++
 
 .....
@@ -1066,7 +1066,7 @@ Nightsister
 -----
 ff4fb461-8060-457a-9c16-000000000110
 -----
-onCommit:Deal1Damage-DemiAutoTargeted-atObjective-choose1
+onCommit:Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1
 +++++
 
 .....
@@ -1530,7 +1530,7 @@ TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000128
 -----
-whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perUnopposedEngagement-isAttacking-ifParticipating
+whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perUnopposedEngagement-ifAttacker-ifParticipating
 +++++
 
 .....

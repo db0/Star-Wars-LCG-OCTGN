@@ -69,6 +69,7 @@
          <cardaction menu="Complete Payment" default="false" execute="purchaseCard" />
          <cardaction menu="Gain The Edge" default="false" shortcut="Alt+E" execute="gainEdge" />
          <cardaction menu="Clear commitment to the force" default="false" execute="clearCommit" />
+         <cardaction menu="Rescue" default="false" execute="rescue" />
       </cardactions>
 <!--		<cardaction menu="Generate Resources" shortcut="Ctrl+G" execute="generate" /> -->
 		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />

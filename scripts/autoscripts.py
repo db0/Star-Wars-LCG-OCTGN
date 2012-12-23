@@ -197,7 +197,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
    if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {}".format(lookup)) #Debug
    if not Automations['Play']: return # If automations have been disabled, do nothing.
    for card in table:
-      if debugVerbosity >= 2: notify('Checking {}'.format(card)) # Debug
+      if debugVerbosity >= 2: notify('### Checking {}'.format(card)) # Debug
       if not card.isFaceUp: continue # Don't take into accounts cards that are face down for some reason. 
       if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == FateColor or card.highlight == UnpaidColor: return # We do not care about inactive cards.
       costText = '{} activates {} to'.format(card.controller, card) 
@@ -208,7 +208,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if not re.search(r'while(Played|Scored)', autoS): Autoscripts.remove(autoS)
       if len(Autoscripts) == 0: continue
       for AutoS in Autoscripts:
-         if debugVerbosity >= 2: notify('Checking AutoS: {}'.format(AutoS)) # Debug
+         if debugVerbosity >= 2: notify('### AutoS: {}'.format(AutoS)) # Debug
          if not re.search(r'{}'.format(lookup), AutoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
          if chkPlayer(AutoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          currObjID = getGlobalVariable('Engaged Objective')
@@ -868,7 +868,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    elif card.name == 'Cruel Interrogations' and action == 'PLAY':
       if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return
       turn = num(getGlobalVariable('Turn'))
-      while turn == 0 and len(opponent.hand) < 5: 
+      while turn == 0 and len(opponent.hand) < 6: 
          if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
       captureTarget = opponent.hand.random()
       capture(chosenObj = card, targetC = captureTarget)
@@ -971,7 +971,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    elif card.name == 'Take Them Prisoner' and action == 'PLAY': 
       if not confirm("Do you want to activate the optional ability of Take Them Prisoner?"): return
       turn = num(getGlobalVariable('Turn'))
-      while turn == 0 and len(opponent.hand) < 5: 
+      while turn == 0 and len(opponent.hand) < 6: 
          if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
       cardList = []
       cardNames = []
@@ -1017,13 +1017,14 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
       if re.search(r'Targeted', Autoscript):
          requiredAllegiances = []
          targetGroups = prepareRestrictions(Autoscript)
-         if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\ntargetGroups:{}".format(targetGroups)) #Debug
+         if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\n### targetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in group: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
             if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or re.search(r'AutoTargeted', Autoscript)) and targetLookup.highlight != EdgeColor and targetLookup.highlight !=FateColor: 
             # OK the above target check might need some decoding:
             # Look through all the cards on the group and start checking only IF...
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
             # * The player who controls this card is supposed to be me or the enemy.
+               if debugVerbosity >= 2: notify("### Checking {}".format(targetLookup))
                if not checkSpecialRestrictions(Autoscript,targetLookup): continue
                if re.search(r'-onHost',Autoscript):   
                   if debugVerbosity >= 2: notify("### Looking for Host")
@@ -1174,6 +1175,7 @@ def checkSpecialRestrictions(Autoscript,card):
 # Check the autoscript for special restrictions of a valid card
 # If the card does not validate all the restrictions included in the autoscript, we reject it
    if debugVerbosity >= 1: notify(">>> checkSpecialRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
+   if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
