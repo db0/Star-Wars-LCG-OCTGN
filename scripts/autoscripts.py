@@ -897,6 +897,44 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       else: 
          targetC.moveTo(targetC.owner.hand)
          notify("{} has rescued a card".format(me))
+   if card.name == 'Return of the Jedi' and action == 'PLAY':
+      if debugVerbosity >= 2: notify("### Return of the Jedi")
+      discardList = []
+      if debugVerbosity >= 2: notify("### Moving Force Users to 'removed from game' pile from discard pile")
+      for c in discardPile:
+         c.moveTo(me.piles['Removed from Game'])
+         discardList.append(c._id)
+      rnd(1,10)
+      unitNames = []
+      unitDetails = []
+      ForceUserList = []
+      if debugVerbosity >= 2: notify("### Storing unit properties and moving them back")
+      for unit in discardList:
+         if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(unit).name))
+         if not Card(unit).name in unitNames and re.search(r'Force User',Card(unit).Traits):
+            ForceUserList.append(unit)
+            unitNames.append(Card(unit).name)
+            unitDetails.append((Card(unit).properties['Damage Capacity'],Card(unit).Traits,parseCombatIcons(Card(unit).properties['Combat Icons']),Card(unit).Text)) # Creating a tuple with some details per objective
+         if debugVerbosity >= 3: notify("#### Finished Storing. Moving back")
+         Card(unit).moveTo(discardPile)
+      if len(ForceUserList) == 0: 
+         whisper("::ERROR::: There is no force user in your discard pile!")
+         return
+      elif len(ForceUserList) == 1:
+         choice = 0
+      else:
+         unitChoices = []
+         for iter in range(len(ForceUserList)):
+            unitChoices.append("{}\
+                             \nDamage Capacity: {}\
+                             \nTraits {}\
+                             \nIcons: {}\
+                             \nText: {}\
+                             ".format(unitNames[iter], unitDetails[iter][0], unitDetails[iter][1], unitDetails[iter][2],unitDetails[iter][3]))
+         choice = SingleChoice("Which Force User unit do you want to put into play from your discard pile?", unitChoices, type = 'button', default = 0)
+      placeCard(Card(ForceUserList[choice]))
+      if debugVerbosity >= 2: notify("#### About to announce")
+      notify("{} returns into play".format(Card(ForceUserList[choice])))
       
 #------------------------------------------------------------------------------
 # Helper Functions
