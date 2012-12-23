@@ -787,6 +787,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.isFaceUp = False
       targetC.orientation = Rot0
       targetC.highlight = CapturedColor
+      targetC.target(False)
       if debugVerbosity >= 2: notify("About to reset shared variable")
       setGlobalVariable('Captured Cards',str(capturedCards))
       if debugVerbosity >= 2: notify("About to initiate autoscripts")
@@ -794,12 +795,18 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
    if debugVerbosity >= 1: notify("<<< capture()") #Debug
 
 def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
+   if debugVerbosity >= 1: notify(">>> removeCapturedCard()") #Debug
    try: 
       mute()
       capturedCards = eval(getGlobalVariable('Captured Cards'))
-      if capturedCards[card._id]: del capturedCards[card._id]
+      if capturedCards.has_key(card._id):
+         if debugVerbosity >= 2: notify("{} was in the capturedCards dict.".format(card))
+         del capturedCards[card._id]
+         if debugVerbosity >= 3: notify("Double Checking if entry exists: {}".format(capturedCards.get(card._id,'DELETED')))
       card.highlight = None
+      if debugVerbosity >= 4: notify("Captured Cards: {}".format([Card(id).name for id in capturedCards]))
    except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
+   if debugVerbosity >= 3: notify("<<< removeCapturedCard()") #Debug
 
 def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
    try:

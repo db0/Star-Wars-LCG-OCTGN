@@ -1138,7 +1138,7 @@ Rebel Assault
 -----
 ff4fb461-8060-457a-9c16-000000000005
 -----
-
+onPlay:Deal2Damage-Targeted-atUnit_or_Objective
 +++++
 
 .....
@@ -1146,7 +1146,7 @@ Rebel Assault
 -----
 ff4fb461-8060-457a-9c16-000000000178
 -----
-
+onPlay:Deal2Damage-Targeted-atUnit_or_Objective
 +++++
 
 .....
@@ -1178,7 +1178,7 @@ Reconnaissance Mission
 -----
 ff4fb461-8060-457a-9c16-000000000087
 -----
-
+whilePlayed:Gain1Reserves
 +++++
 
 .....
@@ -1194,7 +1194,7 @@ Red Two
 -----
 ff4fb461-8060-457a-9c16-000000000177
 -----
-
+onThwart:Remove1Focus
 +++++
 
 .....
@@ -1218,7 +1218,7 @@ Rescue Mission
 -----
 ff4fb461-8060-457a-9c16-000000000202
 -----
-
+onPlay:CustomScript
 +++++
 
 .....

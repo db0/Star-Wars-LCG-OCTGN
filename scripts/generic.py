@@ -431,7 +431,7 @@ def displaymatch(match):
    return '<Match: {}, groups={}>'.format(match.group(), match.groups())
       
 def sortPriority(cardList):
-   if debugVerbosity >= 1: notify(">>> sortPriority() with cardList: {}".format(cardList)) #Debug
+   if debugVerbosity >= 1: notify(">>> sortPriority() with cardList: {}".format([c.name for c in cardList])) #Debug
    priority1 = []
    priority2 = []
    priority3 = []

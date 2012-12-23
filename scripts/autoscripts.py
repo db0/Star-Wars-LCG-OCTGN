@@ -880,9 +880,24 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          choice = SingleChoice("Choose one unit to be destroyed by the Rancor", makeChoiceListfromCardList(currTargets), type = 'button', default = 0)
          finalTarget = currTargets[choice]
       if debugVerbosity >= 2: notify("### finalTarget = {}".format(finalTarget)) #Debug
-      discard(finalTarget)
+      discard(finalTarget,silent = True)
       if finalTarget == card: notify("{}'s Rancor destroys itself in its wild rampage".format(me))
       else: notify("{}'s Rancor rampages and destroys {}".format(me,finalTarget))
+   elif card.name == 'Rescue Mission' and action == 'PLAY':
+      currentTargets = findTarget('Targeted-isCaptured')
+      if len(currentTargets) == 0: return
+      targetC = currentTargets[0] # We always only have one target.
+      targetC.isFaceUp = True
+      loopChk(targetC,'Type')
+      removeCapturedCard(targetC) 
+      targetC.highlight = None
+      if targetC.Type == 'Unit' and confirm("You have rescued {}. Do you want to put immediately into play?".format(targetC.name)): 
+         placeCard(targetC)
+         notify("{} has rescued {} and put them straight into action".format(me,targetC))
+      else: 
+         targetC.moveTo(targetC.owner.hand)
+         notify("{} has rescued a card".format(me))
+      
 #------------------------------------------------------------------------------
 # Helper Functions
 #------------------------------------------------------------------------------
@@ -898,7 +913,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
          targetGroups = prepareRestrictions(Autoscript)
          if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\ntargetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in group: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
-            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or re.search(r'AutoTargeted', Autoscript)) and targetLookup.highlight != UnpaidColor and targetLookup.highlight != EdgeColor and targetLookup.highlight != CapturedColor and targetLookup.highlight !=FateColor: 
+            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or re.search(r'AutoTargeted', Autoscript)) and targetLookup.highlight != EdgeColor and targetLookup.highlight !=FateColor: 
             # OK the above target check might need some decoding:
             # Look through all the cards on the group and start checking only IF...
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
@@ -957,7 +972,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                else: choice = SingleChoice(choiceTitle, targetChoices, type = 'button', default = 0)
                foundTargets = [foundTargets.pop(choice)] # if we select the target we want, we make our list only hold that target
       if debugVerbosity >= 3: # Debug
-         tlist = []
+         tlist = [] 
          for foundTarget in foundTargets: tlist.append(foundTarget.name) # Debug
          notify("<<< findTarget() by returning: {}".format(tlist))
       return foundTargets
@@ -1037,7 +1052,7 @@ def checkCardRestrictions(cardPropertyList, restrictionsList):
             if invalidtargetCHK in cardPropertyList: validCard = False
       elif debugVerbosity >= 4: notify("### No negative restrictions")
       if validCard: break # If we already passed a restrictions check, we don't need to continue checking restrictions 
-   if debugVerbosity >= 3: notify("<<< checkCardRestrictions() with return {}".format(validCard)) #Debug
+   if debugVerbosity >= 1: notify("<<< checkCardRestrictions() with return {}".format(validCard)) #Debug
    return validCard
 
 def checkSpecialRestrictions(Autoscript,card):
@@ -1047,6 +1062,7 @@ def checkSpecialRestrictions(Autoscript,card):
    validCard = True
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
+   if re.search(r'isCaptured',Autoscript) and card.isFaceUp: validCard = False
    if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
    if re.search(r'isAttacking',Autoscript) or re.search(r'isDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')
@@ -1070,7 +1086,7 @@ def checkSpecialRestrictions(Autoscript,card):
       marker = findMarker(card, markerNeg.group(1))
       if marker: validCard = False
    elif debugVerbosity >= 4: notify("### No marker restrictions.")
-   if debugVerbosity >= 3: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
+   if debugVerbosity >= 1: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
    
 def makeChoiceListfromCardList(cardList):
