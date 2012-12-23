@@ -830,10 +830,14 @@ def rescueFromObjective(obj): # THis function returns all captured cards from an
             rescuedC = Card(capturedC) # We generate the card object by the card's unique ID
             removeCapturedCard(rescuedC) # We remove the card from the dictionary
             rescuedC.moveTo(rescuedC.owner.hand) # We return the card to its owner's hand
-            autoscriptOtherPlayers('UnitRescured',card) # We check if any card on the table has a trigger out of rescued cards.
+            autoscriptOtherPlayers('CardRescued',rescuedC) # We check if any card on the table has a trigger out of rescued cards.
       return count
    except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
-   
+
+def rescue(card,x = 0, y = 0):
+   removeCapturedCard(card) 
+   card.moveTo(card.owner.hand)
+
 def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.
