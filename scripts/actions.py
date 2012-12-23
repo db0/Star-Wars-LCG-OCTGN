@@ -1093,18 +1093,23 @@ def randomDiscard(group):
 	card.moveTo(me.piles['Discard Pile'])
 
 def sendToBottom(cards,x=0,y=0):
-   if debugVerbosity >= 1: notify(">>> sendToBottom(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 1: notify(">>> sendToBottom()") #Debug
+   if debugVerbosity >= 1: notify("### Card List = {}".format([c.name for c in cards])) #Debug
    mute()
    if debugVerbosity >= 2: notify("### Original List: {}".format([card.name for card in cards])) #Debug
    for iter in range(len(cards)):
+      if iter % 5 == 0: notify("---PLEASE DO NOT MOVE ANY CARDS AROUND---")
+      if iter % 2 == 0: notify("Randomizing({}/{} done)...".format(iter, len(cards)))
       swap = rnd(iter,len(cards) - 1)
       cards[iter], cards[swap] = cards[swap], cards[iter]
    if debugVerbosity >= 2: notify("### Randomized List: {}".format([card.name for card in cards])) #Debug
    if cards[0].group == me.hand:
-      notify("{} sends {} cards from their hand to the bottom of their deck in random order.".format(me,len(cards)))
+      notify("{} sends {} cards from their hand to the bottom of their respective decks in random order.".format(me,len(cards)))
    else:
-      notify("{} sends {} to the bottom of their deck in random order.".format(me,[card.name for card in cards]))
-   for card in cards: card.moveToBottom(me.piles['Command Deck'])
+      notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in cards]))
+   for card in cards: 
+      if card.group == table: clearAttachLinks(card)
+      card.moveToBottom(card.owner.piles['Command Deck'])
 
 def drawCommand(group, silent = False):
    if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
@@ -1173,13 +1178,13 @@ def shuffle(group):
 	
 def addFocus(card, x = 0, y = 0):
    mute()
-   notify("{} adds a Focus token on {}.".format(me, card))
    card.markers[mdict['Focus']] += 1
+   notify("{} adds a Focus token on {} (Total: {}).".format(me, card, card.markers[mdict['Focus']]))
     
 def addDamage(card, x = 0, y = 0):
    mute()
-   notify("{} adds a Damage token on {}.".format(me, card))
    card.markers[mdict['Damage']] += 1    
+   notify("{} adds a Damage token on {} (Total: {}).".format(me, card, card.markers[mdict['Damage']]))
     
 def addShield(card, x = 0, y = 0):
    mute()
@@ -1192,14 +1197,14 @@ def addFocusTarget(group, x = 0, y = 0):
    for card in table:
       if card.targetedBy and card.targetedBy == me:
          card.markers[mdict['Focus']] += 1
-         notify("{} adds a Focus token on {}.".format(me, card))
+         notify("{} adds a Focus token on {} (Total: {}).".format(me, card, card.markers[mdict['Focus']]))
     
 def addDamageTarget(group, x = 0, y = 0):
    mute()
    for card in table:
       if card.targetedBy and card.targetedBy == me:
          card.markers[mdict['Damage']] += 1    
-         notify("{} adds a Damage token on {}.".format(me, card))
+         notify("{} adds a Damage token on {} (Total: {}).".format(me, card, card.markers[mdict['Damage']]))
     
 def addShieldTarget(group, x = 0, y = 0):
    mute()

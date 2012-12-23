@@ -99,7 +99,7 @@ def executePlayScripts(card, action):
          if debugVerbosity >= 2: notify ('### selectedAutoscripts: {}'.format(selectedAutoscripts)) # Debug
          for activeAutoscript in selectedAutoscripts:
             if debugVerbosity >= 2: notify("### Second Processing: {}".format(activeAutoscript)) # Debug
-            #if chkWarn(card, activeAutoscript) == 'ABORT': return
+            if chkWarn(card, activeAutoscript) == 'ABORT': return
             if re.search(r':Pass\b', activeAutoscript): return # Pass is a simple command of doing nothing ^_^
             effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{}\|: -]*)', activeAutoscript)
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
@@ -766,7 +766,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if targetCards is None: targetCards = []
    targetCardlist = '' # A text field holding which cards are going to get tokens.
    extraTXT = ''
-   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return)(Target|Parent|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
+   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|SendToBottom)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
@@ -778,6 +778,13 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
       else: targetCardlist += '{},'.format(targetCard)
    if debugVerbosity >= 3: notify("### Preparing targetCardlist")      
    targetCardlist = targetCardlist.strip(',') # Re remove the trailing comma
+   if action.group(1) == 'SendToBottom': # For SendToBottom, we need a different mthod, as we need to shuffle the cards.
+      if action.group(2) == 'Multi': 
+         if debugVerbosity >= 3: notify("### Sending Multiple card to the bottom")   
+         sendToBottom(targetCards) 
+      else: 
+         if debugVerbosity >= 3: notify("### Sending Single card to the bottom")   
+         sendToBottom([targetCards[0]])
    for targetCard in targetCards:
       if action.group(1) == 'Destroy':
          trashResult = discard(targetCard, silent = True)
@@ -1017,6 +1024,15 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
             # * The player who controls this card is supposed to be me or the enemy.
                if not checkSpecialRestrictions(Autoscript,targetLookup): continue
+               if re.search(r'-onHost',Autoscript):   
+                  if debugVerbosity >= 2: notify("### Looking for Host")
+                  if not card: continue # If this targeting script targets only a host and we have not passed what the attachment is, we cannot find the host, so we abort.
+                  if debugVerbosity >= 2: notify("### Attachment is: {}".format(card))
+                  hostCards = eval(getGlobalVariable('Host Cards'))
+                  isHost = False
+                  for attachment in hostCards:
+                     if attachment == card._id and hostCards[attachment] == targetLookup._id: isHost = True
+                  if not isHost: continue
                if checkCardRestrictions(gatherCardProperties(targetLookup), targetGroups): 
                   if not targetLookup in foundTargets: 
                      if debugVerbosity >= 3: notify("### About to append {}".format(targetLookup)) #Debug
@@ -1280,7 +1296,7 @@ def chkWarn(card, Autoscript): # Function for checking that an autoscript announ
       if warning.group(1) == 'Workaround':
          notify(":::Note:::{} is using a workaround autoscript".format(me))
       if warning.group(1) == 'LotsofStuff': 
-         if not confirm("This card performs a lot of complex clicks that will very difficult to undo. Are you sure you want to proceed?"):
+         if not confirm("This card modify the cards on the table significantly and very difficult to undo. Are you ready to proceed?"):
             whisper(":> Aborting action.")
             return 'ABORT'
    if debugVerbosity >= 3: notify("<<< chkWarn() gracefully") 
