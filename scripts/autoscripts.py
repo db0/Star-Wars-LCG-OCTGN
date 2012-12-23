@@ -1107,23 +1107,23 @@ def prepareRestrictions(Autoscript):
    if whatTarget: 
       if debugVerbosity >= 2: notify("### Splitting on _or_") #Debug
       validTargets = whatTarget.group(2).split('_or_') # If we have a list of valid targets, split them into a list, separated by the string "_or_". Usually this results in a list of 1 item.
+      ValidTargetsSnapshot = list(validTargets) # We have to work on a snapshot, because we're going to be modifying the actual list as we iterate.
+      for iter in range(len(ValidTargetsSnapshot)): # Now we go through each list item and see if it has more than one condition (Eg, non-desert fief)
+         if debugVerbosity >= 2: notify("### Creating empty list tuple") #Debug            
+         targetGroups.insert(iter,([],[])) # We create a tuple of two list. The first list is the valid properties, the second the invalid ones
+         multiConditionTargets = ValidTargetsSnapshot[iter].split('_and_') # We put all the mutliple conditions in a new list, separating each element.
+         if debugVerbosity >= 2: notify("###Splitting on _and_ & _or_ ") #Debug
+         if debugVerbosity >= 4: notify("### multiConditionTargets is: {}".format(multiConditionTargets)) #Debug
+         for chkCondition in multiConditionTargets:
+            if debugVerbosity >= 4: notify("### Checking: {}".format(chkCondition)) #Debug
+            regexCondition = re.search(r'(no[nt]){?([A-Za-z,& ]+)}?', chkCondition) # Do a search to see if in the multicondition targets there's one with "non" in front
+            if regexCondition and (regexCondition.group(1) == 'non' or regexCondition.group(1) == 'not'):
+               if debugVerbosity >= 4: notify("### Invalid Target") #Debug
+               if regexCondition.group(2) not in targetGroups[iter][1]: targetGroups[iter][1].append(regexCondition.group(2)) # If there is, move it without the "non" into the invalidTargets list.
+            else: 
+               if debugVerbosity >= 4: notify("### Valid Target") #Debug
+               targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
    elif debugVerbosity >= 2: notify("### No restrictions regex") #Debug 
-   ValidTargetsSnapshot = list(validTargets) # We have to work on a snapshot, because we're going to be modifying the actual list as we iterate.
-   for iter in range(len(ValidTargetsSnapshot)): # Now we go through each list item and see if it has more than one condition (Eg, non-desert fief)
-      if debugVerbosity >= 2: notify("### Creating empty list tuple") #Debug            
-      targetGroups.insert(iter,([],[])) # We create a tuple of two list. The first list is the valid properties, the second the invalid ones
-      multiConditionTargets = ValidTargetsSnapshot[iter].split('_and_') # We put all the mutliple conditions in a new list, separating each element.
-      if debugVerbosity >= 2: notify("###Splitting on _and_ & _or_ ") #Debug
-      if debugVerbosity >= 4: notify("### multiConditionTargets is: {}".format(multiConditionTargets)) #Debug
-      for chkCondition in multiConditionTargets:
-         if debugVerbosity >= 4: notify("### Checking: {}".format(chkCondition)) #Debug
-         regexCondition = re.search(r'(no[nt]){?([A-Za-z,& ]+)}?', chkCondition) # Do a search to see if in the multicondition targets there's one with "non" in front
-         if regexCondition and (regexCondition.group(1) == 'non' or regexCondition.group(1) == 'not'):
-            if debugVerbosity >= 4: notify("### Invalid Target") #Debug
-            if regexCondition.group(2) not in targetGroups[iter][1]: targetGroups[iter][1].append(regexCondition.group(2)) # If there is, move it without the "non" into the invalidTargets list.
-         else: 
-            if debugVerbosity >= 4: notify("### Valid Target") #Debug
-            targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
    if debugVerbosity >= 3: notify("<<< prepareRestrictions() by returning: {}.".format(targetGroups))
    return targetGroups
 

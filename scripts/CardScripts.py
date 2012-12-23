@@ -1466,7 +1466,7 @@ The Emperor's Web
 -----
 ff4fb461-8060-457a-9c16-000000000096
 -----
-
+whilePlayed:Reduce1CostPlay-forEvent_and_Sith-onlyOnce
 +++++
 
 .....

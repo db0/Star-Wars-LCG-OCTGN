@@ -378,23 +378,20 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
       if len(Autoscripts) == 0: continue
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify("### Checking {} with AS: {}".format(c, autoS)) #Debug
-         reductionSearch = re.search(r'Reduce([0-9#X]+)Cost({}|All)-for([A-Z][A-Za-z ]+)(-not[A-Za-z_& ]+)?'.format(type), autoS) 
+         reductionSearch = re.search(r'Reduce([0-9#X]+)Cost({}|All)-for(.*)'.format(type), autoS) 
          if debugVerbosity >= 2: #Debug
             if reductionSearch: notify("!!! Regex is {}".format(reductionSearch.groups()))
             else: notify("!!! No reduceCost regex Match!") 
          if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue 
          if reductionSearch: # If the above search matches (i.e. we have a card with reduction for Rez and a condition we continue to check if our card matches the condition)
-            if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug         
-            if reductionSearch.group(4): 
-               exclusion = re.search(r'-not([A-Za-z_& ]+)'.format(type), reductionSearch.group(4))
-               if exclusion and (re.search(r'{}'.format(exclusion.group(1)), fetchProperty(card, 'Type')) or re.search(r'{}'.format(exclusion.group(1)), fetchProperty(card, 'Keywords'))): continue
-            if reductionSearch.group(3) == 'All' or re.search(r'{}'.format(reductionSearch.group(3)), card.Type) or re.search(r'{}'.format(reductionSearch.group(3)), card.Traits) or re.search(r'{}'.format(reductionSearch.group(3)), card.Affiliation): #Looking for the type of card being reduced into the properties of the card we're currently paying.
+            if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug
+            if reductionSearch.group(3) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)):
                if debugVerbosity >= 3: notify(" ### Search match! Reduction Value is {}".format(reductionSearch.group(1))) # Debug
                if re.search(r'onlyOnce',autoS):
                   if dryRun: # For dry Runs we do not want to add the "Activated" token on the card. 
-                     if oncePerTurn(c, silent = True, act = 'dryRun') == 'ABORT': continue 
+                     if oncePerTurn(c, act = 'dryRun') == 'ABORT': continue 
                   else:
-                     if oncePerTurn(c, silent = True, act = 'automatic') == 'ABORT': continue # if the card's effect has already been used, check the next one
+                     if oncePerTurn(c, act = 'automatic') == 'ABORT': continue # if the card's effect has already been used, check the next one
                if reductionSearch.group(1) == '#': # Still code from ANR. Not used yet but might be.
                   markersCount = c.markers[mdict['Credits']]
                   markersRemoved = 0

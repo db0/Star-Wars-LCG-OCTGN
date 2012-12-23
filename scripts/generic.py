@@ -463,9 +463,9 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
          if debugVerbosity >= 3: notify("<<< oncePerTurn() exit NOK (manual confirm)") #Debug
          return 'ABORT'
       else: 
-         if not silent and act != 'dryRun': notify('{} activates the once-per-turn ability of {} another time'.format(me, card))
+         if not silent and act != 'dryRun': notify(':> {} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
-      if not silent and act != 'dryRun': notify('{} activates the once-per-turn ability of {}'.format(me, card))
+      if not silent and act != 'dryRun': notify(':> {} activates the once-per-turn ability of {}'.format(me, card))
    if act != 'dryRun': 
       if debugVerbosity >= 2: notify("### Adding Activation Marker.") #Debug
       card.markers[mdict['Activation']] += 1 # On dry runs we do not want to activate the once-per turn abilities. We just want to see if they're available.
