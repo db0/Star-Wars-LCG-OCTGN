@@ -784,7 +784,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          if trashResult == 'ABORT': return 'ABORT'
          elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
       elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
-      elif action.group(1) == 'Return': targetCard.moveTo(targetCard.owner.hand)
+      elif action.group(1) == 'Return': 
+         targetCard.moveTo(targetCard.owner.hand)
+         extraTXT = " to their owner's hand"
       elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
       elif action.group(1) == 'Rescue':
          if card.isFaceUp: 
@@ -1148,6 +1150,15 @@ def checkSpecialRestrictions(Autoscript,card):
       marker = findMarker(card, markerNeg.group(1))
       if marker: validCard = False
    elif debugVerbosity >= 4: notify("### No marker restrictions.")
+   propertyReq = re.search(r'-hasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
+   # Checking if the target needs to have a property at a certiain value. 
+   # eq = equal, le = less than/equal, ge = greater than/equal, lt = less than, gt = greater than.
+   if propertyReq:
+      if propertyReq.group(2) == 'eq' and card.properties[propertyReq.group(1)] != propertyReq.group(3): validCard = False
+      if propertyReq.group(2) == 'le' and num(card.properties[propertyReq.group(1)]) > num(propertyReq.group(3)): validCard = False
+      if propertyReq.group(2) == 'ge' and num(card.properties[propertyReq.group(1)]) < num(propertyReq.group(3)): validCard = False
+      if propertyReq.group(2) == 'lt' and num(card.properties[propertyReq.group(1)]) >= num(propertyReq.group(3)): validCard = False
+      if propertyReq.group(2) == 'gt' and num(card.properties[propertyReq.group(1)]) <= num(propertyReq.group(3)): validCard = False
    if debugVerbosity >= 1: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
    
