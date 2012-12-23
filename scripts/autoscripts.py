@@ -960,7 +960,41 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          else:
             sendToBottomList.append(Card(cid))
       sendToBottom(sendToBottomList)
-            
+   elif card.name == 'Take Them Prisoner' and action == 'PLAY': 
+      if not confirm("Do you want to activate the optional ability of Take Them Prisoner?"): return
+      turn = num(getGlobalVariable('Turn'))
+      while turn == 0 and len(opponent.hand) < 5: 
+         if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
+      cardList = []
+      cardNames = []
+      cardDetails = []
+      for c in opponent.piles['Command Deck'].top(3):
+         c.moveTo(opponent.piles['Removed from Game'])
+         cardList.append(c._id)
+      rnd(1,10)
+      for cid in cardList:
+         if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(cid).name))
+         cardNames.append(Card(cid).name)
+         cardDetails.append((Card(cid).Type,Card(cid).properties['Damage Capacity'],Card(cid).Resources,Card(cid).Traits,parseCombatIcons(Card(cid).properties['Combat Icons']),Card(cid).Text)) # Creating a tuple with some details per objective
+         if debugVerbosity >= 3: notify("#### Finished Storing.")
+      ChoiceTXT = []
+      for iter in range(len(cardList)):
+         ChoiceTXT.append("{}\
+                          \nType: {}\
+                          \nDamage Capacity: {}, Resources: {}\
+                          \nTraits: {}\
+                          \nIcons: {}\
+                          \nText: {}\
+                          ".format(cardNames[iter], cardDetails[iter][0], cardDetails[iter][1], cardDetails[iter][2],cardDetails[iter][3],cardDetails[iter][4],cardDetails[iter][5]))
+      choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0)
+      capture(chosenObj = card,targetC = Card(cardList.pop(choice)))
+      ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
+      choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0)
+      for iter in range(len(cardList)):
+         if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
+         if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
+         else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
+      notify("{} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
             
 #------------------------------------------------------------------------------
 # Helper Functions
