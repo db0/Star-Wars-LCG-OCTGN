@@ -1626,7 +1626,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000045
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -1634,7 +1634,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000092
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -1642,7 +1642,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000119
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -1650,7 +1650,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000136
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -1658,7 +1658,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000160
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -1666,7 +1666,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000214
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -1674,7 +1674,7 @@ Vader's Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000105
 -----
-Placement:Force User_and_Unit_or_Force Sensitive_and_Unit
+Placement:Force User_or_Force Sensitive|||BonusIcons:UD:1
 +++++
 
 .....
@@ -1682,7 +1682,7 @@ Vader's TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000127
 -----
-
+onStrike:CustomScript
 +++++
 
 .....

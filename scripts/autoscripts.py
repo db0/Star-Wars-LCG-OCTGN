@@ -480,13 +480,13 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          if count == 999: # 999 effectively means "all markers on card"
             if targetCard.markers[token]: count = targetCard.markers[token]
             else: 
-               whisper("There was nothing to remove.")
+               if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")
                count = 0
          elif re.search(r'isCost', Autoscript) and (not targetCard.markers[token] or (targetCard.markers[token] and count > targetCard.markers[token])):
             if notification != 'Automatic': whisper ("No markers to remove. Aborting!") #Some end of turn effect put a special counter and then remove it so that they only run for one turn. This avoids us announcing that it doesn't have markers every turn.
             return 'ABORT'
          elif not targetCard.markers[token]: 
-            whisper("There was nothing to remove.")        
+            if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")        
             count = 0 # If we don't have any markers, we have obviously nothing to remove.
          modtokens = -count * multiplier
       targetCard.markers[token] += modtokens # Finally we apply the marker modification
@@ -1040,6 +1040,28 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       else:  card.moveToTable(0,-cheight(card))
       if debugVerbosity >= 2: notify("About to whisper") # Debug
       whisper(":::IMPORTANT::: Please make sure that the controller for this card is always the Dark Side player")
+   elif card.name == 'Twist of Fate' and action == 'RESOLVEFATE': 
+      for card in table:
+         if card.highlight == EdgeColor or card.highlight == FateColor:
+            card.moveTo(card.owner.piles['Discard Pile'])
+      notify("{} discards all edge cards and restarts the edge battle")
+   elif card.name == "Vader's TIE Advanced" and action == 'STRIKE':
+      whisper("-- Processing. Please wait...")
+      TokensX('Remove999Vaders TIE Advance:UD-isSilent', '', card)
+      TokensX('Remove999Vaders TIE Advance:BD-isSilent', '', card)
+      TokensX('Remove999Vaders TIE Advance:Tactics-isSilent', '', card)
+      if not confirm("Do you want to use Vader's TIE Advanced reaction?"): return
+      disCard = deck.top()
+      disCard.moveTo(discardPile)
+      rnd(1,10)
+      Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card = disCard)
+      if Unit_Damage: TokensX('Put{}Vaders TIE Advance:UD-isSilent'.format(Unit_Damage), '', card)
+      if Blast_Damage: TokensX('Put{}Vaders TIE Advance:BD-isSilent'.format(Blast_Damage), '', card)
+      if Tactics: TokensX('Put{}Vaders TIE Advance:Tactics-isSilent'.format(Tactics), '', card)
+      if Unit_Damage or Blast_Damage or Tactics:
+         notify("{} discards {} and Vader's TIE Advanced strike is boosted by {}".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
+      else: 
+         notify("{} discards {} and Vader's TIE Advanced strike is not boosted".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
             
 #------------------------------------------------------------------------------
 # Helper Functions
