@@ -180,13 +180,13 @@ ff4fb461-8060-457a-9c16-000000000076
 -----
 
 +++++
-
+CaptureTarget-Targeted-atCharacter
 .....
 Bounty Collection
 -----
 ff4fb461-8060-457a-9c16-000000000080
 -----
-
+onPlay:Remove1Focus-DemiAutoTargeted-atnonUnit-choose3
 +++++
 
 .....
@@ -196,7 +196,7 @@ ff4fb461-8060-457a-9c16-000000000156
 -----
 
 +++++
-
+DiscardMyself$$SimplyAnnounce{effects of the event card}
 .....
 Cloud City Casino
 -----
@@ -244,7 +244,7 @@ ff4fb461-8060-457a-9c16-000000000081
 -----
 
 +++++
-
+Put1Focus-isCost$$SimplyAnnounce{put a unit of printed cost 1 or lower into play}
 .....
 Coruscant Defense Fleet
 -----
@@ -252,7 +252,7 @@ ff4fb461-8060-457a-9c16-000000000023
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-
+Remove1Damage-AutoTargeted-atCoruscant-isCost$$Put1Damage
 .....
 Counsel of the Sith
 -----
@@ -266,7 +266,7 @@ Counter-stroke
 -----
 ff4fb461-8060-457a-9c16-000000000142
 -----
-
+onPlay:SimplyAnnounce{cancel the effects of the event}
 +++++
 
 .....
@@ -314,7 +314,7 @@ Dark Alliance
 -----
 ff4fb461-8060-457a-9c16-000000000220
 -----
-
+whilePlayed:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -322,7 +322,7 @@ Dark Alliance
 -----
 ff4fb461-8060-457a-9c16-000000000221
 -----
-
+whilePlayed:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -428,7 +428,7 @@ ff4fb461-8060-457a-9c16-000000000035
 -----
 
 +++++
-
+R1:Gain1Dial
 .....
 Double Strike
 -----

@@ -623,6 +623,7 @@ def TrialError(group, x=0, y=0): # Debugging
    #findTarget('Targeted-atVehicle_and_Fighter_or_Character_and_nonWookie')
    #BotD.moveToTable(0,0) 
    ###### End Testing Corner ######
+   notify("### Setting Debug Verbosity")
    if debugVerbosity >=0: 
       if debugVerbosity == 0: 
          debugVerbosity = 1
@@ -633,15 +634,20 @@ def TrialError(group, x=0, y=0): # Debugging
       else: debugVerbosity = 0
       notify("Debug verbosity is now: {}".format(debugVerbosity))
       return
+   notify("### Checking Players")
    for player in players:
       if player.name == 'db0' or player.name == 'dbzer0': debugVerbosity = 0
+   notify("### Checking Debug Validity")
    if not (len(players) == 1 or debugVerbosity >= 0): 
       whisper("This function is only for development purposes")
       return
+   notify("### Checking Side")
    if not Side: 
       if confirm("Dark Side?"): Side = "Dark"
       else: Side = "Light"
+   notify("### Setting Side")
    me.setGlobalVariable('Side', Side) 
+   notify("### Setting Table Side")
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()

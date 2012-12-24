@@ -545,7 +545,7 @@ def generate(card, x = 0, y = 0):
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
    if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC, manual = False)
-   elif checkPaidResources(unpaidC) == 'USEOK': useAbility(unpaidC, paidAbility = True) 
+   elif checkPaidResources(unpaidC) == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():

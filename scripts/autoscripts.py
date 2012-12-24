@@ -195,7 +195,7 @@ def executeAttachmentScripts(card, action):
 # Card Use trigger
 #------------------------------------------------------------------------------
 
-def useAbility(card, x = 0, y = 0, paidAbility = False): # The start of autoscript activation.
+def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The start of autoscript activation.
    if debugVerbosity >= 1: notify(">>> useAbility(){}".format(extraASDebug())) #Debug
    mute()
    global failedRequirement,selectedAbility
@@ -240,7 +240,7 @@ def useAbility(card, x = 0, y = 0, paidAbility = False): # The start of autoscri
       else: 
          selectedAutoscripts = Autoscripts[0].split('$$')
          choice = 0 
-      actionCost = re.match(r"R([0-9]+):(.*)", selectedAutoscripts[0]) # Any cost will always be at the start
+      actionCost = re.match(r"R([0-9]+):", selectedAutoscripts[0]) # Any cost will always be at the start
       if actionCost and actionCost.group(1) != '0': # If the card has a cost to be paid...
          previousHighlight = card.highlight
          selectedAbility[card._id] = (choice,num(actionCost.group(1)),previousHighlight) # We set a tuple of variables tracking for which of the card's choices the payment is and how much the player must pay. The third entry in the tuple is the card's previous highlight if it had any.
@@ -248,10 +248,18 @@ def useAbility(card, x = 0, y = 0, paidAbility = False): # The start of autoscri
          notify("{} Attempts to use {}'s ability".format(me,card))
          return
    else: # If we're returning after paying a card's abilities cost, we re-set out selectedAutoscripts
-      choice = selectedAbility[card._id][0]
-      card.highlight = selectedAbility[card._id][2]
-      selectedAutoscripts = Autoscripts[choice].split('$$')
-      del selectedAbility[card._id]
+      if manual: checkPaid = checkPaidResources(card) # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
+      else: checkPaid = 'USEOK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
+      if checkPaid == 'USEOK' or confirm(":::ERROR::: You do have not yet paid the cost of this card's abilities. Bypass?"):
+         # if the card has been fully paid, we remove the resource markers and move it at its final position.
+         choice = selectedAbility[card._id][0]
+         card.highlight = selectedAbility[card._id][2]
+         selectedAutoscripts = Autoscripts[choice].split('$$')
+         del selectedAbility[card._id]
+         for cMarkerKey in card.markers: 
+            for resdictKey in resdict:
+               if resdict[resdictKey] == cMarkerKey: 
+                  card.markers[cMarkerKey] = 0
    if debugVerbosity >= 2: notify("### Executing Autoscripts: {}".format(selectedAutoscripts)) # Debug
    announceText = "{} activates {} in order to".format(me,card)
    X = 0 # Variable for special costs.
@@ -294,7 +302,6 @@ def useAbility(card, x = 0, y = 0, paidAbility = False): # The start of autoscri
          announceText = discardTuple[0] 
          X = discardTuple[1] 
       elif regexHooks['TokensX'].search(activeAutoscript):           announceText = TokensX(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['TransferX'].search(activeAutoscript):         announceText = TransferX(activeAutoscript, announceText, card, targetC, n = X)
       elif regexHooks['DrawX'].search(activeAutoscript):             announceText = DrawX(activeAutoscript, announceText, card, targetC, n = X)
       elif regexHooks['ShuffleX'].search(activeAutoscript):          announceText = ShuffleX(activeAutoscript, announceText, card, targetC, n = X)
       elif regexHooks['ModifyStatus'].search(activeAutoscript):      announceText = ModifyStatus(activeAutoscript, announceText, card, targetC, n = X)
