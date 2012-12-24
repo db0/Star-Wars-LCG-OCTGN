@@ -828,6 +828,12 @@ def GameX(Autoscript, announceText, card, targetCards = None, notification = Non
       else: notify("!!! regex failed :(") 
    if re.search(r'forController', Autoscript): player = card.controller
    elif re.search(r'forOwner', Autoscript): player = card.owner 
+   elif re.search(r'forDark Side', Autoscript): 
+      if Side == 'Dark': player = me
+      else: player == opponent
+   elif re.search(r'forLight Side', Autoscript): 
+      if Side == 'Light': player = me
+      else: player == opponent
    else: player == me
    if action.group(1) == 'Lose': announceString = "=== {} loses the game! ===".format(player)
    else: announceString = "=== {} wins the game! ===".format(player)
@@ -1030,7 +1036,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    elif card.name == 'Trench Run' and action == 'PLAY': # We move this card to the opponent's exile in order to try and give control to them automatically.
       card.moveTo(opponent.piles['Removed from Game'])
       rnd(1,10)
-      card.moveToTable(0,0)
+      if me.hasInvertedTable(): card.moveToTable(0,0)
+      else:  card.moveToTable(0,-cheight(card))
       if debugVerbosity >= 2: notify("About to whisper") # Debug
       whisper(":::IMPORTANT::: Please make sure that the controller for this card is always the Dark Side player")
             

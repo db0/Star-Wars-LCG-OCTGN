@@ -288,7 +288,7 @@ def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
    showCurrentPhase()
    #setGlobalVariable('Engagement Phase','1')
    if debugVerbosity >= 2: notify("About to announce") #Debug
-   notify("{} forces have engaged {}'s {}".format(me,targetObjective.owner, targetObjective))
+   notify("{} forces have engaged {}'s {}".format(me,targetObjective.controller, targetObjective))
    rnd(1,10)
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
@@ -738,14 +738,14 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
          if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
          for card in opponent.hand:
             if card.targetedBy and card.targetedBy == me: targetC = card
-         if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner,targetC)
+         if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner)
          else:
             if debugVerbosity >= 2: notify("### Searching command deck") #Debug
             for card in opponent.piles['Command Deck'].top(3):
                if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
                if card.targetedBy and card.targetedBy == me: targetC = card
-            if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner,targetC)
-   else: captureTXT = "{} has captured one card from {}'s {}".format(me,targetC.owner,targetC,targetC.group)
+            if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
+   else: captureTXT = "{} has captured one card from {}'s {}".format(me,targetC.owner,targetC.group.name)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
       captureGroup = targetC.group.name

@@ -1490,7 +1490,7 @@ The Heart of the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000022
 -----
-
+onDiscard:LoseGame-forOwner
 +++++
 
 .....
@@ -1570,7 +1570,7 @@ Trench Run
 -----
 ff4fb461-8060-457a-9c16-000000000009
 -----
-EngagedAsObjective||onPlay:CustomScript||onDiscard:LoseGame-forController
+EngagedAsObjective||onPlay:CustomScript||onDiscard:LoseGame-forDark Side
 +++++
 
 .....
