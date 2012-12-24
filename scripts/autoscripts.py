@@ -58,7 +58,7 @@ def executePlayScripts(card, action):
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify("### First Processing: {}".format(autoS)) # Debug
          effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', autoS)
-         scriptHostCHK = re.search(r'onHost([A-Za-z]+)',effectType.group(1))
+         scriptHostCHK = re.search(r'(?<!-)onHost([A-Za-z]+)',effectType.group(1))
          actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
@@ -89,14 +89,18 @@ def executePlayScripts(card, action):
             if debugVerbosity >= 2: notify("### Skipping autoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
             continue 
          if re.search(r'-onlyDuringEngagement', autoS) and getGlobalVariable('Engaged Objective') == 'None': 
-            return 'ABORT' # If this is an optional ability only for engagements, then we abort
+            continue # If this is an optional ability only for engagements, then we abort
          if re.search(r'-isOptional', autoS):
             if not confirm("This card has an optional ability you can activate at this point. Do you want to do so?"): 
                notify("{} opts not to activate {}'s optional ability".format(me,card))
-               return 'ABORT'
+               continue
             else: notify("{} activates {}'s optional ability".format(me,card))
-         if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
-         if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
+         if re.search(r'-ifHaveForce', autoS) and not haveForce(): 
+            if debugVerbosity >= 2: notify("### Rejected -ifHaveForce script")
+            continue
+         if re.search(r'-ifHaventForce', autoS) and haveForce(): 
+            if debugVerbosity >= 2: notify("### Rejected -ifHaventForce script")
+            continue         
          selectedAutoscripts = autoS.split('$$')
          if debugVerbosity >= 2: notify ('### selectedAutoscripts: {}'.format(selectedAutoscripts)) # Debug
          for activeAutoscript in selectedAutoscripts:
@@ -268,9 +272,10 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
    for activeAutoscript in selectedAutoscripts:
       #confirm("Active Autoscript: {}".format(activeAutoscript)) #Debug
       ### Checking if any of the card's effects requires one or more targets first
-      if re.search(r'Targeted', activeAutoscript) and findTarget(activeAutoscript) == []: return
+      if re.search(r'Targeted', activeAutoscript) and findTarget(activeAutoscript,card = card) == []: return
    for activeAutoscript in selectedAutoscripts:
-      targetC = findTarget(activeAutoscript)
+      if not announceText.endswith(' in order to') and not announceText.endswith(' and'): announceText += ' and'   
+      targetC = findTarget(activeAutoscript,card = card)
       ### Warning the player in case we need to
       if chkWarn(card, activeAutoscript) == 'ABORT': return
       ### Check if the action needs the player or his opponent to be targeted
@@ -1180,7 +1185,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.moveTo(card.owner.piles['Discard Pile'])
       notify(":> {} discards all edge cards and restarts the edge battle".format(card))
    elif card.name == "Vader's TIE Advanced" and action == 'STRIKE':
-      whisper("-- Processing. Please wait...")
+      delayed_whisper("-- Calculating Vader's TIA Advanced Combat Icons. Please wait...")
       TokensX('Remove999Vaders TIE Advance:UD-isSilent', '', card)
       TokensX('Remove999Vaders TIE Advance:BD-isSilent', '', card)
       TokensX('Remove999Vaders TIE Advance:Tactics-isSilent', '', card)
@@ -1197,7 +1202,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       else: 
          notify("{} discards {} and Vader's TIE Advanced strike is not boosted".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
    elif card.name == "Yoda" and action == 'STRIKE':
-      whisper("-- Processing. Please wait...")
+      delayed_whisper("-- Calculating Yoda's Combat Icons. Please wait...")
       TokensX('Remove999Yoda enhancements:UD-isSilent', '', card)
       TokensX('Remove999Yoda enhancements:BD-isSilent', '', card)
       hostCards = eval(getGlobalVariable('Host Cards'))
@@ -1261,7 +1266,9 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   hostCards = eval(getGlobalVariable('Host Cards'))
                   isHost = False
                   for attachment in hostCards:
-                     if attachment == card._id and hostCards[attachment] == targetLookup._id: isHost = True
+                     if attachment == card._id and hostCards[attachment] == targetLookup._id: 
+                        if debugVerbosity >= 2: notify("### Host found! {}".format(targetLookup))
+                        isHost = True
                   if not isHost: continue
                if checkCardRestrictions(gatherCardProperties(targetLookup), targetGroups): 
                   if not targetLookup in foundTargets: 
@@ -1377,13 +1384,14 @@ def checkCardRestrictions(cardPropertyList, restrictionsList):
    if debugVerbosity >= 1: notify(">>> checkCardRestrictions()") #Debug
    if debugVerbosity >= 2: notify("### cardPropertyList = {}".format(cardPropertyList)) #Debug
    if debugVerbosity >= 2: notify("### restrictionsList = {}".format(restrictionsList)) #Debug
+   validCard = True
    for restrictionsGroup in restrictionsList: 
    # We check each card's properties against each restrictions group of valid + invalid properties.
    # Each Restrictions group is a tuple of two lists. First list (tuple[0]) is the valid properties, and the second list is the invalid properties
    # We check if all the properties from the valid list are in the card properties
    # And then we check if no properties from the invalid list are in the properties
    # If both of these are true, then the card is a valid choice for our action.
-      validCard = True
+      validCard = True # We need to set it here as well for further loops
       if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
       if len(restrictionsList) > 0 and len(restrictionsGroup[0]) > 0: 
          for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks

@@ -196,7 +196,7 @@ ff4fb461-8060-457a-9c16-000000000156
 -----
 
 +++++
-DiscardMyself$$SimplyAnnounce{effects of the event card}
+DestroyMyself$$SimplyAnnounce{cancel the effects of the event card}
 .....
 Cloud City Casino
 -----
@@ -930,7 +930,7 @@ Jedi Mind Trick
 -----
 ff4fb461-8060-457a-9c16-000000000003
 -----
-onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaventForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce-ifHaveForce
+onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaveForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce
 +++++
 
 .....
@@ -938,7 +938,7 @@ Jedi Mind Trick
 -----
 ff4fb461-8060-457a-9c16-000000000171
 -----
-onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaventForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce-ifHaveForce
+onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaveForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce
 +++++
 
 .....
@@ -1156,7 +1156,7 @@ ff4fb461-8060-457a-9c16-000000000199
 -----
 
 +++++
-DiscardMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
+DestroyMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
 .....
 Rebel Sympathizer
 -----
@@ -1164,7 +1164,7 @@ ff4fb461-8060-457a-9c16-000000000200
 -----
 
 +++++
-DiscardMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
+DestroyMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
 .....
 Rebel Trooper
 -----
@@ -1596,7 +1596,7 @@ ff4fb461-8060-457a-9c16-000000000065
 -----
 Placement:Character_and_Unit
 +++++
-
+Put1Focus-isCost$$Remove1Focus-AutoTargeted-onHost
 .....
 Twi'lek Loyalist
 -----
@@ -1730,7 +1730,7 @@ X-Wing Escort
 -----
 ff4fb461-8060-457a-9c16-000000000188
 -----
-
+onDiscard:SimplyAnnounce{force opponent to sacrifice a Vehicle unit they control}
 +++++
 
 .....
