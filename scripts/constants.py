@@ -86,6 +86,7 @@ regexHooks = dict( # A dictionary which holds the regex that then trigger each c
                   ShuffleX =           re.compile(r'\bShuffle([A-Za-z& ]+)'),
                   ModifyStatus =       re.compile(r'(Rescue|Destroy|Return|Exile|Capture|SendToBottom)'),
                   SimplyAnnounce =     re.compile(r'\bSimplyAnnounce'),
+                  GameX =              re.compile(r'\b(Lose|Win)Game'),
                   ChooseKeyword =      re.compile(r'\bChooseKeyword'),
                   CustomScript =       re.compile(r'\bCustomScript'),
                   UseCustomAbility =   re.compile(r'\bUseCustomAbility'))

@@ -42,6 +42,7 @@ def executePlayScripts(card, action):
              re.search(r'BonusIcons', autoS) or 
              re.search(r'Increase', autoS) or 
              re.search(r'ConstantEffect', autoS) or 
+             re.search(r'EngagedAsObjective', autoS) or 
              re.search(r'IgnoreAffiliationMatch', autoS) or 
              re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
              re.search(r'-isTrigger', autoS) or
@@ -168,6 +169,9 @@ def executePlayScripts(card, action):
                elif regexHooks['ModifyStatus'].search(passedScript): 
                   if debugVerbosity >= 2: notify("### in ModifyStatus hook")
                   if ModifyStatus(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['GameX'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in GameX hook")
+                  if GameX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif debugVerbosity >= 2: notify("### No hooks found for autoscript")
             if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
             if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
@@ -213,10 +217,10 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
-            if re.search(r'-ifAttacker', autoS) and Card(num(currObjID)).owner == card.owner: 
+            if re.search(r'-ifAttacker', autoS) and Card(num(currObjID)).controller == card.controller: 
                if debugVerbosity >= 2: notify("### Rejected onAttack script for defender")
                continue
-            if re.search(r'-ifDefender', autoS) and Card(num(currObjID)).owner != card.owner: 
+            if re.search(r'-ifDefender', autoS) and Card(num(currObjID)).controller != card.controller: 
                if debugVerbosity >= 2: notify("### Rejected onDefense script for attacker")
                continue
          elif re.search(r'-ifAttacker', autoS) or re.search(r'-ifDefender', autoS): 
@@ -717,7 +721,7 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
       dummyCard.highlight = DummyColor
       storeProperties(dummyCard)
    #confirm("Dummy ID: {}\n\nList Dummy ID: {}".format(dummyCard._id,passedlist[0]._id)) #Debug
-   if not re.search(r'doNotTrash',Autoscript): card.moveTo(card.owner.piles['Heap/Archives(Face-up)'])
+   if not re.search(r'doNotTrash',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
    if action: announceString = TokensX('Put{}'.format(action.group(2)), announceText,dummyCard, n = n) # If we have a -with in our autoscript, this is meant to put some tokens on the dummy card.
    else: announceString = announceText + 'create a lingering effect for {}'.format(targetPL)
    if debugVerbosity >= 3: notify("<<< CreateDummy()")
@@ -814,7 +818,24 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if notification: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< ModifyStatus()")
    return announceString
-            
+
+def GameX(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for alternative victory conditions
+   if debugVerbosity >= 1: notify(">>> GameX(){}".format(extraASDebug(Autoscript))) #Debug
+   if targetCards is None: targetCards = []
+   action = re.search(r'\b(Lose|Win)Game', Autoscript)
+   if debugVerbosity >= 2: #Debug
+      if action: notify("!!! regex: {}".format(action.groups())) 
+      else: notify("!!! regex failed :(") 
+   if re.search(r'forController', Autoscript): player = card.controller
+   elif re.search(r'forOwner', Autoscript): player = card.owner 
+   else: player == me
+   if action.group(1) == 'Lose': announceString = "=== {} loses the game! ===".format(player)
+   else: announceString = "=== {} wins the game! ===".format(player)
+   notify(announceString)
+   if debugVerbosity >= 3: notify("<<< GameX()")
+   return announceString
+
+   
 def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notification = None, n = 0):
    announceString = Autoscript
    return announceString
@@ -1006,6 +1027,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
          else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
       notify("{} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
+   elif card.name == 'Trench Run' and action == 'PLAY': # We move this card to the opponent's exile in order to try and give control to them automatically.
+      card.moveTo(opponent.piles['Removed from Game'])
+      rnd(1,10)
+      card.moveToTable(0,0)
+      if debugVerbosity >= 2: notify("About to whisper") # Debug
+      whisper(":::IMPORTANT::: Please make sure that the controller for this card is always the Dark Side player")
             
 #------------------------------------------------------------------------------
 # Helper Functions
@@ -1191,8 +1218,8 @@ def checkSpecialRestrictions(Autoscript,card):
       if EngagedObjective == 'None': validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if re.search(r'isAttacking',Autoscript) and currentTarget.owner == card.owner: validCard = False
-         elif re.search(r'isDefending',Autoscript)  and currentTarget.owner != card.owner: validCard = False
+         if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
+         elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
    markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
