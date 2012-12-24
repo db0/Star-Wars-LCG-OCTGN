@@ -889,6 +889,9 @@ def play(card):
    global unpaidCard
    mute()
    extraTXT = ''
+   if card.Type == 'Fate': 
+      playEdge(card)
+      return # If the player double clicked on a Fate card, assume he wanted to play it as an edge card.
    if card.Type == 'Enhancement':
       hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
       if hostType:

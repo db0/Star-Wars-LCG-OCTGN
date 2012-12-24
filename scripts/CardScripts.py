@@ -658,7 +658,7 @@ Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000017
 -----
-onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponent-choose1
+onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....
@@ -666,7 +666,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000011
 -----
-onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -674,7 +674,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000039
 -----
-onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -682,7 +682,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000090
 -----
-onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -690,7 +690,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000107
 -----
-onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -698,7 +698,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000148
 -----
-onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -706,7 +706,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000213
 -----
-onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent-choose1
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -1394,7 +1394,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000062
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
 +++++
 
 .....
@@ -1402,7 +1402,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000091
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
 +++++
 
 .....
@@ -1410,7 +1410,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000131
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
 +++++
 
 .....
@@ -1418,7 +1418,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000154
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
 +++++
 
 .....
@@ -1426,7 +1426,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000185
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
 +++++
 
 .....
@@ -1434,7 +1434,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000215
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-targetOpponent-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
 +++++
 
 .....
@@ -1538,7 +1538,7 @@ TIE Attack Squadron
 -----
 ff4fb461-8060-457a-9c16-000000000041
 -----
-
+whilePlayed:Put1TIE Attack Squadron:UD-perResolveFate-byMe-onlyOnce-ifParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
 +++++
 
 .....
