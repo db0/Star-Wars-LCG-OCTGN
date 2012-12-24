@@ -413,8 +413,13 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
    TitleDone = False
    X = 0
    for card in table:
-      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: return # We do not care about inactive cards.
-      if not card.isFaceUp: continue
+      if debugVerbosity >= 4: notify("### Checking card: {}".format(card))
+      if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: 
+         if debugVerbosity >= 3: notify("### Card inactive. Ignoring")
+         continue # We do not care about inactive cards.
+      if not card.isFaceUp: 
+         if debugVerbosity >= 3: notify("### Card is face down. Ignoring")
+         continue
       Autoscripts = CardsAS.get(card.model,'').split('||')
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify("### Processing {} Autoscript: {}".format(card, autoS))
@@ -1514,7 +1519,9 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          if debugVerbosity >= 3: notify("<<< chkPlayer() reversed!") # Debug      
          if validPlayer == 0: return 1
          else: return 0
-   except: notify("!!!ERROR!!! Null value on chkPlayer()")
+   except: 
+      notify("!!!ERROR!!! Null value on chkPlayer()")
+      return 0
 
 def chkWarn(card, Autoscript): # Function for checking that an autoscript announces a warning to the player
    if debugVerbosity >= 1: notify(">>> chkWarn(){}".format(extraASDebug(Autoscript))) #Debug

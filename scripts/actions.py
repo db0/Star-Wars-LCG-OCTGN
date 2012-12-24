@@ -1074,7 +1074,7 @@ def mulligan(group):
       shuffle(me.piles['Command Deck']) # We do a good shuffle this time.   
       rnd(1,10)
       whisper("Shuffling...")
-   drawMany(count = me.Reserves)   
+   drawMany(count = 6)   
    if debugVerbosity >= 3: notify("<<< mulligan()") #Debug
 
 def groupToDeck (group = me.hand, player = me, silent = False):
