@@ -1178,7 +1178,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for card in table:
          if card.highlight == EdgeColor or card.highlight == FateColor:
             card.moveTo(card.owner.piles['Discard Pile'])
-      notify("{} discards all edge cards and restarts the edge battle")
+      notify(":> {} discards all edge cards and restarts the edge battle".format(card))
    elif card.name == "Vader's TIE Advanced" and action == 'STRIKE':
       whisper("-- Processing. Please wait...")
       TokensX('Remove999Vaders TIE Advance:UD-isSilent', '', card)
@@ -1205,6 +1205,32 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if cardAttachementsNR and gotEdge():
          TokensX('Put{}Yoda enhancements:UD-isSilent'.format(cardAttachementsNR), '', card)
          TokensX('Put{}Yoda enhancements:BD-isSilent'.format(cardAttachementsNR), '', card)
+   elif card.name == "Secret Informant" and action == 'USE':
+      if card.orientation != Rot90:
+         whisper(":::ERROR::: Secret Informant must be participating in the engagement to use her ability")
+         return
+      if len([c for c in table if c.highlight == FateColor and c.Type == 'Fate' and c.owner == me]) and not confirm("You are supposed to use this effect once you're already used all your fate cards on the table (i.e. they all should have a silver highlight now)\
+                  \n\nHave you done this already?"): return
+      for c in table:
+         if c.highlight == EdgeColor and c.Type == 'Fate' and c.owner == me:
+            c.highlight = FateColor
+      notify("{}'s secret informant allows them to resolve all their fate cards an extra time this battle".format(me))
+   elif card.name == "The Secret of Yavin 4" and action == 'USE':
+      EngagedObjective = getGlobalVariable('Engaged Objective')
+      if EngagedObjective == 'None': 
+         whisper(":::Error::: No Engagement Currently ongoing")
+         return
+      else:
+         currentTarget = Card(num(EngagedObjective))     
+         if currentTarget.controller != me or currentTarget == card:
+            whisper(":::Error::: Current engagement not at another on of your objectives.")
+            return
+      if oncePerTurn(card) == 'ABORT': return
+      currentTarget.highlight = None
+      card.highlight = DefendColor
+      setGlobalVariable('Engaged Objective',str(card._id))
+      notify("{} activates {} and moves the engagement to it".format(me,card))
+      
          
 #------------------------------------------------------------------------------
 # Helper Functions

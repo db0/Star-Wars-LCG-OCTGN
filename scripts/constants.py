@@ -77,6 +77,7 @@ engagementPhases = [
 regexHooks = dict( # A dictionary which holds the regex that then trigger each core command. 
                    # This is so that I can modify these "hooks" only in one place as I add core commands and modulators.
                   GainX =              re.compile(r'\b(Gain|Lose|SetTo)([0-9]+)'),
+                  GenerateX =          re.compile(r'\b(Generate)([0-9]+)'),
                   CreateDummy =        re.compile(r'\bCreateDummy'),
                   ReshuffleX =         re.compile(r'\bReshuffle([A-Za-z& ]+)'),
                   RollX =              re.compile(r'\bRoll([0-9]+)'),

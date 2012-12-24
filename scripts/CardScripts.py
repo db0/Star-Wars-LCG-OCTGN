@@ -252,7 +252,7 @@ ff4fb461-8060-457a-9c16-000000000023
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-Remove1Damage-AutoTargeted-atCoruscant-isCost$$Put1Damage
+Remove1Damage-DemiAutoTargeted-atCoruscant-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Counsel of the Sith
 -----
@@ -476,7 +476,7 @@ ff4fb461-8060-457a-9c16-000000000098
 -----
 
 +++++
-
+Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Espo Trooper
 -----
@@ -570,7 +570,7 @@ Fleet Command Center
 -----
 ff4fb461-8060-457a-9c16-000000000190
 -----
-
+afterRefresh:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn
 +++++
 
 .....
@@ -644,7 +644,7 @@ ff4fb461-8060-457a-9c16-000000000158
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-
+Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Guardian of Peace
 -----
@@ -652,7 +652,7 @@ ff4fb461-8060-457a-9c16-000000000159
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-
+Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Han Solo
 -----
@@ -716,7 +716,7 @@ ff4fb461-8060-457a-9c16-000000000014
 -----
 
 +++++
-
+Put1Focus-isCost$$SimplyAnnounce{force the Dark Side to deal 1 damage to a unit they control.}
 .....
 Heavy Stormtrooper Squad
 -----
@@ -738,7 +738,7 @@ Heroic Sacrifice
 -----
 ff4fb461-8060-457a-9c16-000000000191
 -----
-onPlay:DestroyMulti-Targeted-atVehicle
+onPlay:DestroyMulti-Targeted-atVehicle-hasProperty{Cost}le4
 +++++
 
 .....
@@ -820,7 +820,7 @@ ff4fb461-8060-457a-9c16-000000000036
 -----
 
 +++++
-
+R2:Gain1Dial
 .....
 In You Must Go
 -----
@@ -1004,7 +1004,7 @@ ff4fb461-8060-457a-9c16-000000000207
 -----
 
 +++++
-
+Put1Focus-isCost$$SimplyAnnounce{force opponent to put 1 focus one 1 attacking unit}
 .....
 Looking for Droids
 -----
@@ -1098,7 +1098,7 @@ Outer Rim Hunter
 -----
 ff4fb461-8060-457a-9c16-000000000077
 -----
-
+onAttack:SimplyAnnounce{force opponent to deal 1 damage to one of their objectives}
 +++++
 
 .....
@@ -1156,7 +1156,7 @@ ff4fb461-8060-457a-9c16-000000000199
 -----
 
 +++++
-
+DiscardMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
 .....
 Rebel Sympathizer
 -----
@@ -1164,7 +1164,7 @@ ff4fb461-8060-457a-9c16-000000000200
 -----
 
 +++++
-
+DiscardMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
 .....
 Rebel Trooper
 -----
@@ -1212,7 +1212,7 @@ ff4fb461-8060-457a-9c16-000000000183
 -----
 
 +++++
-
+Remove1Damage-DemiAutoTargeted-atVehicle-targetMine-choose1-onlyOnce
 .....
 Rescue Mission
 -----
@@ -1260,7 +1260,7 @@ ff4fb461-8060-457a-9c16-000000000211
 -----
 
 +++++
-
+CustomScript
 .....
 Secret Informant
 -----
@@ -1268,7 +1268,7 @@ ff4fb461-8060-457a-9c16-000000000212
 -----
 
 +++++
-
+CustomScript
 .....
 Shadows of Dathomir
 -----
@@ -1508,7 +1508,7 @@ ff4fb461-8060-457a-9c16-000000000155
 -----
 
 +++++
-
+CustomScript
 .....
 The Ultimate Power
 -----
