@@ -777,6 +777,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if captureGroup == 'Table': clearAttachLinks(targetC) # If the card was in the table, we check if it had any attachments to discard
       if debugVerbosity >= 2: notify("About to move to objective")
       targetCType = targetC.Type # Used later for the autoscripting of other cards
+      if targetCType == '?': targetCType = ''
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
@@ -816,7 +817,10 @@ def removeCapturedCard(card): # This function removes a captured card from the d
          del capturedCards[card._id]
          if debugVerbosity >= 3: notify("Double Checking if entry exists: {}".format(capturedCards.get(card._id,'DELETED')))
       card.highlight = None
-      if debugVerbosity >= 4: notify("Captured Cards: {}".format([Card(id).name for id in capturedCards]))
+      if debugVerbosity >= 4: 
+         notify("Captured Cards: {}".format([Card(id).name for id in capturedCards]))
+         rnd(1,10)
+      setGlobalVariable('Captured Cards',str(capturedCards))
    except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
    if debugVerbosity >= 3: notify("<<< removeCapturedCard()") #Debug
 

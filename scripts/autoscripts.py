@@ -1149,18 +1149,20 @@ def checkCardRestrictions(cardPropertyList, restrictionsList):
    if debugVerbosity >= 1: notify(">>> checkCardRestrictions()") #Debug
    if debugVerbosity >= 2: notify("### cardPropertyList = {}".format(cardPropertyList)) #Debug
    if debugVerbosity >= 2: notify("### restrictionsList = {}".format(restrictionsList)) #Debug
-   validCard = True
    for restrictionsGroup in restrictionsList: 
    # We check each card's properties against each restrictions group of valid + invalid properties.
    # Each Restrictions group is a tuple of two lists. First list (tuple[0]) is the valid properties, and the second list is the invalid properties
    # We check if all the properties from the valid list are in the card properties
    # And then we check if no properties from the invalid list are in the properties
    # If both of these are true, then the card is a valid choice for our action.
+      validCard = True
       if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
       if len(restrictionsList) > 0 and len(restrictionsGroup[0]) > 0: 
          for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
             if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
-            if validtargetCHK not in cardPropertyList: validCard = False
+            if not validtargetCHK in cardPropertyList: 
+               if debugVerbosity >= 4: notify("### {} not found in {}".format(validtargetCHK,cardPropertyList)) #Debug
+               validCard = False
       elif debugVerbosity >= 4: notify("### No positive restrictions")
       if len(restrictionsList) > 0 and len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
          for invalidtargetCHK in restrictionsGroup[1]:
@@ -1236,7 +1238,7 @@ def makeChoiceListfromCardList(cardList):
       if T.Type == 'Unit': combatIcons = "Printed Icons: " + parseCombatIcons(T.properties['Combat Icons'])
       else: combatIcons = ''
       if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
-      choiceTXT = "{}\n{}{}\n{}".format(T.name,markers,stats,combatIcons)
+      choiceTXT = "{}\n{}\n{}{}\n{}".format(T.name,T.Type,markers,stats,combatIcons)
       targetChoices.append(choiceTXT)
    return targetChoices
    if debugVerbosity >= 3: notify("<<< makeChoiceListfromCardList()")
