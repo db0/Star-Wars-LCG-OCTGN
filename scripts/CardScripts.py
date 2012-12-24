@@ -156,7 +156,7 @@ ff4fb461-8060-457a-9c16-000000000126
 -----
 
 +++++
-
+Put1Focus-isCost$$Remove1Focus-Targeted-atBlack Squadron
 .....
 Black Squadron Pilot
 -----

@@ -42,6 +42,7 @@ resdict = {
 
 
 UnpaidColor = "#ffd700"
+UnpaidAbilityColor = "#40e0d0"
 SelectColor = "#009900"
 LightForceColor = "#ffffff"
 DarkForceColor = "#000000"

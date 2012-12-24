@@ -429,6 +429,7 @@ def defaultAction(card, x = 0, y = 0):
    elif card.model == 'e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc': 
       card.switchImage # If the players double click on the Balance of the Force, we assume they want to flip it.
       notify(":::ATTENTION::: {} flipped the balance of the force manually".format(me))
+   elif CardsAA.get(card.model,'') != '': useAbility(card)
    else: whisper(":::ERROR::: There is nothing to do with this card at this moment!")
    if debugVerbosity >= 3: notify("<<< defaultAction()") #Debug
      
@@ -544,6 +545,7 @@ def generate(card, x = 0, y = 0):
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
    if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC, manual = False)
+   elif checkPaidResources(unpaidC) == 'USEOK': useAbility(unpaidC, paidAbility = True) 
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
@@ -551,7 +553,7 @@ def findUnpaidCard():
    if unpaidCard: return unpaidCard
    else:
       for card in table:
-         if card.highlight == UnpaidColor and card.controller == me: return card
+         if (card.highlight == UnpaidColor or card.highlight == UnpaidAbilityColor) and card.controller == me: return card
    if debugVerbosity >= 3: notify("<<< findUnpaidCard()") #Debug
    return None # If not unpaid card is found, return None
 
@@ -571,14 +573,24 @@ def checkPaidResources(card):
    for c in table:
       if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')): affiliationMatch = True
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
-   reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
-   if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (num(card.Cost) - reduction) == 0)):
-      if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
-      reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
-      return 'OK'
+   if card.highlight == UnpaidAbilityColor:
+      reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
+      if count >= selectedAbility[card._id][1] - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (selectedAbility[card._id][1] - reduction) == 0)):
+         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return USEOK") #Debug
+         reduceCost(card, 'USE', selectedAbility[card._id][1] - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
+         return 'USEOK'
+      else:
+         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
+         return 'NOK'      
    else:
-      if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
-      return 'NOK'
+      reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
+      if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (num(card.Cost) - reduction) == 0)):
+         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
+         reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
+         return 'OK'
+      else:
+         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
+         return 'NOK'
 
 def purchaseCard(card, x=0, y=0, manual = True):
    if debugVerbosity >= 1: notify(">>> purchaseCard(){}".format(extraASDebug())) #Debug

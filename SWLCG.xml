@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.4" markersize="20">
+<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.10" markersize="20">
 	<scripts>
 		<script src="r100" />
 		<script src="r101" />
@@ -61,6 +61,7 @@
       </groupactions>
 <!--		<cardaction menu="DebugTest" default="true" execute="flipcard" /> -->
 		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="true" shortcut="Ctrl+S" execute="defaultAction" />
+		<cardaction menu="Use card ability" default="false" shortcut="Ctrl+U" execute="useAbility" />
       <cardactions menu="Manual Actions">
          <cardaction menu="Strike" default="false" execute="strike" />
          <cardaction menu="Participate in current engagement" default="false" execute="participate" />
