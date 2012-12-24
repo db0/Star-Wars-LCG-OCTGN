@@ -1754,7 +1754,7 @@ Yoda
 -----
 ff4fb461-8060-457a-9c16-000000000138
 -----
-
+onStrike:CustomScript
 +++++
 
 .....
@@ -1762,7 +1762,7 @@ You're My Only Hope
 -----
 ff4fb461-8060-457a-9c16-000000000135
 -----
-
+onPlay:DestroyTarget-Targeted-atUnit$$Draw2Cards
 +++++
 
 .....
@@ -1770,7 +1770,7 @@ Yub Yub!
 -----
 ff4fb461-8060-457a-9c16-000000000208
 -----
-
+onPlay:Put1Focus-Targeted-onEwok-hasntMarker{Focus}$$DestroyTarget-Targeted-atEnhancement
 +++++
 
 .....
@@ -1778,7 +1778,7 @@ Yub Yub!
 -----
 ff4fb461-8060-457a-9c16-000000000209
 -----
-
+onPlay:Put1Focus-Targeted-onEwok-hasntMarker{Focus}$$DestroyTarget-Targeted-atEnhancement
 +++++
 
 .....

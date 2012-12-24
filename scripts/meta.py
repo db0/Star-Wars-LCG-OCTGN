@@ -248,8 +248,12 @@ def parseCombatIcons(STRING):
 def calculateCombatIcons(card = None, CIString = None):
    # This function calculates how many combat icons a unit is supposed to have in a battle by adding bonuses from attachments as well.
    if debugVerbosity >= 1: notify(">>> calculateCombatIcons()") #Debug
-   if card: combatIcons = card.properties['Combat Icons']
-   elif CIString: combatIcons = CIString
+   if card: 
+      if debugVerbosity >= 2: notify("### card = {}".format(card)) #Debug
+      combatIcons = card.properties['Combat Icons']
+   elif CIString: 
+      if debugVerbosity >= 2: notify("### CIString = {}".format(CIString)) #Debug
+      combatIcons = CIString
    else: return
    if debugVerbosity >= 2: notify("### Setting Variables") #Debug
    Unit_Damage = 0
@@ -269,11 +273,12 @@ def calculateCombatIcons(card = None, CIString = None):
    if EEBD and gotEdge(): Blast_Damage += num(EEBD.group(1))
    if T: Tactics += num(T.group(1))
    if EET and gotEdge(): Tactics += num(EET.group(1))
-   if debugVerbosity >= 2: notify("### Checking Markers") #Debug
-   for marker in card.markers:
-      if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
-      if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
-      if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
+   if card: # We only check markers if we're checking a host's Combat Icons.
+      if debugVerbosity >= 2: notify("### Checking Markers") #Debug
+      for marker in card.markers:
+         if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
+         if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
+         if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
    if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
    for c in table:
       AutoSscripts = CardsAS.get(c.model,'').split('||')
@@ -288,12 +293,12 @@ def calculateCombatIcons(card = None, CIString = None):
                if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
          else:
             if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
-   if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
    if card: # We only check attachments if we're checking a host's Combat Icons.
+      if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
       hostCards = eval(getGlobalVariable('Host Cards'))
       for attachment in hostCards:
          if hostCards[attachment] == card._id:
-            if debugVerbosity >= 2: notify("### Found Attachment!") #Debug
+            if debugVerbosity >= 2: notify("### Found Attachment: {}".format(Card(attachment))) #Debug
             AS = CardsAS.get(Card(attachment).model,'')
             if AS == '': continue
             Autoscripts = AS.split('||')

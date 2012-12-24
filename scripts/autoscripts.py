@@ -1062,7 +1062,16 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          notify("{} discards {} and Vader's TIE Advanced strike is boosted by {}".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
       else: 
          notify("{} discards {} and Vader's TIE Advanced strike is not boosted".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
-            
+   elif card.name == "Yoda" and action == 'STRIKE':
+      whisper("-- Processing. Please wait...")
+      TokensX('Remove999Yoda enhancements:UD-isSilent', '', card)
+      TokensX('Remove999Yoda enhancements:BD-isSilent', '', card)
+      hostCards = eval(getGlobalVariable('Host Cards'))
+      cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
+      if cardAttachementsNR and gotEdge():
+         TokensX('Put{}Yoda enhancements:UD-isSilent'.format(cardAttachementsNR), '', card)
+         TokensX('Put{}Yoda enhancements:BD-isSilent'.format(cardAttachementsNR), '', card)
+         
 #------------------------------------------------------------------------------
 # Helper Functions
 #------------------------------------------------------------------------------
