@@ -1185,7 +1185,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.moveTo(card.owner.piles['Discard Pile'])
       notify(":> {} discards all edge cards and restarts the edge battle".format(card))
    elif card.name == "Vader's TIE Advanced" and action == 'STRIKE':
-      delayed_whisper("-- Calculating Vader's TIA Advanced Combat Icons. Please wait...")
+      delayed_whisper("-- Calculating Vader's TIE Advanced Combat Icons. Please wait...")
       TokensX('Remove999Vaders TIE Advance:UD-isSilent', '', card)
       TokensX('Remove999Vaders TIE Advance:BD-isSilent', '', card)
       TokensX('Remove999Vaders TIE Advance:Tactics-isSilent', '', card)

@@ -1394,7 +1394,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000062
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -1402,7 +1402,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000091
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -1410,7 +1410,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000131
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -1418,7 +1418,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000154
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -1426,7 +1426,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000185
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -1434,7 +1434,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000215
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-isAttacking
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
