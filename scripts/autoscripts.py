@@ -1171,14 +1171,16 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                           \nText: {}\
                           ".format(cardNames[iter], cardDetails[iter][0], cardDetails[iter][1], cardDetails[iter][2],cardDetails[iter][3],cardDetails[iter][4],cardDetails[iter][5]))
       choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0)
-      capture(chosenObj = card,targetC = Card(cardList.pop(choice)))
+      capturedC = Card(cardList.pop(choice))
+      capturedC.moveTo(opponent.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
+      capture(chosenObj = card,targetC = capturedC, silent = True)
       ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
       choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0)
       for iter in range(len(cardList)):
          if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
          if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
          else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
-      notify("{} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
+      notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
    elif card.name == 'Trench Run' and action == 'PLAY': # We move this card to the opponent's exile in order to try and give control to them automatically.
       card.moveTo(opponent.piles['Removed from Game'])
       rnd(1,10)

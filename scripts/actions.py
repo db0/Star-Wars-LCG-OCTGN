@@ -345,7 +345,7 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
       global opponent
       if not ofwhom('ofOpponent') and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
-         whisper("Please wait until your opponent has drawn their objectives before proceeding")
+         whisper("Please wait until your opponent has placed their Affiliation down before proceeding")
          return
       if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
       opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
@@ -354,15 +354,12 @@ def gameSetup(group, x = 0, y = 0):
             whisper(":::Warning::: You are not supposed to have any non-Objective cards in your hand at this point")
             card.moveToBottom(deck)
             continue
-         else: storeObjective(card)
-      if debugVerbosity >= 3: notify("### Finished Setting Up Objectives")
+         else: storeObjective(card, GameSetup = True)
       shuffle(deck)
       drawMany(deck, 6, silent = True)
-      notify("{} has played their objectives and drawn their starting commands".format(me))
+      notify("{} has planned their starting objectives and drawn their starting commands.".format(me))
+      delayed_whisper(":::ATTENTION::: Once your opponent has put down their starting objectives and decided to mulligan or not, double click on one of your objectives to reveal them and trigger any effects.")
       SetupPhase = False
-      if Side == 'Dark': 
-         me.setGlobalVariable('Phase','0') # We now allow the dark side to start
-         notify("{} of the Dark Side has the initiative".format(me))
    else: # This choice is only for a new game.
       if debugVerbosity >= 3: notify("### Executing First Setup Phase")
       if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
@@ -421,6 +418,19 @@ def defaultAction(card, x = 0, y = 0):
       executePlayScripts(card, 'RESOLVEFATE')
       autoscriptOtherPlayers('ResolveFate',card)
       card.highlight = EdgeColor
+   elif card.highlight == ObjectiveSetupColor:
+      myObjectives = [c for c in table if c.controller == me and c.highlight == ObjectiveSetupColor]
+      for c in myObjectives: 
+         c.highlight = None
+         c.orientation = Rot0
+         c.isFaceUp = True # First we turn them all face up (We do two different loops to give the cards time to flip completely, so that we can grab their properties without having to put rnd(1,10) every time.
+      for c in myObjectives: 
+         loopChk(c,'Type') # We make sure we can read the card's properties first
+         executePlayScripts(c, 'PLAY')
+      notify("{} of the {} has revealed their starting objectives".format(me,Affiliation))
+      if Side == 'Dark': 
+         me.setGlobalVariable('Phase','0') # We now allow the dark side to start
+         notify("--> {} of the Dark Side has the initiative".format(me))
    elif card.highlight == EdgeColor: revealEdge()
    elif card.highlight == UnpaidColor: purchaseCard(card)
    elif num(card.Resources) > 0 and findUnpaidCard(): 
@@ -761,7 +771,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
                if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
                if card.targetedBy and card.targetedBy == me: targetC = card
             if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
-   else: captureTXT = "{} has captured one card from {}'s {}".format(me,targetC.owner,targetC.group.name)
+   else: captureTXT = ":> {} has captured one card from {}'s {}".format(me,targetC.owner,targetC.group.name)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
       captureGroup = targetC.group.name
@@ -854,6 +864,13 @@ def rescueFromObjective(obj): # THis function returns all captured cards from an
       return count
    except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
 
+def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game thinks the objective has captured
+   capturedCards = eval(getGlobalVariable('Captured Cards')) # This is a dictionary holding how many and which cards are captured at each objective.
+   for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
+      if capturedCards[capturedC] == card._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
+         removeCapturedCard(Card(capturedC)) # We remove the card from the dictionary
+   whisper("All associated captured cards for this objective have been cleared")
+   
 def rescue(card,x = 0, y = 0):
    removeCapturedCard(card) 
    card.moveTo(card.owner.hand)

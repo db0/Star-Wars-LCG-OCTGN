@@ -53,6 +53,7 @@ EdgeColor = "#c0c0c0"
 FateColor = "#ae39d4"
 DummyColor = "#005566"
 PriorityColor = "#00d7ff"
+ObjectiveSetupColor = "#b22222"
 
 Xaxis = 'x'
 Yaxis = 'y'

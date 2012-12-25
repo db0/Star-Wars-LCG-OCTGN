@@ -50,7 +50,7 @@ def storeSpecial(card):
    specialCards[card.Type] = card._id
    me.setGlobalVariable('specialCards', str(specialCards))
 
-def storeObjective(card): 
+def storeObjective(card, GameSetup = False): 
 # Function stores into a shared variable the current objectives of the player, so that other players might look them up.
 # This function also reorganizes the objectives on the table
    if debugVerbosity >= 1: notify(">>> storeObjective(){}") #Debug
@@ -63,26 +63,33 @@ def storeObjective(card):
       except ValueError: pass # If an exception is thrown, it means that destroyed objective does not exist in this objective list
    currentObjectives.append(card._id)
    if debugVerbosity >= 2: notify("About to iterate the list: {}".format(currentObjectives))
-   for iter in range(len(currentObjectives)):
-      Objective = Card(currentObjectives[iter])
-      Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective))
-      xPos, yPos = Objective.position
-      countCaptures = 0
-      if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
-      capturedCards = eval(getGlobalVariable('Captured Cards'))
-      for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
-         if capturedCards[capturedC] == Objective._id:
-            if debugVerbosity >= 2: notify("Moved Objective has Captured cards. Moving them...")
-            countCaptures += 1
-            Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
-            Card(capturedC).sendToBack()
-      #Objective.orientation = Rot90
+   if GameSetup:
+      for iter in range(len(currentObjectives)):
+         Objective = Card(currentObjectives[iter])
+         Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective), True)
+         Objective.highlight = ObjectiveSetupColor # During game setup, we put the objectives face down so that the players can draw their hands before we reveal them.
+         Objective.orientation = Rot90
+   else:
+      for iter in range(len(currentObjectives)):
+         Objective = Card(currentObjectives[iter])
+         Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective))
+         xPos, yPos = Objective.position
+         countCaptures = 0
+         if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
+         capturedCards = eval(getGlobalVariable('Captured Cards'))
+         for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
+            if capturedCards[capturedC] == Objective._id:
+               if debugVerbosity >= 2: notify("Moved Objective has Captured cards. Moving them...")
+               countCaptures += 1
+               Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
+               Card(capturedC).sendToBack()
+         #Objective.orientation = Rot90
+      if debugVerbosity >= 2: notify("### About to set destroyedObjectives") #Debug      
+      setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
+      if debugVerbosity >= 2: notify("### About to execure play Scripts") #Debug      
+      executePlayScripts(card, 'PLAY')
    if debugVerbosity >= 2: notify("### About to set currentObjectives") #Debug      
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
-   if debugVerbosity >= 2: notify("### About to set destroyedObjectives") #Debug      
-   setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
-   if debugVerbosity >= 2: notify("### About to execure play Scripts") #Debug      
-   executePlayScripts(card, 'PLAY')
    if debugVerbosity >= 3: notify("<<< storeObjective()") #Debug
 
 def getSpecial(cardType,player = me):
@@ -532,7 +539,7 @@ def versionCheck():
                  \n\nDo you want to be redirected to download the latest version?.\
                    \n(You'll have to download the game definition, any patch for the current version and the markers if they're newer than what you have installed)\
                      ".format(gameVersion, detailsplit[0],detailsplit[2],detailsplit[1])):
-            openUrl('https://github.com/db0/Star-Wars-LCG-OCTGN/downloads')
+            openUrl('http://dbzer0.com/pub/SWLCG/')
          startupMsg = True
       if not startupMsg: MOTD() # If we didn't give out any other message , we give out the MOTD instead.
       startupMsg = True

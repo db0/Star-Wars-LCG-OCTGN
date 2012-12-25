@@ -26,6 +26,28 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.10
+
+Card automations are now here! 
+A very large percentage of the available cards will now trigger their effects as soon as they hit the table 
+or as soon their triggers are reached (after specific phases, after striking etc). 
+Cards which have their own abilities are also automated, and you can make them work by simply double-clicking on them and having the target of their effect targeted (if one is needed)
+
+So except that, the following have also been done:
+
+* Added capturing mechanic. Many automations will use it automatically, but you can also call it manually.
+  * To capture a card from the table, opponents hand or opponent's deck simply target their card and press Ctrl+C on the table. Yes you can target a card in a player's hand or deck normally (shift+click)
+* Added a rescuing mechanic. When an objective with captured cards is destroyed, captured cards in it will be returned to their owner's hands. 
+  * If you want to manually rescue cards, the controller of the card needs to simply use the "Manual Actions > Rescue card" option
+  * IMPORTANT: Due to the attachment mechanics of capturing cards, **You should not move them away from their objective manually**. Use the rescue mechanic
+  * If for some reason the rescue mechanic does not work or cannot be used, and you want to clear the cards that are supposedly captured in an objective, use the "Clear of captured variables" option under "Manual Actions".  
+* During setup, starting objectives are now placed face down. This allows players to perform their mulligans before using the abilities of those objectives  
+  * Once both players have setup their three starting objectives, they just need to double-click on them to reveal them.
+* Smugglers & Scouts resources should now be counted correctly.
+* Unopposed Bonus is now only applied if the attacker has units left in battle
+* Mulligan will now only ever provide 6 cards
+
+
 ### 1.0.4 
 
 * Fixed bug where finishing an unopposed engagement would assign 2 damage

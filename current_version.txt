@@ -1,22 +1,28 @@
-1.0.4||
+1.0.10||
 ======New Version Information======
 
-New version improves engagement by separating it into steps (i.e. phases) as well. 
-This means that you can easily communicate who's turn it is to declare participants or when you're ready to start playing edge cards and so on.
+New version finally brings card automations to Star Wars: The Card Game on OCTGN!
 
-The steps work as always, once you're in an engagement, simple press Ctrl+Enter to move to the next step.
-The game is also smart enough to auto-announce a phase when you take an action that belongs to it
-(For example if you play an edge card, the game will announce the "Edge Battle" step). 
+This means that your game is going to flow faster than ever, as you have less to mess with the game engine, and more time to focus on the actual decisions of the game.
 
-This also includes some extra automation to make things faster and more robust. Reaching the "Reward Unopposed" step will automatically end the engagement, and reaching the strikes step will make sure the edge battle is resolved.
+Most card will take their abilities as soon as they come into play, or as soon as their trigger is called
+For example cards which do something after refreshing, will do it automatically. 
+If there's only one possible target for their effect, they will use that, but if there's more than one, you'll get the option to select one of them.
 
-Other than that, there's a bunch of important bug fixes and all around improvement. 
+Many abilities will work without significant input from the player. 
+In case an effect requires a target, remember to do it before activating the effect. You can target by shift+clicking on a card.
+
+Events will take effect just after you pay for them. 
+So don't rush them and allow your opponent a chance to play interrupts before you pay them.
+
+There's also some changes in the way you setup. Now starting objectives are placed face down. 
+Once both players are ready and have mulliganed if needed, simply double-click on one of them to turn them face-up and trigger their effects.
 
 Enjoy!
 
-UPDATE v1.0.4 fixed an annoying bug that made unopposed engagements do 2 damage.
+IMPORTANT: Please update your markers to v.1.0.2
 
 ===============================
 ||
 Latest Core Set: 1.0.0
-Latest Markers Set: 1.0.0
+Latest Markers Set: 1.0.2
