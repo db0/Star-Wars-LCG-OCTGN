@@ -37,7 +37,7 @@ gameGUID = None # A Unique Game ID that is fetched during game launch.
 #gameEnded = False # A variable keeping track if the players have submitted the results of the current game already.
 
 CardsAA = {} # Dictionary holding all the AutoAction scripts for all cards
-CardsAS = {} # Dictionary holding all the AutoScript scripts for all cards
+CardsAS = {} # Dictionary holding all the autoScript scripts for all cards
 Stored_Keywords = {} # A Dictionary holding all the Keywords a card has.
 
 #cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
@@ -293,13 +293,15 @@ def calculateCombatIcons(card = None, CIString = None):
          if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
    if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
    for c in table:
-      AutoSscripts = CardsAS.get(c.model,'').split('||')
-      for AutoS in AutoSscripts:
-         if chkPlayer(AutoS, c.controller, False): # If the effect is meant for our cards...
-            increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',AutoS)
+      autoSscripts = CardsAS.get(c.model,'').split('||')      
+      for autoS in autoSscripts:
+         if re.search(r'onlyforDummy',autoS) and c.highlight != DummyColor: continue
+         if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
+         if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
+            increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',autoS)
             if increaseRegex:
                if debugVerbosity >= 2: notify("### increaseRegex = {}".format(increaseRegex.groups())) #Debug
-               if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(AutoS)) and checkSpecialRestrictions(AutoS,card): # We check that the current card is a valid one for the constant ability.
+               if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)) and checkSpecialRestrictions(autoS,card): # We check that the current card is a valid one for the constant ability.
                   if increaseRegex.group(1) == 'UD': Unit_Damage += num(increaseRegex.group(2))
                   if increaseRegex.group(1) == 'BD': Blast_Damage += num(increaseRegex.group(2))
                   if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
@@ -314,9 +316,9 @@ def calculateCombatIcons(card = None, CIString = None):
             AS = CardsAS.get(Card(attachment).model,'')
             if AS == '': continue
             Autoscripts = AS.split('||')
-            for AutoS in Autoscripts:
-               if re.search(r'BonusIcons:',AutoS):
-                  UD, BD, T = calculateCombatIcons(CIString = AutoS) # Recursion FTW!
+            for autoS in Autoscripts:
+               if re.search(r'BonusIcons:',autoS):
+                  UD, BD, T = calculateCombatIcons(CIString = autoS) # Recursion FTW!
                   Unit_Damage += UD
                   Blast_Damage += BD
                   Tactics += T
@@ -539,7 +541,7 @@ def versionCheck():
                  \n\nDo you want to be redirected to download the latest version?.\
                    \n(You'll have to download the game definition, any patch for the current version and the markers if they're newer than what you have installed)\
                      ".format(gameVersion, detailsplit[0],detailsplit[2],detailsplit[1])):
-            openUrl('http://dbzer0.com/pub/SWLCG/')
+            openUrl('http://octgn.gamersjudgement.com/viewtopic.php?f=55&t=581')
          startupMsg = True
       if not startupMsg: MOTD() # If we didn't give out any other message , we give out the MOTD instead.
       startupMsg = True
@@ -583,7 +585,7 @@ def MOTDdisplay(MOTD,DYK):
 
 def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all scripts for all cards stored, based on a web URL or the local version if that doesn't exist.
    if debugVerbosity >= 1: notify(">>> fetchCardScripts()") #Debug
-   global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card AutoScripts for all cards.
+   global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")
    if len(players) > 1:
       (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/scripts/CardScripts.py')
@@ -614,7 +616,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
          notify('-----')
       # A split from the Full_Card_String always should result in a list with 2 entries.
       if debugVerbosity >= 2: notify(Split_Details[0].strip()) # If it's the card name, notify us of it.
-      Split_Scripts = Split_Details[2].split('+++++') # List item [1] always holds the two scripts. AutoScripts and AutoActions.
+      Split_Scripts = Split_Details[2].split('+++++') # List item [1] always holds the two scripts. autoScripts and AutoActions.
       CardsAS[Split_Details[1].strip()] = Split_Scripts[0].strip()
       CardsAA[Split_Details[1].strip()] = Split_Scripts[1].strip()
       if debugVerbosity >= 4: notify(Split_Details[0].strip() + "-- STORED")

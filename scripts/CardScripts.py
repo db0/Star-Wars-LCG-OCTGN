@@ -1156,7 +1156,7 @@ ff4fb461-8060-457a-9c16-000000000199
 -----
 
 +++++
-DestroyMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
+DestroyMyself$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
 .....
 Rebel Sympathizer
 -----
@@ -1164,7 +1164,7 @@ ff4fb461-8060-457a-9c16-000000000200
 -----
 
 +++++
-DestroyMyself&&SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
+DestroyMyself$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
 .....
 Rebel Trooper
 -----
@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking-onlyforDummy
 +++++
 
 .....

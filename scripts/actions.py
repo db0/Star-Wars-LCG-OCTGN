@@ -910,6 +910,9 @@ def inspectTargetCard(group, x = 0, y = 0): # This function shows the player the
    for card in table:
       if card.targetedBy and card.targetedBy == me: inspectCard(card)
 
+def concede(group,x=0,y=0):
+   notify("=== {} Concedes the Game ===".format(me))
+      
 def rulings(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> rulings(){}".format(extraASDebug())) #Debug
    mute()

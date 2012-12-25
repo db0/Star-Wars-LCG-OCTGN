@@ -108,14 +108,13 @@ def executePlayScripts(card, action):
          for activeAutoscript in selectedAutoscripts:
             if debugVerbosity >= 2: notify("### Second Processing: {}".format(activeAutoscript)) # Debug
             if chkWarn(card, activeAutoscript) == 'ABORT': return
-            if re.search(r':Pass\b', activeAutoscript): return # Pass is a simple command of doing nothing ^_^
+            if re.search(r':Pass\b', activeAutoscript): continue # Pass is a simple command of doing nothing ^_^
             effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{}\|: -]*)', activeAutoscript)
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
             if effectType.group(1) == 'whileInPlay' or effectType.group(1) == 'whileScored':
                if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileRezzed and whileScored affect in execute Automations is GainX scripts (for now). All else is onTrash, onPlay etc
                if action == 'DISCARD': Removal = True
                else: Removal = False
-            elif action == 'DISCARD': return # If it's just a one-off event, and we're trashing it, then do nothing.
             else: Removal = False
             targetC = findTarget(activeAutoscript,card = card)
             targetPL = ofwhom(activeAutoscript,card.controller) # So that we know to announce the right person the effect, affects.
@@ -843,13 +842,17 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
    if debugVerbosity >= 1: notify(">>> CreateDummy(){}".format(extraASDebug(Autoscript))) #Debug
    if targetCards is None: targetCards = []
    global Dummywarn
-   global Stored_Type, Stored_Cost, Stored_Keywords, Stored_AutoActions, Stored_autoScripts
    dummyCard = None
-   action = re.search(r'\bCreateDummy[A-Za-z0-9_ -]*(-with)(?!onOpponent|-doNotDiscard|-nonUnique)([A-Za-z0-9_ -]*)', Autoscript)
-   if debugVerbosity >= 3 and action: notify('clicks regex: {}'.format(action.groups())) # debug
+   action = re.search(r'\bCreateDummy[A-Za-z0-9_ -]*(-with)?(?!onOpponent|-doNotDiscard|-nonUnique)([A-Za-z0-9_ -]*)', Autoscript)
+   if action: 
+      if debugVerbosity >= 3: notify('### Regex: {}'.format(action.groups())) # debug
+   else: 
+      if debugVerbosity >= 3: notify('### No regex match! Aborting') # debug
+      return 'ABORT'
    targetPL = ofwhom(Autoscript, card.controller)
    for c in table:
       if c.model == card.model and c.controller == targetPL and c.highlight == DummyColor: dummyCard = c # We check if already have a dummy of the same type on the table.
+   if debugVerbosity >= 2: notify('### Checking to see what our dummy card is') # debug
    if not dummyCard or re.search(r'nonUnique',Autoscript): #Some create dummy effects allow for creating multiple copies of the same card model.
       if Dummywarn and re.search('onOpponent',Autoscript):
          if not confirm("This action creates an effect for your opponent and a way for them to remove it.\
@@ -863,11 +866,12 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
                      \n\nSome cards provide you with an ability that you can activate after they're been trashed. If this card has one, you can activate it by double clicking on the dummy. Very often, this will often remove the dummy since its effect will disappear.\
                      \n\nDo you want to see this warning again?"): Dummywarn = False
       elif re.search(r'onOpponent', Autoscript): information('The dummy card just created is meant for your opponent. Please right-click on it and select "Pass control to {}"'.format(targetPL))
+      if debugVerbosity >= 2: notify('### Finished warnings. About to announce.') # debug
       dummyCard = table.create(card.model, -680, 200 * playerside, 1) # This will create a fake card like the one we just created.
       dummyCard.highlight = DummyColor
       storeProperties(dummyCard)
-   #confirm("Dummy ID: {}\n\nList Dummy ID: {}".format(dummyCard._id,passedlist[0]._id)) #Debug
-   if not re.search(r'doNotTrash',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
+   if debugVerbosity >= 2: notify('### About to move to discard pile if needed') # debug
+   if not re.search(r'doNotDiscard',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
    if action: announceString = TokensX('Put{}'.format(action.group(2)), announceText,dummyCard, n = n) # If we have a -with in our autoscript, this is meant to put some tokens on the dummy card.
    else: announceString = announceText + 'create a lingering effect for {}'.format(targetPL)
    if debugVerbosity >= 3: notify("<<< CreateDummy()")
