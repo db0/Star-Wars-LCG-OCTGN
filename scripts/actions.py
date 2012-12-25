@@ -352,6 +352,7 @@ def gameSetup(group, x = 0, y = 0):
             card.moveToBottom(deck)
             continue
          else: storeObjective(card)
+      if debugVerbosity >= 3: notify("### Finished Setting Up Objectives")
       shuffle(deck)
       drawMany(deck, 6, silent = True)
       notify("{} has played their objectives and drawn their starting commands".format(me))
@@ -566,7 +567,7 @@ def checkPaidResources(card):
          if debugVerbosity >= 2: notify("About to compare marker keys: {} and {}".format(resdict[resdictKey],cMarkerKey)) #Debug
          if resdict[resdictKey] == cMarkerKey: # If the marker is a resource
             count += card.markers[cMarkerKey]  # We increase the count of how many resources have been paid for this card
-            if debugVerbosity >= 2: notify("About to check resource found affiliaton") #Debug
+            if debugVerbosity >= 2: notify("About to check found resource affiliaton") #Debug
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
                affiliationMatch = True # We set that we've also got a matching resource affiliation
       if cMarkerKey[0] == "Ignores Affiliation Match": affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
@@ -1155,7 +1156,8 @@ def drawObjective(group = me.piles['Objective Deck'], silent = False):
    if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
    card = group.top()
    storeObjective(card)
-   if not silent: notify("{} new objective is {}.".format(me,card))
+   if debugVerbosity >= 2: notify(">>> About to announce(){}") #Debug
+   if not silent: notify("{}'s new objective is {}.".format(me,card))
    
 def drawMany(group = me.piles['Command Deck'], count = None, destination = None, silent = False):
    if debugVerbosity >= 1: notify(">>> drawMany(){}".format(extraASDebug())) #Debug

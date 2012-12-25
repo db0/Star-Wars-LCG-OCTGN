@@ -53,7 +53,7 @@ def storeSpecial(card):
 def storeObjective(card): 
 # Function stores into a shared variable the current objectives of the player, so that other players might look them up.
 # This function also reorganizes the objectives on the table
-   if debugVerbosity >= 1: notify(">>> storeObjective(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 1: notify(">>> storeObjective(){}") #Debug
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
    destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
    for card_id in destroyedObjectives: 
@@ -67,7 +67,8 @@ def storeObjective(card):
       Objective = Card(currentObjectives[iter])
       Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective))
       xPos, yPos = Objective.position
-      countCaptures = 0 
+      countCaptures = 0
+      if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
          if capturedCards[capturedC] == Objective._id:
@@ -76,9 +77,13 @@ def storeObjective(card):
             Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
             Card(capturedC).sendToBack()
       #Objective.orientation = Rot90
+   if debugVerbosity >= 2: notify("### About to set currentObjectives") #Debug      
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
+   if debugVerbosity >= 2: notify("### About to set destroyedObjectives") #Debug      
    setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
+   if debugVerbosity >= 2: notify("### About to execure play Scripts") #Debug      
    executePlayScripts(card, 'PLAY')
+   if debugVerbosity >= 3: notify("<<< storeObjective()") #Debug
 
 def getSpecial(cardType,player = me):
 # Functions takes as argument the name of a special card, and the player to whom it belongs, and returns the card object.
@@ -623,7 +628,7 @@ def TrialError(group, x=0, y=0): # Debugging
    #findTarget('Targeted-atVehicle_and_Fighter_or_Character_and_nonWookie')
    #BotD.moveToTable(0,0) 
    ###### End Testing Corner ######
-   notify("### Setting Debug Verbosity")
+   #notify("### Setting Debug Verbosity")
    if debugVerbosity >=0: 
       if debugVerbosity == 0: 
          debugVerbosity = 1

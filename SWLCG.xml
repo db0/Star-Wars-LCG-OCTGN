@@ -130,7 +130,7 @@
 			<cardaction menu="Play Card" default="true" execute="play" />
 			<cardaction menu="Place as Edge Card" default="false" shortcut="Ctrl+E" execute="playEdge" />
 			<groupaction menu="Mulligan" default="false" execute="mulligan" />
-			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+R" execute="refillHand" />
+			<groupaction menu="Refill Hand" default="false" shortcut="Ctrl+Shift+R" execute="refillHand" />
 			<groupaction menu="Random Discard" default="false" execute="handRandomDiscard" />
          <cardaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectCard" />
          <cardaction menu="Discard/Remove 4th Obejctive" default="false" shortcut="del" execute="handDiscard" />           

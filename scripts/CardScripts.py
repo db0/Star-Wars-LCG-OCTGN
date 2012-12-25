@@ -1042,7 +1042,7 @@ Mobilize the Squadrons
 -----
 ff4fb461-8060-457a-9c16-000000000004
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-choose1-duringMyTurn
+afterRefresh:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-targetMine-choose1-duringMyTurn
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-afterRefresh:Put1Damage-isOptional-duringMyTurn$$Remove1Damage-AutoTargeted-atUnit-hasMarker(Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
+afterRefresh:Put1Damage-isOptional-duringMyTurn$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....

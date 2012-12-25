@@ -54,7 +54,9 @@ def executePlayScripts(card, action):
             CustomScript(card,action)
             Autoscripts.remove(autoS)
       if debugVerbosity >= 2: notify("#### List of autoscripts after scrubbing: {}".format(Autoscripts)) # Debug
-      if len(Autoscripts) == 0: return
+      if len(Autoscripts) == 0: 
+         if debugVerbosity >= 2: notify("### No autoscripts remaining. Exiting") # Debug
+         return
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify("### First Processing: {}".format(autoS)) # Debug
          effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', autoS)
