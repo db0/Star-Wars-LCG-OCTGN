@@ -314,7 +314,7 @@ Dark Alliance
 -----
 ff4fb461-8060-457a-9c16-000000000220
 -----
-whilePlayed:IgnoreAffiliationMatch
+whileInPlay:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -322,7 +322,7 @@ Dark Alliance
 -----
 ff4fb461-8060-457a-9c16-000000000221
 -----
-whilePlayed:IgnoreAffiliationMatch
+whileInPlay:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whilePlayed:Deal1Damage-perCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce
+whileInPlay:Deal1Damage-perCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce
 +++++
 
 .....
@@ -394,7 +394,7 @@ Decoy at Dantooine
 -----
 ff4fb461-8060-457a-9c16-000000000192
 -----
-whilePlayed:Lose1Dial-perObjectiveThwarted-byOpponent
+whileInPlay:Lose1Dial-perObjectiveThwarted-byOpponent
 +++++
 
 .....
@@ -626,7 +626,7 @@ Forgotten Heroes
 -----
 ff4fb461-8060-457a-9c16-000000000144
 -----
-whilePlayed:Draw1Card-perCardPlayed-byMe-typeForce User
+whileInPlay:Draw1Card-perCardPlayed-byMe-typeForce User
 +++++
 
 .....
@@ -762,7 +762,7 @@ Hit and Run
 -----
 ff4fb461-8060-457a-9c16-000000000210
 -----
-whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perAttackerEdgeWin-ifAttacker-onlyOnce
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-perAttackerEdgeWin-ifAttacker-onlyOnce
 +++++
 
 .....
@@ -826,7 +826,7 @@ In You Must Go
 -----
 ff4fb461-8060-457a-9c16-000000000137
 -----
-whilePlayed:Reduce1CostPlay-forEnhancement-onlyOnce
+whileInPlay:Reduce1CostPlay-forEnhancement-onlyOnce
 +++++
 
 .....
@@ -946,7 +946,7 @@ Jedi Training
 -----
 ff4fb461-8060-457a-9c16-000000000167
 -----
-whilePlayed:Force1Bonus
+whileInPlay:Force1Bonus
 +++++
 
 .....
@@ -1010,7 +1010,7 @@ Looking for Droids
 -----
 ff4fb461-8060-457a-9c16-000000000217
 -----
-whilePlayed:IgnoreAffiliationMatch
+whileInPlay:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -1082,7 +1082,7 @@ Orbital Bombardment
 -----
 ff4fb461-8060-457a-9c16-000000000074
 -----
-whilePlayed:IncreaseBD:1-byMe-forUnit
+whileInPlay:IncreaseBD:1-byMe-forUnit
 +++++
 
 .....
@@ -1178,7 +1178,7 @@ Reconnaissance Mission
 -----
 ff4fb461-8060-457a-9c16-000000000087
 -----
-whilePlayed:Gain1Reserves
+whileInPlay:Gain1Reserves
 +++++
 
 .....
@@ -1242,7 +1242,7 @@ Rumors at the Cantina
 -----
 ff4fb461-8060-457a-9c16-000000000198
 -----
-whilePlayed:IgnoreAffiliationMatch
+whileInPlay:IgnoreAffiliationMatch
 +++++
 
 .....
@@ -1450,7 +1450,7 @@ The Bespin Exchange
 -----
 ff4fb461-8060-457a-9c16-000000000075
 -----
-whilePlayed:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-perUnitCardCapturedFromTable
+whileInPlay:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-perUnitCardCapturedFromTable
 +++++
 
 .....
@@ -1466,7 +1466,7 @@ The Emperor's Web
 -----
 ff4fb461-8060-457a-9c16-000000000096
 -----
-whilePlayed:Reduce1CostPlay-forEvent_and_Sith-onlyOnce
+whileInPlay:Reduce1CostPlay-forEvent_and_Sith-onlyOnce
 +++++
 
 .....
@@ -1530,7 +1530,7 @@ TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000128
 -----
-whilePlayed:Deal1Damage-AutoTargeted-atObjective-isParticipating-perUnopposedEngagement-ifAttacker-ifParticipating
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-perUnopposedEngagement-ifAttacker-ifParticipating
 +++++
 
 .....
@@ -1538,7 +1538,7 @@ TIE Attack Squadron
 -----
 ff4fb461-8060-457a-9c16-000000000041
 -----
-whilePlayed:Put1TIE Attack Squadron:UD-perResolveFate-byMe-onlyOnce-ifParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
+whileInPlay:Put1TIE Attack Squadron:UD-perResolveFate-byMe-onlyOnce-ifParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
 +++++
 
 .....
@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-whilePlayed:IncreaseBD:1-byMe-forTrooper-isAttacking||whilePlayed:IncreaseUD:1-byMe-forTrooper-isAttacking
+whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking
 +++++
 
 .....

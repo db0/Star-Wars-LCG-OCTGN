@@ -304,9 +304,12 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
       whisper(":::ERROR::: There is no engagement currently.")
       return
    if num(getGlobalVariable('Engagement Phase')) < 5: nextPhase(setTo = 5)
-   unopposed = True
-   for card in table:
-      if card.orientation == Rot90 and card.controller == currentTarget.controller: unopposed = False
+   unopposed = False
+   for card in table: # If the attacker still has participants in the battle. there is a chance this is unopposed.
+      if card.orientation == Rot90 and card.controller != currentTarget.controller: unopposed = True 
+   if unopposed: # If the attacker still has units remaining then we check to see if the defender has any as well. 
+      for card in table: # If they do, then the battle is not unnoposed.
+         if card.orientation == Rot90 and card.controller == currentTarget.controller: unopposed = False
    if unopposed and currentTarget in table: 
       notify(":> {} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective.".format(me,currentTarget))
       currentTarget.markers[mdict['Damage']] += 1
