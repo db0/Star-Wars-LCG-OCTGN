@@ -295,7 +295,7 @@ def calculateCombatIcons(card = None, CIString = None):
    for c in table:
       autoSscripts = CardsAS.get(c.model,'').split('||')      
       for autoS in autoSscripts:
-         if re.search(r'onlyforDummy',autoS) and c.highlight != DummyColor: continue
+         if not chkDummy(autoS, c): continue
          if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
          if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
             increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',autoS)
@@ -324,6 +324,12 @@ def calculateCombatIcons(card = None, CIString = None):
                   Tactics += T
    if debugVerbosity >= 3: notify("<<< calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
    return (Unit_Damage,Blast_Damage,Tactics)
+
+def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to be triggered for a (non) Dummy card
+   if debugVerbosity >= 4: notify(">>> chkDummy()") #Debug
+   if re.search(r'onlyforDummy',Autoscript) and card.highlight != DummyColor: return False
+   if re.search(r'excludeDummy', Autoscript) and card.highlight == DummyColor: return False
+   return True
 
 def gotEdge():
    if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: return True
@@ -397,11 +403,11 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
       if len(Autoscripts) == 0: continue
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify("### Checking {} with AS: {}".format(c, autoS)) #Debug
-         reductionSearch = re.search(r'Reduce([0-9#X]+)Cost({}|All)-for(.*)'.format(type), autoS) 
+         reductionSearch = re.search(r'Reduce([0-9#X]+)Cost({}|All)-for([A-Za-z0-9_ ]+)'.format(type), autoS) 
          if debugVerbosity >= 2: #Debug
             if reductionSearch: notify("!!! Regex is {}".format(reductionSearch.groups()))
             else: notify("!!! No reduceCost regex Match!") 
-         if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue 
+         if not chkDummy(autoS, c): continue
          if reductionSearch: # If the above search matches (i.e. we have a card with reduction for Rez and a condition we continue to check if our card matches the condition)
             if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug
             if reductionSearch.group(3) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)):
@@ -429,6 +435,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                   except: notify("!!!ERROR!!! ReduceXCost - Bad Script")
                else:
                   reduction += num(reductionSearch.group(1)) # if there is a match, the total reduction for this card's cost is increased.
+            elif debugVerbosity >= 3: notify("Card restrictions do not check out.") 
    if debugVerbosity >= 3: notify("<<< reduceCost() with reduction: {}".format(reduction))
    return reduction   
    

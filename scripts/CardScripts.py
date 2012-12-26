@@ -1154,17 +1154,17 @@ Rebel Sympathizer
 -----
 ff4fb461-8060-457a-9c16-000000000199
 -----
-
+whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-onlyforDummy-isSilent
 +++++
-DestroyMyself$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
+DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
 Rebel Sympathizer
 -----
 ff4fb461-8060-457a-9c16-000000000200
 -----
-
+whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-onlyforDummy-isSilent
 +++++
-DestroyMyself$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}
+DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
 Rebel Trooper
 -----
@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking-onlyforDummy
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....

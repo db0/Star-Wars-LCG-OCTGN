@@ -447,9 +447,7 @@ def sortPriority(cardList):
    sortedList.extend(priority2)
    sortedList.extend(priority3)
    if debugVerbosity >= 3: 
-      tlist = []
-      for sortTarget in sortedList: tlist.append(card.name) # Debug   
-      notify("<<< sortPriority() returning {}".format(tlist)) #Debug
+      notify("<<< sortPriority() returning {}".format([sortTarget.name for sortTarget in sortedList])) #Debug
    return sortedList
    
 def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):

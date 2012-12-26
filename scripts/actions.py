@@ -585,7 +585,7 @@ def checkPaidResources(card):
                affiliationMatch = True # We set that we've also got a matching resource affiliation
       if cMarkerKey[0] == "Ignores Affiliation Match": affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
    for c in table:
-      if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')): affiliationMatch = True
+      if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')) and chkDummy(CardsAS.get(c.model,''), c): affiliationMatch = True
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    if card.highlight == UnpaidAbilityColor:
       reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
