@@ -222,7 +222,9 @@ def placeCard(card):
                   cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == host[0]._id])
                   if debugVerbosity >= 2: notify("### About to move into position") #Debug
                   x,y = host[0].position
-                  if host[0].Type == 'Objective': card.moveToTable(x + (playerside * cwidth(card,0) / 2 * cardAttachementsNR), y)
+                  if host[0].controller != me: xAxis = -1
+                  else: xAxis = 1
+                  if host[0].Type == 'Objective': card.moveToTable(x + (playerside * xAxis * cwidth(card,0) / 2 * cardAttachementsNR), y)
                   else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
                   card.sendToBack()
       if debugVerbosity >= 3: notify("<<< placeCard()") #Debug

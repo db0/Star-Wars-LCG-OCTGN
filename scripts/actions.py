@@ -669,8 +669,9 @@ def handDiscard(card):
       notify("{} discards {}".format(me,card))
       
 def discard(card, x = 0, y = 0, silent = False):
-   if debugVerbosity >= 1: notify(">>> discard()") #Debug
+   if debugVerbosity >= 1: notify(">>> discard() card = {}".format(card)) #Debug
    mute()
+   previousHighlight = card.highlight # We store the highlight before we move the card to the discard pile, to be able to check if it's an edge card to avoid triggering its autoscripts
    if card.Type == "Objective":
       if card.controller == me:
          if not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
@@ -741,7 +742,9 @@ def discard(card, x = 0, y = 0, silent = False):
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
-   executePlayScripts(card, 'DISCARD')
+   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor: 
+      notify("Executing play scripts. Highlight was {}".format(card.highlight))
+      executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)
    if debugVerbosity >= 1: notify("<<< discard()") #Debug
@@ -804,7 +807,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if debugVerbosity >= 2: notify("About to move to objective")
       targetCType = targetC.Type # Used later for the autoscripting of other cards
       if targetCType == '?': targetCType = ''
-      targetC.moveToTable(xPos - (cwidth(targetC) * playerside / 2 * countCaptures), yPos, True)
+      if targetC.controller != me: xAxis = -1
+      else: xAxis = 1
+      targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
       targetC.orientation = Rot0

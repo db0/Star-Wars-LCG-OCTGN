@@ -55,9 +55,7 @@ def executePlayScripts(card, action):
             CustomScript(card,action)
             Autoscripts.remove(autoS)
       if debugVerbosity >= 2: notify("#### List of autoscripts after scrubbing: {}".format(Autoscripts)) # Debug
-      if len(Autoscripts) == 0: 
-         if debugVerbosity >= 2: notify("### No autoscripts remaining. Exiting") # Debug
-         return
+      if len(Autoscripts) == 0 and debugVerbosity >= 2: notify("### No autoscripts remaining.") # Debug
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify("### First Processing: {}".format(autoS)) # Debug
          effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', autoS)
@@ -1056,8 +1054,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    elif card.name == 'Cruel Interrogations' and action == 'PLAY':
       if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return
       turn = num(getGlobalVariable('Turn'))
-      while turn == 0 and len(opponent.hand) < 6: 
-         if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
       captureTarget = opponent.hand.random()
       capture(chosenObj = card, targetC = captureTarget)
    elif card.name == 'Rancor' and action == 'afterRefresh' and card.controller == me:
@@ -1097,7 +1093,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       else: 
          targetC.moveTo(targetC.owner.hand)
          notify("{} has rescued a card".format(me))
-   if card.name == 'Return of the Jedi' and action == 'PLAY':
+   elif card.name == 'Return of the Jedi' and action == 'PLAY':
       if debugVerbosity >= 2: notify("### Return of the Jedi")
       discardList = []
       if debugVerbosity >= 2: notify("### Moving Force Users to 'removed from game' pile from discard pile")
@@ -1159,8 +1155,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    elif card.name == 'Take Them Prisoner' and action == 'PLAY': 
       if not confirm("Do you want to activate the optional ability of Take Them Prisoner?"): return
       turn = num(getGlobalVariable('Turn'))
-      while turn == 0 and len(opponent.hand) < 6: 
-         if not confirm("Your opponent does not seem to have drawn their command cards yet.\n\nRetry?"): return
       cardList = []
       cardNames = []
       cardDetails = []
