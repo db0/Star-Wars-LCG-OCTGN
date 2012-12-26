@@ -177,53 +177,56 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    setGlobalVariable('Engaged Objective','None')
    setGlobalVariable('Engagement Phase','0')
    setGlobalVariable('Turn','0')
+   me.setGlobalVariable('freePositions',str([]))
    me.setGlobalVariable('currentObjectives', '[]')
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
 
 def placeCard(card): 
    mute()
-   if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
-   if Automations['Placement']:
-      if card.Type == 'Unit': # For now we only place Units
-         unitAmount = eval(getGlobalVariable('Existing Units'))
-         if debugVerbosity >= 2: notify("### my unitAmount is: {}.".format(unitAmount[me.name])) #Debug
-         freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
-         if debugVerbosity >= 2: notify("### my freePositions is: {}.".format(freePositions)) #Debug
-         if freePositions != []: # We use this variable to see if there were any discarded units and we use their positions first.
-            positionC = freePositions.pop() # This returns the last position in the list of positions and deletes it from the list.
-            if debugVerbosity >= 2: notify("### positionC is: {}.".format(positionC)) #Debug
-            card.moveToTable(positionC[0],positionC[1])
-            me.setGlobalVariable('freePositions',str(freePositions))
-         else:
-            loopsNR = unitAmount[me.name] / 8
-            loopback = 8 * loopsNR
-            if unitAmount[me.name] == 0: xoffset = 0
-            else: xoffset = -playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)
-            if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
-            yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR + 1) * playerside)
-            card.moveToTable(xoffset,yoffset)
-         unitAmount[me.name] += 1
-         setGlobalVariable('Existing Units',str(unitAmount)) # We update the amount of units we have
-      if card.Type == 'Enhancement':
-         hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
-         if hostType:
-            if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
-            host = findTarget('Targeted-at{}'.format(hostType.group(1)))
-            if host == []: 
-               whisper("ABORTING!")
-               return
+   try:
+      if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
+      if Automations['Placement']:
+         if card.Type == 'Unit': # For now we only place Units
+            unitAmount = eval(getGlobalVariable('Existing Units'))
+            if debugVerbosity >= 2: notify("### my unitAmount is: {}.".format(unitAmount[me.name])) #Debug
+            freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
+            if debugVerbosity >= 2: notify("### my freePositions is: {}.".format(freePositions)) #Debug
+            if freePositions != []: # We use this variable to see if there were any discarded units and we use their positions first.
+               positionC = freePositions.pop() # This returns the last position in the list of positions and deletes it from the list.
+               if debugVerbosity >= 2: notify("### positionC is: {}.".format(positionC)) #Debug
+               card.moveToTable(positionC[0],positionC[1])
+               me.setGlobalVariable('freePositions',str(freePositions))
             else:
-               if debugVerbosity >= 2: notify("### We have a host") #Debug
-               hostCards = eval(getGlobalVariable('Host Cards'))
-               hostCards[card._id] = host[0]._id
-               setGlobalVariable('Host Cards',str(hostCards))
-               cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == host[0]._id])
-               if debugVerbosity >= 2: notify("### About to move into position") #Debug
-               x,y = host[0].position
-               if host[0].Type == 'Objective': card.moveToTable(x + (playerside * cwidth(card,0) / 2 * cardAttachementsNR), y)
-               else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
-               card.sendToBack()
-   if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
+               loopsNR = unitAmount[me.name] / 8
+               loopback = 8 * loopsNR
+               if unitAmount[me.name] == 0: xoffset = 0
+               else: xoffset = -playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)
+               if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
+               yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR + 1) * playerside)
+               card.moveToTable(xoffset,yoffset)
+            unitAmount[me.name] += 1
+            setGlobalVariable('Existing Units',str(unitAmount)) # We update the amount of units we have
+         if card.Type == 'Enhancement':
+            hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
+            if hostType:
+               if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
+               host = findTarget('Targeted-at{}'.format(hostType.group(1)))
+               if host == []: 
+                  whisper("ABORTING!")
+                  return
+               else:
+                  if debugVerbosity >= 2: notify("### We have a host") #Debug
+                  hostCards = eval(getGlobalVariable('Host Cards'))
+                  hostCards[card._id] = host[0]._id
+                  setGlobalVariable('Host Cards',str(hostCards))
+                  cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == host[0]._id])
+                  if debugVerbosity >= 2: notify("### About to move into position") #Debug
+                  x,y = host[0].position
+                  if host[0].Type == 'Objective': card.moveToTable(x + (playerside * cwidth(card,0) / 2 * cardAttachementsNR), y)
+                  else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
+                  card.sendToBack()
+      if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
+   except: notify("!!! ERROR !!! in placeCard()")
    
 def findMarker(card, markerDesc): # Goes through the markers on the card and looks if one exist with a specific description
    if debugVerbosity >= 1: notify(">>> findMarker(){}".format(extraASDebug())) #Debug

@@ -26,6 +26,17 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.11
+
+Important bugfixes for the automations
+
+* Now scripts on cards triggered by another player's effects should work
+* Leia's Ability should now be working
+* Rebel Sympathizer's ability is automated
+* Trooper Assault should work now.
+* Conceding the game shouldn't give an error anymore
+* Various robustness changes.
+
 ### 1.0.10
 
 Card automations are now here! 
