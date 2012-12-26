@@ -807,8 +807,8 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if debugVerbosity >= 2: notify("About to move to objective")
       targetCType = targetC.Type # Used later for the autoscripting of other cards
       if targetCType == '?': targetCType = ''
-      if targetC.controller != me: xAxis = -1
-      else: xAxis = 1
+      if targetC.controller != me: xAxis = 1
+      else: xAxis = -1
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
@@ -879,6 +879,12 @@ def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game t
 def rescue(card,x = 0, y = 0):
    removeCapturedCard(card) 
    card.moveTo(card.owner.hand)
+
+def rescueTargets(group,x = 0, y = 0):
+   for card in table:
+      if card.highlight == CapturedColor and card.targetedBy and card.targetedBy == me:
+         removeCapturedCard(card) 
+         card.moveTo(card.owner.hand)
 
 def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
@@ -1308,7 +1314,7 @@ def clearEdgeMarker():
       if card.Type == 'Affiliation' and card.markers[mdict['Edge']] and card.markers[mdict['Edge']] == 1:
          card.markers[mdict['Edge']] = 0
          
-def gainEdge(card, x = 0, y = 0):
+def gainEdge(group, x = 0, y = 0):
    mute()
    clearEdgeMarker()
    notify("{} gains the Egde.".format(me))

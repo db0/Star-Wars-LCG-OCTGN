@@ -26,6 +26,14 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.12
+
+* Reorganized menus
+* Added ability to rescue targets
+* Leia's ability should not trigger twice
+* Fixed Placement of captured and attached cards by opponent's scripts
+* Stolen Plans should now work automatically
+
 ### 1.0.11
 
 Important bugfixes for the automations

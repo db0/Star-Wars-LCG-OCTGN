@@ -107,6 +107,7 @@ def executePlayScripts(card, action):
          for activeAutoscript in selectedAutoscripts:
             if debugVerbosity >= 2: notify("### Second Processing: {}".format(activeAutoscript)) # Debug
             if chkWarn(card, activeAutoscript) == 'ABORT': return
+            if chkPlayer(activeAutoscript, card.controller,False) == 0: continue
             if re.search(r':Pass\b', activeAutoscript): continue # Pass is a simple command of doing nothing ^_^
             effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{}\|: -]*)', activeAutoscript)
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
@@ -1053,6 +1054,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          card.sendToBack()
    elif card.name == 'Cruel Interrogations' and action == 'PLAY':
       if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return
+      while len(opponent.hand) == 0: 
+         if not confirm("Your opponent has no cards in their hand.\n\nRetry?"): return
       turn = num(getGlobalVariable('Turn'))
       captureTarget = opponent.hand.random()
       capture(chosenObj = card, targetC = captureTarget)

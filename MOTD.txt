@@ -1,12 +1,11 @@
 =====Message of the Day======
 
-Welcome to the very first Star Wars LCG plugin! 
+--- IMPORTANT NOTE ---
+Please do not discard cards by dragging them manually to the discard pile. 
+Rather user the "Discard Card/Thwart Objective" (shortcut is the key "del") function
 
-We now have a step-by-step video tutorial on how to use this plugin!
-This should be very useful if you are new to this plugin on OCTGN 
+Doing so will trigger all the relevant scripts for this and any other card on the table (for example Leia's ability)
+It will also discard any attachments of the card and clear all necessary variables.
 
-Would you like to be redirected to its page?
-
+Discarding cards manually is going to leave those variables unset, which will lead to game errors.
 ===============================
-&&
-https://vimeo.com/54797455

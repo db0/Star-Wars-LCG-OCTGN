@@ -597,6 +597,7 @@ def MOTDdisplay(MOTD,DYK):
 
 def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all scripts for all cards stored, based on a web URL or the local version if that doesn't exist.
    if debugVerbosity >= 1: notify(">>> fetchCardScripts()") #Debug
+   ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")
    if len(players) > 1:
@@ -627,13 +628,13 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
          notify(Split_Details[0])
          notify('-----')
       # A split from the Full_Card_String always should result in a list with 2 entries.
-      if debugVerbosity >= 2: notify(Split_Details[0].strip()) # If it's the card name, notify us of it.
+      if debugVerbosity >= 5: notify(Split_Details[0].strip()) # If it's the card name, notify us of it.
       Split_Scripts = Split_Details[2].split('+++++') # List item [1] always holds the two scripts. autoScripts and AutoActions.
       CardsAS[Split_Details[1].strip()] = Split_Scripts[0].strip()
       CardsAA[Split_Details[1].strip()] = Split_Scripts[1].strip()
-      if debugVerbosity >= 4: notify(Split_Details[0].strip() + "-- STORED")
+      if debugVerbosity >= 5: notify(Split_Details[0].strip() + "-- STORED")
    if num(getGlobalVariable('Turn')) > 0: whisper("+++ All card scripts refreshed!")
-   if debugVerbosity >= 4: # Debug
+   if debugVerbosity >= 5: # Debug
       notify("CardsAS Dict:\n{}".format(str(CardsAS)))
       notify("CardsAA Dict:\n{}".format(str(CardsAA))) 
    if debugVerbosity >= 3: notify("<<< fetchCardScripts()") #Debug

@@ -1,7 +1,7 @@
-1.0.11||
+1.0.12||
 ======New Version Information======
 
-UPDATE: v1.0.11 is out with some important bugfixed. Please get that ASAP.
+UPDATE: v1.0.12 is out with some important bugfixed. Please get that ASAP.
 
 New version finally brings card automations to Star Wars: The Card Game on OCTGN!
 
