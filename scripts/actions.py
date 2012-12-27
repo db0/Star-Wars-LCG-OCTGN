@@ -682,7 +682,6 @@ def discard(card, x = 0, y = 0, silent = False):
          if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
          else: extraTXT = ''
          me.setGlobalVariable('currentObjectives', str(currentObjectives))
-         card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
          opponent.counters['Objectives Destroyed'].value += 1         
          if Side == 'Light': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
@@ -696,6 +695,7 @@ def discard(card, x = 0, y = 0, silent = False):
          reversePlayerChk = True
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          reversePlayerChk = False
+         card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
       else:
          if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
@@ -706,7 +706,6 @@ def discard(card, x = 0, y = 0, silent = False):
          if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
          else: extraTXT = ''
          setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
-         card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
          me.counters['Objectives Destroyed'].value += 1
          if Side == 'Dark': 
             modifyDial(opponent.counters['Objectives Destroyed'].value)
@@ -717,6 +716,7 @@ def discard(card, x = 0, y = 0, silent = False):
                notify("===::: The Light Side wins the Game! :::====")
          executePlayScripts(card, 'THWART')
          autoscriptOtherPlayers('ObjectiveThwarted',card)
+         card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
@@ -743,7 +743,7 @@ def discard(card, x = 0, y = 0, silent = False):
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
    if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor: 
-      if debugVerbosity >= 2: notify("Executing play scripts. Highlight was {}".format(card.highlight))
+      if debugVerbosity >= 2: notify("### Executing play scripts. Highlight was {}".format(card.highlight))
       executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)

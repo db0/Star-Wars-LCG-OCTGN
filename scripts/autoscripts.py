@@ -112,7 +112,7 @@ def executePlayScripts(card, action):
             effect = re.search(r'\b([A-Z][A-Za-z]+)([0-9]*)([A-Za-z& ]*)\b([^:]?[A-Za-z0-9_&{}\|: -]*)', activeAutoscript)
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
             if effectType.group(1) == 'whileInPlay' or effectType.group(1) == 'whileScored':
-               if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileRezzed and whileScored affect in execute Automations is GainX scripts (for now). All else is onTrash, onPlay etc
+               if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileInPlay affect in execute Automations is GainX scripts (for now).
                if action == 'DISCARD': Removal = True
                else: Removal = False
             else: Removal = False
@@ -548,9 +548,6 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
       elif re.search(r'isCost', Autoscript): verb = 'pay'
       else: verb = 'lose'
    else: verb = 'set to'
-   if notification == 'Quick':
-      if verb != 'setTo': verb += 's'
-      else: verb = 'sets to'      
    if debugVerbosity >= 2: notify("### Gainx() Finished preparing verb ({}). Notification was: {}".format(verb,notification))
    if abs(gain) == abs(999): total = 'all' # If we have +/-999 as the count, then this mean "all" of the particular counter.
    else: total = abs(gain * multiplier) # Else it's just the absolute value which we announce they "gain" or "lose"
