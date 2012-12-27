@@ -743,7 +743,7 @@ def discard(card, x = 0, y = 0, silent = False):
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
    if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor: 
-      notify("Executing play scripts. Highlight was {}".format(card.highlight))
+      if debugVerbosity >= 2: notify("Executing play scripts. Highlight was {}".format(card.highlight))
       executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)
