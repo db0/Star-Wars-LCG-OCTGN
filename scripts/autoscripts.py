@@ -1432,7 +1432,8 @@ def checkSpecialRestrictions(Autoscript,card):
    validCard = True
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
-   if re.search(r'isCaptured',Autoscript) and card.isFaceUp: validCard = False
+   if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: validCard = False
+   if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: validCard = False
    if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
    if re.search(r'isAttacking',Autoscript) or re.search(r'isDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')

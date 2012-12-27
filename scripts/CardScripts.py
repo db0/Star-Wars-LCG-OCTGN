@@ -210,7 +210,7 @@ Common Ground
 -----
 ff4fb461-8060-457a-9c16-000000000201
 -----
-Placement:Objective
+Placement:Objective||onHostGenerate:Put1Ignores Affiliation Match-AutoTargeted-isUnpaid
 +++++
 
 .....

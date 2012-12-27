@@ -26,6 +26,11 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.13
+
+* Common Ground works automatically now
+* Recon Mission now reduces its owner's reserves when discarded, and not the rebels'
+
 ### 1.0.12
 
 * Reorganized menus

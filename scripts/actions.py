@@ -558,8 +558,9 @@ def generate(card, x = 0, y = 0):
    notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
-   if checkPaidResources(unpaidC) == 'OK': purchaseCard(unpaidC, manual = False)
-   elif checkPaidResources(unpaidC) == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
+   resResult = checkPaidResources(unpaidC)
+   if resResult == 'OK': purchaseCard(unpaidC, manual = False)
+   elif resResult == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
@@ -582,10 +583,15 @@ def checkPaidResources(card):
             count += card.markers[cMarkerKey]  # We increase the count of how many resources have been paid for this card
             if debugVerbosity >= 2: notify("About to check found resource affiliaton") #Debug
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
+               if debugVerbosity >= 3: notify("### Affiliation match. Affiliation = {}. Marker = {}.".format(card.Affiliation,resdictKey))
                affiliationMatch = True # We set that we've also got a matching resource affiliation
-      if cMarkerKey[0] == "Ignores Affiliation Match": affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
+      if cMarkerKey[0] == "Ignores Affiliation Match": 
+         if debugVerbosity >= 3: notify("### Ignoring affiliation match due to marker on card. Marker = {}".format(cMarkerKey))
+         affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
    for c in table:
-      if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')) and chkDummy(CardsAS.get(c.model,''), c): affiliationMatch = True
+      if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')) and chkDummy(CardsAS.get(c.model,''), c): 
+         if debugVerbosity >= 3: notify("### Ignoring affiliation match due to constant effect from {}.".format(c))
+         affiliationMatch = True
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    if card.highlight == UnpaidAbilityColor:
       reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
@@ -594,6 +600,8 @@ def checkPaidResources(card):
          reduceCost(card, 'USE', selectedAbility[card._id][1] - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'USEOK'
       else:
+         if count >= selectedAbility[card._id][1] - reduction and not affiliationMatch:
+            notify(":::WARNING::: Ability cost reached but there is no affiliation match!")
          if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
          return 'NOK'      
    else:
@@ -603,6 +611,8 @@ def checkPaidResources(card):
          reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'OK'
       else:
+         if count >= num(card.Cost) - reduction and not affiliationMatch:
+            notify(":::WARNING::: Card cost reached but there is no affiliation match!")
          if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
          return 'NOK'
 
@@ -616,9 +626,11 @@ def purchaseCard(card, x=0, y=0, manual = True):
       card.highlight = None
       placeCard(card)
       for cMarkerKey in card.markers: 
+         if debugVerbosity >= 3: notify("### Checking marker {}.".format(cMarkerKey[0]))
          for resdictKey in resdict:
-            if resdict[resdictKey] == cMarkerKey: 
+            if resdict[resdictKey] == cMarkerKey or cMarkerKey[0] == 'Ignores Affiliation Match': 
                card.markers[cMarkerKey] = 0
+               break
       unpaidCard = None
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has brought in {} by skipping its full cost".format(me,card))
