@@ -164,7 +164,8 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    hostCards = eval(getGlobalVariable('Host Cards'))
    hostCards.clear()
    setGlobalVariable('Host Cards',str(hostCards))
-   debugVerbosity = -1 # Reset means normal game.
+   if len(players) > 1: debugVerbosity = -1 # Reset means normal game.
+   elif debugVerbosity != -1 and confirm("Reset Debug Verbosity?"): debugVerbosity = -1 
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
    unitAmount[me.name] = 0  # This variable is used for unit placement
    setGlobalVariable('Existing Units',str(unitAmount))
@@ -454,7 +455,69 @@ def haveForce():
       if not BotD.isAlternateImage: myForce = True
    if debugVerbosity >= 4: notify("<<< chkForce() with return:{}".format(myForce)) #Debug
    return myForce
-   
+
+def checkDeckLegality():
+   if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
+   mute()
+   notify ("--> Checking deck of {} ...".format(me))
+   ok = True
+   commandDeck = me.piles['Command Deck']
+   objectiveDeck = me.piles['Objective Deck']
+   if debugVerbosity >= 4: notify("### About to compare deck sizes.") #Debug
+   if len(objectiveDeck) != len(commandDeck) / 5: 
+      ok = False
+      notify(":::ERROR::: {}'s decks do not sync (Nr. of objective cards ({}) =/= Nr. of command cards ({}) / 5.".format(me,len(objectiveDeck),len(commandDeck)))
+   if debugVerbosity >= 4: notify("### About to move cards into scripting pile") #Debug
+   for card in objectiveDeck: card.moveTo(me.ScriptingPile)
+   for card in commandDeck: card.moveTo(me.ScriptingPile)
+   rnd(1,10)
+   if debugVerbosity >= 4: notify("### About to check each card in the decks") #Debug
+   objectiveBlocks = []
+   commandBlocks = []
+   limitedBlocksFound = []
+   for card in me.ScriptingPile: 
+      #if ok == False: continue # If we've already found illegal cards, no sense in checking anymore. Will activate this after checking
+      if card.Type == 'Objective': 
+         objectiveBlocks.append((card.name,card.Block)) # We store a tuple of objective name and objective block
+      else:
+         commandBlocks.append((card.name,card.Block,card.properties['Block Number'])) # We store a tuple of the card name, objective block and number in that block
+      if card.Side != Side: 
+         notify(":::ERROR::: Opposing card found in {}'s deck: {}".format(me,card))
+         ok = False
+      if re.search(r'Limit 1 per objective deck',card.Text):
+         if card.Block in limitedBlocksFound: 
+            notify(":::ERROR::: Duplicate Limited Objective found in {}'s deck: {}".format(me,card))
+            ok = False
+         else: limitedBlocksFound.append(card.Block)
+      limitedAffiliation = re.search(r'([A-Za-z ]+) affiliation only\.',card.Text)
+      if limitedAffiliation:
+         if debugVerbosity >= 2: notify("#### Limited Affiliation ({}) card found: {}".format(limitedAffiliation.group(1),card))
+         if limitedAffiliation.group(1) != Affiliation.Affiliation:
+            notify(":::ERROR::: Restricted Affiliation Objective found in {}'s deck: {}".format(me,card))
+            ok = False
+   for objective in objectiveBlocks:
+      if debugVerbosity >= 4: notify("#### Checking Objective Block {} ({})".format(objective[1],objective[0]))
+      blocks = []
+      commandBlocksSnapshot = list(commandBlocks)
+      for command in commandBlocksSnapshot:
+         if command[1] == objective[1] and command[2] not in blocks:
+            if debugVerbosity >= 4: notify("#### Block {} Command {} found".format(command[1],command[2]))
+            blocks.append(command[2])
+            commandBlocks.remove(command)
+      if len(blocks) < 5: 
+         notify(":::ERROR::: Objective Block {} ({}) not complete. (only {} out of 5 found: {})".format(objective[1],objective[0],len(blocks),blocks))
+         ok = False
+   if len(commandBlocks): # If there's still cards in this list, it means it wasn't matched with an objective block, so it's an orphan
+      notify(":::ERROR::: Orphan command cards found in {}'s deck: {}".format(me,[command[0] for command in commandBlocks]))
+      ok = False
+   rnd(1,10)      
+   for card in me.ScriptingPile: 
+      if card.Type == 'Objective': card.moveTo(objectiveDeck)
+      else: card.moveTo(commandDeck)
+   if ok: notify(" -> Deck of {} is OK!".format(me))
+   else: notify(" -> Deck of {} is Illegal!".format(me))
+   if debugVerbosity >= 3: notify("<<< checkDeckLegality() with return: {}".format(ok)) #Debug
+   return ok
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

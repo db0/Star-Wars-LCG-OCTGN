@@ -392,6 +392,7 @@ def gameSetup(group, x = 0, y = 0):
       if not Side: 
          confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
          return
+      if not checkDeckLegality() and not confirm("We have found an illegal construction in your deck. Bypass?"): return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
@@ -915,7 +916,6 @@ def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.
    mute()
-   storeProperties(card)
    if card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
       return 'ABORT'

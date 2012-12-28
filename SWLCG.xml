@@ -153,6 +153,7 @@
 		<group name="Discard Pile" visibility="all" ordered="false" width="63" height="88" icon="r14" collapsed="false" />
 		<group name="Victory Pile" visibility="all" ordered="false" width="63" height="88" icon="r17" collapsed="true" />
 		<group name="Removed from Game" visibility="all" ordered="false" width="63" height="88" shortcut="F8" icon="r15" collapsed="true" />
+		<group name="ScriptingPile" visibility="me" ordered="false" width="63" height="88" shortcut="F8" icon="r18" collapsed="true" />
       <counter name="Reserves" default="6" reset="true" icon="r4" />
 		<counter name="Death Star Dial" default="0" reset="true" icon="r16" />
 		<counter name="Objectives Destroyed" default="0" reset="true" icon="r17" />

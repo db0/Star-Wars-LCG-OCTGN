@@ -1013,7 +1013,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       objList = []
       if debugVerbosity >= 2: notify("### Moving objectives to removed from game pile")
       for c in objectives:
-         c.moveTo(me.piles['Removed from Game'])
+         c.moveTo(me.ScriptingPile)
          objList.append(c._id)
       rnd(1,10)
       objNames = []
@@ -1102,7 +1102,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       discardList = []
       if debugVerbosity >= 2: notify("### Moving Force Users to 'removed from game' pile from discard pile")
       for c in discardPile:
-         c.moveTo(me.piles['Removed from Game'])
+         c.moveTo(me.ScriptingPile)
          discardList.append(c._id)
       rnd(1,10)
       unitNames = []
@@ -1192,7 +1192,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
       notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
    elif card.name == 'Trench Run' and action == 'PLAY': # We move this card to the opponent's exile in order to try and give control to them automatically.
-      card.moveTo(opponent.piles['Removed from Game'])
+      card.moveTo(opponent.ScriptingPile)
       rnd(1,10)
       if me.hasInvertedTable(): card.moveToTable(0,0)
       else:  card.moveToTable(0,-cheight(card))
