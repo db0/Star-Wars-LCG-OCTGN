@@ -239,7 +239,8 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
          if Automations['WinForms']: ChoiceTXT = "This card has multiple abilities.\nSelect the ones you would like to use, in order, and press the [Finish Selection] button"
          else: ChoiceTXT = "This card has multiple abilities.\nType the ones you would like to use, in order, and press the [OK] button"
          choices = card.Instructions.split('||') # A card with multiple abilities on use MUST use the Instructions properties
-         choice = singleChoice(ChoiceTXT, choices, type = 'button', default = 0)
+         choice = SingleChoice(ChoiceTXT, choices, type = 'button', default = 0)
+         if choice == 'ABORT': return
          selectedAutoscripts = Autoscripts[choice].split('$$')
          if debugVerbosity >= 2: notify("### AutoscriptsList: {}".format(AutoscriptsList)) # Debug
       else: 
@@ -273,7 +274,7 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
    for activeAutoscript in selectedAutoscripts:
       #confirm("Active Autoscript: {}".format(activeAutoscript)) #Debug
       ### Checking if any of the card's effects requires one or more targets first
-      if re.search(r'Targeted', activeAutoscript) and findTarget(activeAutoscript,card = card) == []: return
+      if re.search(r'(?<!Auto)Targeted', activeAutoscript) and findTarget(activeAutoscript,card = card) == []: return
    for activeAutoscript in selectedAutoscripts:
       if not announceText.endswith(' in order to') and not announceText.endswith(' and'): announceText += ' and'   
       targetC = findTarget(activeAutoscript,card = card)
@@ -1032,7 +1033,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                           \nResources {}, Damage Capacity: {}\
                           \nText: {}\
                           ".format(objNames[iter], objDetails[iter][0], objDetails[iter][1], objDetails[iter][2]))
-      choice = SingleChoice("Which objective do you want to put into play from your deck?", objChoices, type = 'button', default = 0)
+      choice = SingleChoice("Which objective do you want to put into play from your deck?", objChoices, type = 'button', default = 0,cancelButton = False)
       storeObjective(Card(objList[choice]))
       shuffle(objectives)
       if debugVerbosity >= 2: notify("#### About to announce")
@@ -1074,6 +1075,9 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if len(currTargets) == 1: finalTarget = currTargets[0]
       else: 
          choice = SingleChoice("Choose one unit to be destroyed by the Rancor", makeChoiceListfromCardList(currTargets), type = 'button', default = 0)
+         if choice == 'ABORT': 
+            notify(":::NOTICE::: {} has skipped Rancor's effects this turn".format(me))
+            return
          finalTarget = currTargets[choice]
       if debugVerbosity >= 2: notify("### finalTarget = {}".format(finalTarget)) #Debug
       discard(finalTarget,silent = True)
@@ -1127,7 +1131,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                              \nIcons: {}\
                              \nText: {}\
                              ".format(unitNames[iter], unitDetails[iter][0], unitDetails[iter][1], unitDetails[iter][2],unitDetails[iter][3]))
-         choice = SingleChoice("Which Force User unit do you want to put into play from your discard pile?", unitChoices, type = 'button', default = 0)
+         choice = SingleChoice("Which Force User unit do you want to put into play from your discard pile?", unitChoices, type = 'button', default = 0, cancelButton = False)
       placeCard(Card(ForceUserList[choice]))
       if debugVerbosity >= 2: notify("#### About to announce")
       notify("{} returns into play".format(Card(ForceUserList[choice])))
@@ -1176,12 +1180,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                           \nIcons: {}\
                           \nText: {}\
                           ".format(cardNames[iter], cardDetails[iter][0], cardDetails[iter][1], cardDetails[iter][2],cardDetails[iter][3],cardDetails[iter][4],cardDetails[iter][5]))
-      choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0)
+      choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
       capturedC = Card(cardList.pop(choice))
       capturedC.moveTo(opponent.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
-      capture(chosenObj = card,targetC = capturedC, silent = True)
+      capture(chosenObj = card,targetC = capturedC, silent = True, cancelButton = False)
       ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
-      choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0)
+      choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
       for iter in range(len(cardList)):
          if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
          if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
@@ -1336,7 +1340,8 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             if choiceType.group(1) == '1':
                if len(foundTargets) == 1: choice = 0 # If we only have one valid target, autoselect it.
                else: choice = SingleChoice(choiceTitle, targetChoices, type = 'button', default = 0)
-               foundTargets = [foundTargets.pop(choice)] # if we select the target we want, we make our list only hold that target
+               if choice == 'ABORT': del foundTargets[:]
+               else: foundTargets = [foundTargets.pop(choice)] # if we select the target we want, we make our list only hold that target
       if debugVerbosity >= 3: # Debug
          tlist = [] 
          for foundTarget in foundTargets: tlist.append(foundTarget.name) # Debug

@@ -138,7 +138,7 @@ def information(Message):
    
 class SingleChoiceWindow(Form):
  
-   def __init__(self, BoxTitle, BoxOptions, type, defaultOption):
+   def __init__(self, BoxTitle, BoxOptions, type, defaultOption, cancelButton):
       self.Text = "Select an Option"
       self.index = 0
       self.confirmValue = None
@@ -214,10 +214,24 @@ class SingleChoiceWindow(Form):
       button.Dock = DockStyle.Bottom
       button.Click += self.buttonPressed
       if type == 'radio': self.Controls.Add(button) # We only add the "Confirm" button on a radio menu.
- 
+      
+      if cancelButton:
+         cancelButton = Button() # We add a bytton to Cancel the selection
+         cancelButton.Text = "Cancel"
+         cancelButton.Width = 100
+         cancelButton.Dock = DockStyle.Bottom
+         #button.Anchor = AnchorStyles.Bottom
+         cancelButton.Click += self.cancelPressed
+         self.Controls.Add(cancelButton)
+
    def buttonPressed(self, sender, args):
       self.timer.Stop()
       self.Close()
+      
+   def cancelPressed(self, sender, args): # The function called from the cancelButton
+      self.confirmValue = 'ABORT' # It replaces the choice list with an ABORT message which is parsed by the calling function
+      self.timer.Stop()
+      self.Close() # And then closes the form
  
    def checkedChanged(self, sender, args):
       self.confirmValue = sender.Name
@@ -238,19 +252,21 @@ class SingleChoiceWindow(Form):
          self.TopMost = True
          self.timer_tries += 1
 
-def SingleChoice(title, options, type = 'radio', default = 0):
+def SingleChoice(title, options, type = 'radio', default = 0, cancelButton = True):
    if debugVerbosity >= 1: notify(">>> SingleChoice()".format(title))
    if Automations['WinForms']:
       Application.EnableVisualStyles()
-      form = SingleChoiceWindow(title, options, type, default)
+      form = SingleChoiceWindow(title, options, type, default, cancelButton)
       form.BringToFront()
       form.ShowDialog()
-      choice = num(form.getIndex())
+      if form.getIndex() != 'ABORT': choice = num(form.getIndex())
+      else: choice = form.getIndex()
    else:
       concatTXT = title + '\n\n'
       for iter in range(len(options)):
          concatTXT += '{}:--> {}\n'.format(iter,options[iter])
       choice = askInteger(concatTXT,0)
+      if choice == None: choice = 'ABORT'
    if debugVerbosity >= 3: notify("<<< SingleChoice() with return {}".format(choice))
    return choice
  
