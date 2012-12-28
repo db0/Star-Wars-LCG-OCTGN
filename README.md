@@ -26,6 +26,14 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.14
+
+* Game will now check player decks during setup for legality
+* A Change in the way events work. Now as soon as you finish paying the cost for an event, the card will change its highlight to green to signify the event is ready to take effect. It is at this point that your opponent is allowed to play interrupts.
+  * Interrupts which cancel the effects of events, like C-3PO new require a "ready" event as a target. A "ready event" is an event with a green highlight which has been paid for (or has 0 cost). When that happens, the event will not have any effects when activated by your opponent.
+  * Once all players had a chance to play interrupts to events, the controller of each ready event can now double-click on it to have it take effect
+  
+
 ### 1.0.13
 
 * Common Ground works automatically now

@@ -80,3 +80,12 @@ If you're a new player, we strongly suggest you check it out.
 Would you like to learn more?
 &&
 https://vimeo.com/54797455
+||
+You should not discard cards by manually dragging them to your discard pile.
+
+Rather user the "Discard Card/Thwart Objective" (shortcut is the key "del") function.
+
+Doing so will trigger all the relevant scripts for this and any other card on the table (for example Leia's ability)
+It will also discard any attachments of the card and clear all necessary variables.
+
+Discarding cards manually is going to leave those variables unset, which will lead to game errors.

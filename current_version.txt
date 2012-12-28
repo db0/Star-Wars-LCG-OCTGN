@@ -1,30 +1,23 @@
-1.0.13||
+1.0.14||
 ======New Version Information======
 
-UPDATE: v1.0.13 is out with some important bugfixed. Please get that ASAP.
+Deck legality checking is now available!
 
-New version finally brings card automations to Star Wars: The Card Game on OCTGN!
+During the setup phase, the game will go through your command and objective deck and make sure you have the correct matching cards for both.
+It will also check if you have limited of affiliation-restricted cards in your deck that you shouldn't.
 
-This means that your game is going to flow faster than ever, as you have less to mess with the game engine, and more time to focus on the actual decisions of the game.
+There is also a slight Change in the way events work. 
 
-Most card will take their abilities as soon as they come into play, or as soon as their trigger is called
-For example cards which do something after refreshing, will do it automatically. 
-If there's only one possible target for their effect, they will use that, but if there's more than one, you'll get the option to select one of them.
+Now as soon as you finish paying the cost for an event, the card will change its highlight to green to signify the event is ready to take effect. It is at this point that your opponent is allowed to play interrupts.
 
-Many abilities will work without significant input from the player. 
-In case an effect requires a target, remember to do it before activating the effect. You can target by shift+clicking on a card.
+Interrupts which cancel the effects of events, like C-3PO new require a "ready" event as a target. A "ready event" is an event with a green highlight which has been paid for (or has 0 cost). When that happens, the event will not have any effects when activated by your opponent.
 
-Events will take effect just after you pay for them. 
-So don't rush them and allow your opponent a chance to play interrupts before you pay them.
+Once all players had a chance to play interrupts to events, the controller of each ready event can now double-click on it to have it take effect
 
-There's also some changes in the way you setup. Now starting objectives are placed face down. 
-Once both players are ready and have mulliganed if needed, simply double-click on one of them to turn them face-up and trigger their effects.
 
-Enjoy!
-
-IMPORTANT: Please update your markers to v.1.0.2
+IMPORTANT: Please update your core set to v.1.0.1 to avoid deck checking complain about legal cards which had the wrong block numbers.
 
 ===============================
 ||
-Latest Core Set: 1.0.0
+Latest Core Set: 1.0.1
 Latest Markers Set: 1.0.2

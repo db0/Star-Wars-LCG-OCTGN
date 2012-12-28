@@ -1,11 +1,13 @@
 =====Message of the Day======
 
---- IMPORTANT NOTE ---
-Please do not discard cards by dragging them manually to the discard pile. 
-Rather user the "Discard Card/Thwart Objective" (shortcut is the key "del") function
+There is also a slight Change in the way events work from v.1.0.14 onwards.
 
-Doing so will trigger all the relevant scripts for this and any other card on the table (for example Leia's ability)
-It will also discard any attachments of the card and clear all necessary variables.
+Now as soon as you finish paying the cost for an event, the card will change its highlight to green to signify the event is ready to take effect. It is at this point that your opponent is allowed to play interrupts.
 
-Discarding cards manually is going to leave those variables unset, which will lead to game errors.
+Interrupts which cancel the effects of events, like C-3PO new require a "ready" event as a target. A "ready event" is an event with a green highlight which has been paid for (or has 0 cost). When that happens, the event will not have any effects when activated by your opponent.
+
+Once all players had a chance to play interrupts to events, the controller of each ready event can now double-click on it to have it take effect
+
+This change should allow each player to know when to play interrupts and give an opportunity for your opponents to react.
+
 ===============================
