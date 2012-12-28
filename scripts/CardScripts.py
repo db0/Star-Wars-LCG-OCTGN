@@ -196,7 +196,7 @@ ff4fb461-8060-457a-9c16-000000000156
 -----
 
 +++++
-DestroyMyself$$SimplyAnnounce{cancel the effects of the event card}
+DestroyMyself$$SimplyAnnounce{cancel the effects of the event card}$$Put1Effects Cancelled-DemiAutoTargeted-atEvent-isReady-choose1-isSilent
 .....
 Cloud City Casino
 -----
@@ -266,7 +266,7 @@ Counter-stroke
 -----
 ff4fb461-8060-457a-9c16-000000000142
 -----
-onPlay:SimplyAnnounce{cancel the effects of the event}
+onPlay:SimplyAnnounce{cancel the effects of the event}$$Put1Effects Cancelled-Targeted-atEvent-isReady-choose1-isSilent
 +++++
 
 .....
@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-afterRefresh:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-duringMyTurn
+afterRefresh:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-targetMine-duringMyTurn
 +++++
 
 .....

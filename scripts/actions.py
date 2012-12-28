@@ -37,8 +37,10 @@ forceStruggleDone = False # A variable which tracks if the player's have actuall
 ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
 limitedPlayed = False # A Variable which records if the player has played a limited card this turn
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
-warnZeroCostEvents = True # Warns the player about zero cost events.
 
+warnZeroCostEvents = "This event is ready to take effect but has not been done automatically in order to allow your opponent to react.\
+                    \nOnce your opponent had the chance to play any interrupts, double click on the event to finalize playing it and resolve any effects (remember to target any relevant cards).\
+                 \n\n(This message will not appear again)" # Warning about playing events. Only displayed once.
 #---------------------------------------------------------------------------
 # Phases
 #---------------------------------------------------------------------------
@@ -432,7 +434,7 @@ def defaultAction(card, x = 0, y = 0):
          me.setGlobalVariable('Phase','0') # We now allow the dark side to start
          notify("--> {} of the Dark Side has the initiative".format(me))
    elif card.highlight == EdgeColor: revealEdge()
-   elif card.highlight == UnpaidColor: purchaseCard(card)
+   elif card.highlight == UnpaidColor or card.highlight == ReadyEventColor: purchaseCard(card)
    elif num(card.Resources) > 0 and findUnpaidCard(): 
       if debugVerbosity >= 2: notify("Card has resources") # Debug
       generate(card)
@@ -559,12 +561,14 @@ def generate(card, x = 0, y = 0):
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
    resResult = checkPaidResources(unpaidC)
-   if resResult == 'OK': purchaseCard(unpaidC, manual = False)
+   if resResult == 'OK': 
+      if unpaidC.Type == 'Event': readyEvent(unpaidC)
+      else: purchaseCard(unpaidC, manual = False)
    elif resResult == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
-   if debugVerbosity >= 1: notify(">>> findUnpaidCard(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 1: notify(">>> findUnpaidCard()") #Debug
    if unpaidCard: return unpaidCard
    else:
       for card in table:
@@ -573,7 +577,7 @@ def findUnpaidCard():
    return None # If not unpaid card is found, return None
 
 def checkPaidResources(card):
-   if debugVerbosity >= 1: notify(">>> checkPaidResources(){}".format(extraASDebug())) #Debug
+   if debugVerbosity >= 1: notify(">>> checkPaidResources()") #Debug
    count = 0
    affiliationMatch = False
    for cMarkerKey in card.markers: #We check the key of each marker on the card
@@ -619,7 +623,9 @@ def checkPaidResources(card):
 def purchaseCard(card, x=0, y=0, manual = True):
    if debugVerbosity >= 1: notify(">>> purchaseCard(){}".format(extraASDebug())) #Debug
    global unpaidCard
-   if manual: checkPaid = checkPaidResources(card) # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
+   if manual and card.highlight != ReadyEventColor: checkPaid = checkPaidResources(card)
+   # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
+   # Events marked as 'ReadyEventColor' have already been paid, so we do not need to check them again.
    else: checkPaid = 'OK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
    if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
@@ -632,9 +638,14 @@ def purchaseCard(card, x=0, y=0, manual = True):
                card.markers[cMarkerKey] = 0
                break
       unpaidCard = None
-      if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
-      else: notify(":::ATTENTION::: {} has brought in {} by skipping its full cost".format(me,card))
-      executePlayScripts(card, 'PLAY')
+      if checkPaid == 'OK':
+         if card.Type == 'Event': 
+            if findMarker(card, "Effects Cancelled"): notify("{}'s effects have been cancelled".format(card))
+            else: notify("{} resolves the effects of {}".format(me,card)) 
+         else: notify("{} has paid for {}".format(me,card)) 
+      else: notify(":::ATTENTION::: {} has played {} by skipping its full cost".format(me,card))
+      if card.Type == 'Event' and findMarker(card, "Effects Cancelled"): pass
+      else: executePlayScripts(card, 'PLAY') 
       autoscriptOtherPlayers('CardPlayed',card)
       if card.Type == "Event": card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
@@ -984,18 +995,24 @@ def play(card):
       card.highlight = UnpaidColor                # We let everything else, as I'm not aware of cards which cancel units or enhancements coming into play.
       unpaidCard = card
       notify("{} attempts to play {}{}.".format(me, card,extraTXT))
-      global warnZeroCostEvents
-      if num(card.Cost) == 0 and card.Type == 'Event' and warnZeroCostEvents: 
-         information("This event may have 0 cost, but we've set it as unpaid in order to allow your opponent to play interrupts.\
-                    \nOnce your opponent had the chance to play any interrupts, double click on the event to finalize playing it and trigger any effects.\
-                  \n\n(This message will not appear again")
-         warnZeroCostEvents = False
+      if num(card.Cost) == 0 and card.Type == 'Event': readyEvent(card)
    else: 
       placeCard(card)
       notify("{} plays {}{}.".format(me, card,extraTXT))
       executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
       autoscriptOtherPlayers('CardPlayed',card)
 
+def readyEvent(card):
+# This function prepares an event for being activated and puts the initial warning out if necessary.
+   if debugVerbosity >= 1: notify(">>> readyEvent()") #Debug
+   card.highlight = ReadyEventColor
+   notify(":::NOTICE::: {}'s {} is about to take effect. Opponents can play any interrupts now!".format(me,card))
+   global warnZeroCostEvents
+   if warnZeroCostEvents:
+      information(warnZeroCostEvents)
+      warnZeroCostEvents = None
+   if debugVerbosity >= 3: notify("<<< readyEvent()") #Debug      
+      
 def playEdge(card):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
    if getGlobalVariable('Engaged Objective') == 'None': 
@@ -1167,6 +1184,7 @@ def sendToBottom(cards,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> sendToBottom()") #Debug
    if debugVerbosity >= 1: notify("### Card List = {}".format([c.name for c in cards])) #Debug
    mute()
+   if len(cards) == 0: return
    if debugVerbosity >= 2: notify("### Original List: {}".format([card.name for card in cards])) #Debug
    for iter in range(len(cards)):
       if iter % 5 == 0: notify("---PLEASE DO NOT MOVE ANY CARDS AROUND---")
