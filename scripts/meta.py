@@ -595,10 +595,11 @@ def versionCheck():
    if debugVerbosity >= 1: notify(">>> versionCheck()") #Debug
    global startupMsg
    me.setGlobalVariable('gameVersion',gameVersion)
-   if not startupMsg and len(players) > 1:
+   if not startupMsg and (len(players) > 1 or debugVerbosity == 0): # At debugverbosity 0 I want to try and download the version.
       #whisper("+++ Checking Version. Please Wait...")
       #rnd(1,10) # Need to pause a bit, otherwise the above notice will appear after urls have been fetched.
-      (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt',3000)
+      try: (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt',3000)
+      except: url = None
       if debugVerbosity >= 2: notify("### url:{}, code: {}".format(url,code)) #Debug
       if code != 200 or not url:
          whisper(":::WARNING::: Cannot check version at the moment.")
@@ -625,8 +626,10 @@ def versionCheck():
       
 def MOTD():
    if debugVerbosity >= 1: notify(">>> MOTD()") #Debug
-   (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt',3000)
-   (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt',3000)
+   try: (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt',3000)
+   except: MOTDurl = None
+   try: (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt',3000)
+   except: DYKurl = None
    if (MOTDcode != 200 or not MOTDurl) or (DYKcode !=200 or not DYKurl):
       whisper(":::WARNING::: Cannot fetch MOTD or DYK info at the moment.")
       return
@@ -663,13 +666,17 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
    ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")
-   if len(players) > 1:
-      (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/scripts/CardScripts.py',5000)
+   if len(players) > 1 or debugVerbosity == 0:
+      try: (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/scripts/CardScripts.py',5000)
+      except: 
+         if debugVerbosity >= 0: notify("Timeout Error when trying to download scripts")
+         ScriptsDownload = None
    else: # If we have only one player, we assume it's a debug game and load scripts from local to save time.
+      if debugVerbosity >= 0: notify("Skipping Scripts Download for faster debug")
       code = 0
       ScriptsDownload = None
-   if debugVerbosity >= 4: notify("### code:{}, text: {}".format(code, ScriptsDownload)) #Debug
-   if code != 200 or not ScriptsDownload or (ScriptsDownload and not re.search(r'ANR CARD SCRIPTS', ScriptsDownload)) or debugVerbosity >= 0: 
+   if debugVerbosity >= 2: notify("### code: {}, text: {}".format(code, ScriptsDownload)) #Debug
+   if code != 200 or not ScriptsDownload or (ScriptsDownload and not re.search(r'ANR CARD SCRIPTS', ScriptsDownload)): 
       whisper(":::WARNING::: Cannot download card scripts at the moment. Will use localy stored ones.")
       Split_Main = ScriptsLocal.split('=====') # Split_Main is separating the file description from the rest of the code
    else: 
