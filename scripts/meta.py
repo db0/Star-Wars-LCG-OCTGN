@@ -599,7 +599,7 @@ def versionCheck():
       #whisper("+++ Checking Version. Please Wait...")
       #rnd(1,10) # Need to pause a bit, otherwise the above notice will appear after urls have been fetched.
       try: (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt',3000)
-      except: url = None
+      except: code = url = None
       if debugVerbosity >= 2: notify("### url:{}, code: {}".format(url,code)) #Debug
       if code != 200 or not url:
          whisper(":::WARNING::: Cannot check version at the moment.")
@@ -627,9 +627,9 @@ def versionCheck():
 def MOTD():
    if debugVerbosity >= 1: notify(">>> MOTD()") #Debug
    try: (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt',3000)
-   except: MOTDurl = None
+   except: MOTDcode = MOTDurl = None
    try: (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt',3000)
-   except: DYKurl = None
+   except: DYKcode = DYKurl = None
    if (MOTDcode != 200 or not MOTDurl) or (DYKcode !=200 or not DYKurl):
       whisper(":::WARNING::: Cannot fetch MOTD or DYK info at the moment.")
       return
@@ -670,7 +670,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
       try: (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/scripts/CardScripts.py',5000)
       except: 
          if debugVerbosity >= 0: notify("Timeout Error when trying to download scripts")
-         ScriptsDownload = None
+         code = ScriptsDownload = None
    else: # If we have only one player, we assume it's a debug game and load scripts from local to save time.
       if debugVerbosity >= 0: notify("Skipping Scripts Download for faster debug")
       code = 0
