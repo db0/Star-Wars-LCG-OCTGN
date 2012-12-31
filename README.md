@@ -24,6 +24,11 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.15
+
+* Robustness fixes
+
+
 ### 1.0.14
 
 * Game will now check player decks during setup for legality
