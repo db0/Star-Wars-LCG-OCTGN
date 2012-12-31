@@ -754,7 +754,7 @@ def discard(card, x = 0, y = 0, silent = False):
       card.moveTo(card.owner.piles['Discard Pile'])   
    elif card.Type == 'Unit':
       if Automations['Placement']:
-         if card.owner == me:
+         if card.owner == me and card.highlight != DummyColor and card.highlight != UnpaidColor:
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
             freePositions.append(card.position)
             me.setGlobalVariable('freePositions',str(freePositions))

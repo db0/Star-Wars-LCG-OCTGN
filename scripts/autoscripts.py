@@ -1184,6 +1184,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for card in table:
          if card.highlight == EdgeColor or card.highlight == FateColor:
             card.moveTo(card.owner.piles['Discard Pile'])
+      global edgeCount
+      edgeCount = 0            
       notify(":> {} discards all edge cards and restarts the edge battle".format(card))
    elif card.name == "Vader's TIE Advanced" and action == 'STRIKE':
       delayed_whisper("-- Calculating Vader's TIE Advanced Combat Icons. Please wait...")
