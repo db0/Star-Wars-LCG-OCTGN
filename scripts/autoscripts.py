@@ -370,25 +370,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
          if not chkDummy(autoS, card): continue
-         chkTypeRegex = re.search(r'-type([A-Za-z_ ]+)',autoS)
-         if chkTypeRegex: 
-            if debugVerbosity >= 4: notify("### chkTypeRegex : {}".format(chkTypeRegex.groups()))
-            chkTypeList = chkTypeRegex.group(1).split('_and_') # We do not need an _or_ clause, as we can do it simply in another autoscript in the same card, separated by ||
-            correctType = True
-            for chkType in chkTypeList: # If we have this modulator in the script, then need ot check what type of property it's looking for
-               if debugVerbosity >= 4: notify("### Looking for : {}".format(chkType))
-               cardProperties = []
-               del cardProperties [:] # Just in case
-               cardProperties.append(origin_card.Type) # Its type
-               cardSubtypes = getKeywords(origin_card).split('-') # And each individual trait. Traits are separated by " - "
-               for cardSubtype in cardSubtypes:
-                  strippedCS = cardSubtype.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
-                  if strippedCS: cardProperties.append(strippedCS) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.
-               cardProperties.append(origin_card.Side) # We are also going to check if the card is for DS or LS
-               cardProperties.append(origin_card.Affiliation) # and its affiliation
-               if debugVerbosity >= 4: notify("### card Properies: {}".format(cardProperties))
-               if not chkType in cardProperties: correctType = False
-            if not correctType: continue # If the types we're looking for are not in the origin card, abort this script.
+         if not checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type")
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
@@ -1376,7 +1358,7 @@ def prepareRestrictions(Autoscript):
    if debugVerbosity >= 1: notify(">>> prepareRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    validTargets = [] # a list that holds any type that a card must be, in order to be a valid target.
    targetGroups = []
-   whatTarget = re.search(r'\b(at|for)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
+   whatTarget = re.search(r'\b(at|for|type)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
    if whatTarget: 
       if debugVerbosity >= 2: notify("### Splitting on _or_") #Debug
       validTargets = whatTarget.group(2).split('_or_') # If we have a list of valid targets, split them into a list, separated by the string "_or_". Usually this results in a list of 1 item.
