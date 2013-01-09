@@ -1,8 +1,6 @@
-﻿Android:Netrunner LCG plugin for OCTGN
+﻿Star Wars:The Card Game LCG plugin for OCTGN
 =========================
 The Star Wars universe as a Head2Head Living card game
-
-More instructions will be forthcoming soon. Stay tuned...
 
 Enjoy!
 

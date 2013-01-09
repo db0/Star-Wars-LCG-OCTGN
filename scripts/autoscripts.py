@@ -370,7 +370,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
          if not chkDummy(autoS, card): continue
-         if not checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
+         if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS)): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type")
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
