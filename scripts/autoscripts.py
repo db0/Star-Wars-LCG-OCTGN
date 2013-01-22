@@ -1563,6 +1563,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
       multiplier = 0
       if debugVerbosity >= 2: notify("Groups: {}. Count: {}".format(per.groups(),count)) #Debug
       if per.group(2) and (per.group(2) == 'Target' or per.group(2) == 'Every'): # If we're looking for a target or any specific type of card, we need to scour the requested group for targets.
+         ### IMPORTANT. THIS NEEDS WORK! cardgroup needs to NOT be assigned chkItem. FIX THIS BEFORE ADDING TARGETED PER ###
          perCHK = per.group(3).split('_on_') # First we check to see if in our conditions we're looking for markers or card properties, to remove them from the checks
          perCHKSnapshot = list(perCHK)
          for chkItem in perCHKSnapshot:
