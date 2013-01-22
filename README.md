@@ -27,7 +27,7 @@ Changelog
 ### 1.0.15
 
 * Robustness fixes
-
+* Fixed Take Them Prisoner Bug
 
 ### 1.0.14
 

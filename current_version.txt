@@ -1,21 +1,7 @@
-1.0.14||
+1.0.15||
 ======New Version Information======
 
-Deck legality checking is now available!
-
-During the setup phase, the game will go through your command and objective deck and make sure you have the correct matching cards for both.
-It will also check if you have limited of affiliation-restricted cards in your deck that you shouldn't.
-
-There is also a slight Change in the way events work. 
-
-Now as soon as you finish paying the cost for an event, the card will change its highlight to green to signify the event is ready to take effect. It is at this point that your opponent is allowed to play interrupts.
-
-Interrupts which cancel the effects of events, like C-3PO new require a "ready" event as a target. A "ready event" is an event with a green highlight which has been paid for (or has 0 cost). When that happens, the event will not have any effects when activated by your opponent.
-
-Once all players had a chance to play interrupts to events, the controller of each ready event can now double-click on it to have it take effect
-
-
-IMPORTANT: Please update your core set to v.1.0.1 to avoid deck checking complain about legal cards which had the wrong block numbers.
+FVarious bugfixes, with most important the Take Them Prisoner python error
 
 ===============================
 ||
