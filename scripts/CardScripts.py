@@ -1474,7 +1474,7 @@ The Endor Gambit
 -----
 ff4fb461-8060-457a-9c16-000000000058
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn
+afterRefresh:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetMine
 +++++
 
 .....
