@@ -370,7 +370,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
          if not chkDummy(autoS, card): continue
-         if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS)): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
+         if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type")
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
@@ -1354,7 +1354,7 @@ def gatherCardProperties(card):
    if debugVerbosity >= 3: notify("<<< gatherCardProperties() with Card Properties: {}".format(cardProperties)) #Debug
    return cardProperties
 
-def prepareRestrictions(Autoscript):
+def prepareRestrictions(Autoscript, seek = 'target'):
 # This is a function that takes an autoscript and attempts to find restrictions on card traits/types/names etc. 
 # It goes looks for a specific working and then gathers all restrictions into a list of tuples, where each tuple has a negative and a positive entry
 # The positive entry (position [0] in the tuple) contains what card properties a card needs to have to be a valid selection
@@ -1362,7 +1362,8 @@ def prepareRestrictions(Autoscript):
    if debugVerbosity >= 1: notify(">>> prepareRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    validTargets = [] # a list that holds any type that a card must be, in order to be a valid target.
    targetGroups = []
-   whatTarget = re.search(r'\b(at|for|type)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
+   if seek == 'type': whatTarget = re.search(r'\b(type)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "type" is used by autoscripting other players, and it's separated so that the same card can have two different triggers (e.g. see Darth Vader)
+   else: whatTarget = re.search(r'\b(at|for)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
    if whatTarget: 
       if debugVerbosity >= 2: notify("### Splitting on _or_") #Debug
       validTargets = whatTarget.group(2).split('_or_') # If we have a list of valid targets, split them into a list, separated by the string "_or_". Usually this results in a list of 1 item.
