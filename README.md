@@ -24,6 +24,12 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.16
+
+* Fixed Darth Vader's ability triggering but doing nothing
+* Fixed Superlaser Blast not increasing the Death Star Dial
+* Fixed Endor Gambit removing focus from opposing units when only those are there.
+
 ### 1.0.15
 
 * Robustness fixes

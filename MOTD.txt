@@ -1,13 +1,12 @@
 =====Message of the Day======
 
-There is also a slight Change in the way events work from v.1.0.14 onwards.
+Remember to inform the developer when you find anything not working quite right. 
 
-Now as soon as you finish paying the cost for an event, the card will change its highlight to green to signify the event is ready to take effect. It is at this point that your opponent is allowed to play interrupts.
+You can always open a new issue ticket in my development page which will then be tracked and fixed ASAP.
 
-Interrupts which cancel the effects of events, like C-3PO new require a "ready" event as a target. A "ready event" is an event with a green highlight which has been paid for (or has 0 cost). When that happens, the event will not have any effects when activated by your opponent.
+This is also the page to request new features.
 
-Once all players had a chance to play interrupts to events, the controller of each ready event can now double-click on it to have it take effect
-
-This change should allow each player to know when to play interrupts and give an opportunity for your opponents to react.
-
+Would you like to open the issue tracker in a browser window?
 ===============================
+&&
+https://github.com/db0/Star-Wars-LCG-OCTGN/issues
