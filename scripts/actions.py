@@ -733,7 +733,7 @@ def discard(card, x = 0, y = 0, silent = False):
          setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
          me.counters['Objectives Destroyed'].value += 1
          if Side == 'Dark': 
-            modifyDial(opponent.counters['Objectives Destroyed'].value)
+            modifyDial(me.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: 
             notify("{} thwarts {}{}.".format(me,card,extraTXT))

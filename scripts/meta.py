@@ -142,6 +142,7 @@ def ofwhom(Autoscript, controller = me):
    return targetPL
 
 def modifyDial(value):
+   if debugVerbosity >= 1: notify(">>> modifyDial(). Value = {}".format(value)) #Debug   
    for player in players: player.counters['Death Star Dial'].value += value
    if me.counters['Death Star Dial'].value >= 12:
       notify("===::: The Dark Side wins the Game! :::====")
