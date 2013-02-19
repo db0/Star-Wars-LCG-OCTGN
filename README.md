@@ -29,6 +29,8 @@ Changelog
 * Fixed Darth Vader's ability triggering but doing nothing
 * Fixed Superlaser Blast not increasing the Death Star Dial
 * Fixed Endor Gambit removing focus from opposing units when only those are there.
+* Turns sequence will now use the OCTGN internal method to change player, which should look nicer
+* Made the hand size icon fit better in the new theme.
 
 ### 1.0.15
 
