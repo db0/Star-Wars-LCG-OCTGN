@@ -71,18 +71,19 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       if phase == 6: 
          if not forceStruggleDone and Automations['Start/End-of-Turn/Phase']: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
          me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
-         setGlobalVariable('Active Player', opponent.name)
+         #setGlobalVariable('Active Player', opponent.name)
          atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
          notify("=== {} has ended their turn ===.".format(me))
+         opponent.setActivePlayer() # new in OCTGN 3.0.5.47 
          for card in table:
             if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
-         if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
+         #if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
          return
-      elif getGlobalVariable('Active Player') != me.name:
-         if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
+      elif not me.isActivePlayer:
+         #if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
          if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
          me.setGlobalVariable('Phase','1')
-         setGlobalVariable('Active Player', me.name)
+         #setGlobalVariable('Active Player', me.name)
          phase = 1
       else: 
          phase += 1
@@ -106,6 +107,9 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
    mute()
    atTimedEffects(Time = 'Start') # Scripted events at the start of the player's turn
+   if not me.isActivePlayer:
+      if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
+      else: me.setActivePlayer()
    me.setGlobalVariable('Phase','1')
    showCurrentPhase()
    global limitedPlayed
@@ -400,7 +404,7 @@ def gameSetup(group, x = 0, y = 0):
          BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
          BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
          setGlobalVariable('Balance of the Force', str(BotD._id))
-      else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
+      #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
       if debugVerbosity >= 3: notify("### Shuffling Decks")
@@ -435,6 +439,7 @@ def defaultAction(card, x = 0, y = 0):
       if Side == 'Dark': 
          me.setGlobalVariable('Phase','0') # We now allow the dark side to start
          notify("--> {} of the Dark Side has the initiative".format(me))
+         me.setActivePlayer() # If we're DS, set ourselves as the current player, since the Dark Side goes first.
    elif card.highlight == EdgeColor: revealEdge()
    elif card.highlight == UnpaidColor or card.highlight == ReadyEventColor: purchaseCard(card)
    elif num(card.Resources) > 0 and findUnpaidCard(): 
