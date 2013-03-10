@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.16" markersize="20">
+<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Star Wars: The Card Game" id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" octgnVersion="3.0.1.21" version="1.0.17" markersize="20">
 	<scripts>
 		<script src="r100" />
 		<script src="r101" />
@@ -42,7 +42,7 @@
       <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
       <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
 	</card>
-	<table name="Table" visibility="undefined" ordered="false" width="800" height="700" background="r3">
+	<table name="Table" visibility="undefined" ordered="false" width="800" height="450" background="r3">
       <groupactions menu="Game...">
          <groupaction menu="Set up" default="false" shortcut="Ctrl+Shift+S" execute="gameSetup" />
          <groupaction menu="Concede" default="false" shortcut="Ctrl+Shift+C" execute="concede" />
@@ -70,6 +70,8 @@
          <cardaction menu="Clear commitment to the force" default="false" execute="clearCommit" />
          <cardaction menu="Rescue" default="false" execute="rescue" />
          <cardaction menu="Clear of captured card variables" default="false" execute="clearCaptures" />
+         <cardaction menu="Cancel Paid Ability" default="false" execute="cancelPaidAbility" />
+         <cardaction menu="Flip Card Face Up" default="false" shortcut="Ctrl+Alt+F" execute="flipCard" />
       </cardactions>
 		<groupactions menu="Manual Targeted Actions">
          <groupaction menu="Capture Target" default="false" shortcut="Ctrl+C" execute="capture" />
@@ -118,6 +120,7 @@
       <groupaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectTargetCard" />
 		<cardaction menu="Send to bottom of deck (random order)" default="false" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		<cardaction menu="Discard Card/Thwart Objective" default="false" shortcut="Del" execute="discard" />
+      <!--	<cardaction menu="Show Card Position" default="false" shortcut="Ctrl+Shift+X" execute="ShowPosC" /> -->
 	</table>
 	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
       <globalvariable name="Side" value="" /> 

@@ -254,7 +254,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          BotD.switchImage
          x,y = Affiliation.position
          if debugVerbosity >= 2: notify("### My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
-         BotD.moveToTable(x - (playerside * 70), y)
+         BotD.moveToTable(x, y + (playerside * 75))
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
    elif myStruggleTotal - opponentStruggleTotal < 0: 
@@ -398,12 +398,14 @@ def gameSetup(group, x = 0, y = 0):
          return
       if not checkDeckLegality() and not confirm("We have found an illegal construction in your deck. Bypass?"): return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
-      Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
+      Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
                                                # We also create it if there's only one player for debug purposes
-         BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
-         BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
-         setGlobalVariable('Balance of the Force', str(BotD._id))
+         try:                                             
+            BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
+            BotD.moveToTable((playerside * -380) - 25, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+            setGlobalVariable('Balance of the Force', str(BotD._id))
+         except: notify("!!!ERROR!!! {} - In gameSetup()\n!!! PLEASE INSTALL MARKERS SET FILE !!!".format(me))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
@@ -538,7 +540,20 @@ def clearParticipation(card,x=0,y=0): # Clears a unit from participating in a ba
       card.orientation = Rot0
       notify("{} takes {} out of the engagement.".format(me, card))
    else: whisper(":::ERROR::: Unit is not currently participating in battle")
-        
+
+def cancelPaidAbility(card,x=0,y=0):
+# This function clears a card's paid ability in case the player tried to use it but realized they couldn't.
+   mute()
+   if selectedAbility.has_key(card._id):
+      card.highlight = selectedAbility[card._id][2]
+      del selectedAbility[card._id]
+      for cMarkerKey in card.markers: 
+         for resdictKey in resdict:
+            if resdict[resdictKey] == cMarkerKey: 
+               card.markers[cMarkerKey] = 0
+      notify("{} has canceled {}'s ability".format(me,card))
+
+   
 def generate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
    mute()
@@ -720,6 +735,7 @@ def discard(card, x = 0, y = 0, silent = False):
             notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
+               notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
          executePlayScripts(card, 'THWART')
          global reversePlayerChk
          reversePlayerChk = True
@@ -744,6 +760,7 @@ def discard(card, x = 0, y = 0, silent = False):
             notify("{} thwarts {}{}.".format(me,card,extraTXT))
             if opponent.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
+               notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
          executePlayScripts(card, 'THWART')
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
@@ -772,8 +789,8 @@ def discard(card, x = 0, y = 0, silent = False):
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
-   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor: 
-      if debugVerbosity >= 2: notify("### Executing play scripts. Highlight was {}".format(card.highlight))
+   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor and card.Type != "Objective":  # Objectives are thwarted, not discarded
+      if debugVerbosity >= 2: notify("### Executing discard scripts. Highlight was {}".format(card.highlight))
       executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)
@@ -1269,6 +1286,8 @@ def drawBottom(group, x = 0, y = 0):
 def shuffle(group):
 	group.shuffle()
 
+def flipCard(card,x,y):
+   card.isFaceUp = True
 #---------------------------------------------------------------------------
 # Tokens and Markers
 #---------------------------------------------------------------------------

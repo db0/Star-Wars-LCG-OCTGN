@@ -66,13 +66,13 @@ def storeObjective(card, GameSetup = False):
    if GameSetup:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective), True)
+         Objective.moveToTable((playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective), True)
          Objective.highlight = ObjectiveSetupColor # During game setup, we put the objectives face down so that the players can draw their hands before we reveal them.
          Objective.orientation = Rot90
    else:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable(playerside * -400, (playerside * 95) + (70 * iter * playerside) + yaxisMove(Objective))
+         Objective.moveToTable((playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
          xPos, yPos = Objective.position
          countCaptures = 0
          if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
@@ -146,6 +146,7 @@ def modifyDial(value):
    for player in players: player.counters['Death Star Dial'].value += value
    if me.counters['Death Star Dial'].value >= 12:
       notify("===::: The Dark Side wins the Game! :::====")
+      notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")      
 
 def resetAll(): # Clears all the global variables in order to start a new game.
    if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
@@ -199,10 +200,10 @@ def placeCard(card):
                card.moveToTable(positionC[0],positionC[1])
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
-               loopsNR = unitAmount[me.name] / 8
+               loopsNR = unitAmount[me.name] / 6
                loopback = 8 * loopsNR
-               if unitAmount[me.name] == 0: xoffset = 0
-               else: xoffset = -playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)
+               if unitAmount[me.name] == 0: xoffset = -25
+               else: xoffset = (-playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)) - 25 # The -20 is an offset to help center the table.
                if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
                yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR + 1) * playerside)
                card.moveToTable(xoffset,yoffset)

@@ -24,6 +24,15 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.17
+
+* Zoomed in on the table so that the cards are better seen without having to mouse over them. Re-arranged the placement to make this possible.
+* Recon Mission will now reduce the dark-side's reserves when it leaves play, and not the light side's
+* You can now cancel a card ability that you've triggered. You can find the appropriate function on the "Manual Actions" menui
+* You can now force a card ability (for example if you reduced the cost) . Just double click the card and it will ask you if you want to bypass the payment
+* Disturbance in the Force now only target opponent's units
+* Added a new message at the end of the game to inform people where to report bugs
+
 ### 1.0.16
 
 * Fixed Darth Vader's ability triggering but doing nothing

@@ -1,7 +1,11 @@
-1.0.16||
+1.0.17||
 ======New Version Information======
 
-FVarious bugfixes, with most important the Take Them Prisoner python error
+I've now updated the card placement so that the table starts much more zoomed in, allowing you to see the cards better without having to mouse over them. 
+
+Let me know if it's more comfortable.
+
+Also some bugfixes.
 
 ===============================
 ||

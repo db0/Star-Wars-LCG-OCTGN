@@ -76,7 +76,7 @@ def executePlayScripts(card, action):
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
          if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
-             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'DISCARD') or # whieInPlay cards only trigger when played or discarded
+             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'DISCARD' and action != 'THWART') or # whieInPlay cards only trigger when played or discarded
              (effectType.group(1) == 'onResolveFate' and action != 'RESOLVEFATE') or
              (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
              (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
@@ -113,7 +113,7 @@ def executePlayScripts(card, action):
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
             if effectType.group(1) == 'whileInPlay' or effectType.group(1) == 'whileScored':
                if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileInPlay affect in execute Automations is GainX scripts (for now).
-               if action == 'DISCARD': Removal = True
+               if action == 'DISCARD' or action == 'THWART': Removal = True
                else: Removal = False
             else: Removal = False
             targetC = findTarget(activeAutoscript,card = card)
@@ -211,7 +211,6 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
       whisper("You cannot use egde or unpaid card abilities. Aborting")
       return
    if debugVerbosity >= 4: notify("+++ Not an inactive card. Checking Stored_Autoactions{}...")
-   if debugVerbosity >= 4: notify("+++ Card not unrezzed. Checking for automations switch...")
    if not Automations['Play']:
       whisper("Play automations have been disabled. Aborting!")
       return
@@ -229,7 +228,7 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
    if len(Autoscripts) == 0:
       whisper("This card has no automated abilities. Aborting")
       return 
-   if not paidAbility: # If the player has already paid the ability of this card, we skip all the checking and go straight to the autoscripts
+   if not paidAbility and not selectedAbility.has_key(card._id): # If the player has already paid the ability of this card, we skip all the checking and go straight to the autoscripts
       if debugVerbosity >= 2: notify("### Ability not paid.")
       if debugVerbosity >= 4: notify("+++ All checks done!. Starting Choice Parse...")
       ### Checking if card has multiple autoscript options and providing choice to player.
@@ -853,7 +852,7 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
          if debugVerbosity >= 2: notify('### about to pop information') # debug
          information('The dummy card just created is meant for your opponent. Please right-click on it and select "Pass control to {}"'.format(targetPL))
       if debugVerbosity >= 2: notify('### Finished warnings. About to announce.') # debug
-      dummyCard = table.create(card.model, -680, 200 * playerside, 1) # This will create a fake card like the one we just created.
+      dummyCard = table.create(card.model, playerside * 400, 100 * playerside, 1) # This will create a fake card like the one we just created.
       dummyCard.highlight = DummyColor
    if debugVerbosity >= 2: notify('### About to move to discard pile if needed') # debug
    if not re.search(r'doNotDiscard',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
