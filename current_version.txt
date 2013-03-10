@@ -1,4 +1,4 @@
-1.0.16||
+1.0.17||
 ======New Version Information======
 
 I've now updated the card placement so that the table starts much more zoomed in, allowing you to see the cards better without having to mouse over them. 

@@ -71,6 +71,7 @@
          <cardaction menu="Rescue" default="false" execute="rescue" />
          <cardaction menu="Clear of captured card variables" default="false" execute="clearCaptures" />
          <cardaction menu="Cancel Paid Ability" default="false" execute="cancelPaidAbility" />
+         <cardaction menu="Flip Card Face Up" default="false" shortcut="Ctrl+Alt+F" execute="flipCard" />
       </cardactions>
 		<groupactions menu="Manual Targeted Actions">
          <groupaction menu="Capture Target" default="false" shortcut="Ctrl+C" execute="capture" />

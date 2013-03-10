@@ -1286,6 +1286,8 @@ def drawBottom(group, x = 0, y = 0):
 def shuffle(group):
 	group.shuffle()
 
+def flipCard(card,x,y):
+   card.isFaceUp = True
 #---------------------------------------------------------------------------
 # Tokens and Markers
 #---------------------------------------------------------------------------
