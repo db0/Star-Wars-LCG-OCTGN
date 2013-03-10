@@ -917,9 +917,6 @@ def rescueTargets(group,x = 0, y = 0):
          removeCapturedCard(card) 
          card.moveTo(card.owner.hand)
 
-def manualFlip(card,x = 0, y = 0): # Added for those who want to play without automations.
-   card.isFaceUp = True
-   
 def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.

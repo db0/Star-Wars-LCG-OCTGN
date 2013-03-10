@@ -70,11 +70,10 @@
          <cardaction menu="Clear commitment to the force" default="false" execute="clearCommit" />
          <cardaction menu="Rescue" default="false" execute="rescue" />
          <cardaction menu="Clear of captured card variables" default="false" execute="clearCaptures" />
-         <cardaction menu="Flip Card Face-Up" default="false" shortcut="Ctrl+L" execute="manualFlip" />
       </cardactions>
 		<groupactions menu="Manual Targeted Actions">
          <groupaction menu="Capture Target" default="false" shortcut="Ctrl+C" execute="capture" />
-         <groupaction menu="Rescue Targets" default="false" shortcut="Ctrl+Alt+C" execute="rescueTargets" />
+         <groupaction menu="Rescue Targets" default="false" shortcut="Ctrl+C" execute="rescueTargets" />
 		</groupactions>
 		<groupaction menu="Resolve Force Struggle" default="false" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
       <groupaction menu="Manually Grab The Edge" default="false" shortcut="Alt+E" execute="gainEdge" />
