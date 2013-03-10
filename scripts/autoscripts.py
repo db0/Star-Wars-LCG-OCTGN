@@ -76,7 +76,7 @@ def executePlayScripts(card, action):
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
          if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
-             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'DISCARD') or # whieInPlay cards only trigger when played or discarded
+             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'DISCARD' and action != 'THWART') or # whieInPlay cards only trigger when played or discarded
              (effectType.group(1) == 'onResolveFate' and action != 'RESOLVEFATE') or
              (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
              (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
@@ -113,7 +113,7 @@ def executePlayScripts(card, action):
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
             if effectType.group(1) == 'whileInPlay' or effectType.group(1) == 'whileScored':
                if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileInPlay affect in execute Automations is GainX scripts (for now).
-               if action == 'DISCARD': Removal = True
+               if action == 'DISCARD' or action == 'THWART': Removal = True
                else: Removal = False
             else: Removal = False
             targetC = findTarget(activeAutoscript,card = card)

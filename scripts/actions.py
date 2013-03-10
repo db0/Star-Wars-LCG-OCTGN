@@ -398,12 +398,12 @@ def gameSetup(group, x = 0, y = 0):
          return
       if not checkDeckLegality() and not confirm("We have found an illegal construction in your deck. Bypass?"): return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
-      Affiliation.moveToTable(playerside * -400, (playerside * 20) + yaxisMove(Affiliation))
+      Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
                                                # We also create it if there's only one player for debug purposes
          try:                                             
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
-            BotD.moveToTable(playerside * -400, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+            BotD.moveToTable((playerside * -380) - 25, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
             setGlobalVariable('Balance of the Force', str(BotD._id))
          except: notify("!!!ERROR!!! {} - In gameSetup()\n!!! PLEASE INSTALL MARKERS SET FILE !!!".format(me))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
@@ -789,8 +789,8 @@ def discard(card, x = 0, y = 0, silent = False):
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
-   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor: 
-      if debugVerbosity >= 2: notify("### Executing play scripts. Highlight was {}".format(card.highlight))
+   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor and card.Type != "Objective":  # Objectives are thwarted, not discarded
+      if debugVerbosity >= 2: notify("### Executing discard scripts. Highlight was {}".format(card.highlight))
       executePlayScripts(card, 'DISCARD')
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)
