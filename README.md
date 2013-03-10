@@ -24,6 +24,10 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.0.17
+
+* Added manual card flip for people who play without automations
+
 ### 1.0.16
 
 * Fixed Darth Vader's ability triggering but doing nothing

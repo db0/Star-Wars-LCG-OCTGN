@@ -1,7 +1,7 @@
 1.0.16||
 ======New Version Information======
 
-FVarious bugfixes, with most important the Take Them Prisoner python error
+Various bugfixes, with most important the Take Them Prisoner python error
 
 ===============================
 ||
