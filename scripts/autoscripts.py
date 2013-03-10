@@ -211,7 +211,6 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
       whisper("You cannot use egde or unpaid card abilities. Aborting")
       return
    if debugVerbosity >= 4: notify("+++ Not an inactive card. Checking Stored_Autoactions{}...")
-   if debugVerbosity >= 4: notify("+++ Card not unrezzed. Checking for automations switch...")
    if not Automations['Play']:
       whisper("Play automations have been disabled. Aborting!")
       return
@@ -229,7 +228,7 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
    if len(Autoscripts) == 0:
       whisper("This card has no automated abilities. Aborting")
       return 
-   if not paidAbility: # If the player has already paid the ability of this card, we skip all the checking and go straight to the autoscripts
+   if not paidAbility and not selectedAbility.has_key(card._id): # If the player has already paid the ability of this card, we skip all the checking and go straight to the autoscripts
       if debugVerbosity >= 2: notify("### Ability not paid.")
       if debugVerbosity >= 4: notify("+++ All checks done!. Starting Choice Parse...")
       ### Checking if card has multiple autoscript options and providing choice to player.

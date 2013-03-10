@@ -70,6 +70,7 @@
          <cardaction menu="Clear commitment to the force" default="false" execute="clearCommit" />
          <cardaction menu="Rescue" default="false" execute="rescue" />
          <cardaction menu="Clear of captured card variables" default="false" execute="clearCaptures" />
+         <cardaction menu="Cancel Paid Ability" default="false" execute="cancelPaidAbility" />
       </cardactions>
 		<groupactions menu="Manual Targeted Actions">
          <groupaction menu="Capture Target" default="false" shortcut="Ctrl+C" execute="capture" />
