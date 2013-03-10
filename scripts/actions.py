@@ -254,7 +254,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          BotD.switchImage
          x,y = Affiliation.position
          if debugVerbosity >= 2: notify("### My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
-         BotD.moveToTable(x - (playerside * 70), y)
+         BotD.moveToTable(x, y + (playerside * 75))
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
    elif myStruggleTotal - opponentStruggleTotal < 0: 
@@ -403,7 +403,7 @@ def gameSetup(group, x = 0, y = 0):
                                                # We also create it if there's only one player for debug purposes
          try:                                             
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
-            BotD.moveToTable(playerside * -470, (playerside * 20) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+            BotD.moveToTable(playerside * -400, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
             setGlobalVariable('Balance of the Force', str(BotD._id))
          except: notify("!!!ERROR!!! {} - In gameSetup()\n!!! PLEASE INSTALL MARKERS SET FILE !!!".format(me))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.

@@ -42,7 +42,7 @@
       <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
       <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
 	</card>
-	<table name="Table" visibility="undefined" ordered="false" width="800" height="700" background="r3">
+	<table name="Table" visibility="undefined" ordered="false" width="800" height="450" background="r3">
       <groupactions menu="Game...">
          <groupaction menu="Set up" default="false" shortcut="Ctrl+Shift+S" execute="gameSetup" />
          <groupaction menu="Concede" default="false" shortcut="Ctrl+Shift+C" execute="concede" />
@@ -119,6 +119,7 @@
       <groupaction menu="Inspect" default="false" shortcut="Ctrl+I" execute="inspectTargetCard" />
 		<cardaction menu="Send to bottom of deck (random order)" default="false" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		<cardaction menu="Discard Card/Thwart Objective" default="false" shortcut="Del" execute="discard" />
+      <!--	<cardaction menu="Show Card Position" default="false" shortcut="Ctrl+Shift+X" execute="ShowPosC" /> -->
 	</table>
 	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
       <globalvariable name="Side" value="" /> 

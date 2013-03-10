@@ -852,7 +852,7 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
          if debugVerbosity >= 2: notify('### about to pop information') # debug
          information('The dummy card just created is meant for your opponent. Please right-click on it and select "Pass control to {}"'.format(targetPL))
       if debugVerbosity >= 2: notify('### Finished warnings. About to announce.') # debug
-      dummyCard = table.create(card.model, -680, 200 * playerside, 1) # This will create a fake card like the one we just created.
+      dummyCard = table.create(card.model, playerside * 400, 100 * playerside, 1) # This will create a fake card like the one we just created.
       dummyCard.highlight = DummyColor
    if debugVerbosity >= 2: notify('### About to move to discard pile if needed') # debug
    if not re.search(r'doNotDiscard',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
