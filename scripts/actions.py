@@ -720,6 +720,7 @@ def discard(card, x = 0, y = 0, silent = False):
             notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
+               notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
          executePlayScripts(card, 'THWART')
          global reversePlayerChk
          reversePlayerChk = True
@@ -744,6 +745,7 @@ def discard(card, x = 0, y = 0, silent = False):
             notify("{} thwarts {}{}.".format(me,card,extraTXT))
             if opponent.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
+               notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
          executePlayScripts(card, 'THWART')
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
