@@ -482,8 +482,44 @@ def compareObjectiveTraits(Trait):
          topPlayers.append(player)
    if debugVerbosity >= 3: notify("<<< compareObjectiveTraits(). TopPlayers = {}".format([pl.name for pl in topPlayers])) #Debug
    return topPlayers
+
+def chkSuperiority(Autoscript, card):
+   if debugVerbosity >= 1: notify(">>> chkSuperiority()") #Debug
+   if debugVerbosity >= 3: notify("### AS = {}. Card = {}".format(Autoscript, card)) #Debug
+   haveSuperiority = True # The default is True, which means that if we do not have a relevant autoscript, it's always True
+   supRegex = re.search(r'-ifSuperiority([\w ]+)',Autoscript)
+   if supRegex:
+      supPlayers = compareObjectiveTraits(supRegex.group(1))
+      if len(supPlayers) > 1 or supPlayers[0] != card.controller: haveSuperiority = False # If the controller of the card requiring superiority does not have the most objectives with that trait, we return False
+   if debugVerbosity >= 3: notify("<<< chkSuperiority(). Return: {}".format(haveSuperiority)) #Debug
+   return haveSuperiority
    
-   
+def calcBonusEdge(card): # This function calculated how much Edge bonus a card is providing
+   if debugVerbosity >= 1: notify(">>> calcBonusEdge() with card: {}".format(card)) #Debug
+   Autoscripts = CardsAS.get(card.model,'').split('||')
+   if debugVerbosity >= 3: notify(" ### Split Autoscripts = {}".format(Autoscripts))
+   edgeBonus = 0
+   if len(Autoscripts) > 0:
+      for autoS in Autoscripts:
+         if debugVerbosity >= 3: notify("### regex searching on {}".format(autoS))
+         edgeRegex = re.search(r'Edge([0-9])Bonus',autoS)
+         if edgeRegex and debugVerbosity >= 4: notify("#### regex found") # Debug
+         if not edgeRegex: 
+            if debugVerbosity >= 4: notify("#### regex NOT found") # Debug
+            continue # If the script doesn't provide edge bonus, ignore it
+         if card.orientation != Rot90 and not re.search(r'-isDistributedEffect',autoS): continue  # If the card isn't participating or the script isn't providing a distributed benefit, ignore it
+         if not chkSuperiority(autoS, card): continue # If the script requires superiority but we don't have it, ignore it
+         # If the card does not provide an edge bonus, or is not participating, then we ignore it.
+         # -isDistributedEffect is a hacky modulator I've added to signify that it's not the card itself that provides the Edge, but other card on the table (e.g. see Hoth Operations)                                                                                                
+         if debugVerbosity >= 3: notify("### Found edgeRegex. Checking Values")
+         bonus = num(edgeRegex.group(1))
+         targetCards = findTarget(autoS,card = card)
+         multiplier = per(autoS, card, 0, targetCards)
+         if debugVerbosity >= 2: notify("### Multiplier = {}. Bonus = {}".format(multiplier, bonus)) #Debug
+         edgeBonus += (multiplier * bonus)
+   if edgeBonus: notify("-- {} adds {} force to the edge total".format(card,edgeBonus))
+   return edgeBonus
+
 def checkDeckLegality():
    if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
    mute()
@@ -776,7 +812,10 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000244", 
+   testcards = ["ff4fb461-8060-457a-9c16-000000000244",
+                "ff4fb461-8060-457a-9c16-000000000235",
+                "ff4fb461-8060-457a-9c16-000000000238",
+                "ff4fb461-8060-457a-9c16-000000000238",
                 "ff4fb461-8060-457a-9c16-000000000229"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):

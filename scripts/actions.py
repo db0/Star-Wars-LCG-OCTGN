@@ -1107,11 +1107,11 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if card.owner == me: myEdgeTotal += num(card.Force)
             else: opponentEdgeTotal += num(card.Force)
             if card.highlight == FateColor: notify(":::WARNING::: {} has not yet resolved their {}".format(card.owner,card))
-         bonusEdge = re.search(r'Edge([0-9])Bonus',CardsAS.get(card.model,''))
-         if bonusEdge and card.orientation == Rot90:
+         bonusEdge = calcBonusEdge(card)
+         if bonusEdge: # Card with edge need to be participating.
             if debugVerbosity >= 2: notify("### Found card with Bonus edge") #Debug
-            if card.controller == me: myEdgeTotal += num(bonusEdge.group(1))
-            else: opponentEdgeTotal += num(bonusEdge.group(1))
+            if card.controller == me: myEdgeTotal += bonusEdge
+            else: opponentEdgeTotal += bonusEdge
       currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find out what the current objective as we can use it to figure out if we're an attacker or defender.
       if myEdgeTotal > opponentEdgeTotal:
          if debugVerbosity >= 2: notify("### I've got the edge") #Debug
@@ -1122,7 +1122,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
             if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
-         elif not forceCalc: whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
+         elif not forceCalc: delayed_whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          if debugVerbosity >= 2: notify("### Opponent has the edge") #Debug
          oppAffiliation = getSpecial('Affiliation',opponent)

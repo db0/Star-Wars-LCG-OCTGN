@@ -1850,7 +1850,7 @@ Hoth Operations
 -----
 ff4fb461-8060-457a-9c16-000000000235
 -----
-
+whileInPlay:Edge1Bonus-perEverySpeeder-AutoTargeted-atSpeeder-targetMine-isParticipating-isDistributedEffect-ifSuperiorityHoth
 +++++
 
 .....
