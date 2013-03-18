@@ -87,6 +87,7 @@ regexHooks = dict( # A dictionary which holds the regex that then trigger each c
                   DiscardX =           re.compile(r'\bDiscard[0-9]+'),
                   TokensX =            re.compile(r'\b(Put|Remove|Refill|Use|Infect|Deal)([0-9]+)'),
                   DrawX =              re.compile(r'\bDraw([0-9]+)'),
+                  RetrieveX =          re.compile(r'\bRetrieve([0-9]+)'),
                   ShuffleX =           re.compile(r'\bShuffle([A-Za-z& ]+)'),
                   ModifyStatus =       re.compile(r'(Rescue|Destroy|Return|Exile|Capture|SendToBottom)'),
                   SimplyAnnounce =     re.compile(r'\bSimplyAnnounce'),

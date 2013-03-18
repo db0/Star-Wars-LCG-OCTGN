@@ -750,10 +750,11 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-#   for idx in range(len(testcards)):
-#      test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)
-#      storeProperties(test)
-#      if test.Type == 'ICE' or test.Type == 'Agenda' or test.Type == 'Asset': test.isFaceUp = False
+   testcards = ["ff4fb461-8060-457a-9c16-000000000223", 
+                "ff4fb461-8060-457a-9c16-000000000258"] 
+   if confirm("Spawn Test Cards?"):
+      for idx in range(len(testcards)):
+         test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)
 
 def flipcard(card,x,y):
    card.switchImage
