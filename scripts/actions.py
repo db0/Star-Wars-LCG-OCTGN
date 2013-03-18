@@ -524,7 +524,7 @@ def strike(card, x = 0, y = 0):
    notify("{} strikes with {} for{}.".format(me,card,AnnounceText))
    if debugVerbosity >= 3: notify("<<< strike()") #Debug
    
-def participate(card, x = 0, y = 0):
+def participate(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
    mute()
    if card.Type != 'Unit': 
@@ -540,11 +540,11 @@ def participate(card, x = 0, y = 0):
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))      
    if currentTarget.controller == opponent:
       if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
-      notify("{} selects {} as an attacker.".format(me, card))
+      if not silent: notify("{} selects {} as an attacker.".format(me, card))
       executePlayScripts(card, 'ATTACK')   
    else:
       if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
-      notify("{} selects {} as a defender.".format(me, card))
+      if not silent: notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
    executePlayScripts(card, 'PARTICIPATION')
@@ -552,10 +552,10 @@ def participate(card, x = 0, y = 0):
    clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
-def clearParticipation(card,x=0,y=0): # Clears a unit from participating in a battle, to undo mistakes
+def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from participating in a battle, to undo mistakes
    if card.orientation == Rot90: 
       card.orientation = Rot0
-      notify("{} takes {} out of the engagement.".format(me, card))
+      if not silent: notify("{} takes {} out of the engagement.".format(me, card))
    else: whisper(":::ERROR::: Unit is not currently participating in battle")
 
 def cancelPaidAbility(card,x=0,y=0):

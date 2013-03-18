@@ -816,7 +816,7 @@ def TrialError(group, x=0, y=0): # Debugging
                 "ff4fb461-8060-457a-9c16-000000000235",
                 "ff4fb461-8060-457a-9c16-000000000238",
                 "ff4fb461-8060-457a-9c16-000000000238",
-                "ff4fb461-8060-457a-9c16-000000000229"] 
+                "ff4fb461-8060-457a-9c16-000000000242"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):
          test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)

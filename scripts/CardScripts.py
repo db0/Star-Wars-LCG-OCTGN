@@ -1858,7 +1858,7 @@ Hoth Survival Gear
 -----
 ff4fb461-8060-457a-9c16-000000000239
 -----
-
+Placement:Character_and_Unit
 +++++
 
 .....
@@ -1868,7 +1868,7 @@ ff4fb461-8060-457a-9c16-000000000242
 -----
 
 +++++
-
+R0:SacrificeMyself$$DisengageTarget-Targeted-atUnit_and_nonVehicle$$Put1Damage-Targeted-atUnit_and_nonVehicle
 .....
 Icetromper
 -----
@@ -1876,7 +1876,7 @@ ff4fb461-8060-457a-9c16-000000000243
 -----
 
 +++++
-
+R0:SacrificeMyself$$DisengageTarget-Targeted-atUnit_and_nonVehicle$$Put1Damage-Targeted-atUnit_and_nonVehicle
 .....
 Imperial Suppression
 -----

@@ -916,7 +916,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if targetCards is None: targetCards = []
    targetCardlist = '' # A text field holding which cards are going to get tokens.
    extraTXT = ''
-   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|SendToBottom|Commit|Uncommit)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
+   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|SendToBottom|Commit|Uncommit|Engage|Disengage|Sacrifice)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
@@ -936,7 +936,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          if debugVerbosity >= 3: notify("### Sending Single card to the bottom")   
          sendToBottom([targetCards[0]])
    for targetCard in targetCards:
-      if action.group(1) == 'Destroy':
+      if action.group(1) == 'Destroy' or action.group(1) == 'Sacrifice':
          trashResult = discard(targetCard, silent = True)
          if trashResult == 'ABORT': return 'ABORT'
          elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
@@ -945,6 +945,8 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          targetCard.moveTo(targetCard.owner.hand)
          extraTXT = " to their owner's hand"
       elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
+      elif action.group(1) == 'Engage': participate(targetCard, silent = True)
+      elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
       elif action.group(1) == 'Rescue':
          if card.isFaceUp: 
             notify(":::ERROR::: Target Card was not captured!")
