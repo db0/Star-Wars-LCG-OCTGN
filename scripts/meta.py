@@ -305,6 +305,7 @@ def calculateCombatIcons(card = None, CIString = None):
       for autoS in autoSscripts:
          if not chkDummy(autoS, c): continue
          if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
+         if not checkOriginatorRestrictions(autoS,c): continue
          if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
             increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',autoS)
             if increaseRegex:
@@ -750,7 +751,7 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000223", 
+   testcards = ["ff4fb461-8060-457a-9c16-000000000248", 
                 "ff4fb461-8060-457a-9c16-000000000258"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):

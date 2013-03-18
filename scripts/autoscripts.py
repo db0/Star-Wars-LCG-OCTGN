@@ -1533,6 +1533,50 @@ def checkSpecialRestrictions(Autoscript,card):
       if propertyReq.group(2) == 'gt' and num(card.properties[propertyReq.group(1)]) <= num(propertyReq.group(3)): validCard = False
    if debugVerbosity >= 1: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
+
+def checkOriginatorRestrictions(Autoscript,card):
+# Check the autoscript for special restrictions on the originator of a specific effect. 
+# If the card does not validate all the restrictions included in the autoscript, we reject it
+# For example Darth Vader 41/2 requires that he is attacking before his effect takes place. In this case we'd check that he is currently attacking and return True is he is
+   if debugVerbosity >= 1: notify(">>> checkOriginatorRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
+   if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
+   validCard = True
+   if re.search(r'ifOrigCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
+   if re.search(r'ifOrigParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
+   if re.search(r'ifOrigNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
+   if re.search(r'ifOrigAttacking',Autoscript) or re.search(r'ifOrigDefending',Autoscript):
+      EngagedObjective = getGlobalVariable('Engaged Objective')
+      if EngagedObjective == 'None': validCard = False
+      else:
+         currentTarget = Card(num(EngagedObjective))
+         if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
+         elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
+   if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
+   if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
+   markerName = re.search(r'-ifOrigHasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
+   if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
+      if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
+      if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
+      marker = findMarker(card, markerName.group(1))
+      if not marker: validCard = False
+   markerNeg = re.search(r'-ifOrigHasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
+   if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
+      if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug
+      if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
+      marker = findMarker(card, markerNeg.group(1))
+      if marker: validCard = False
+   elif debugVerbosity >= 4: notify("### No marker restrictions.")
+   propertyReq = re.search(r'-ifOrigHasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
+   # Checking if the target needs to have a property at a certiain value. 
+   # eq = equal, le = less than/equal, ge = greater than/equal, lt = less than, gt = greater than.
+   if propertyReq:
+      if propertyReq.group(2) == 'eq' and card.properties[propertyReq.group(1)] != propertyReq.group(3): validCard = False
+      if propertyReq.group(2) == 'le' and num(card.properties[propertyReq.group(1)]) > num(propertyReq.group(3)): validCard = False
+      if propertyReq.group(2) == 'ge' and num(card.properties[propertyReq.group(1)]) < num(propertyReq.group(3)): validCard = False
+      if propertyReq.group(2) == 'lt' and num(card.properties[propertyReq.group(1)]) >= num(propertyReq.group(3)): validCard = False
+      if propertyReq.group(2) == 'gt' and num(card.properties[propertyReq.group(1)]) <= num(propertyReq.group(3)): validCard = False
+   if debugVerbosity >= 1: notify("<<< checkOriginatorRestrictions() with return {}".format(validCard)) #Debug
+   return validCard
    
 def makeChoiceListfromCardList(cardList):
 # A function that returns a list of strings suitable for a choice menu, out of a list of cards

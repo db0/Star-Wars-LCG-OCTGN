@@ -1802,7 +1802,7 @@ Calm
 -----
 ff4fb461-8060-457a-9c16-000000000227
 -----
-
+onPlay:Remove999Focus-Targeted-atCharacter
 +++++
 
 .....
@@ -1818,7 +1818,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000248
 -----
-
+whileInPlay:IncreaseBD:1-byMe-forUnit-isDefending-ifOrigDefending-ifOrigParticipating
 +++++
 
 .....
