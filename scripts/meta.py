@@ -190,7 +190,8 @@ def placeCard(card):
       if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
       if Automations['Placement']:
          if card.Type == 'Unit': # For now we only place Units
-            unitAmount = eval(getGlobalVariable('Existing Units'))
+            try: unitAmount = eval(getGlobalVariable('Existing Units'))
+            except: notify("!!! ERROR !!! in getting unitAmount")
             if debugVerbosity >= 2: notify("### my unitAmount is: {}.".format(unitAmount[me.name])) #Debug
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
             if debugVerbosity >= 2: notify("### my freePositions is: {}.".format(freePositions)) #Debug
@@ -751,8 +752,8 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000248", 
-                "ff4fb461-8060-457a-9c16-000000000258"] 
+   testcards = ["ff4fb461-8060-457a-9c16-000000000244", 
+                "ff4fb461-8060-457a-9c16-000000000229"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):
          test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)

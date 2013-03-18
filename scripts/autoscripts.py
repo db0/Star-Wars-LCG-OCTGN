@@ -916,7 +916,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if targetCards is None: targetCards = []
    targetCardlist = '' # A text field holding which cards are going to get tokens.
    extraTXT = ''
-   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|SendToBottom)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
+   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|SendToBottom|Commit|Uncommit)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
@@ -952,6 +952,10 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          else:
             removeCapturedCard(card) 
             targetCard.moveTo(targetCard.owner.hand)
+      elif action.group(1) == 'Uncommit':
+         if targetCard.Side == 'Light': commitColor = LightForceColor
+         else: commitColor = DarkForceColor
+         if targetCard.highlight == commitColor: targetCard.highlight = None
       else: return 'ABORT'
       if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
    if debugVerbosity >= 2: notify("### Finished Processing Modifications. About to announce")
