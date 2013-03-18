@@ -468,7 +468,7 @@ ff4fb461-8060-457a-9c16-000000000097
 -----
 
 +++++
-
+R0:Put1Damage$$Retrieve1Card-typeEvent_and_Sith-fromDiscard
 .....
 Emperor's Royal Guard
 -----
@@ -1794,7 +1794,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000258
 -----
-
+onResolveFate:Deal1Damage-Targeted-atObjective-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective-targetMine-noTargetingError
 +++++
 
 .....

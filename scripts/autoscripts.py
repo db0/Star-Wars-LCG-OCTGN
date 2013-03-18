@@ -1368,7 +1368,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                   foundTargets = foundTargetsTargeted # This will also work if the player has targeted more cards than they need. The later choice will be simply between those cards.
             else: # If we do not want to choose, then it's probably a bad script. In any case we make sure that the player has targeted something (as the alternative it giving them a random choice of the valid targets)
                del foundTargets[:]
-         if len(foundTargets) == 0 and not re.search(r'(?<!Demi)AutoTargeted', Autoscript): 
+         if len(foundTargets) == 0 and not re.search(r'(?<!Demi)AutoTargeted', Autoscript) and not re.search(r'noTargetingError', Autoscript): 
             targetsText = ''
             mergedList = []
             for posRestrictions in targetGroups: 
