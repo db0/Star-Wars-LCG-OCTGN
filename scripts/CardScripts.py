@@ -1842,7 +1842,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000228
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....

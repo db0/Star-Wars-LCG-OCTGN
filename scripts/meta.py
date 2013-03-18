@@ -460,6 +460,30 @@ def haveForce():
    if debugVerbosity >= 4: notify("<<< chkForce() with return:{}".format(myForce)) #Debug
    return myForce
 
+def compareObjectiveTraits(Trait):
+   if debugVerbosity >= 1: notify(">>> compareObjectiveTraits(). Checking Trait: {}".format(Trait)) #Debug
+   # This function will go through all objectives on the table, count how many of them contain a specific trait
+   # and return a list of the player(s) who have the most objectives with that trait.
+   playerTraitCounts = {}
+   for player in players:
+      playerTraitCounts[player.name] = 0
+      Objectives = eval(player.getGlobalVariable('currentObjectives'))
+      if debugVerbosity >= 2: notify("### Checking {} Objectives".format(player.name)) # Debug
+      for obj in [Card(obj_ID) for obj_ID in Objectives]:
+         if re.search(r'{}'.format(Trait),obj.Traits): playerTraitCounts[player.name] += 1
+   if debugVerbosity >= 2: notify("### Comparing Objectives count") # Debug
+   topPlayers = []
+   currentMaxCount = 0
+   for player in players:
+      if playerTraitCounts[player.name] > currentMaxCount:
+         del topPlayers[:] # If that player has the highest current total, remove all other players from the list.
+         topPlayers.append(player)
+      elif playerTraitCounts[player.name] == currentMaxCount:
+         topPlayers.append(player)
+   if debugVerbosity >= 3: notify("<<< compareObjectiveTraits(). TopPlayers = {}".format([pl.name for pl in topPlayers])) #Debug
+   return topPlayers
+   
+   
 def checkDeckLegality():
    if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
    mute()

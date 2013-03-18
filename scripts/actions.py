@@ -325,29 +325,17 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          if debugVerbosity >= 4: notify("### Checking unopposed effects from {}".format(c)) # Debug
          if c.name == 'Echo Base Defense' and re.search(r'Hoth',currentTarget.Traits) and currentTarget.controller == c.controller:
             if debugVerbosity >= 2: notify("### Found Echo Base Defense")
-            LightHoth = 0
-            DarkHoth = 0
-            LightObjectives = eval(c.controller.getGlobalVariable('currentObjectives'))
-            if debugVerbosity >= 2: notify("### Checking Light Objectives") # Debug
-            for obj in [Card(obj_ID) for obj_ID in LightObjectives]:
-               if re.search(r'Hoth',obj.Traits): LightHoth += 1
-            if debugVerbosity >= 2: notify("### Figuring who is the Dark Side") # Debug            
-            if Side == 'Dark': DarkObjectives = eval(me.getGlobalVariable('currentObjectives'))
-            else: DarkObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
-            if debugVerbosity >= 2: notify("### Checking Dark Objectives") # Debug
-            for obj in [Card(obj_ID) for obj_ID in DarkObjectives]:
-               if re.search(r'Hoth',obj.Traits): DarkHoth += 1
-            if debugVerbosity >= 2: notify("### Checking Light ({}) VS Dark ({}) Hoth Objectives count".format(LightHoth,DarkHoth)) # Debug
-            if LightHoth > DarkHoth: 
+            HothControllers = compareObjectiveTraits('Hoth')
+            if len(HothControllers) == 1 and HothControllers[0] == c.controller:
                cancel = True
-               if debugVerbosity >= 1: notify("Unopposed prolly Happens because debugVerbosity >= 1")
-               else: notify(":> The engagement at {} finished unopposed, but the extra damage is prevented by {}'s Echo Base Defense.".format(currentTarget,c.controller))
+               notify(":> The engagement at {} finished unopposed, but the extra damage is prevented by {}'s Echo Base Defense.".format(currentTarget,c.controller))
                break
       if not cancel:
          if debugVerbosity >= 2: notify("### Unopposed Damage not cancelled")
          if currentTarget.controller == me: attacker = opponent
          else: attacker = me
-         notify(":> {} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective.".format(attacker,currentTarget))
+         if debugVerbosity >= 1: notify("Unopposed prolly Happens because debugVerbosity >= 1")
+         else: notify(":> {} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective.".format(attacker,currentTarget))
          currentTarget.markers[mdict['Damage']] += 1
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    for card in table:
