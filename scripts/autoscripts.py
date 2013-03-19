@@ -1287,7 +1287,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          notify("{} discards {} and Vader's TIE Advanced strike is boosted by {}".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
       else: 
          notify("{} discards {} and Vader's TIE Advanced strike is not boosted".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
-   elif card.name == "Yoda" and action == 'STRIKE':
+   elif (card.name == "Yoda" or card.name == "Rogue Three") and action == 'STRIKE':
       delayed_whisper("-- Calculating Yoda's Combat Icons. Please wait...")
       TokensX('Remove999Yoda enhancements:UD-isSilent', '', card)
       TokensX('Remove999Yoda enhancements:BD-isSilent', '', card)

@@ -1898,23 +1898,23 @@ Old Ben's Spirit
 -----
 ff4fb461-8060-457a-9c16-000000000224
 -----
-
+Placement:Character_and_Unit
 +++++
-
+R0:DestroyMyself$$Remove999Damage-AutoTargeted-onHost
 .....
 Old Ben's Spirit
 -----
 ff4fb461-8060-457a-9c16-000000000225
 -----
-
+Placement:Character_and_Unit
 +++++
-
+R0:DestroyMyself$$Remove999Damage-AutoTargeted-onHost
 .....
 Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000250
 -----
-
+onDiscard:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
 +++++
 
 .....
@@ -1922,7 +1922,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000251
 -----
-
+onDiscard:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
 +++++
 
 .....

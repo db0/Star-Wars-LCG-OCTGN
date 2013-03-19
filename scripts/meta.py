@@ -858,7 +858,7 @@ def TrialError(group, x=0, y=0): # Debugging
       chooseSide()
       #createStartingCards()
    testcards = ["ff4fb461-8060-457a-9c16-000000000247",
-                "ff4fb461-8060-457a-9c16-000000000235",
+                "ff4fb461-8060-457a-9c16-000000000250",
                 "ff4fb461-8060-457a-9c16-000000000238",
                 "ff4fb461-8060-457a-9c16-000000000238",
                 "ff4fb461-8060-457a-9c16-000000000242"] 
