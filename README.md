@@ -24,6 +24,13 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.1.0
+
+* **Desolation of Hoth** cards have been added and scripted. Grab the latest pack for the goodies.
+* General scripting improvements which should make future sets easier to script
+* Now cards which reduce/incease card costs will be checked when a card is first attempted to be played. 
+
+
 ### 1.0.17
 
 * Zoomed in on the table so that the cards are better seen without having to mouse over them. Re-arranged the placement to make this possible.
