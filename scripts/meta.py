@@ -204,7 +204,7 @@ def placeCard(card):
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
                loopsNR = unitAmount[me.name] / 6
-               loopback = 8 * loopsNR
+               loopback = 6 * loopsNR
                if unitAmount[me.name] == 0: xoffset = -25
                else: xoffset = (-playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)) - 25 # The -20 is an offset to help center the table.
                if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug

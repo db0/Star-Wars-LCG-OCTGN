@@ -156,6 +156,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
             notify(":::NOTICE::: {} skips his first card refresh".format(me))
             firstTurn = False
          else:
+            if debugVerbosity >= 2: notify("### Removing Focus Tokens")
             if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
                card.markers[mdict['Focus']] -=1
                if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
@@ -553,6 +554,7 @@ def participate(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 3: notify("<<< participate()") #Debug
 
 def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from participating in a battle, to undo mistakes
+   mute()
    if card.orientation == Rot90: 
       card.orientation = Rot0
       if not silent: notify("{} takes {} out of the engagement.".format(me, card))
