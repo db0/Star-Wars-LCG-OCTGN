@@ -644,7 +644,7 @@ ff4fb461-8060-457a-9c16-000000000158
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
+R0:Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Guardian of Peace
 -----
@@ -652,7 +652,7 @@ ff4fb461-8060-457a-9c16-000000000159
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
+R0:Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Han Solo
 -----
@@ -716,7 +716,7 @@ ff4fb461-8060-457a-9c16-000000000014
 -----
 
 +++++
-Put1Focus-isCost$$SimplyAnnounce{force the Dark Side to deal 1 damage to a unit they control.}
+R0:Put1Focus-isCost$$SimplyAnnounce{force the Dark Side to deal 1 damage to a unit they control.}
 .....
 Heavy Stormtrooper Squad
 -----
@@ -1156,7 +1156,7 @@ ff4fb461-8060-457a-9c16-000000000199
 -----
 whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-onlyforDummy-isSilent
 +++++
-DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
+R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
 Rebel Sympathizer
 -----
@@ -1164,7 +1164,7 @@ ff4fb461-8060-457a-9c16-000000000200
 -----
 whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-onlyforDummy-isSilent
 +++++
-DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
+R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
 Rebel Trooper
 -----
@@ -1930,7 +1930,7 @@ Rogue Three
 -----
 ff4fb461-8060-457a-9c16-000000000237
 -----
-
+onStrike:CustomScript
 +++++
 
 .....
@@ -1956,7 +1956,7 @@ ff4fb461-8060-457a-9c16-000000000233
 -----
 
 +++++
-
+R0:DestroyTarget-Targeted-atUnit
 .....
 Subzero Defenses
 -----
@@ -1964,7 +1964,7 @@ ff4fb461-8060-457a-9c16-000000000234
 -----
 
 +++++
-
+R0:DestroyTarget-Targeted-atUnit
 .....
 Succumb to the Cold&#33;
 -----
@@ -1978,7 +1978,7 @@ Succumb to the Cold&#33;
 -----
 ff4fb461-8060-457a-9c16-000000000257
 -----
-
+onPlay:Put1Focus-Targeted-atUnit-targetOpponents
 +++++
 
 .....
@@ -1986,7 +1986,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000240
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -1994,7 +1994,7 @@ The Desolation of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000245
 -----
-
+onPlay:RequestInt-Msg{How many damage do you want to move to the enemy unit or objective?}$$Remove1Damage-perX-Targeted-atObjective_and_Hoth-targetMine-isCost$$Put1Damage-perX-Targeted-atObjective_and_Hoth_or_Unit-targetOpponents
 +++++
 
 .....
@@ -2004,7 +2004,7 @@ ff4fb461-8060-457a-9c16-000000000241
 -----
 
 +++++
-
+R0:SacrificeTarget-Targeted-atUnit$$Remove1Damage-Targeted-atObjective_and_Hoth-targetMine
 .....
 Twist of Fate
 -----
@@ -2018,7 +2018,7 @@ Wampa
 -----
 ff4fb461-8060-457a-9c16-000000000254
 -----
-
+onPay:Reduce2CostPlay-perEveryHoth-AutoTargeted-atObjective_and_Hoth
 +++++
 
 .....
@@ -2026,7 +2026,7 @@ Wampa
 -----
 ff4fb461-8060-457a-9c16-000000000255
 -----
-
+onPay:Reduce2CostPlay-perEveryHoth-AutoTargeted-atObjective_and_Hoth
 +++++
 
 .....
@@ -2034,7 +2034,7 @@ Weapon Mastery
 -----
 ff4fb461-8060-457a-9c16-000000000226
 -----
-
+onPlay:RequestInt-Msg{How many enhancements does the target unit have?}$$Put1Weapon Mastery:UD-perX-Targeted-atCharacter$$CreateDummy-isSilent||afterConflict:Remove999Weapon Mastery:UD-AutoTargeted-hasMarker{Weapon Mastery:UD}-isSilent-onlyforDummy$$DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2042,15 +2042,15 @@ Wedge Antilles
 -----
 ff4fb461-8060-457a-9c16-000000000236
 -----
-
+onPlay:CustomScript
 +++++
-
+R0:Put1Focus-isCost$$Remove1Focus-AutoTargeted-onHost
 .....
 Wilderness Fighters
 -----
 ff4fb461-8060-457a-9c16-000000000230
 -----
-
+ExtraIcon:UD:1-perEveryHoth-AutoTargeted-atObjective_and_Hoth-targetMine
 +++++
 
 .....
@@ -2058,7 +2058,7 @@ Wilderness Fighters
 -----
 ff4fb461-8060-457a-9c16-000000000231
 -----
-
+ExtraIcon:UD:1-perEveryHoth-AutoTargeted-atObjective_and_Hoth-targetMine
 +++++
 
 .....
@@ -2066,7 +2066,7 @@ Wilderness Fighters
 -----
 ff4fb461-8060-457a-9c16-000000000232
 -----
-
+ExtraIcon:UD:1-perEveryHoth-AutoTargeted-atObjective_and_Hoth-targetMine
 +++++
 
 .....

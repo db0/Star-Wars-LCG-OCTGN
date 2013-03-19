@@ -464,7 +464,7 @@ def defaultAction(card, x = 0, y = 0):
    elif num(card.Resources) > 0 and findUnpaidCard(): 
       if debugVerbosity >= 2: notify("Card has resources") # Debug
       generate(card)
-   elif card.Type == 'Unit' and getGlobalVariable('Engaged Objective') != 'None':
+   elif card.Type == 'Unit' and getGlobalVariable('Engaged Objective') != 'None' and not findMarker(card, "isEnhancement"): 
       if debugVerbosity >= 2: notify("Card is Unit and it's engagement time") # Debug
       if card.orientation == Rot0: participate(card)
       else: strike(card)
@@ -668,7 +668,11 @@ def purchaseCard(card, x=0, y=0, manual = True):
    else: checkPaid = 'OK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
    if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
-      if card.Type == 'Event' and re.search(r'(?<!Auto)Targeted', CardsAS.get(card.model,'')) and findTarget(CardsAS.get(card.model,''),card = card) == []: return # If the script needs a target but we don't have any, abort.
+      if card.Type == 'Event':
+         Autoscripts = CardsAS.get(card.model,'').split('||')
+         if len(Autoscripts) > 0:
+            for autoS in Autoscripts:
+               if re.search(r'(?<!Auto)Targeted', autoS) and re.search(r'onPlay', autoS) and findTarget(autoS,card = card) == []: return # If the script needs a target but we don't have any, abort.
       card.highlight = None
       placeCard(card)
       for cMarkerKey in card.markers: 

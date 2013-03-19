@@ -302,10 +302,25 @@ def calculateCombatIcons(card = None, CIString = None):
          if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
          if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
          if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
+      Autoscripts = CardsAS.get(card.model,'').split('||')   
+      if len(Autoscripts) > 0:
+         for autoS in Autoscripts:
+            extraRegex = re.search(r'ExtraIcon:(UD|BD|Tactics):([0-9])',autoS)
+            if extraRegex:
+               if debugVerbosity >= 2: notify("### extraRegex = {}".format(extraRegex.groups())) #Debug
+               if not chkSuperiority(autoS, card): continue
+               if not checkSpecialRestrictions(autoS,card): continue
+               targetCards = findTarget(autoS,card = card)
+               multiplier = per(autoS, card, 0, targetCards)               
+               if extraRegex.group(1) == 'UD': Unit_Damage += num(extraRegex.group(2)) * multiplier
+               if extraRegex.group(1) == 'BD': Blast_Damage += num(extraRegex.group(2)) * multiplier
+               if extraRegex.group(1) == 'Tactics': Tactics += num(extraRegex.group(2)) * multiplier
+            else:
+               if debugVerbosity >= 2: notify("### No extra combat icons found in {}".format(card))
    if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
    for c in table:
-      autoSscripts = CardsAS.get(c.model,'').split('||')      
-      for autoS in autoSscripts:
+      Autoscripts = CardsAS.get(c.model,'').split('||')      
+      for autoS in Autoscripts:
          if not chkDummy(autoS, c): continue
          if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
          if not checkOriginatorRestrictions(autoS,c): continue
@@ -399,8 +414,12 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
          if debugVerbosity >= 2: #Debug
             if reductionSearch: notify("!!! self-reduce regex groups: {}".format(reductionSearch.groups()))
             else: notify("!!! No self-reduce regex Match!")
-         reduction += num(reductionSearch.group(1))
-         fullCost -= 1
+         count = num(reductionSearch.group(1))
+         targetCards = findTarget(autoS,card = card)
+         multiplier = per(autoS, card, 0, targetCards)
+         reduction += (count * multiplier)
+         fullCost -= (count * multiplier)
+         if count * multiplier > 0 and not dryRun: notify("-- {}'s full cost is reduced by {}".format(card,count * multiplier))
    if debugVerbosity >= 2: notify("### About to gather cards on the table")
    ### Now we check if any card on the table has an ability that reduces costs
    if not gatheredCardList: # A global variable that stores if we've scanned the tables for cards which reduce costs, so that we don't have to do it again.
@@ -859,9 +878,12 @@ def TrialError(group, x=0, y=0): # Debugging
       #createStartingCards()
    testcards = ["ff4fb461-8060-457a-9c16-000000000247",
                 "ff4fb461-8060-457a-9c16-000000000250",
-                "ff4fb461-8060-457a-9c16-000000000238",
-                "ff4fb461-8060-457a-9c16-000000000238",
-                "ff4fb461-8060-457a-9c16-000000000242"] 
+                "ff4fb461-8060-457a-9c16-000000000245",
+                "ff4fb461-8060-457a-9c16-000000000235",
+                "ff4fb461-8060-457a-9c16-000000000226",
+                "ff4fb461-8060-457a-9c16-000000000236",
+                "ff4fb461-8060-457a-9c16-000000000230",
+                "ff4fb461-8060-457a-9c16-000000000254"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):
          test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)

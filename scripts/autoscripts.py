@@ -43,6 +43,7 @@ def executePlayScripts(card, action):
              re.search(r'Placement', autoS) or 
              re.search(r'BonusIcons', autoS) or 
              re.search(r'Increase', autoS) or 
+             re.search(r'ExtraIcon', autoS) or 
              re.search(r'ConstantEffect', autoS) or 
              re.search(r'EngagedAsObjective', autoS) or 
              re.search(r'IgnoreAffiliationMatch', autoS) or 
@@ -1113,6 +1114,20 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          x,y = fighter[0].position
          card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
          card.sendToBack()
+         TokensX('Put1isEnhancement-isSilent', '', card)
+   elif card.name == 'Wedge Antilles' and action == 'PLAY':
+      if len(findTarget('AutoTargeted-atFighter_or_Speeder-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a Fighter or Speeder. Do so now?"):
+         fighter = findTarget('AutoTargeted-atFighter_or_Speeder-byMe-choose1')
+         if len(fighter) == 0: return
+         hostCards = eval(getGlobalVariable('Host Cards'))
+         hostCards[card._id] = fighter[0]._id
+         setGlobalVariable('Host Cards',str(hostCards))
+         cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == fighter[0]._id])
+         if debugVerbosity >= 2: notify("### About to move into position") #Debug
+         x,y = fighter[0].position
+         card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
+         card.sendToBack()
+         TokensX('Put1isEnhancement-isSilent', '', card)
    elif card.name == 'Cruel Interrogations' and action == 'PLAY':
       if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return
       while len(opponent.hand) == 0: 
@@ -1525,7 +1540,7 @@ def checkSpecialRestrictions(Autoscript,card):
          elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
-   markerName = re.search(r'-hasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
+   markerName = re.search(r'-hasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
@@ -1569,7 +1584,7 @@ def checkOriginatorRestrictions(Autoscript,card):
          elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
    if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
-   markerName = re.search(r'-ifOrigHasMarker{([\w ]+)}',Autoscript) # Checking if we need specific markers on the card.
+   markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
@@ -1711,7 +1726,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
             for perCard in targetCards:
                if debugVerbosity >= 2: notify("perCard = {}".format(perCard))
                if re.search(r'Marker',per.group(3)):
-                  markerName = re.search(r'Marker{([\w ]+)}',per.group(3)) # I don't understand why I had to make the curly brackets optional, but it seens atTurnStart/End completely eats them when it parses the CardsAS.get(card.model,'')
+                  markerName = re.search(r'Marker{([\w :]+)}',per.group(3)) # I don't understand why I had to make the curly brackets optional, but it seens atTurnStart/End completely eats them when it parses the CardsAS.get(card.model,'')
                   marker = findMarker(perCard, markerName.group(1))
                   if marker: multiplier += perCard.markers[marker]
                elif re.search(r'Property',per.group(3)):
@@ -1725,7 +1740,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
                                                                                               # Usually there is a count sent to this function (eg, number of favour purchased) with which to multiply the end result with
                                                                                               # and some cards may only work when a rival owns or does something.
          elif re.search(r'Marker',per.group(3)):
-            markerName = re.search(r'Marker{([\w ]+)}',per.group(3)) # I don't understand why I had to make the curly brackets optional, but it seens atTurnStart/End completely eats them when it parses the CardsAS.get(card.model,'')
+            markerName = re.search(r'Marker{([\w :]+)}',per.group(3)) # I don't understand why I had to make the curly brackets optional, but it seens atTurnStart/End completely eats them when it parses the CardsAS.get(card.model,'')
             marker = findMarker(card, markerName.group(1))
             if marker: multiplier = card.markers[marker]
             else: multiplier = 0
