@@ -383,7 +383,6 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
 # if dryRun is set to True, it means we're just checking what the total reduction is going to be and are not actually removing or adding any counters.
    type = action.capitalize()
    if debugVerbosity >= 1: notify(">>> reduceCost(). Action is: {}. FullCost = {}. dryRyn = {}".format(type,fullCost,dryRun)) #Debug
-   if fullCost == 0: return 0 # If there's no cost, there's no use checking the table.
    fullCost = abs(fullCost)
    reduction = 0
    costReducers = []
@@ -420,15 +419,13 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                if reductionSearch: notify("!!! Regex is {}".format(reductionSearch.groups()))
                else: notify("!!! No reduceCost regex Match!") 
             if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue 
+            if not checkOriginatorRestrictions(autoS,c): continue  
+            if not chkSuperiority(autoS, c): continue
             #if re.search(r'ifInstalled',autoS) and (card.group != table or card.highlight == RevealedColor): continue
             if reductionSearch: # If the above search matches (i.e. we have a card with reduction for Rez and a condition we continue to check if our card matches the condition)
                if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug         
                if reductionSearch.group(1) == 'Reduce': 
-                  if fullCost == 0:
-                     if debugVerbosity >= 2: notify("### No more cost to reduce with {}. Aborting".format(c))
-                     continue # If we don't have any more reduction to do, just break out.
-                  else:
-                     costReducers.append((c,reductionSearch,autoS)) # We put the costReducers in a different list, as we want it to be checked after all the increasers are checked
+                  costReducers.append((c,reductionSearch,autoS)) # We put the costReducers in a different list, as we want it to be checked after all the increasers are checked
                else:
                   costModifiers.append((c,reductionSearch,autoS)) # Cost increasing cards go into the main list we'll check in a bit, as we need to check them first. 
                                                                   # In each entry we store a tuple of the card object and the search result for its cost modifying abilities, so that we don't regex again later. 
@@ -482,6 +479,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                         fullCost += 1
             except: notify("!!!ERROR!!! ReduceXCost - Bad Script")
          else:
+            orig_reduction = reduction
             for iter in range(num(reductionSearch.group(2))):  # if there is a match, the total reduction for this card's cost is increased.
                if reductionSearch.group(1) == 'Reduce': 
                   if fullCost > 0: 
@@ -490,6 +488,10 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                else: 
                   reduction -= 1
                   fullCost += 1
+            if orig_reduction != reduction: # If the current card actually reduced or increased the cost, we want to announce it
+               if reduction > 0 and not dryRun: notify(" -- {} reduces cost by {}".format(c,reduction - orig_reduction))
+               elif reduction < 0 and dryRun: notify(" -- {} increases cost by {}".format(c,abs(reduction - orig_reduction)))
+   if debugVerbosity >= 3: notify("<<< reduceCost(). final reduction = {}".format(reduction)) #Debug
    return reduction
    
 def haveForce():
@@ -855,7 +857,7 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000252",
+   testcards = ["ff4fb461-8060-457a-9c16-000000000247",
                 "ff4fb461-8060-457a-9c16-000000000235",
                 "ff4fb461-8060-457a-9c16-000000000238",
                 "ff4fb461-8060-457a-9c16-000000000238",
