@@ -1882,7 +1882,7 @@ Imperial Suppression
 -----
 ff4fb461-8060-457a-9c16-000000000252
 -----
-
+onPlay:SimplyAnnounce{cancel the effects of the event card and return it to the top of its owners command deck}$$Put1Effects Cancelled-Targeted-atEvent-isReady-isSilent$$Put1Destination:Command Deck-Targeted-atEvent-isReady-isSilent
 +++++
 
 .....

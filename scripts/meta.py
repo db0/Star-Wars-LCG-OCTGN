@@ -812,7 +812,7 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000244",
+   testcards = ["ff4fb461-8060-457a-9c16-000000000252",
                 "ff4fb461-8060-457a-9c16-000000000235",
                 "ff4fb461-8060-457a-9c16-000000000238",
                 "ff4fb461-8060-457a-9c16-000000000238",

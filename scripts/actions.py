@@ -668,6 +668,7 @@ def purchaseCard(card, x=0, y=0, manual = True):
    else: checkPaid = 'OK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
    if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
+      if card.Type == 'Event' and re.search(r'(?<!Auto)Targeted', CardsAS.get(card.model,'')) and findTarget(CardsAS.get(card.model,''),card = card) == []: return # If the script needs a target but we don't have any, abort.
       card.highlight = None
       placeCard(card)
       for cMarkerKey in card.markers: 
@@ -686,7 +687,12 @@ def purchaseCard(card, x=0, y=0, manual = True):
       if card.Type == 'Event' and findMarker(card, "Effects Cancelled"): pass
       else: executePlayScripts(card, 'PLAY') 
       autoscriptOtherPlayers('CardPlayed',card)
-      if card.Type == "Event": card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.
+      if card.Type == "Event": 
+         if findMarker(card, "Destination:Command Deck"):
+            notify(" -- {} is moved to the top of {}'s command deck".format(card,card.owner))
+            rnd(1,100) # To allow any notifications to announce the card correctly first.
+            card.moveTo(card.owner.piles['Command Deck'])
+         else: card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
@@ -1032,16 +1038,18 @@ def play(card):
             extraTXT += " (Bypassing Uniqueness Restriction!)"
          else: return         
    card.moveToTable(0, 0 + yaxisMove(card))
-   if num(card.Cost) > 0 or card.Type == 'Event': # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
-      card.highlight = UnpaidColor                # We let everything else, as I'm not aware of cards which cancel units or enhancements coming into play.
+   if checkPaidResources(card) == 'NOK':
+      card.highlight = UnpaidColor 
       unpaidCard = card
       notify("{} attempts to play {}{}.".format(me, card,extraTXT))
-      if num(card.Cost) == 0 and card.Type == 'Event': readyEvent(card)
+      # if num(card.Cost) == 0 and card.Type == 'Event': readyEvent(card)
    else: 
-      placeCard(card)
-      notify("{} plays {}{}.".format(me, card,extraTXT))
-      executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
-      autoscriptOtherPlayers('CardPlayed',card)
+      if card.Type == 'Event': readyEvent(card) # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
+      else:
+         placeCard(card)
+         notify("{} plays {}{}.".format(me, card,extraTXT))
+         executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
+         autoscriptOtherPlayers('CardPlayed',card)
 
 def readyEvent(card):
 # This function prepares an event for being activated and puts the initial warning out if necessary.

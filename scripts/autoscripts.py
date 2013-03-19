@@ -181,6 +181,9 @@ def executePlayScripts(card, action):
                elif regexHooks['GameX'].search(passedScript): 
                   if debugVerbosity >= 2: notify("### in GameX hook")
                   if GameX(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
+               elif regexHooks['SimplyAnnounce'].search(passedScript): 
+                  if debugVerbosity >= 2: notify("### in SimplyAnnounce hook")
+                  if SimplyAnnounce(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
                elif debugVerbosity >= 2: notify("### No hooks found for autoscript")
             if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
             if debugVerbosity >= 2: notify("Loop for scipt {} finished".format(passedScript))
