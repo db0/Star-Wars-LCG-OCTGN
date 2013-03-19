@@ -150,12 +150,12 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    showCurrentPhase()
    if not Automations['Start/End-of-Turn/Phase']: return
    if not firstTurn: notify(":> {} refreshed all their cards".format(me))   
-   for card in table:
-      if card.controller == me and card.highlight != CapturedColor:
-         if firstTurn and Side == 'Light':
-            notify(":::NOTICE::: {} skips his first card refresh".format(me))
-            firstTurn = False
-         else:
+   if firstTurn and Side == 'Light':
+      notify(":::NOTICE::: {} skips his first card refresh".format(me))
+      firstTurn = False
+   else:
+      for card in table:
+         if card.controller == me and card.highlight != CapturedColor:
             if debugVerbosity >= 2: notify("### Removing Focus Tokens")
             if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
                card.markers[mdict['Focus']] -=1
