@@ -1,5 +1,7 @@
-1.1.0||
+1.1.1||
 ======New Version Information======
+
+UPDATE: v1.1.1 adds some important bugfixes.
 
 The Desolation of Hoth has begun!
 

@@ -24,6 +24,11 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.1.1
+
+* Light Side now really shouldn't refresh on their first turn.
+* Card placement on second row should now be fine.
+
 ### 1.1.0
 
 * **Desolation of Hoth** cards have been added and scripted. Grab the latest pack for the goodies.
