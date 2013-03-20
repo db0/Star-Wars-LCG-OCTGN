@@ -86,6 +86,7 @@ def storeObjective(card, GameSetup = False):
                Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
                Card(capturedC).sendToBack()
          #Objective.orientation = Rot90
+      rnd(1,100) # We put a delay here to allow the table to read the card autoscripts before we try to execute them.
       if debugVerbosity >= 2: notify("### About to set destroyedObjectives") #Debug      
       setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
       if debugVerbosity >= 2: notify("### About to execure play Scripts") #Debug      
@@ -192,8 +193,7 @@ def placeCard(card):
       if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
       if Automations['Placement']:
          if card.Type == 'Unit': # For now we only place Units
-            try: unitAmount = eval(getGlobalVariable('Existing Units'))
-            except: notify("!!! ERROR !!! in getting unitAmount")
+            unitAmount = eval(getGlobalVariable('Existing Units'))
             if debugVerbosity >= 2: notify("### my unitAmount is: {}.".format(unitAmount[me.name])) #Debug
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
             if debugVerbosity >= 2: notify("### my freePositions is: {}.".format(freePositions)) #Debug
@@ -203,6 +203,8 @@ def placeCard(card):
                card.moveToTable(positionC[0],positionC[1])
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
+               try: len(unitAmount) # Debug
+               except: notify("!!! ERROR !!! in getting unitAmount")
                loopsNR = unitAmount[me.name] / 6
                loopback = 6 * loopsNR
                if unitAmount[me.name] == 0: xoffset = -25

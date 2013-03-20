@@ -809,9 +809,11 @@ def discard(card, x = 0, y = 0, silent = False):
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
             freePositions.append(card.position)
             me.setGlobalVariable('freePositions',str(freePositions))
-         unitAmount = eval(getGlobalVariable('Existing Units'))
-         unitAmount[card.owner.name] -= 1
-         setGlobalVariable('Existing Units',str(unitAmount))
+         try:
+            unitAmount = eval(getGlobalVariable('Existing Units'))
+            unitAmount[card.owner.name] -= 1
+            setGlobalVariable('Existing Units',str(unitAmount))
+         except: notify("!!! ERROR !!! Retrieving 'Existing Units' shared var")
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
       autoscriptOtherPlayers('UnitDestroyed',card)
