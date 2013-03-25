@@ -826,7 +826,7 @@ In You Must Go
 -----
 ff4fb461-8060-457a-9c16-000000000137
 -----
-whileInPlay:Reduce1CostPlay-forEnhancement-onlyOnce
+whileInPlay:Reduce1CostPlay-forEnhancement-onlyOnce-byMe
 +++++
 
 .....
