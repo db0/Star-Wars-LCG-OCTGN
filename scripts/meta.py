@@ -439,7 +439,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
             if debugVerbosity >= 2: #Debug
                if reductionSearch: notify("!!! Regex is {}".format(reductionSearch.groups()))
                else: notify("!!! No reduceCost regex Match!") 
-            if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue 
+            if not chkDummy(autoS, c): continue   
             if not checkOriginatorRestrictions(autoS,c): continue  
             if not chkSuperiority(autoS, c): continue
             #if re.search(r'ifInstalled',autoS) and (card.group != table or card.highlight == RevealedColor): continue
