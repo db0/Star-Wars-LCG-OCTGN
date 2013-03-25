@@ -1194,9 +1194,7 @@ Red Two
 -----
 ff4fb461-8060-457a-9c16-000000000177
 -----
-<<<<<<< HEAD
 whileInPlay:Remove1Focus-perObjectiveThwarted
->>>>>>> b789a93d5e84e318908d0c0add0e1185b1a84ea1
 +++++
 
 .....
