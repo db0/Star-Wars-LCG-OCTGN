@@ -1194,7 +1194,7 @@ Red Two
 -----
 ff4fb461-8060-457a-9c16-000000000177
 -----
-onThwart:Remove1Focus
+whileInPlay:Remove1Focus-perObjectiveThwarted
 +++++
 
 .....
