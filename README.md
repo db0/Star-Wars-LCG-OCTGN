@@ -24,6 +24,11 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.1.2
+
+* Fixed Rebel Sympathizer reducing costs for both sides without being used at all
+* Fixed Red Two Automation
+
 ### 1.1.1
 
 * Light Side now really shouldn't refresh on their first turn.
