@@ -7,7 +7,7 @@
 		<script src="r103" />
 		<script src="r104" />
 		<script src="r105" />
-	</scripts>
+	</scripts> 
    <globalvariables> 
      <globalvariable name="gameEnded" value="False" /> 
      <globalvariable name="gameGUID" value="None" /> 
