@@ -161,8 +161,8 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
                card.markers[mdict['Focus']] -=1
                if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
                   card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
-         if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
-            card.markers[mdict['Shield']] = 0
+            if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
+               card.markers[mdict['Shield']] = 0
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
    destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
    for card_id in destroyedObjectives: 
