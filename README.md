@@ -24,6 +24,10 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.1.3
+
+* Refresh Phase should not clear opponent's shield tokens anymore.
+
 ### 1.1.2
 
 * Fixed Rebel Sympathizer reducing costs for both sides without being used at all
