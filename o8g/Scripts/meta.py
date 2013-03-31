@@ -152,9 +152,9 @@ def modifyDial(value):
       notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")      
 
 def resetAll(): # Clears all the global variables in order to start a new game.
-   if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
    global unpaidCard, edgeCount, edgeRevealed, firstTurn, debugVerbosity
    global Side, Affiliation, opponent, limitedPlayed
+   if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
    mute()
    Side = None
    Affiliation = None

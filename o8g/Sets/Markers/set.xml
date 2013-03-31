@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" name="Markers" id="71f6b540-64c6-4ddd-88f6-6cae1b41efc8" gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" gameVersion="1.1.0" version="1.1.0">
+	<markers>
+		<marker id="c93d4582-16a0-4e2d-9e63-71be20fbfa0c" name="Focus" />
+		<marker id="8559643f-7a15-4605-937d-0f39d59c9eda" name="Shield" />
+		<marker id="224b865d-173b-49fd-9aed-17df678259b0" name="Damage" />
+		<marker id="e00d997f-6e3c-40e0-b0cf-2b25a7c69cfa" name="Damage x 3" />
+		<marker id="2246648d-1581-4be9-9636-1b75129313a6" name="Permanent +1" />
+		<marker id="987d0d3f-0965-49ae-a96c-03394783d47a" name="Temporary +1" />
+		<marker id="21487438-e108-4f0c-a804-bd2a7f9a1ae5" name="Temporary -1" />
+		<marker id="960e830a-fc0c-46ed-89be-6ac8efb5da8b" name="Sith Resource" />
+		<marker id="28fc888e-527e-453e-b9ba-263d36ea94dd" name="Imperial Navy Resource" />
+		<marker id="5b96ecac-4570-43f3-81bd-c81be0b4b602" name="Scum &amp; Villainy Resource" />
+		<marker id="cd947edc-ae8b-4983-822a-88f8dc6a86f2" name="Rebel Alliance Resource" />
+		<marker id="ee546e3c-de9c-43d1-9ad4-943645644c72" name="Jedi Resource" />
+		<marker id="bc58905b-1f57-4297-9199-837c85a8ef0d" name="Smugglers &amp; Spies Resource" />
+		<marker id="fae80b84-88f5-46fe-9806-ed624265757f" name="Neutral" />
+		<marker id="6ca2a796-1023-4ccf-9946-2fe4d2252c0c" name="The Edge" />
+		<marker id="ea7418bc-6847-4e8a-9cc3-0230dc27d19b" name="Activated" />
+	</markers>
+	<cards>
+		<card id="e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc" name="Balance of the Force">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="BotD" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="8b5a86df-fb10-4e5e-9133-7dc03fbae22d" name="Cover">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Cover" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="3aaf2774-97e5-4886-8476-49980647ddc1" name="Force Phase Reference">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Help" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="d98d94d5-57ef-4616-875d-41224784cb96" name="Balance Phase Reference">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Help" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="1c13a82f-74f3-40fa-81f3-9b98523acfc3" name="Refresh Phase Reference">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Help" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="6b6c8bd3-07ea-4b21-9ced-07562c16e7d7" name="Draw Phase Reference">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Help" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="6d18a054-516f-4ce4-aee5-ec22bb1f300f" name="Deployment Phase Reference">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Help" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="987517ed-111d-4ee0-a8a0-66b9f553e0a8" name="Conflict Phase Reference">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Help" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+   </cards>
+</set>

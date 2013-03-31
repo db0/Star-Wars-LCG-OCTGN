@@ -53,6 +53,7 @@ def showCurrentPhase(): # Just say a nice notification about which phase you're 
    
 def nextPhase(group = table, x = 0, y = 0, setTo = None):  
 # Function to take you to the next phase. 
+   global firstTurn
    if debugVerbosity >= 1: notify(">>> nextPhase(){}".format(extraASDebug())) #Debug
    mute()
    if getGlobalVariable('Engaged Objective') != 'None':
@@ -96,7 +97,6 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          goToDeployment()
       elif phase == 5:
          if firstTurn and Side == 'Dark':
-            global firstTurn
             notify(":::NOTICE::: {} skips his first conflict phase".format(me))
             firstTurn = False
             goToForce()

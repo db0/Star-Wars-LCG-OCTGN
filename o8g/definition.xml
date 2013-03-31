@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<game xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+      name="Star Wars - The Card Game" 
+      id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+      octgnVersion="3.1.0.0" 
+      version="2.0.0" 
+      markersize="20"
+      tags="star_wars LCG quick duel"
+      description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy. While the light side player races to make tactical strikes against dark side objectives, the dark side player works to reinforce their position of command."
+      setsurl="http://octgn.gamersjudgement.com/viewtopic.php?f=52&amp;t=508"
+      gameurl="https://github.com/db0/Star-Wars-LCG-OCTGN"
+      authors="Db0"
+      iconurl="https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/box_art.jpg">
+	<scripts>
+      <script src="Scripts/actions.py" />
+      <script src="Scripts/constants.py" />
+      <script src="Scripts/autoscripts.py" />
+      <script src="Scripts/generic.py" />
+      <script src="Scripts/meta.py" />
+      <script src="Scripts/CardScripts.py" />
+	</scripts> 
+   <globalvariables> 
+     <globalvariable name="gameEnded" value="False" /> 
+     <globalvariable name="gameGUID" value="None" /> 
+     <globalvariable name="destroyedObjectives" value="[]" />      
+     <globalvariable name="Balance of the Force" value="" /> 
+     <globalvariable name="Engaged Objective" value="None" />      
+     <globalvariable name="Existing Units" value="{}" />      
+     <globalvariable name="Revealed Edge" value="{}" />      
+     <globalvariable name="Engagement Phase" value="0" />      
+     <globalvariable name="Captured Cards" value="{}" />      
+     <globalvariable name="Host Cards" value="{}" />      
+     <globalvariable name="Turn" value="0" />      
+   </globalvariables>
+	<card back="Card/back.png" front="Card/front.jpg" width="63" height="88" cornerRadius="2">
+		<property name="Block" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Block Number" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Type" type="String" hidden="False" ignoreText="False" textKind="Enum" />
+		<property name="Side" type="String" hidden="False" ignoreText="False" textKind="Enum" />
+		<property name="Affiliation" type="String" hidden="False" ignoreText="False" textKind="Enum" />
+		<property name="Cost" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Force" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Combat Icons" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Traits" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Edge Priority" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Damage Capacity" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Resources" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Text" type="String" hidden="False" ignoreText="False" textKind="Free" />
+		<property name="Flavor" type="String" hidden="False" ignoreText="True" textKind="Free" />
+		<property name="Instructions" type="String" hidden="False" ignoreText="True" textKind="Free" />
+		<property name="Number" type="String" hidden="False" ignoreText="False" textKind="Free" />
+
+      <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
+      <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
+	</card>
+	<table name="Table" visibility="undefined" ordered="False" width="800" height="450" background="Table/background1.png">
+      <groupactions menu="Game...">
+         <groupaction menu="Set up" default="False" shortcut="Ctrl+Shift+S" execute="gameSetup" />
+         <groupaction menu="Concede" default="False" shortcut="Ctrl+Shift+C" execute="concede" />
+         <groupaction menu="Switch Unicode ON/OFF" default="False" execute="switchUniCode" />
+         <groupaction menu="Switch Play Automation ON/OFF" default="False" execute="switchPlayAutomation" />  
+         <groupaction menu="Switch Phase Automation ON/OFF" default="False" execute="switchPhaseAutomation" />  
+         <groupaction menu="Switch Automatic Triggers ON/OFF" default="False" execute="switchTriggersAutomation" />  
+         <groupaction menu="Switch Start/End-of-Turn/Phase Automation ON/OFF" default="False" execute="switchStartEndAutomation" />  
+         <groupaction menu="Switch Custom Forms ON/OFF" default="False" execute="switchWinForms" />  
+         <groupaction menu="Switch Automatic Placement ON/OFF" default="False" execute="switchPlacement" />  
+         <groupaction menu="Re-Download all card automations" default="False" execute="fetchCardScripts" />
+         <groupaction menu="Debug" default="False" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
+      </groupactions>
+<!--		<cardaction menu="DebugTest" default="True" execute="flipcard" /> -->
+		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="True" shortcut="Ctrl+S" execute="defaultAction" />
+		<cardaction menu="Use card ability" default="False" shortcut="Ctrl+U" execute="useAbility" />
+		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
+		<groupaction menu="Attack Target Objective" default="False" shortcut="Ctrl+A" execute="engageTarget" />
+      <cardactions menu="Manual Card Actions">
+         <cardaction menu="Strike" default="False" execute="strike" />
+         <cardaction menu="Participate in current engagement" default="False" execute="participate" />
+         <cardaction menu="Clear Participation" default="False" execute="clearParticipation" />
+         <cardaction menu="Generate Resources" default="False" execute="generate" />
+         <cardaction menu="Complete Payment" default="False" execute="purchaseCard" />
+         <cardaction menu="Clear commitment to the force" default="False" execute="clearCommit" />
+         <cardaction menu="Rescue" default="False" execute="rescue" />
+         <cardaction menu="Clear of captured card variables" default="False" execute="clearCaptures" />
+         <cardaction menu="Cancel Paid Ability" default="False" execute="cancelPaidAbility" />
+         <cardaction menu="Flip Card Face Up" default="False" shortcut="Ctrl+Alt+F" execute="flipCard" />
+      </cardactions>
+		<groupactions menu="Manual Targeted Actions">
+         <groupaction menu="Capture Target" default="False" shortcut="Ctrl+C" execute="capture" />
+         <groupaction menu="Rescue Targets" default="False" shortcut="Ctrl+C" execute="rescueTargets" />
+		</groupactions>
+		<groupaction menu="Resolve Force Struggle" default="False" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
+      <groupaction menu="Manually Grab The Edge" default="False" shortcut="Alt+E" execute="gainEdge" />
+		<groupaction menu="Reveal Edge Cards/Resolve Edge Battle" default="False" shortcut="Ctrl+Shift+E" execute="revealEdge" />
+		<groupaction menu="Declare Pass" default="False" shortcut="Ctrl+Space" execute="declarePass" />
+		<groupaction menu="Move to Next phase." default="False" shortcut="Ctrl+Enter" execute="nextPhase" />
+		<groupactions menu="Phases...">
+			<groupaction menu="Jump to Balance Phase." default="False" shortcut="F1" execute="goToBalance" />
+			<groupaction menu="Jump to Refresh Phase." default="False" shortcut="F2" execute="goToRefresh" />
+			<groupaction menu="Jump to Draw Phase." default="False" shortcut="F3" execute="goToDraw" />
+			<groupaction menu="Jump to Deployment Phase." default="False" shortcut="F4" execute="goToDeployment" />
+			<groupaction menu="Jump to Conflict Phase." default="False" shortcut="F5" execute="goToConflict" />
+			<groupaction menu="Jump to Force Phase." default="False" shortcut="F6" execute="goToForce" />
+			<groupaction menu="Finish an Engagement." default="False" shortcut="F10" execute="finishEngagement" />
+      </groupactions>
+      <cardactions menu="Tokens...">
+         <cardaction menu="Add Damage counter" default="False" shortcut="Alt+D" execute="addDamage" />
+         <cardaction menu="Add Focus counter" default="False" shortcut="Alt+F" execute="addFocus" />
+         <cardaction menu="Add Shield counter" default="False" shortcut="Alt+S" execute="addShield" />
+         <cardaction menu="Add Markers" default="False" shortcut="Alt+M" batchExecute="addMarker" />
+         <cardaction menu="Remove Damage counter" default="False" shortcut="Alt+Shift+D" execute="subDamage" />
+         <cardaction menu="Remove Focus counter" default="False" shortcut="Alt+Shift+F" execute="subFocus" />
+         <cardaction menu="Remove Shield counter" default="False" shortcut="Alt+Shift+S" execute="subShield" />
+      </cardactions>
+      <groupactions menu="Tokens (Targeted)...">
+         <cardaction menu="Damage" default="False" shortcut="Alt+D" execute="addDamageTarget" />
+         <cardaction menu="Focus" default="False" shortcut="Alt+F" execute="addFocusTarget" />
+         <cardaction menu="Shield" default="False" shortcut="Alt+S" execute="addShieldTarget" />
+         <cardaction menu="Remove Damage" default="False" shortcut="Alt+Shift+D" execute="subDamageTarget" />
+         <cardaction menu="Remove Focus" default="False" shortcut="Alt+Shift+F" execute="subFocusTarget" />
+         <cardaction menu="Remove Shield" default="False" shortcut="Alt+Shift+S" execute="subShieldTarget" />
+      </groupactions>
+      <groupactions menu="Timing Structures References">
+         <groupaction menu="Balance Phase" default="False" execute="HELP_BalancePhase" />
+         <groupaction menu="Refresh Phase" default="False" execute="HELP_RefreshPhase" />
+         <groupaction menu="Draw Phase" default="False" execute="HELP_DrawPhase" />
+         <groupaction menu="Deployment Phase" default="False" execute="HELP_DeploymentPhase" />
+         <groupaction menu="Conflict Phase" default="False" execute="HELP_ConflictPhase" />
+         <groupaction menu="Force Phase" default="False" execute="HELP_ForcePhase" />
+      </groupactions>
+      <cardaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectCard" />
+      <groupaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectTargetCard" />
+		<cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />
+		<cardaction menu="Discard Card/Thwart Objective" default="False" shortcut="Del" execute="discard" />
+      <!--	<cardaction menu="Show Card Position" default="False" shortcut="Ctrl+Shift+X" execute="ShowPosC" /> -->
+	</table>
+	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
+      <globalvariable name="Side" value="" /> 
+      <globalvariable name="Phase" value="-1" /> 
+      <globalvariable name="specialCards" value="{}" /> 
+      <globalvariable name="currentObjectives" value="[]" /> 
+      <globalvariable name="gameVersion" value="" /> 
+      <globalvariable name="freePositions" value="[]" /> 
+		<hand name="Hand" visibility="me" ordered="False" width="63" height="88" icon="Groups/hand.png">
+			<cardaction menu="Play Card" default="True" execute="play" />
+			<cardaction menu="Place as Edge Card" default="False" shortcut="Ctrl+E" execute="playEdge" />
+			<groupaction menu="Mulligan" default="False" execute="mulligan" />
+			<groupaction menu="Refill Hand" default="False" shortcut="Ctrl+Shift+R" execute="refillHand" />
+			<groupaction menu="Random Discard" default="False" execute="handRandomDiscard" />
+         <cardaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectCard" />
+         <cardaction menu="Discard/Remove 4th Obejctive" default="False" shortcut="del" execute="handDiscard" />           
+         <cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />
+		</hand>
+		<group name="Command Deck" visibility="none" ordered="False" width="63" height="88" icon="Groups/library.png" collapsed="False">
+			<groupaction menu="Draw" default="True" shortcut="Ctrl+D" execute="drawCommand" />
+			<groupaction menu="Refill Hand" default="False" shortcut="Ctrl+Shift+R" execute="refillHand" />
+			<groupaction menu="Draw X..." default="False" shortcut="Ctrl+X" execute="drawMany" />
+			<groupaction menu="Draw from Bottom" default="False" shortcut="Ctrl+Alt+D" execute="drawBottom" />
+			<groupaction menu="Shuffle" default="False" execute="shuffle" />
+		</group>
+		<group name="Objective Deck" visibility="none" ordered="False" width="63" height="88" icon="Groups/sideboard.png" collapsed="False">
+			<groupaction menu="Draw and Play" default="True" shortcut="Ctrl+O" execute="drawObjective" />
+			<groupaction menu="Shuffle" default="False" execute="shuffle" />
+      </group>
+		<group name="Discard Pile" visibility="all" ordered="False" width="63" height="88" icon="Groups/graveyard.png" collapsed="False" />
+		<group name="Victory Pile" visibility="all" ordered="False" width="63" height="88" icon="Counters/DSOb.png" collapsed="True" />
+		<group name="Removed from Game" visibility="all" ordered="False" width="63" height="88" shortcut="F8" icon="Groups/removed.png" collapsed="True" />
+		<group name="ScriptingPile" visibility="me" ordered="False" width="63" height="88" shortcut="F8" icon="Groups/scripting.png" collapsed="True" />
+      <counter name="Reserves" default="6" reset="True" icon="Counters/Reserves.png" />
+		<counter name="Death Star Dial" default="0" reset="True" icon="Counters/Death_Star_Dial.png" />
+		<counter name="Objectives Destroyed" default="0" reset="True" icon="Counters/DSOb.png" />
+	</player>
+	<deck>
+		<section name="Affiliation" group="Hand" />     
+		<section name="Command Deck" group="Command Deck" />
+		<section name="Objective Deck" group="Objective Deck" />
+	</deck>
+</game>
