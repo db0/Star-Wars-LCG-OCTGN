@@ -10,7 +10,7 @@
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.&#xD;&#xD;&#xD;While the light side player races to make tactical strikes against dark side objectives, the dark side player works to reinforce their position of command.&#xd;&#xd;Automation rank: A&#xd;(This game definition contains significant automation to allow the game to play faster and with less mistakes.)"
       setsurl="http://octgn.gamersjudgement.com/viewtopic.php?f=52&amp;t=508"
       gameurl="https://github.com/db0/Star-Wars-LCG-OCTGN"
-      authors="bb0"
+      authors="Db0"
       iconurl="https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/box_art.jpg">
 	<scripts>
       <script src="Scripts/actions.py" />
