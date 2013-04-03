@@ -1228,7 +1228,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for cid in cardList: revealedCards += '{}, '.format(Card(cid))
       notify("{} activates the ability of their Superlaser Engineer and reveals the top 5 cards of their deck: {}".format(me,revealedCards))      
       for cid in cardList:
-         if (Card(cid).Type == 'Event' or Card(cid).Type == 'Enhancement') and num(Card(cid).Cost) >= 3:
+         if (Card(cid).Type == 'Event' or Card(cid).Type == 'Enhancement') and Card(cid).Affiliation == 'Imperial Navy' and num(Card(cid).Cost) >= 3:
             notify(":> {} moves {} to their hand".format(me,Card(cid)))
             Card(cid).moveTo(me.hand)
          else:
