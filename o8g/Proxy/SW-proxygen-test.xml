@@ -1,0 +1,26 @@
+<root>
+  <propertyset>
+    <name>Name</name>
+    <value>Force Lightning</value>
+  </propertyset>
+  <propertyset>
+    <name>Cost</name>
+    <value>3</value>
+  </propertyset>
+  <propertyset>
+    <name>Traits</name>
+    <value>Force-Control-Alter</value>
+  </propertyset>
+  <propertyset>
+    <name>Rules</name>
+    <value>Action: Destroy a target exhausted unit.</value>
+  </propertyset>
+  <propertyset>
+    <name>Type</name>
+    <value>Event</value>
+  </propertyset>
+  <propertyset>
+    <name>Affiliation</name>
+    <value>Sith</value>
+  </propertyset>
+</root>
