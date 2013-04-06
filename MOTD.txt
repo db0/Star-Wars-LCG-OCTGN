@@ -1,8 +1,9 @@
 =====Message of the Day======
 
-Important Announcement: OCTGN is getting a significant update in 1 week which will break all existing game definitions, including this one.
+Important Announcement: I need your help to finalize this OCTGN plugin for the next version
 
-In case the this game defintition is not yet available, please be patient while I'm working on the convertion...
+Please take a look at the linked thread. Would you like to open a browser window now?
 
 =============================
-
+&&
+http://boardgamegeek.com/thread/958099/octgn-ok-people-i-need-some-help
