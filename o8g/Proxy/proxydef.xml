@@ -24,9 +24,18 @@
            <location x="60" y="250" />
            <text color="#000000" size="11" />
          </block>
+   <!-- Resources Block-->
+         <block type="overlay" id="resources_box" src="Proxy/Elements/Resources.png">         
+           <location x="265" y="195" />
+         </block>  
+         <block type="text" id="resources_count">
+           <location x="275" y="205" />
+           <text color="#FFFFFF" size="30" />
+           <border color="#000000" size="3" />
+         </block>
    <!-- Generic Blocks-->
          <block type="text" id="cost">
-           <location x="19" y="22" />
+           <location x="19" y="19" />
            <text color="#FFFFFF" size="20" />
            <border color="#FFFFFF" size="1" />
          </block>
@@ -167,6 +176,7 @@
          <overlayblocks>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
+            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -186,6 +196,9 @@
             </link>
             <link block="unit_text" separator=" ">
                <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
             </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
@@ -206,6 +219,7 @@
          <overlayblocks>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
+            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -225,6 +239,9 @@
             </link>
             <link block="unit_text" separator=" ">
                <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
             </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
