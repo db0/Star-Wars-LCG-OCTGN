@@ -72,6 +72,11 @@
            <location x="234" y="422" />
            <text color="#000000" size="11" />
          </block>
+         <block type="text" id="unit_health">
+           <location x="18" y="411" />
+           <text color="#FFFFFF" size="19" />
+           <border color="#FFFFFF" size="2" />
+         </block>
          <block type="text" id="unit_block_number">
            <location x="288" y="422" />
            <text color="#000000" size="13" />
@@ -181,6 +186,48 @@
             </link>
             <link block="unit_text" separator=" ">
                <property name="Text"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="unit_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Units/Unit_Imperial.png">
+         <matches>
+            <match name="Affiliation" value="Imperial Navy" />
+            <match name="Type" value="Unit" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="combat_icons_frame" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="combat_icons" separator=" ">
+               <property name="Combat Icons"  />
+            </link>
+            <link block="unit_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="unit_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="unit_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
