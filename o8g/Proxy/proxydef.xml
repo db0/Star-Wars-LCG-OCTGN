@@ -9,10 +9,10 @@
          </block>
    <!-- Force Sphere Block-->
          <block type="overlay" id="force_sphere" src="Proxy/Elements/Force_Sphere.png">         
-           <location x="20" y="65" />
+           <location x="20" y="90" />
          </block>  
          <block type="text" id="force_count">
-           <location x="26" y="69" />
+           <location x="26" y="94" />
            <text color="#FFFFFF" size="13" />
            <border color="#000000" size="2" />
          </block>
@@ -90,6 +90,29 @@
            <location x="288" y="422" />
            <text color="#000000" size="13" />
          </block>
+   <!-- Enhancement Blocks-->
+         <block type="text" id="enhancement_name">
+           <location x="70" y="23" />
+           <text color="#000000" size="16" />
+           <wordwrap height="20" width="230" />
+         </block>
+         <block type="text" id="enhancement_traits">
+           <location x="90" y="325" />
+           <text color="#000000" size="13" />
+         </block>
+         <block type="text" id="enhancement_text">
+           <location x="70" y="345" />
+           <text color="#000000" size="11" />
+           <wordwrap height="63" width="248" />
+         </block>
+         <block type="text" id="enhancement_block">
+           <location x="234" y="422" />
+           <text color="#000000" size="11" />
+         </block>
+         <block type="text" id="enhancement_block_number">
+           <location x="288" y="422" />
+           <text color="#000000" size="13" />
+         </block>
       </blocks>
 <!-- TEMPLATES -->
       <template src="Proxy/White_Card_Template.png" default="True">
@@ -163,6 +186,115 @@
                <property name="Block"  />
             </link>
             <link block="event_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+   <!-- Enhancement Template -->
+      <template src="Proxy/Enhancements/Enhancement_Sith.jpg">
+         <matches>
+            <match name="Affiliation" value="Sith" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Enhancements/Enhancement_Rebels.jpg">
+         <matches>
+            <match name="Affiliation" value="Rebel Alliance" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Enhancements/Enhancement_Imperial.jpg">
+         <matches>
+            <match name="Affiliation" value="Imperial Navy" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_block_number" separator=" ">
                <property name="Block_Number"  />
             </link>
          </textblocks>
