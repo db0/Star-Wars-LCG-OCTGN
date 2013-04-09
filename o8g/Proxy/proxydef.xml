@@ -64,7 +64,7 @@
          </block>
    <!-- Unit Blocks-->
          <block type="text" id="unit_name">
-           <location x="70" y="25" />
+           <location x="70" y="23" />
            <text color="#000000" size="16" />
            <wordwrap height="20" width="230" />
          </block>
@@ -214,6 +214,92 @@
       <template src="Proxy/Units/Unit_Imperial.png">
          <matches>
             <match name="Affiliation" value="Imperial Navy" />
+            <match name="Type" value="Unit" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="combat_icons_frame" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="combat_icons" separator=" ">
+               <property name="Combat Icons"  />
+            </link>
+            <link block="unit_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="unit_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="unit_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="unit_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Units/Unit_Rebels.png">
+         <matches>
+            <match name="Affiliation" value="Rebel Alliance" />
+            <match name="Type" value="Unit" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="combat_icons_frame" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="combat_icons" separator=" ">
+               <property name="Combat Icons"  />
+            </link>
+            <link block="unit_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="unit_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="unit_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="unit_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Units/Unit_Jedi.png">
+         <matches>
+            <match name="Affiliation" value="Jedi" />
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
