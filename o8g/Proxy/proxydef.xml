@@ -472,6 +472,135 @@
             </link>
          </textblocks>
       </template>
+      <template src="Proxy/Units/Unit_Smugglers.png">
+         <matches>
+            <match name="Affiliation" value="Smugglers and Spies" />
+            <match name="Type" value="Unit" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="combat_icons_frame" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="combat_icons" separator=" ">
+               <property name="Combat Icons"  />
+            </link>
+            <link block="unit_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="unit_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="unit_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="unit_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Units/Unit_Scum.png">
+         <matches>
+            <match name="Affiliation" value="Scum and Villainy" />
+            <match name="Type" value="Unit" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="combat_icons_frame" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="combat_icons" separator=" ">
+               <property name="Combat Icons"  />
+            </link>
+            <link block="unit_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="unit_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="unit_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="unit_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Units/Unit_Neutral.png">
+         <matches>
+            <match name="Affiliation" value="Neutral" />
+            <match name="Type" value="Unit" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="combat_icons_frame" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="combat_icons" separator=" ">
+               <property name="Combat Icons"  />
+            </link>
+            <link block="unit_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="unit_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="unit_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="unit_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="unit_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
    </templates>
 
 <!-- In case I forget
