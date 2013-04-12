@@ -50,7 +50,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Play only during an opponent&#39;s turn.&#xD;Action: Remove all focus tokens from a target Character unit with 2 or more enhancements on it." />
+		<property name="Text" value="Play only during an opponent&#39;s turn.&#xD;&#xA;Action: Remove all focus tokens from a target Character unit with 2 or more enhancements on it." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Jedi" />
@@ -90,7 +90,7 @@
 		<property name="Damage Capacity" value="4" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Elite. (Remove 1 additional focus token from this unit when you refresh.)&#xD;While this unit is attacking, each of your attacking units gains [Blast Damage]" />
+		<property name="Text" value="Elite. (Remove 1 additional focus token from this unit when you refresh.)&#xD;&#xA;While this unit is attacking, each of your attacking units gains [Blast Damage]" />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Imperial Navy" />
@@ -110,7 +110,7 @@
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Limit 1 per objective deck.&#xD;While you control more Hoth objectives than your opponent, your Hoth objectives cannot suffer unopposed damage." />
+		<property name="Text" value="Limit 1 per objective deck.&#xD;&#xA;While you control more Hoth objectives than your opponent, your Hoth objectives cannot suffer unopposed damage." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Neutral" />
@@ -130,7 +130,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance an enemy Character unit. Remove enhanced unit from the Force struggle, if able.&#xD;Enhanced unit cannot commit to the Force." />
+		<property name="Text" value="Enhance an enemy Character unit. Remove enhanced unit from the Force struggle, if able.&#xD;&#xA;Enhanced unit cannot commit to the Force." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Sith" />
@@ -190,7 +190,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance a Character unit.&#xD;Enhanced unit gains +1 damage capacity for each Hoth objective you control." />
+		<property name="Text" value="Enhance a Character unit.&#xD;&#xA;Enhanced unit gains +1 damage capacity for each Hoth objective you control." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Rebel Alliance" />
@@ -290,7 +290,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance a Character unit.&#xD;Interrupt: When enhanced unit would be destroyed, instead discard this enhancement and remove all damage from that unit." />
+		<property name="Text" value="Enhance a Character unit.&#xD;&#xA;Interrupt: When enhanced unit would be destroyed, instead discard this enhancement and remove all damage from that unit." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Jedi" />
@@ -310,7 +310,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance a Character unit.&#xD;Interrupt: When enhanced unit would be destroyed, instead discard this enhancement and remove all damage from that unit." />
+		<property name="Text" value="Enhance a Character unit.&#xD;&#xA;Interrupt: When enhanced unit would be destroyed, instead discard this enhancement and remove all damage from that unit." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Jedi" />
@@ -430,7 +430,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance your play area.&#xD;Destroy the first enemy unit to strike against a friendly Hoth objective each turn, after its strike resolves." />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;Destroy the first enemy unit to strike against a friendly Hoth objective each turn, after its strike resolves." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Neutral" />
@@ -450,7 +450,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance your play area.&#xD;Destroy the first enemy unit to strike against a friendly Hoth objective each turn, after its strike resolves." />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;Destroy the first enemy unit to strike against a friendly Hoth objective each turn, after its strike resolves." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Neutral" />
@@ -470,7 +470,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Play only if you control at least 1 Hoth objective.&#xD;Reaction: After a focus token is removed from an enemy unit, place 1 focus token on that unit." />
+		<property name="Text" value="Play only if you control at least 1 Hoth objective.&#xD;&#xA;Reaction: After a focus token is removed from an enemy unit, place 1 focus token on that unit." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Neutral" />
@@ -490,7 +490,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Play only if you control at least 1 Hoth objective.&#xD;Reaction: After a focus token is removed from an enemy unit, place 1 focus token on that unit." />
+		<property name="Text" value="Play only if you control at least 1 Hoth objective.&#xD;&#xA;Reaction: After a focus token is removed from an enemy unit, place 1 focus token on that unit." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Neutral" />
@@ -530,7 +530,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Play only during your turn.&#xD;Action: Move any amount of damage from a Hoth objective you control to a target enemy unit or Hoth objective." />
+		<property name="Text" value="Play only during your turn.&#xD;&#xA;Action: Move any amount of damage from a Hoth objective you control to a target enemy unit or Hoth objective." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Sith" />

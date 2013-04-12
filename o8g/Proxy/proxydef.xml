@@ -39,9 +39,32 @@
            <text color="#FFFFFF" size="20" />
            <border color="#FFFFFF" size="1" />
          </block>
+   <!-- Fate Blocks-->
+         <block type="text" id="fate_name">
+           <location x="85" y="25" />
+           <text color="#000000" size="16" />
+           <wordwrap height="20" width="230" />
+         </block>
+         <block type="text" id="fate_text">
+           <location x="67" y="76" />
+           <text color="#000000" size="11" />
+           <wordwrap height="65" width="211" />
+         </block>
+         <block type="text" id="fate_priority">
+           <location x="288" y="36" />
+           <text color="#000000" size="19" />
+         </block>
+         <block type="text" id="fate_block">
+           <location x="240" y="422" />
+           <text color="#000000" size="11" />
+         </block>
+         <block type="text" id="fate_block_number">
+           <location x="288" y="422" />
+           <text color="#000000" size="13" />
+         </block>
    <!-- Event Blocks-->
          <block type="text" id="event_name">
-           <location x="55" y="291" />
+           <location x="65" y="291" />
            <text color="#000000" size="16" />
            <wordwrap height="20" width="230" />
          </block>
@@ -158,9 +181,169 @@
             </link>
          </textblocks>
       </template>
+      <template src="Proxy/Events/Event_Imperial.png">
+         <matches>
+            <match name="Affiliation" value="Imperial Navy" />
+            <match name="Type" value="Event" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="event_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="event_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="event_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="event_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="event_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Events/Event_Scums.png">
+         <matches>
+            <match name="Affiliation" value="Scum and Villainy" />
+            <match name="Type" value="Event" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="event_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="event_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="event_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="event_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="event_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
       <template src="Proxy/Events/Event_Rebels.png">
          <matches>
             <match name="Affiliation" value="Rebel Alliance" />
+            <match name="Type" value="Event" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="event_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="event_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="event_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="event_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="event_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Events/Event_Jedi.png">
+         <matches>
+            <match name="Affiliation" value="Jedi" />
+            <match name="Type" value="Event" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="event_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="event_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="event_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="event_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="event_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Events/Event_Smugglers.png">
+         <matches>
+            <match name="Affiliation" value="Smugglers and Spies" />
+            <match name="Type" value="Event" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="event_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="event_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="event_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="event_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="event_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Events/Event_Neutral.png">
+         <matches>
+            <match name="Affiliation" value="Neutral" />
             <match name="Type" value="Event" />
          </matches>
          <overlayblocks>
@@ -198,7 +381,11 @@
          </matches>
          <overlayblocks>
             <link block="force_sphere" />
-            <link block="resources_box" />
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="resources_box" />
+               </if>
+            </conditional>
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -266,6 +453,114 @@
       <template src="Proxy/Enhancements/Enhancement_Imperial.jpg">
          <matches>
             <match name="Affiliation" value="Imperial Navy" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Enhancements/Enhancement_Scums.png">
+         <matches>
+            <match name="Affiliation" value="Scum and Villainy" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Enhancements/Enhancement_Jedi.png">
+         <matches>
+            <match name="Affiliation" value="Jedi" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+            <link block="resources_box" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Enhancements/Enhancement_Neutral.png">
+         <matches>
+            <match name="Affiliation" value="Neutral" />
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
@@ -597,6 +892,35 @@
                <property name="Block"  />
             </link>
             <link block="unit_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+   <!-- Fate Templates -->
+      <template src="Proxy/Fate/Fate.png">
+         <matches>
+            <match name="Type" value="Fate" />
+         </matches>
+         <overlayblocks>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="fate_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="fate_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="fate_priority" separator=" ">
+               <property name="Edge Priority"  />
+            </link>
+            <link block="fate_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="fate_block_number" separator=" ">
                <property name="Block_Number"  />
             </link>
          </textblocks>
