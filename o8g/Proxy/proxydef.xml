@@ -145,7 +145,7 @@
            <text color="#FFFFFF" size="23" />
            <border color="#FFFFFF" size="2" />
          </block>
-         <block type="text" id="cropped_objective_health">
+         <block type="text" id="cropped_objective_health"> <!-- Fix for Card Frames which have cropped sides on the left -->
            <location x="12" y="385" />
            <text color="#FFFFFF" size="23" />
            <border color="#FFFFFF" size="2" />
