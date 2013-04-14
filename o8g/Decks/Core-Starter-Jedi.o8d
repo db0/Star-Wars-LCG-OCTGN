@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<deck game="d5cf89e5-1984-4873-8ae0-f06eea411bb3">
+  <section name="Affiliation">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000143">Jedi</card>
+  </section>
+  <section name="Command Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000068">Dagobah Training Grounds</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000066">Jedi Lightsaber</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000064">Luke Skywalker</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000065">Trust Your Feelings</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000067">Twi'lek Loyalist</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000138">Yoda</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000141">Believer in the Old Ways</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000140">Shii-Cho-Training</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000139">Dagobah Training Grounds</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000142">Counter-stroke</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000148">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000146">Our Most Desperate Hour</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000003">Jedi Mind Trick</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000147">Jedi in Hiding</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000145">Obi-Wan Kenobi</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000153">Double Strike</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000151">R2-D2</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000150">Red Five</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000154">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000152">Twi'lek Loyalist</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000156">C-3PO</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000158">Guardian of Peace</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000157">Lightsaber Deflection</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000160">Twist of Fate</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000163">Corellian Engineer</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000165">Emergency Repair</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000166">Force Rejuvenation</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000162">Redemption</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000164">Return of the Jedi</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000170">Ancient Monument</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000169">Believer in the Old Ways</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000172">It Binds All Things</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000168">Jedi in Hiding</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000171">Jedi Mind Trick</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000159">Guardian of Peace</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000213">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000211">Secret Informant</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000212">Secret Informant</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000215">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000214">Twist of Fate</card>
+  </section>
+  <section name="Objective Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000063">A Hero's Journey</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000137">In You Must Go</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000144">Forgotten Heroes</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000149">A Journey to Dagobah</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000155">The Secret of Yavin 4</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000161">Last Minute Rescue</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000167">Jedi Training</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000210">Hit and Run</card>
+  </section>
+</deck>

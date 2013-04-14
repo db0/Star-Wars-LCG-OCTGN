@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<deck game="d5cf89e5-1984-4873-8ae0-f06eea411bb3">
+  <section name="Affiliation">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000173">Rebel Alliance</card>
+  </section>
+  <section name="Command Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000175">Astromech Droid Upgrade</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000179">Hidden Outpost</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000178">Rebel Assault</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000177">Red Two</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000176">Y-Wing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000012">A-Wing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000015">Battlefield Engineers</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000011">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000014">Heavy Blaster Emplacement</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000013">Mon Mothma</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000134">Fleet Officer</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000001">Leia Organa</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000133">Stolen Plans</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000136">Twist of Fate</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000135">You're My Only Hope</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000184">Hidden Outpost</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000181">Home One</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000183">Repair Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000185">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000182">Y-Wing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000187">Admiral Ackbar</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000190">Fleet Command Center</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000191">Heroic Sacrifice</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000189">X-Wing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000188">X-Wing Escort</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000007">Covering Fire</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000005">Rebel Assault</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000006">Rookie Pilot</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000009">Trench Run</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000008">X-Wing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000197">A New Hope</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000196">Fall Back!</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000195">False Lead</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000194">Rebel Trooper</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000193">Wookiee Navigator</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000213">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000211">Secret Informant</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000212">Secret Informant</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000215">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000214">Twist of Fate</card>
+  </section>
+  <section name="Objective Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000174">The Defense of Yavin 4</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000010">Mission Briefing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000132">Fleeing the Empire</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000180">The Rebel Fleet</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000186">Draw Their Fire</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000004">Mobilize the Squadrons</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000192">Decoy at Dantooine</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000210">Hit and Run</card>
+  </section>
+</deck>
