@@ -7,6 +7,9 @@
             <text color="#000000" size="25" />
             <border color="#440044" size="1" />
          </block>
+         <block type="overlay" id="dummy" src="Proxy/Elements/Conditional_Dummy.png">         
+           <location x="1" y="1" />
+         </block>  
    <!-- Force Sphere Block-->
          <block type="overlay" id="force_sphere" src="Proxy/Elements/Force_Sphere.png">         
            <location x="20" y="90" />
@@ -417,12 +420,15 @@
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
-            <link block="force_sphere" />
             <conditional>
-               <if property="Resources" value="0">
-                  <link block="resources_box" />
+               <if property="Resources" value="">
+                  <link block="dummy" />
                </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
             </conditional>
+            <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -443,9 +449,6 @@
             <link block="resources_count" separator=" ">
                <property name="Resources"  />
             </link>
-            <link block="enhancement_block" separator=" ">
-               <property name="Block"  />
-            </link>
             <link block="enhancement_block_number" separator=" ">
                <property name="Block_Number"  />
             </link>
@@ -457,8 +460,15 @@
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -493,8 +503,15 @@
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -529,8 +546,15 @@
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -565,8 +589,15 @@
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -601,8 +632,15 @@
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -842,9 +880,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -885,9 +930,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -928,9 +980,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -971,9 +1030,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -1014,9 +1080,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -1057,9 +1130,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -1100,9 +1180,16 @@
             <match name="Type" value="Unit" />
          </matches>
          <overlayblocks>
+            <conditional>
+               <if property="Resources" value="">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
             <link block="force_sphere" />
             <link block="combat_icons_frame" />
-            <link block="resources_box" />
          </overlayblocks>
          <textblocks>
             <link block="force_count" separator=" ">
@@ -1167,11 +1254,3 @@
          </textblocks>
       </template>
    </templates>
-
-<!-- In case I forget
-<Gravecorp> <conditional>
-<Gravecorp>   <if property=¨name¨ value=¨exactvalue¨> <link /><link /></if><else><link /><link /></else></conditional>
-<Gravecorp> value on the if is exact match. change value to contains and you can do partial match
-<Gravecorp> either one should be used not both.
-<Gravecorp> and the else element is also optional.
--->
