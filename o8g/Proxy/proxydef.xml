@@ -7,6 +7,10 @@
             <text color="#000000" size="25" />
             <border color="#440044" size="1" />
          </block>
+         <block type="text" id="dummy_text">
+            <location x="1" y="1" />
+            <text color="#000000" size="1" />
+         </block>
          <block type="overlay" id="dummy" src="Proxy/Elements/Conditional_Dummy.png">         
            <location x="1" y="1" />
          </block>  
@@ -66,7 +70,7 @@
            <location x="240" y="422" />
            <text color="#000000" size="11" />
          </block>
-         <block type="text" id="fate_block_number">
+         <block type="text" id="fate_Block Number">
            <location x="288" y="422" />
            <text color="#000000" size="13" />
          </block>
@@ -89,7 +93,7 @@
            <location x="232" y="422" />
            <text color="#000000" size="11" />
          </block>
-         <block type="text" id="event_block_number">
+         <block type="text" id="event_Block Number">
            <location x="288" y="422" />
            <text color="#000000" size="13" />
          </block>
@@ -117,7 +121,7 @@
            <text color="#FFFFFF" size="19" />
            <border color="#FFFFFF" size="2" />
          </block>
-         <block type="text" id="unit_block_number">
+         <block type="text" id="unit_Block Number">
            <location x="288" y="422" />
            <text color="#000000" size="13" />
          </block>
@@ -139,7 +143,7 @@
            <location x="485" y="385" />
            <text color="#000000" size="11" />
          </block>
-         <block type="text" id="objective_block_number">
+         <block type="text" id="objective_Block Number">
            <location x="565" y="385" />
            <text color="#000000" size="13" />
          </block>
@@ -172,7 +176,7 @@
            <location x="234" y="422" />
            <text color="#000000" size="11" />
          </block>
-         <block type="text" id="enhancement_block_number">
+         <block type="text" id="enhancement_Block Number">
            <location x="288" y="422" />
            <text color="#000000" size="13" />
          </block>
@@ -216,8 +220,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -248,8 +252,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -280,8 +284,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -312,8 +316,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -344,8 +348,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -376,8 +380,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -408,8 +412,8 @@
             <link block="event_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="event_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="event_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -421,7 +425,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -431,6 +435,18 @@
             <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -446,11 +462,8 @@
             <link block="enhancement_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
-            <link block="enhancement_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -461,7 +474,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -471,6 +484,18 @@
             <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -486,14 +511,11 @@
             <link block="enhancement_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="enhancement_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="enhancement_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -504,7 +526,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -514,6 +536,18 @@
             <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -529,14 +563,11 @@
             <link block="enhancement_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="enhancement_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="enhancement_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -547,7 +578,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -557,6 +588,18 @@
             <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -572,14 +615,11 @@
             <link block="enhancement_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="enhancement_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="enhancement_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -590,7 +630,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -600,6 +640,18 @@
             <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -615,14 +667,11 @@
             <link block="enhancement_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="enhancement_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="enhancement_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -633,7 +682,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -643,6 +692,18 @@
             <link block="force_sphere" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -658,14 +719,11 @@
             <link block="enhancement_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="enhancement_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="enhancement_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -694,8 +752,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -723,8 +781,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -752,8 +810,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -781,8 +839,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -810,8 +868,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -839,8 +897,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -868,8 +926,8 @@
             <link block="objective_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="objective_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="objective_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -881,7 +939,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -892,6 +950,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -910,17 +980,14 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -931,7 +998,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -942,6 +1009,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -960,17 +1039,14 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -981,7 +1057,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -992,6 +1068,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -1010,17 +1098,14 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -1031,7 +1116,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -1042,6 +1127,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -1060,17 +1157,14 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -1081,7 +1175,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -1092,6 +1186,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -1110,17 +1216,14 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -1131,7 +1234,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -1142,6 +1245,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -1160,17 +1275,14 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -1181,7 +1293,7 @@
          </matches>
          <overlayblocks>
             <conditional>
-               <if property="Resources" value="">
+               <if property="Resources" value="0">
                   <link block="dummy" />
                </if>
                <else>
@@ -1192,6 +1304,18 @@
             <link block="combat_icons_frame" />
          </overlayblocks>
          <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
             <link block="force_count" separator=" ">
                <property name="Force"  />
             </link>
@@ -1210,17 +1334,15 @@
             <link block="unit_text" separator=" ">
                <property name="Text"  />
             </link>
-            <link block="resources_count" separator=" ">
-               <property name="Resources"  />
-            </link>
+            <link block="combat_icons_frame" />
             <link block="unit_health" separator=" ">
                <property name="Damage Capacity"  />
             </link>
             <link block="unit_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="unit_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="unit_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
@@ -1248,8 +1370,8 @@
             <link block="fate_block" separator=" ">
                <property name="Block"  />
             </link>
-            <link block="fate_block_number" separator=" ">
-               <property name="Block_Number"  />
+            <link block="fate_Block Number" separator=" ">
+               <property name="Block Number"  />
             </link>
          </textblocks>
       </template>
