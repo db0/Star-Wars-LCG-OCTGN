@@ -33,6 +33,11 @@
            <text color="#FFFFFF" size="30" />
            <border color="#000000" size="3" />
          </block>
+         <block type="text" id="objective_resources_count">
+           <location x="538" y="227" />
+           <text color="#FFFFFF" size="35" />
+           <border color="#000000" size="3" />
+         </block>
    <!-- Generic Blocks-->
          <block type="text" id="cost">
            <location x="19" y="19" />
@@ -112,6 +117,38 @@
          <block type="text" id="unit_block_number">
            <location x="288" y="422" />
            <text color="#000000" size="13" />
+         </block>
+   <!-- Objective Blocks-->
+         <block type="text" id="objective_name">
+           <location x="120" y="230" />
+           <text color="#000000" size="20" />
+         </block>
+         <block type="text" id="objective_traits">
+           <location x="110" y="275" />
+           <text color="#000000" size="15" />
+         </block>
+         <block type="text" id="objective_text">
+           <location x="80" y="300" />
+           <text color="#000000" size="13" />
+           <wordwrap height="70" width="510" />
+         </block>
+         <block type="text" id="objective_block">
+           <location x="485" y="385" />
+           <text color="#000000" size="11" />
+         </block>
+         <block type="text" id="objective_block_number">
+           <location x="565" y="385" />
+           <text color="#000000" size="13" />
+         </block>
+         <block type="text" id="objective_health">
+           <location x="27" y="385" />
+           <text color="#FFFFFF" size="23" />
+           <border color="#FFFFFF" size="2" />
+         </block>
+         <block type="text" id="cropped_objective_health">
+           <location x="12" y="385" />
+           <text color="#FFFFFF" size="23" />
+           <border color="#FFFFFF" size="2" />
          </block>
    <!-- Enhancement Blocks-->
          <block type="text" id="enhancement_name">
@@ -590,6 +627,210 @@
                <property name="Block"  />
             </link>
             <link block="enhancement_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+   <!-- Objective Template -->
+      <template src="Proxy/Objectives/Objective_Sith.png">
+         <matches>
+            <match name="Affiliation" value="Sith" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Objectives/Objective_Imperial.png">
+         <matches>
+            <match name="Affiliation" value="Imperial Navy" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Objectives/Objective_Scums.png">
+         <matches>
+            <match name="Affiliation" value="Scum and Villainy" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="cropped_objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Objectives/Objective_Rebels.png">
+         <matches>
+            <match name="Affiliation" value="Rebel Alliance" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Objectives/Objective_Jedi.png">
+         <matches>
+            <match name="Affiliation" value="Jedi" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Objectives/Objective_Smugglers.png">
+         <matches>
+            <match name="Affiliation" value="Smugglers and Spies" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="cropped_objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
+               <property name="Block_Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Objectives/Objective_Neutral.png">
+         <matches>
+            <match name="Affiliation" value="Neutral" />
+            <match name="Type" value="Objective" />
+         </matches>
+         <textblocks>
+            <link block="objective_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="objective_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="objective_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="objective_resources_count" separator=" ">
+               <property name="Resources"  />
+            </link>
+            <link block="objective_health" separator=" ">
+               <property name="Damage Capacity"  />
+            </link>
+            <link block="objective_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="objective_block_number" separator=" ">
                <property name="Block_Number"  />
             </link>
          </textblocks>
