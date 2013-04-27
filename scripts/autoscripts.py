@@ -282,6 +282,8 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
       ### Checking if any of the card's effects requires one or more targets first
       if re.search(r'(?<!Auto)Targeted', activeAutoscript) and findTarget(activeAutoscript,card = card) == []: return
    for activeAutoscript in selectedAutoscripts:
+      if not checkSpecialRestrictions(activeAutoscript,card): continue # If the card does not fulfil it's requirements do not execute this script.
+      if re.search(r'onlyOnce',activeAutoscript) and oncePerTurn(card, silent = True) == 'ABORT': continue
       if not announceText.endswith(' in order to') and not announceText.endswith(' and'): announceText += ' and'   
       targetC = findTarget(activeAutoscript,card = card)
       ### Warning the player in case we need to
@@ -378,7 +380,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
-         elif debugVerbosity >= 2: notify("### Not Looking for specific type")
+         elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
          else: targetCard = findTarget(autoS, card = card)
@@ -498,8 +500,17 @@ def markerEffects(Time = 'Start'):
          if (Time == 'End' # Time = 'End' means End of Turn
                and (re.search(r'Defense Upgrade',marker[0])
                  or re.search(r'Force Stasis',marker[0]))):
-            TokensX('Remove999'+marker[0], "Death from Above:", card)
-            notify("--> {} removes Death from Above effect from {}".format(me,card))
+            TokensX('Remove999'+marker[0], marker[0] + ':', card)
+            notify("--> {} removes {} effect from {}".format(me,marker[0],card))
+         if ((       Time == 'afterBalance' # These are "after-phase" effects
+                  or Time == 'afterRefresh'
+                  or Time == 'afterDraw'
+                  or Time == 'afterDeployment'
+                  or Time == 'afterConflict'
+                  or Time == 'End')
+               and re.search(r'Munitions Expert',marker[0])):
+            TokensX('Remove999'+marker[0], marker[0] + ':', card)
+            notify("--> {} removes {} effect from {}".format(me,marker[0],card))
 
    
    
@@ -1345,7 +1356,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
 def findTarget(Autoscript, fromHand = False, card = None): # Function for finding the target of an autoscript
    if debugVerbosity >= 1: notify(">>> findTarget(){}".format(extraASDebug(Autoscript))) #Debug
    try:
-      if fromHand == True: group = me.hand
+      if fromHand == True or re.search(r'-fromHand',Autoscript): group = me.hand
       else: group = table
       foundTargets = []
       if re.search(r'Targeted', Autoscript):
@@ -1465,7 +1476,7 @@ def prepareRestrictions(Autoscript, seek = 'target'):
    if debugVerbosity >= 1: notify(">>> prepareRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    validTargets = [] # a list that holds any type that a card must be, in order to be a valid target.
    targetGroups = []
-   if seek == 'type': whatTarget = re.search(r'\b(type)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "type" is used by autoscripting other players, and it's separated so that the same card can have two different triggers (e.g. see Darth Vader)
+   if seek == 'type': whatTarget = re.search(r'\b(type|from)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "type" is used by autoscripting other players, and it's separated so that the same card can have two different triggers (e.g. see Darth Vader)
    else: whatTarget = re.search(r'\b(at|for)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
    if whatTarget: 
       if debugVerbosity >= 2: notify("### Splitting on _or_") #Debug
@@ -1552,18 +1563,31 @@ def checkSpecialRestrictions(Autoscript,card):
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
       marker = findMarker(card, markerNeg.group(1))
       if marker: validCard = False
-   elif debugVerbosity >= 4: notify("### No marker restrictions.")
-   propertyReq = re.search(r'-hasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
+   elif debugVerbosity >= 4: notify("### No negative marker restrictions.")
    # Checking if the target needs to have a property at a certiain value. 
-   # eq = equal, le = less than/equal, ge = greater than/equal, lt = less than, gt = greater than.
-   if propertyReq:
-      if propertyReq.group(2) == 'eq' and card.properties[propertyReq.group(1)] != propertyReq.group(3): validCard = False
-      if propertyReq.group(2) == 'le' and num(card.properties[propertyReq.group(1)]) > num(propertyReq.group(3)): validCard = False
-      if propertyReq.group(2) == 'ge' and num(card.properties[propertyReq.group(1)]) < num(propertyReq.group(3)): validCard = False
-      if propertyReq.group(2) == 'lt' and num(card.properties[propertyReq.group(1)]) >= num(propertyReq.group(3)): validCard = False
-      if propertyReq.group(2) == 'gt' and num(card.properties[propertyReq.group(1)]) <= num(propertyReq.group(3)): validCard = False
+   propertyReq = re.search(r'-hasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
+   if propertyReq: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3)))
+   # Checking if the target needs to have a markers at a particular value.
+   MarkerReq = re.search(r'-ifMarkers{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript)
+   if MarkerReq: 
+      if debugVerbosity >= 4: notify("Found marker comparison req. regex groups: {}".format(MarkerReq.groups()))
+      markerSeek = findMarker(card, MarkerReq.group(1))
+      if markerSeek:
+         validCard = compareValue(MarkerReq.group(2), card.markers[markerSeek], num(MarkerReq.group(3)))
+   # Checking if the DS Dial needs to be at a specific value
+   DialReq = re.search(r'-ifDial(eq|le|ge|gt|lt)([0-9]+)',Autoscript)
+   if DialReq: validCard = compareValue(DialReq.group(2), me.counters['Death Star Dial'].value, num(DialReq.group(3)))
    if debugVerbosity >= 1: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
+
+def compareValue(comparison, value, requirement):
+   if comparison == 'eq' and value != requirement: return False # 'eq' stands for "Equal to"
+   if comparison == 'le' and value > requirement: return False # 'le' stands for "Less or Equal"
+   if comparison == 'ge' and value < requirement: return False # 'ge' stands for "Greater or Equal"
+   if comparison == 'lt' and value >= requirement: return False # 'lt' stands for "Less Than"
+   if comparison == 'gt' and value <= requirement: return False # 'gt' stands for "Greater Than"
+   return True # If none of the requirements fail, we return true
+     
 
 def checkOriginatorRestrictions(Autoscript,card):
 # Check the autoscript for special restrictions on the originator of a specific effect. 
@@ -1597,15 +1621,15 @@ def checkOriginatorRestrictions(Autoscript,card):
       marker = findMarker(card, markerNeg.group(1))
       if marker: validCard = False
    elif debugVerbosity >= 4: notify("### No marker restrictions.")
+   # Checking if the originator needs to have a property at a certiain value. 
    propertyReq = re.search(r'-ifOrigHasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
-   # Checking if the target needs to have a property at a certiain value. 
-   # eq = equal, le = less than/equal, ge = greater than/equal, lt = less than, gt = greater than.
-   if propertyReq:
-      if propertyReq.group(2) == 'eq' and card.properties[propertyReq.group(1)] != propertyReq.group(3): validCard = False
-      if propertyReq.group(2) == 'le' and num(card.properties[propertyReq.group(1)]) > num(propertyReq.group(3)): validCard = False
-      if propertyReq.group(2) == 'ge' and num(card.properties[propertyReq.group(1)]) < num(propertyReq.group(3)): validCard = False
-      if propertyReq.group(2) == 'lt' and num(card.properties[propertyReq.group(1)]) >= num(propertyReq.group(3)): validCard = False
-      if propertyReq.group(2) == 'gt' and num(card.properties[propertyReq.group(1)]) <= num(propertyReq.group(3)): validCard = False
+   if propertyReq: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3)))
+   # Checking if the target needs to have a markers at a particular value.
+   MarkerReq = re.search(r'-ifOrigmarkers{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript)
+   if MarkerReq: validCard = compareValue(MarkerReq.group(2), card.markers.get(findMarker(card, MarkerReq.group(1)),0), num(MarkerReq.group(3)))
+   # Checking if the DS Dial needs to be at a specific value
+   DialReq = re.search(r'-ifDial(eq|le|ge|gt|lt)([0-9]+)',Autoscript)
+   if DialReq: validCard = compareValue(DialReq.group(2), me.counters['Death Star Dial'].value, num(DialReq.group(3)))
    if debugVerbosity >= 1: notify("<<< checkOriginatorRestrictions() with return {}".format(validCard)) #Debug
    return validCard
    

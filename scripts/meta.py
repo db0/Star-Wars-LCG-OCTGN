@@ -307,7 +307,7 @@ def calculateCombatIcons(card = None, CIString = None):
       Autoscripts = CardsAS.get(card.model,'').split('||')   
       if len(Autoscripts) > 0:
          for autoS in Autoscripts:
-            extraRegex = re.search(r'ExtraIcon:(UD|BD|Tactics):([0-9])',autoS)
+            extraRegex = re.search(r'ExtraIcon:(UD|BD|Tactics|EE-UD|EE-BD|EE-T):([0-9])',autoS)
             if extraRegex:
                if debugVerbosity >= 2: notify("### extraRegex = {}".format(extraRegex.groups())) #Debug
                if not chkSuperiority(autoS, card): continue
@@ -317,6 +317,9 @@ def calculateCombatIcons(card = None, CIString = None):
                if extraRegex.group(1) == 'UD': Unit_Damage += num(extraRegex.group(2)) * multiplier
                if extraRegex.group(1) == 'BD': Blast_Damage += num(extraRegex.group(2)) * multiplier
                if extraRegex.group(1) == 'Tactics': Tactics += num(extraRegex.group(2)) * multiplier
+               if extraRegex.group(1) == 'EE-UD' and gotEdge(): Unit_Damage += num(extraRegex.group(2)) * multiplier
+               if extraRegex.group(1) == 'EE-BD' and gotEdge(): Blast_Damage += num(extraRegex.group(2)) * multiplier
+               if extraRegex.group(1) == 'EE-T' and gotEdge(): Tactics += num(extraRegex.group(2)) * multiplier
             else:
                if debugVerbosity >= 2: notify("### No extra combat icons found in {}".format(card))
    if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
@@ -531,12 +534,18 @@ def compareObjectiveTraits(Trait):
    # This function will go through all objectives on the table, count how many of them contain a specific trait
    # and return a list of the player(s) who have the most objectives with that trait.
    playerTraitCounts = {}
-   for player in players:
+   for player in players: # We go through all the objectives of each player and count which of them have the relevant trait.
       playerTraitCounts[player.name] = 0
       Objectives = eval(player.getGlobalVariable('currentObjectives'))
       if debugVerbosity >= 2: notify("### Checking {} Objectives".format(player.name)) # Debug
       for obj in [Card(obj_ID) for obj_ID in Objectives]:
          if re.search(r'{}'.format(Trait),obj.Traits): playerTraitCounts[player.name] += 1
+      for card in table: # We check for cards for give bonus objective traits (e.g. Echo Base)
+         if card.controller == player:
+            Autoscripts = CardsAS.get(card.model,'').split('||')
+            for autoS in Autoscripts:
+               TraitBonus = re.search(r'Trait\{{}\}(0-9)Bonus'.format(Trait),autoS)
+               if TraitBonus: playerTraitCounts[player.name] += num(TraitBonus.group(1))
    if debugVerbosity >= 2: notify("### Comparing Objectives count") # Debug
    topPlayers = []
    currentMaxCount = 0
@@ -878,14 +887,14 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000247",
-                "ff4fb461-8060-457a-9c16-000000000250",
-                "ff4fb461-8060-457a-9c16-000000000245",
-                "ff4fb461-8060-457a-9c16-000000000235",
-                "ff4fb461-8060-457a-9c16-000000000226",
-                "ff4fb461-8060-457a-9c16-000000000236",
-                "ff4fb461-8060-457a-9c16-000000000230",
-                "ff4fb461-8060-457a-9c16-000000000254"] 
+   testcards = ["ff4fb461-8060-457a-9c16-000000000263",
+                "ff4fb461-8060-457a-9c16-000000000262",
+                "ff4fb461-8060-457a-9c16-000000000283",
+                "ff4fb461-8060-457a-9c16-000000000288",
+                "ff4fb461-8060-457a-9c16-000000000285",
+                "ff4fb461-8060-457a-9c16-000000000269", # Echo Caverns
+                "ff4fb461-8060-457a-9c16-000000000276", # Get me Solo
+                "ff4fb461-8060-457a-9c16-000000000277"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):
          test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)
