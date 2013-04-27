@@ -1,10 +1,16 @@
-1.1.3||
+1.2.0||
 ======New Version Information======
 
-1.1.3 Fixes a small bug which made refresh phases clear the opponent's shield tokens
+The Search for Skywalker begins! 
 
+Download the latest version of the game v1.2.0 definition to be able to enjoy the new expansion.
 
+You can use the provided patch to bring your existing sets up to date without losing your uncensored cards.
+
+As always it is with a lot of automated goodness.
+
+Enjoy and let me know of any bugs you find.
 ===============================
 ||
-Latest Core Set: 1.1.0
-Latest Markers Set: 1.1.0
+Latest Core Set: 1.2.0
+Latest Markers Set: 1.2.0
