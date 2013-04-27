@@ -544,7 +544,8 @@ def compareObjectiveTraits(Trait):
          if card.controller == player:
             Autoscripts = CardsAS.get(card.model,'').split('||')
             for autoS in Autoscripts:
-               TraitBonus = re.search(r'Trait\{{}\}(0-9)Bonus'.format(Trait),autoS)
+               if debugVerbosity >= 2: notify("### Checking {} for Objective Trait boosting AS: {}".format(card,autoS))
+               TraitBonus = re.search(r'Trait\{Objective_and_{}\}([0-9])Bonus'.format(Trait),autoS)
                if TraitBonus: playerTraitCounts[player.name] += num(TraitBonus.group(1))
    if debugVerbosity >= 2: notify("### Comparing Objectives count") # Debug
    topPlayers = []
@@ -886,13 +887,14 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000263",
+   testcards = ["ff4fb461-8060-457a-9c16-000000000261",
                 "ff4fb461-8060-457a-9c16-000000000262",
                 "ff4fb461-8060-457a-9c16-000000000283",
+                "ff4fb461-8060-457a-9c16-000000000264",
                 "ff4fb461-8060-457a-9c16-000000000288",
                 "ff4fb461-8060-457a-9c16-000000000285",
                 "ff4fb461-8060-457a-9c16-000000000269", # Echo Caverns
-                "ff4fb461-8060-457a-9c16-000000000276", # Get me Solo
+                "ff4fb461-8060-457a-9c16-000000000268", # Munitions Expert
                 "ff4fb461-8060-457a-9c16-000000000277"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):

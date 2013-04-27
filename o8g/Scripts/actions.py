@@ -531,7 +531,7 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
    protected = False
    Autoscripts = CardsAS.get(target.model,'').split('||')
    for autoS in Autoscripts:
-      if checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+      if re.search(r'ConstantEffect:Protection',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
          protected = True
          notify(":> {} is protected against {}'s damage".format(target,attacker))
    hostCards = eval(getGlobalVariable('Host Cards'))
@@ -539,7 +539,7 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
       if hostCards[attachment] == target._id:
          Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
          for autoS in Autoscripts:
-            if re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+            if re.search(r'ConstantEffect:Protection',autoS) and re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
                protected = True
                notify(":> {} is protected against {}'s damage".format(target,attacker))
    return protected

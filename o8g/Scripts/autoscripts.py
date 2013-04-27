@@ -1576,18 +1576,9 @@ def checkSpecialRestrictions(Autoscript,card):
          validCard = compareValue(MarkerReq.group(2), card.markers[markerSeek], num(MarkerReq.group(3)))
    # Checking if the DS Dial needs to be at a specific value
    DialReq = re.search(r'-ifDial(eq|le|ge|gt|lt)([0-9]+)',Autoscript)
-   if DialReq: validCard = compareValue(DialReq.group(2), me.counters['Death Star Dial'].value, num(DialReq.group(3)))
+   if DialReq: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
    if debugVerbosity >= 1: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
-
-def compareValue(comparison, value, requirement):
-   if comparison == 'eq' and value != requirement: return False # 'eq' stands for "Equal to"
-   if comparison == 'le' and value > requirement: return False # 'le' stands for "Less or Equal"
-   if comparison == 'ge' and value < requirement: return False # 'ge' stands for "Greater or Equal"
-   if comparison == 'lt' and value >= requirement: return False # 'lt' stands for "Less Than"
-   if comparison == 'gt' and value <= requirement: return False # 'gt' stands for "Greater Than"
-   return True # If none of the requirements fail, we return true
-     
 
 def checkOriginatorRestrictions(Autoscript,card):
 # Check the autoscript for special restrictions on the originator of a specific effect. 
@@ -1620,7 +1611,7 @@ def checkOriginatorRestrictions(Autoscript,card):
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
       marker = findMarker(card, markerNeg.group(1))
       if marker: validCard = False
-   elif debugVerbosity >= 4: notify("### No marker restrictions.")
+   elif debugVerbosity >= 4: notify("### No negative marker restrictions.")
    # Checking if the originator needs to have a property at a certiain value. 
    propertyReq = re.search(r'-ifOrigHasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
    if propertyReq: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3)))
@@ -1629,10 +1620,18 @@ def checkOriginatorRestrictions(Autoscript,card):
    if MarkerReq: validCard = compareValue(MarkerReq.group(2), card.markers.get(findMarker(card, MarkerReq.group(1)),0), num(MarkerReq.group(3)))
    # Checking if the DS Dial needs to be at a specific value
    DialReq = re.search(r'-ifDial(eq|le|ge|gt|lt)([0-9]+)',Autoscript)
-   if DialReq: validCard = compareValue(DialReq.group(2), me.counters['Death Star Dial'].value, num(DialReq.group(3)))
+   if DialReq: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
    if debugVerbosity >= 1: notify("<<< checkOriginatorRestrictions() with return {}".format(validCard)) #Debug
    return validCard
    
+def compareValue(comparison, value, requirement):
+   if comparison == 'eq' and value != requirement: return False # 'eq' stands for "Equal to"
+   if comparison == 'le' and value > requirement: return False # 'le' stands for "Less or Equal"
+   if comparison == 'ge' and value < requirement: return False # 'ge' stands for "Greater or Equal"
+   if comparison == 'lt' and value >= requirement: return False # 'lt' stands for "Less Than"
+   if comparison == 'gt' and value <= requirement: return False # 'gt' stands for "Greater Than"
+   return True # If none of the requirements fail, we return true
+     
 def makeChoiceListfromCardList(cardList):
 # A function that returns a list of strings suitable for a choice menu, out of a list of cards
 # Each member of the list includes a card's name, traits, resources, markers and, if applicable, combat icons
@@ -1757,6 +1756,20 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
                   property = re.search(r'Property{([\w ]+)}',per.group(3))
                   multiplier += num(perCard.properties[property.group(1)])
                else: multiplier += 1 # If there's no special conditions, then we just add one multiplier per valid (auto)target. Ef. "-perEvery-AutoTargeted-onICE" would give 1 multiplier per ICE on the table
+         if per.group(2) == 'Every': # If we're checking every card of a specific trait, we may have cards that give bonus to that amount (e.g. Echo base), so we look for those bonuses now.
+            for c in table: # We check for cards for give bonus objective traits (e.g. Echo Base)
+               Autoscripts = CardsAS.get(c.model,'').split('||')
+               for autoS in Autoscripts:
+                  if debugVerbosity >= 2: notify("### Checking {} for Objective Trait boosting AS: {}".format(c,autoS))
+                  TraitRegex = re.search(r'Trait\{([A-Za-z_ ]+)\}([0-9])Bonus',autoS)
+                  if TraitRegex: 
+                     if debugVerbosity >= 3: notify("TraitRegex found. Groups = {}".format(TraitRegex.groups()))
+                     TraitsList = TraitRegex.group(1).split('_and_') # We make a list of all the traits the bonus effect of the cardprovides
+                     if debugVerbosity >= 4: notify("### TraitsList = {}".format(TraitsList)) 
+                     TraitsRestrictions = prepareRestrictions(Autoscript) # Then we gather the trait restrictions the original effect was looking for
+                     if debugVerbosity >= 4: notify("### TraitsRestrictions = {}".format(TraitsRestrictions))
+                     if checkCardRestrictions(TraitsList, TraitsRestrictions): # Finally we compare the bonus traits of the card we found, wit  h the traits the original effect was polling for.
+                        multiplier += num(TraitRegex.group(2)) * chkPlayer(autoS, c.controller, False, True) # If they match, we increase our multiplier by the relevant number, if the card has the appropriate controller according to its effect.
       else: #If we're not looking for a particular target, then we check for everything else.
          if debugVerbosity >= 2: notify("### Doing no table lookup") # Debug.
          if per.group(3) == 'X': multiplier = count # Probably not needed and the next elif can handle alone anyway.
