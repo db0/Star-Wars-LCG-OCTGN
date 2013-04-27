@@ -251,23 +251,39 @@ def findMarker(card, markerDesc): # Goes through the markers on the card and loo
    if debugVerbosity >= 3: notify("<<< findMarker() by returning: {}".format(foundKey))
    return foundKey
 
-def parseCombatIcons(STRING):
+def parseCombatIcons(STRING, dictReturn = False):
    # This function takes the printed combat icons of a card and returns a string that contains only the non-zero ones.
    if debugVerbosity >= 1: notify(">>> parseCombatIcons() with STRING: {}".format(STRING)) #Debug
-   parsedIcons = ''
    UD = re.search(r'(?<!-)UD:([1-9])',STRING)
    EEUD = re.search(r'EE-UD:([1-9])',STRING)
    BD = re.search(r'(?<!-)BD:([1-9])',STRING)
    EEBD = re.search(r'EE-BD:([1-9])',STRING)
    T = re.search(r'(?<!-)T:([1-9])',STRING)
    EET = re.search(r'EE-T:([1-9])',STRING)
-   if UD: parsedIcons += 'UD:{}. '.format(UD.group(1))
-   if EEUD: parsedIcons += 'EE-UD:{}. '.format(EEUD.group(1))
-   if BD: parsedIcons += 'BD:{}. '.format(BD.group(1))
-   if EEBD: parsedIcons += 'EE-BD:{}. '.format(EEBD.group(1))
-   if T: parsedIcons += 'T:{}. '.format(T.group(1))
-   if EET: parsedIcons += 'EE-T:{}.'.format(EET.group(1))
-   if debugVerbosity >= 3: notify("<<< parseCombatIcons() with return: {}".format(parsedIcons)) # Debug
+   if not dictReturn: # without a dictReturn, we compile a human readable string.
+      parsedIcons = ''
+      if UD: parsedIcons += 'UD:{}. '.format(UD.group(1))
+      if EEUD: parsedIcons += 'EE-UD:{}. '.format(EEUD.group(1))
+      if BD: parsedIcons += 'BD:{}. '.format(BD.group(1))
+      if EEBD: parsedIcons += 'EE-BD:{}. '.format(EEBD.group(1))
+      if T: parsedIcons += 'T:{}. '.format(T.group(1))
+      if EET: parsedIcons += 'EE-T:{}.'.format(EET.group(1))
+      if debugVerbosity >= 3: notify("<<< parseCombatIcons() with return: {}".format(parsedIcons)) # Debug
+   else: # If we requested a dictReturn, the parsed icons will be returned in the form of a dictionary.
+      parsedIcons = {}
+      if UD: parsedIcons[UD] = num(UD.group(1))
+      else: parsedIcons[UD] = 0
+      if EEUD: parsedIcons[EE-UD] = num(EEUD.group(1))
+      else: parsedIcons[EE-UD] = 0
+      if BD: parsedIcons[BD] = num(BD.group(1))
+      else: parsedIcons[BD] = 0
+      if EEBD: parsedIcons[EE-BD] = num(EEBD.group(1))
+      else: parsedIcons[EE-BD] = 0
+      if T: parsedIcons[T] = num(T.group(1))
+      else: parsedIcons[T] = 0
+      if EET: parsedIcons[EE-T] = num(EET.group(1))
+      else: parsedIcons[EE-T] = 0
+      if debugVerbosity >= 3: notify("<<< parseCombatIcons() with dictReturn: {}".format(parsedIcons)) # Debug      
    return parsedIcons
 
 def calculateCombatIcons(card = None, CIString = None):
@@ -304,6 +320,15 @@ def calculateCombatIcons(card = None, CIString = None):
          if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
          if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
          if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
+         if re.search(r':EE-UD',marker[0]) and gotEdge(): Unit_Damage += card.markers[marker]
+         if re.search(r':EE-BD',marker[0]) and gotEdge(): Blast_Damage += card.markers[marker]
+         if re.search(r':EE-Tactics',marker[0]) and gotEdge(): Tactics += card.markers[marker]
+         if re.search(r':minusUD',marker[0]): Unit_Damage -= card.markers[marker]
+         if re.search(r':minusBD',marker[0]): Blast_Damage -= card.markers[marker]
+         if re.search(r':minusTactics',marker[0]): Tactics -= card.markers[marker]
+         if re.search(r':minusEE-UD',marker[0]) and gotEdge(): Unit_Damage -= card.markers[marker]
+         if re.search(r':minusEE-BD',marker[0]) and gotEdge(): Blast_Damage -= card.markers[marker]
+         if re.search(r':minusEE-Tactics',marker[0]) and gotEdge(): Tactics -= card.markers[marker]
       Autoscripts = CardsAS.get(card.model,'').split('||')   
       if len(Autoscripts) > 0:
          for autoS in Autoscripts:
@@ -355,6 +380,9 @@ def calculateCombatIcons(card = None, CIString = None):
                   Blast_Damage += BD
                   Tactics += T
    if debugVerbosity >= 3: notify("<<< calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
+   if Unit_Damage < 0: Unit_Damage = 0 # We cannot have a negative combat icon.
+   if Blast_Damage < 0: Blast_Damage = 0
+   if Tactics < 0: Tactics = 0
    return (Unit_Damage,Blast_Damage,Tactics)
 
 def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to be triggered for a (non) Dummy card
