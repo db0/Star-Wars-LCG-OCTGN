@@ -24,6 +24,11 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.2.0
+
+* **The Search for Skywalker** cards have been added and scripted. Get the latest set file for the goodies.
+* Fixed Red Two not automatically using its ability.
+
 ### 1.1.3
 
 * Refresh Phase should not clear opponent's shield tokens anymore.
