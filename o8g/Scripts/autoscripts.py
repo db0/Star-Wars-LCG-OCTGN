@@ -508,7 +508,8 @@ def markerEffects(Time = 'Start'):
                   or Time == 'afterDeployment'
                   or Time == 'afterConflict'
                   or Time == 'End')
-               and re.search(r'Munitions Expert',marker[0])):
+               and re.search(r'Munitions Expert',marker[0])
+                or re.search(r'Shelter from the Storm',marker[0])):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
 
@@ -963,12 +964,10 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
       elif action.group(1) == 'Engage': participate(targetCard, silent = True)
       elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
       elif action.group(1) == 'Rescue':
-         if card.isFaceUp: 
+         if targetCard.isFaceUp: 
             notify(":::ERROR::: Target Card was not captured!")
             return 'ABORT'
-         else:
-            removeCapturedCard(card) 
-            targetCard.moveTo(targetCard.owner.hand)
+         else: rescue(targetCard)
       elif action.group(1) == 'Uncommit':
          if targetCard.Side == 'Light': commitColor = LightForceColor
          else: commitColor = DarkForceColor
@@ -1768,7 +1767,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
                      if debugVerbosity >= 4: notify("### TraitsList = {}".format(TraitsList)) 
                      TraitsRestrictions = prepareRestrictions(Autoscript) # Then we gather the trait restrictions the original effect was looking for
                      if debugVerbosity >= 4: notify("### TraitsRestrictions = {}".format(TraitsRestrictions))
-                     if checkCardRestrictions(TraitsList, TraitsRestrictions): # Finally we compare the bonus traits of the card we found, wit  h the traits the original effect was polling for.
+                     if checkCardRestrictions(TraitsList, TraitsRestrictions) and checkSpecialRestrictions(Autoscript,c): # Finally we compare the bonus traits of the card we found, wit  h the traits the original effect was polling for.
                         multiplier += num(TraitRegex.group(2)) * chkPlayer(autoS, c.controller, False, True) # If they match, we increase our multiplier by the relevant number, if the card has the appropriate controller according to its effect.
       else: #If we're not looking for a particular target, then we check for everything else.
          if debugVerbosity >= 2: notify("### Doing no table lookup") # Debug.

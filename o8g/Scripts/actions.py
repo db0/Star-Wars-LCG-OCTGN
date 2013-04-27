@@ -504,7 +504,7 @@ def strike(card, x = 0, y = 0):
       currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
    for c in table: # We check to see if the attacking player has already selected a target.
       if c.targetedBy and c.targetedBy == me and c.Type == 'Unit': targetUnit = c
-   if Unit_Damage and not Tactics and targetUnit:  # if our strike only does unit damage, and we've already targeted a unit, then just automatically apply it to it.
+   if Unit_Damage and not Tactics and targetUnit and not hasDamageProtection(targetUnit,card):  # if our strike only does unit damage, and we've already targeted a unit, then just automatically apply it to it.
       targetUnit.markers[mdict['Damage']] += Unit_Damage
       Unit_DamageTXT = " to {}".format(targetUnit)
    elif not Unit_Damage and Tactics == 1 and targetUnit:  # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
@@ -524,27 +524,7 @@ def strike(card, x = 0, y = 0):
       else: AnnounceText += ' and {} Blast Damage'.format(Blast_Damage)
    if AnnounceText == '': AnnounceText = " no effect"
    notify("{} strikes with {} for{}.".format(me,card,AnnounceText))
-   if debugVerbosity >= 3: notify("<<< strike()") #Debug
-
-def hasDamageProtection(target,attacker): # A function which checks if the current target of damage has any protection from it.
-   if debugVerbosity >= 1: notify(">>> hasDamageProtection(){}".format(extraASDebug())) #Debug   
-   protected = False
-   Autoscripts = CardsAS.get(target.model,'').split('||')
-   for autoS in Autoscripts:
-      if re.search(r'ConstantEffect:Protection',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
-         protected = True
-         notify(":> {} is protected against {}'s damage".format(target,attacker))
-   hostCards = eval(getGlobalVariable('Host Cards'))
-   for attachment in hostCards: # We check if any of the card's attachments is providing protection as well (E.g. First Marker)
-      if hostCards[attachment] == target._id:
-         Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
-         for autoS in Autoscripts:
-            if re.search(r'ConstantEffect:Protection',autoS) and re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
-               protected = True
-               notify(":> {} is protected against {}'s damage".format(target,attacker))
-   return protected
-   if debugVerbosity >= 3: notify("<<< hasDamageProtection()") #Debug
-      
+   if debugVerbosity >= 3: notify("<<< strike()") #Debug    
       
 def participate(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
@@ -656,7 +636,7 @@ def checkPaidResources(card):
          affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
    for c in table:
       if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')) and chkDummy(CardsAS.get(c.model,''), c): 
-         if debugVerbosity >= 3: notify("### Ignoring affiliation match due to constant effect from {}.".format(c))
+         notify(":> Affiliation match ignored due to {}.".format(c))
          affiliationMatch = True
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    if card.highlight == UnpaidAbilityColor:

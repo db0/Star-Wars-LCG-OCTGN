@@ -423,8 +423,10 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
          targetCards = findTarget(autoS,card = card)
          multiplier = per(autoS, card, 0, targetCards)
          reduction += (count * multiplier)
-         fullCost -= (count * multiplier)
-         if count * multiplier > 0 and not dryRun: notify("-- {}'s full cost is reduced by {}".format(card,count * multiplier))
+         maxRegex = re.search(r'-maxReduce([1-9])', autoS) # We check if the card will only reduce its cast by a specific maximum (e.g. Weequay Elite)
+         if maxRegex and reduction > num(maxRegex.group(1)): reduction = num(maxRegex.group(1))
+         fullCost -= reduction
+         if reduction > 0 and not dryRun: notify("-- {}'s full cost is reduced by {}".format(card,reduction))
    if debugVerbosity >= 2: notify("### About to gather cards on the table")
    ### Now we check if any card on the table has an ability that reduces costs
    if not gatheredCardList: # A global variable that stores if we've scanned the tables for cards which reduce costs, so that we don't have to do it again.
@@ -596,6 +598,30 @@ def calcBonusEdge(card): # This function calculated how much Edge bonus a card i
    if edgeBonus: notify("-- {} adds {} force to the edge total".format(card,edgeBonus))
    return edgeBonus
 
+def hasDamageProtection(target,attacker): # A function which checks if the current target of damage has any protection from it.
+   if debugVerbosity >= 1: notify(">>> hasDamageProtection(){}".format(extraASDebug())) #Debug   
+   protected = False
+   Autoscripts = CardsAS.get(target.model,'').split('||')
+   for autoS in Autoscripts:
+      if re.search(r'ConstantEffect:Protection',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+         protected = True
+         notify(":> {} is protected against {}'s damage".format(target,attacker))
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   if not protected: # We don't check more if we've found protection already.
+      for attachment in hostCards: # We check if any of the card's attachments is providing protection as well (E.g. First Marker)
+         if hostCards[attachment] == target._id:
+            Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
+            for autoS in Autoscripts:
+               if re.search(r'ConstantEffect:Protection',autoS) and re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+                  protected = True
+                  notify(":> {} is protected against {}'s damage".format(target,attacker))
+   if not protected: # We don't check more if we've found protection already.
+      for marker in target.markers: # We also check if there's any special markers providing protection
+         if debugVerbosity >= 2: notify("Checking marker {} for protection".format(marker[0]))
+         if re.search(r':Protection',marker[0]): protected = True
+   if debugVerbosity >= 3: notify("<<< hasDamageProtection()") #Debug
+   return protected
+     
 def checkDeckLegality():
    if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
    mute()
@@ -887,14 +913,12 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000261",
-                "ff4fb461-8060-457a-9c16-000000000262",
-                "ff4fb461-8060-457a-9c16-000000000283",
-                "ff4fb461-8060-457a-9c16-000000000264",
-                "ff4fb461-8060-457a-9c16-000000000288",
-                "ff4fb461-8060-457a-9c16-000000000285",
+   testcards = ["ff4fb461-8060-457a-9c16-000000000265", # Regenade Squadron mobil
                 "ff4fb461-8060-457a-9c16-000000000269", # Echo Caverns
-                "ff4fb461-8060-457a-9c16-000000000268", # Munitions Expert
+                "ff4fb461-8060-457a-9c16-000000000266", # Renegade Squadron
+                "ff4fb461-8060-457a-9c16-000000000265", # Renegade Squadron Mobilization
+                "ff4fb461-8060-457a-9c16-000000000272", # Weequay Elite
+                "ff4fb461-8060-457a-9c16-000000000282", # Shelter from  Storm
                 "ff4fb461-8060-457a-9c16-000000000277"] 
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):

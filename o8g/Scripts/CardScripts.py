@@ -2242,7 +2242,7 @@ Renegade Squadron
 -----
 ff4fb461-8060-457a-9c16-000000000266
 -----
-
+onStrike:Put1Damage-isOptional$$RescueTarget-Targeted-isCaptured
 +++++
 
 .....
@@ -2250,7 +2250,7 @@ Renegade Squadron Mobilization
 -----
 ff4fb461-8060-457a-9c16-000000000265
 -----
-
+whileInPlay:Draw1Card-perUnitDestroyed-forOpponent
 +++++
 
 .....
@@ -2274,7 +2274,7 @@ Shelter from the Storm
 -----
 ff4fb461-8060-457a-9c16-000000000282
 -----
-
+onPlay:Put1Shield-Targeted-atCharacter-targetMine$$Put1Shelter from the Storm:Protection-Targeted-atCharacter-targetMine
 +++++
 
 .....
@@ -2282,7 +2282,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000270
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -2298,7 +2298,7 @@ Weequay Elite
 -----
 ff4fb461-8060-457a-9c16-000000000272
 -----
-
+onPay:Reduce2CostPlay-perEveryCard-AutoTargeted-isCaptured-maxReduce2
 +++++
 
 .....
@@ -2306,7 +2306,7 @@ Weequay Elite
 -----
 ff4fb461-8060-457a-9c16-000000000273
 -----
-
+onPay:Reduce2CostPlay-perEveryCard-AutoTargeted-isCaptured-maxReduce2
 +++++
 
 .....
