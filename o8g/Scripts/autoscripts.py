@@ -494,6 +494,8 @@ def markerEffects(Time = 'Start'):
       for marker in card.markers:
          if (Time == 'afterEngagement'
                and (re.search(r'Death from Above',marker[0])
+                 or re.search(r'Vaders TIE Advance',marker[0])
+                 or re.search(r'Yoda enhancements',marker[0])
                  or re.search(r'Ewok Scouted',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
@@ -508,8 +510,9 @@ def markerEffects(Time = 'Start'):
                   or Time == 'afterDeployment'
                   or Time == 'afterConflict'
                   or Time == 'End')
-               and re.search(r'Munitions Expert',marker[0])
-                or re.search(r'Shelter from the Storm',marker[0])):
+               and (re.search(r'Munitions Expert',marker[0])
+                or re.search(r'Echo Caverns',marker[0])
+                or re.search(r'Shelter from the Storm',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
 
@@ -1346,8 +1349,43 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       card.highlight = DefendColor
       setGlobalVariable('Engaged Objective',str(card._id))
       notify("{} activates {} and moves the engagement to it".format(me,card))
-      
-         
+   elif card.name == "Echo Caverns" and action == 'USE':
+      if (card.markers[mdict['Focus']]
+            and card.markers[mdict['Focus']] >= 1
+            and not confirm("Card is already exhausted. Bypass?")):
+         return 
+      currentTargets = findTarget('Targeted-atUnit')
+      if len(currentTargets) != 2:
+         delayed_whisper(":::ERROR::: You must target exactly 2 units to use this ability")
+         return
+      cardATraits = currentTargets[0].Traits.split('-')
+      cardBTraits = currentTargets[1].Traits.split('-')
+      commonTrait = False
+      for TraitA in cardATraits:
+         if TraitA == 'Unique': continue # "Unique" is not an actual trait.
+         if TraitA in cardBTraits: commonTrait = True
+      if not commonTrait: 
+         delayed_whisper(":::ERROR::: The two target units must share a common Trait.")
+         return
+      targetChoices = makeChoiceListfromCardList(currentTargets)
+      choiceC = SingleChoice("Choose from which card to remove a combat icon", targetChoices, type = 'button', default = 0)
+      if choiceC == 'ABORT': return
+      if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
+      if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
+      sourceCard = currentTargets.pop(choiceC)
+      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
+      targetCard = currentTargets[0] # After we pop() the choice card, whatever remains is the target card.
+      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
+      printedIcons = parseCombatIcons(sourceCard.properties['Combat Icons'])
+      IconChoiceList = ["Unit Damage","Edge-Enabled Unit Damage","Blast Damage","Edge-Enabled Blast Damage","Tactics","Edge-Enabled Tactics"] # This list is a human readable one for the user to choose an icon
+      IconList = ["UD","EE-UD","BD","EE-BD","Tactics","EE-Tactics"] # This list has the same icons as the above, but uses the keywords that the game expects in a marker, so it makes it easier to figure out which icon the user selected.
+      if debugVerbosity >= 2: notify("### About to select combat icon to steal")
+      choiceIcons = SingleChoice("The card has the following printed Combat Icons: {}.\nChoose a combat icon to steal.\n(We leave the choice open, in case the card has received a combat icon from a card effect)".format(printedIcons), IconChoiceList, type = 'button', default = 0)
+      card.markers[mdict['Focus']] += 1
+      TokensX('Put1Echo Caverns:minus{}-isSilent'.format(IconList[choiceIcons]), '', sourceCard)
+      TokensX('Put1Echo Caverns:{}-isSilent'.format(IconList[choiceIcons]), '', targetCard)
+      notify("{} activates {} to move one {} icon from {} to {}".format(me,card,IconChoiceList[choiceIcons],sourceCard,targetCard))
+   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions
 #------------------------------------------------------------------------------
