@@ -1966,7 +1966,7 @@ ff4fb461-8060-457a-9c16-000000000234
 +++++
 R0:DestroyTarget-Targeted-atUnit
 .....
-Succumb to the Cold&#33;
+Succumb to the Cold!
 -----
 ff4fb461-8060-457a-9c16-000000000256
 -----
@@ -1974,7 +1974,7 @@ ff4fb461-8060-457a-9c16-000000000256
 +++++
 
 .....
-Succumb to the Cold&#33;
+Succumb to the Cold!
 -----
 ff4fb461-8060-457a-9c16-000000000257
 -----
@@ -2067,6 +2067,246 @@ Wilderness Fighters
 ff4fb461-8060-457a-9c16-000000000232
 -----
 ExtraIcon:UD:1-perEveryHoth-AutoTargeted-atObjective_and_Hoth-targetMine
++++++
+
+.....
+AAC-1 Speeder Tank
+-----
+ff4fb461-8060-457a-9c16-000000000279
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
++++++
+
+.....
+AAC-1 Speeder Tank
+-----
+ff4fb461-8060-457a-9c16-000000000280
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
++++++
+
+.....
+Admiral's Orders
+-----
+ff4fb461-8060-457a-9c16-000000000288
+-----
+onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-isSilent||whileInPlay:Reduce2CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-typeCapital Ship-onlyforDummy-isSilent
++++++
+
+.....
+Death Squadron Command
+-----
+ff4fb461-8060-457a-9c16-000000000287
+-----
+whileInPlay:Remove1Focus-perObjectiveThwarted
++++++
+
+.....
+Death Squadron Star Destroyer
+-----
+ff4fb461-8060-457a-9c16-000000000284
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
++++++
+
+.....
+Death Squadron Star Destroyer
+-----
+ff4fb461-8060-457a-9c16-000000000285
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
++++++
+
+.....
+Deploy the Fleet
+-----
+ff4fb461-8060-457a-9c16-000000000283
+-----
+whileInPlay:Reduce1CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-typeCapital Ship-onlyforDummy-isSilent
++++++
+R0:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 1}$$CreateDummy-isSilent-doNotDiscard
+.....
+Echo Base
+-----
+ff4fb461-8060-457a-9c16-000000000262
+-----
+ConstantEffect:Trait{Hoth}1Bonus
++++++
+
+.....
+Echo Base Shield Generator
+-----
+ff4fb461-8060-457a-9c16-000000000263
+-----
+
++++++
+R0:Put1Damage-onlyOnce$$Put1Shield-Targeted-atUnit_or_Objective_and_Hoth$$ReturnMyself-ifMarkers{Damage}eq3$$Remove999Damage-ifMarkers{Damage}eq3
+.....
+Echo Caverns
+-----
+ff4fb461-8060-457a-9c16-000000000269
+-----
+
++++++
+R0:CustomScript
+.....
+Echo Defender
+-----
+ff4fb461-8060-457a-9c16-000000000260
+-----
+ExtraIcon:EE-UD:1-perEveryHoth-AutoTargeted-atObjective_and_Hoth-targetMine
++++++
+
+.....
+Echo Defender
+-----
+ff4fb461-8060-457a-9c16-000000000261
+-----
+ExtraIcon:EE-UD:1-perEveryHoth-AutoTargeted-atObjective_and_Hoth-targetMine
++++++
+
+.....
+First Marker
+-----
+ff4fb461-8060-457a-9c16-000000000264
+-----
+Placement:Objective_and_Hoth||ConstantEffect:Protection-fromVehicle-onHost
++++++
+
+.....
+Fleet Navigator
+-----
+ff4fb461-8060-457a-9c16-000000000286
+-----
+
++++++
+
+.....
+Get Me Solo!
+-----
+ff4fb461-8060-457a-9c16-000000000276
+-----
+onPlay:CaptureTarget-Targeted-atUnit-fromHand
++++++
+
+.....
+Hoth Scout
+-----
+ff4fb461-8060-457a-9c16-000000000278
+-----
+
++++++
+R0:SacrificeMyself$$Put1Shield-Targeted-atUnit_or_Objective
+.....
+Jabba's Orders
+-----
+ff4fb461-8060-457a-9c16-000000000271
+-----
+
++++++
+
+.....
+Jabba's Palace
+-----
+ff4fb461-8060-457a-9c16-000000000275
+-----
+
++++++
+
+.....
+Jawa Trading Crawler
+-----
+ff4fb461-8060-457a-9c16-000000000274
+-----
+
++++++
+
+.....
+Munitions Expert
+-----
+ff4fb461-8060-457a-9c16-000000000268
+-----
+
++++++
+R0:Put1Focus$$Put1Munitions Expert:UD
+.....
+Preparation for Battle
+-----
+ff4fb461-8060-457a-9c16-000000000277
+-----
+whileInPlay:IncreaseBD:1-byMe-forUnit-hasMarker{Shield}-ifDialge8
++++++
+
+.....
+Renegade Squadron
+-----
+ff4fb461-8060-457a-9c16-000000000266
+-----
+
++++++
+
+.....
+Renegade Squadron Mobilization
+-----
+ff4fb461-8060-457a-9c16-000000000265
+-----
+
++++++
+
+.....
+Renegade Squadron Operative
+-----
+ff4fb461-8060-457a-9c16-000000000267
+-----
+
++++++
+
+.....
+Sensors Are Placed
+-----
+ff4fb461-8060-457a-9c16-000000000259
+-----
+
++++++
+
+.....
+Shelter from the Storm
+-----
+ff4fb461-8060-457a-9c16-000000000282
+-----
+
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000270
+-----
+
++++++
+
+.....
+Tauntaun
+-----
+ff4fb461-8060-457a-9c16-000000000281
+-----
+
++++++
+
+.....
+Weequay Elite
+-----
+ff4fb461-8060-457a-9c16-000000000272
+-----
+
++++++
+
+.....
+Weequay Elite
+-----
+ff4fb461-8060-457a-9c16-000000000273
+-----
+
 +++++
 
 .....

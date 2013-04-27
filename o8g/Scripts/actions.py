@@ -500,7 +500,8 @@ def strike(card, x = 0, y = 0):
    targetUnit = None
    Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
-   if currentTarget.controller == opponent: currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
+   if currentTarget.controller == opponent and not hasDamageProtection(currentTarget,card): 
+      currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
    for c in table: # We check to see if the attacking player has already selected a target.
       if c.targetedBy and c.targetedBy == me and c.Type == 'Unit': targetUnit = c
    if Unit_Damage and not Tactics and targetUnit:  # if our strike only does unit damage, and we've already targeted a unit, then just automatically apply it to it.
@@ -524,7 +525,27 @@ def strike(card, x = 0, y = 0):
    if AnnounceText == '': AnnounceText = " no effect"
    notify("{} strikes with {} for{}.".format(me,card,AnnounceText))
    if debugVerbosity >= 3: notify("<<< strike()") #Debug
-   
+
+def hasDamageProtection(target,attacker): # A function which checks if the current target of damage has any protection from it.
+   if debugVerbosity >= 1: notify(">>> hasDamageProtection(){}".format(extraASDebug())) #Debug   
+   protected = False
+   Autoscripts = CardsAS.get(target.model,'').split('||')
+   for autoS in Autoscripts:
+      if checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+         protected = True
+         notify(":> {} is protected against {}'s damage".format(target,attacker))
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   for attachment in hostCards: # We check if any of the card's attachments is providing protection as well (E.g. First Marker)
+      if hostCards[attachment] == target._id:
+         Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
+         for autoS in Autoscripts:
+            if re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+               protected = True
+               notify(":> {} is protected against {}'s damage".format(target,attacker))
+   return protected
+   if debugVerbosity >= 3: notify("<<< hasDamageProtection()") #Debug
+      
+      
 def participate(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
    mute()
@@ -746,10 +767,13 @@ def discard(card, x = 0, y = 0, silent = False):
    if debugVerbosity >= 1: notify(">>> discard() card = {}".format(card)) #Debug
    mute()
    previousHighlight = card.highlight # We store the highlight before we move the card to the discard pile, to be able to check if it's an edge card to avoid triggering its autoscripts
-   if card.Type == "Objective":
+   if card.highlight == DummyColor: 
+      card.moveTo(card.owner.piles['Discard Pile'])
+      if not silent: notify("{}'s resident effect ends".format(card))
+   elif card.Type == "Objective":
       if card.controller == me:
          if not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
-         if debugVerbosity >= 2: notify("About to score objective")
+         if debugVerbosity >= 2: notify("### About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
          currentObjectives.remove(card._id)
          rescuedCount = rescueFromObjective(card)
