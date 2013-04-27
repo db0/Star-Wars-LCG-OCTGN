@@ -2130,7 +2130,7 @@ Echo Base
 -----
 ff4fb461-8060-457a-9c16-000000000262
 -----
-ConstantEffect:Trait{Hoth}1Bonus
+ConstantEffect:Trait{Objective_and_Hoth}1Bonus
 +++++
 
 .....
@@ -2228,7 +2228,7 @@ ff4fb461-8060-457a-9c16-000000000268
 -----
 
 +++++
-R0:Put1Focus$$Put1Munitions Expert:UD
+R0:Put1Focus$$Put1Munitions Expert:UD-Targeted-atUnit
 .....
 Preparation for Battle
 -----
