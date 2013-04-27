@@ -1728,7 +1728,7 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          return validPlayer
       else: # In case reversePlayerChk is set to true, we want to return the opposite result. This means that if a scripts expect the one running the effect to be the player, we'll return 1 only if the one running the effect is the opponent. See Decoy at Dantoine for a reason
          if debugVerbosity >= 3: notify("<<< chkPlayer() reversed!") # Debug      
-         if validPlayer == 0 or len(players) == 1: return 1 # For debug purposes, I want it to be true when there's  only one player in the match
+         if validPlayer == 0 or len(players) == 1 or manual or (not byOpponent and not byMe): return 1 # For debug purposes, I want it to be true when there's  only one player in the match
          else: return 0
    except: 
       notify("!!!ERROR!!! Null value on chkPlayer()")

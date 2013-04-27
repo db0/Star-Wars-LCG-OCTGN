@@ -1970,7 +1970,7 @@ Succumb to the Cold!
 -----
 ff4fb461-8060-457a-9c16-000000000256
 -----
-
+onPlay:Put1Focus-Targeted-atUnit-targetOpponents
 +++++
 
 .....
