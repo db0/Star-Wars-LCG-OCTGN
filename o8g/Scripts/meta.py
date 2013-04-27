@@ -646,7 +646,9 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
    if not protected: # We don't check more if we've found protection already.
       for marker in target.markers: # We also check if there's any special markers providing protection
          if debugVerbosity >= 2: notify("Checking marker {} for protection".format(marker[0]))
-         if re.search(r':Protection',marker[0]): protected = True
+         if re.search(r':Protection',marker[0]): 
+            protected = True
+            notify(":> {} is protected against {}'s damage".format(target,attacker))
    if debugVerbosity >= 3: notify("<<< hasDamageProtection()") #Debug
    return protected
      
@@ -941,13 +943,13 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000265", # Regenade Squadron mobil
+   testcards = ["ff4fb461-8060-457a-9c16-000000000177", # Red Two
                 "ff4fb461-8060-457a-9c16-000000000269", # Echo Caverns
                 "ff4fb461-8060-457a-9c16-000000000266", # Renegade Squadron
                 "ff4fb461-8060-457a-9c16-000000000265", # Renegade Squadron Mobilization
                 "ff4fb461-8060-457a-9c16-000000000272", # Weequay Elite
                 "ff4fb461-8060-457a-9c16-000000000282", # Shelter from  Storm
-                "ff4fb461-8060-457a-9c16-000000000277"] 
+                "ff4fb461-8060-457a-9c16-000000000287"] # Death Squadron COmmand
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):
          test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)
