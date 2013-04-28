@@ -24,6 +24,10 @@ Demo game at v1.0.0
 Changelog
 ---------
 
+### 1.2.1
+
+* Fixed Hoth Operations breaking paying of cards and Edge Battles.
+
 ### 1.2.0
 
 * **The Search for Skywalker** cards have been added and scripted. Get the latest set file for the goodies.
