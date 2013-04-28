@@ -472,12 +472,12 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
             if debugVerbosity >= 2: #Debug
                if reductionSearch: notify("!!! Regex is {}".format(reductionSearch.groups()))
                else: notify("!!! No reduceCost regex Match!") 
-            if not chkDummy(autoS, c): continue   
-            if not checkOriginatorRestrictions(autoS,c): continue  
-            if not chkSuperiority(autoS, c): continue
             #if re.search(r'ifInstalled',autoS) and (card.group != table or card.highlight == RevealedColor): continue
             if reductionSearch: # If the above search matches (i.e. we have a card with reduction for Rez and a condition we continue to check if our card matches the condition)
                if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug         
+               if not chkDummy(autoS, c): continue   
+               if not checkOriginatorRestrictions(autoS,c): continue  
+               if not chkSuperiority(autoS, c): continue
                if reductionSearch.group(1) == 'Reduce': 
                   costReducers.append((c,reductionSearch,autoS)) # We put the costReducers in a different list, as we want it to be checked after all the increasers are checked
                else:
@@ -573,9 +573,12 @@ def compareObjectiveTraits(Trait):
       for card in table: # We check for cards for give bonus objective traits (e.g. Echo Base)
          if card.controller == player:
             Autoscripts = CardsAS.get(card.model,'').split('||')
+            if debugVerbosity >= 3: notify("### Autoscripts len = {}. Autoscripts = {}".format(len(Autoscripts),Autoscripts))
             for autoS in Autoscripts:
-               if debugVerbosity >= 2: notify("### Checking {} for Objective Trait boosting AS: {}".format(card,autoS))
-               TraitBonus = re.search(r'Trait\{Objective_and_{}\}([0-9])Bonus'.format(Trait),autoS)
+               if debugVerbosity >= 2: notify("### Checking {} for Objective Trait boosting AS: {}".format(card,autoS)) # Debug
+               search = 'Trait{Objective_and_' + Trait + '}([0-9])Bonus' # Doing a concatenate because python b0rks if I try to do it with format.
+               if debugVerbosity >= 3: notify("### Finished concatenating") # Debug
+               TraitBonus = re.search(r'{}'.format(search),autoS)
                if TraitBonus: playerTraitCounts[player.name] += num(TraitBonus.group(1))
    if debugVerbosity >= 2: notify("### Comparing Objectives count") # Debug
    topPlayers = []
@@ -943,7 +946,7 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000177", # Red Two
+   testcards = ["ff4fb461-8060-457a-9c16-000000000238", # Snowspeeder
                 "ff4fb461-8060-457a-9c16-000000000269", # Echo Caverns
                 "ff4fb461-8060-457a-9c16-000000000266", # Renegade Squadron
                 "ff4fb461-8060-457a-9c16-000000000265", # Renegade Squadron Mobilization
