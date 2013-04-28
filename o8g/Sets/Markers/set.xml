@@ -19,7 +19,7 @@
 		<marker id="ea7418bc-6847-4e8a-9cc3-0230dc27d19b" name="Activated" />
 	</markers>
 	<cards>
-		<card id="e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc" name="Balance of the Force">
+		<card id="e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc" name="Balance of the Force (LS)">
 			<property name="Number" value="" />
 			<property name="Block" value="" />
 			<property name="Block Number" value="" />
@@ -36,9 +36,7 @@
 			<property name="Resources" value="" />
 			<property name="AutoScript" value="" />
 			<property name="AutoAction" value="" />
-         <alternate name="Balance of the Force" type="transform">
-            <property name="Type" value="DarkSide" />
-         </alternate>         
+         <alternate name="Balance of the Force (DS)" type="DarkSide" />
 		</card>
 		<card id="8b5a86df-fb10-4e5e-9133-7dc03fbae22d" name="Cover">
 			<property name="Number" value="" />

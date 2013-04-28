@@ -424,6 +424,7 @@ def gameSetup(group, x = 0, y = 0):
          try:                                             
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
             BotD.moveToTable((playerside * -380) - 25, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+            if debugVerbosity >= 2: notify("### BOTD alternate is : {}".format(BotD.alternate))
             setGlobalVariable('Balance of the Force', str(BotD._id))
          except: notify("!!!ERROR!!! {} - In gameSetup()\n!!! PLEASE INSTALL MARKERS SET FILE !!!".format(me))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
@@ -471,8 +472,10 @@ def defaultAction(card, x = 0, y = 0):
       if debugVerbosity >= 2: notify("Card is Unit and it's engagement time") # Debug
       if card.orientation == Rot0: participate(card)
       else: strike(card)
-   elif card.model == 'e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc': 
-      card.switchImage # If the players double click on the Balance of the Force, we assume they want to flip it.
+   elif card.model == 'e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc': # If the players double click on the Balance of the Force, we assume they want to flip it.
+      if card.alternate == 'DarkSide': card.switchTo() 
+      else: card.switchTo('DarkSide')
+      if debugVerbosity >= 2: notify("### BOTD alternate is now : {}".format(card.alternate))
       notify(":::ATTENTION::: {} flipped the balance of the force manually".format(me))
    elif CardsAA.get(card.model,'') != '': useAbility(card)
    else: whisper(":::ERROR::: There is nothing to do with this card at this moment!")
