@@ -159,7 +159,7 @@
          </block>
    <!-- Enhancement Blocks-->
          <block type="text" id="enhancement_name">
-           <location x="70" y="23" />
+           <location x="75" y="23" />
            <text color="#000000" size="16" />
            <wordwrap height="20" width="230" />
          </block>
@@ -574,6 +574,58 @@
       <template src="Proxy/Enhancements/Enhancement_Scums.png">
          <matches>
             <match name="Affiliation" value="Scum and Villainy" />
+            <match name="Type" value="Enhancement" />
+         </matches>
+         <overlayblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy" />
+               </if>
+               <else>
+                  <link block="resources_box" />
+               </else>
+            </conditional>
+            <link block="force_sphere" />
+         </overlayblocks>
+         <textblocks>
+            <conditional>
+               <if property="Resources" value="0">
+                  <link block="dummy_text" separator=" ">
+                     <property name="Dummy"  />
+                  </link>
+               </if>
+               <else>
+                  <link block="resources_count" separator=" ">
+                     <property name="Resources"  />
+                  </link>
+               </else>
+            </conditional>
+            <link block="force_count" separator=" ">
+               <property name="Force"  />
+            </link>
+            <link block="enhancement_name" separator=" ">
+               <property name="Name"  />
+            </link>
+            <link block="cost" separator=" ">
+               <property name="Cost"  />
+            </link>
+            <link block="enhancement_traits" separator=" ">
+               <property name="Traits"  />
+            </link>
+            <link block="enhancement_text" separator=" ">
+               <property name="Text"  />
+            </link>
+            <link block="enhancement_block" separator=" ">
+               <property name="Block"  />
+            </link>
+            <link block="enhancement_Block Number" separator=" ">
+               <property name="Block Number"  />
+            </link>
+         </textblocks>
+      </template>
+      <template src="Proxy/Enhancements/Enhancement_Smugglers.png">
+         <matches>
+            <match name="Affiliation" value="Smugglers and Spies" />
             <match name="Type" value="Enhancement" />
          </matches>
          <overlayblocks>
