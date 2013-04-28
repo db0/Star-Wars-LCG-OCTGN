@@ -253,7 +253,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       if (Side == 'Light' and not BotD.alternate == '') or (Side == 'Dark' and not BotD.alternate == 'DarkSide'):
          if debugVerbosity >= 2: notify("### About to flip BotD due to my victory") #Debug
          if Side == 'Light': BotD.switchTo()
-         else: : BotD.switchTo('DarkSide')
+         else: BotD.switchTo('DarkSide')
          x,y = Affiliation.position
          if debugVerbosity >= 2: notify("### My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
          BotD.moveToTable(x, y + (playerside * 75))
@@ -264,7 +264,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       if (Side == 'Light' and BotD.alternate == '') or (Side == 'Dark' and BotD.alternate == 'DarkSide'):
          if debugVerbosity >= 2: notify("About to flip BotD due to my opponent's victory") #Debug
          if Side == 'Light': BotD.switchTo('DarkSide')
-         else: : BotD.switchTo()
+         else: BotD.switchTo()
          opponentAffiliation = getSpecial('Affiliation',opponent)
          x,y = opponentAffiliation.position
          if debugVerbosity >= 2: notify("Opponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
