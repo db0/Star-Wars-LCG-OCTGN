@@ -473,6 +473,9 @@ def defaultAction(card, x = 0, y = 0):
       if card.orientation == Rot0: participate(card)
       else: strike(card)
    elif card.model == 'e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc': # If the players double click on the Balance of the Force, we assume they want to flip it.
+      if debugVerbosity >= 2: 
+         notify("### Flipping : {}".format(card))
+         rnd(1,100)
       if card.alternate == 'DarkSide': card.switchTo() 
       else: card.switchTo('DarkSide')
       if debugVerbosity >= 2: notify("### BOTD alternate is now : {}".format(card.alternate))
