@@ -250,9 +250,10 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
       if debugVerbosity >= 2: notify("### struggleTotal Positive") #Debug
-      if (Side == 'Light' and BotD.isAlternateImage) or (Side == 'Dark' and not BotD.isAlternateImage):
+      if (Side == 'Light' and not BotD.alternate == '') or (Side == 'Dark' and not BotD.alternate == 'DarkSide'):
          if debugVerbosity >= 2: notify("### About to flip BotD due to my victory") #Debug
-         BotD.switchImage
+         if Side == 'Light': BotD.switchTo()
+         else: : BotD.switchTo('DarkSide')
          x,y = Affiliation.position
          if debugVerbosity >= 2: notify("### My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
          BotD.moveToTable(x, y + (playerside * 75))
@@ -260,9 +261,10 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
    elif myStruggleTotal - opponentStruggleTotal < 0: 
       if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
-      if (Side == 'Light' and not BotD.isAlternateImage) or (Side == 'Dark' and BotD.isAlternateImage):
+      if (Side == 'Light' and BotD.alternate == '') or (Side == 'Dark' and BotD.alternate == 'DarkSide'):
          if debugVerbosity >= 2: notify("About to flip BotD due to my opponent's victory") #Debug
-         BotD.switchImage
+         if Side == 'Light': BotD.switchTo('DarkSide')
+         else: : BotD.switchTo()
          opponentAffiliation = getSpecial('Affiliation',opponent)
          x,y = opponentAffiliation.position
          if debugVerbosity >= 2: notify("Opponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
@@ -271,7 +273,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
    else: # If the current force totals are tied, we just announce that.
       if debugVerbosity >= 2: notify("Force struggle is tied") #Debug
-      if BotD.isAlternateImage: BotDside = 'Dark'
+      if BotD.alternate == 'DarkSide': BotDside = 'Dark'
       else: BotDside = 'Light'
       notify(":> The force struggle is tied. The Balance remains tiped to the {} Side. ({}: {} - {}: {})".format(BotDside,me,myStruggleTotal,opponent,opponentStruggleTotal))
    forceStruggleDone = True # Set that the forcestruggle is done.

@@ -553,9 +553,9 @@ def haveForce():
    myForce = False
    BotD = getSpecial('BotD')
    if Side == 'Dark': 
-      if BotD.isAlternateImage: myForce = True
+      if BotD.alternate == 'DarkSide': myForce = True
    else:
-      if not BotD.isAlternateImage: myForce = True
+      if BotD.alternate == '': myForce = True
    if debugVerbosity >= 4: notify("<<< chkForce() with return:{}".format(myForce)) #Debug
    return myForce
 
