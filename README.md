@@ -2,7 +2,7 @@
 =========================
 In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
 
-While the light side player races to make tactical strikes against dark side objectives, the dark side player works to reinforce their position of command.
+*While the light side player races to make tactical strikes against dark side objectives, the dark side player works to reinforce their position of command.*
 
 This is a game definition for the [Online Card and Tabletop Gaming Network (OCTGN)](http://octgn.net). Its card effects are almost completely automated to allow for smoother play and prevent mistakes
 
