@@ -7,6 +7,8 @@ Enjoy!
 Tutorials
 ---------
 
+Step-by-Step Tutorial Video (This is from v.1.0.2 and it's kinda obsolete and needs to be updated, but it will show you the basics. The current plugin is much more advanced.)
+
 [![Step-by-Step Tutorial Video (v.1.0.2)](https://raw.github.com/db0/Star-Wars-LCG-OCTGN/OCTGN-3.1.x/Turorial_video_screenshot.png)](https://vimeo.com/54797455)
 
 [Currently Available Sets](http://dbzer0.com/pub/SWLCG/Sets/)
