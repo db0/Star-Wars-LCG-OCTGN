@@ -7,7 +7,7 @@ Enjoy!
 Tutorials
 ---------
 
-[Step-by-Step Tutorial Video (v.1.0.2)](https://vimeo.com/54797455)
+[![Step-by-Step Tutorial Video (v.1.0.2)](https://vimeo.com/54797455)](https://raw.github.com/db0/Star-Wars-LCG-OCTGN/OCTGN-3.1.x/Turorial_video_screenshot.png)
 
 [Currently Available Sets](http://dbzer0.com/pub/SWLCG/Sets/)
 ---------
