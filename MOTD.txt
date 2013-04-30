@@ -11,4 +11,4 @@ If you prefer to go back to the images, you can download the new .o8c files whic
 Do you want to open a browser page to the .o8c card pack downloads?
 =============================
 &&
-http://dbzer0.com/pub/SWLCG/Sets/
+https://github.com/db0/Star-Wars-LCG-OCTGN/tree/OCTGN-3.1.x#available-sets
