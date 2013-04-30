@@ -3,7 +3,7 @@ How to convert your .o8s sets into .o8c files
 
 You should use this guide if you've already downloaded sets before the 3.1 version of OCTGN (or possibly made your own uncensored ones) and want a way to migrate those images into OCTGN 3.1
 
-This guide will show you some simple steps to achieve this. 
+This guide will show you some simple steps to achieve this in MS Windows (In other OS' the steps are the same, but you need to run the o8build in some kind of win emulator or wine.)
 
 1. Put all your .o8s set files into a folder somewhere. Say ```C:\Sets```
 2. Press **Win+R** (i.e. press and hold the windows hey and press R) (On WinXP, just go Start -> Run). A new window will pop-up.
