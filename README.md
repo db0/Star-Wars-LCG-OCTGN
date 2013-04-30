@@ -10,6 +10,8 @@ Enjoy!
 While you can play the game with the auto-generated proxies, if you've already memorized the cards, the censored images will allow you to play and recognise cards quicker.
 Sets will be uncensored after 6 months.
 
+*(Click the header to go to the download location)*
+
 * Core *(Censored)*
 * Desolation of Hoth *(Censored)*
 * The Search for Skywalker *(Censored)*
