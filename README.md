@@ -1,6 +1,6 @@
 ﻿Star Wars:The Card Game LCG plugin for OCTGN
 =========================
-The Star Wars universe as a Head2Head Living card game
+The Star Wars universe as a Head-2-Head Living card game.
 
 Enjoy!
 
@@ -8,6 +8,18 @@ Tutorials
 ---------
 
 [Step-by-Step Tutorial Video (v.1.0.2)](https://vimeo.com/54797455)
+
+[Currently Available Sets](http://dbzer0.com/pub/SWLCG/Sets/)
+---------
+* Core *(Censored)*
+* Desolation of Hoth *(Censored)*
+* The Search for Skywalker *(Censored)*
+
+
+Other Links
+---------
+* [Official site](http://www.fantasyflightgames.com/edge_minisite.asp?eidm=175)
+* [Plugin Forum](http://octgn.gamersjudgement.com/viewforum.php?f=55)
 
 Screenshots
 ---------
@@ -23,6 +35,10 @@ Demo game at v1.0.0
 
 Changelog
 ---------
+
+### 2.0.0.x
+
+* Game Definition converted to OCTGN 3.1 format.
 
 ### 1.2.0
 
