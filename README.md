@@ -4,18 +4,24 @@ The Star Wars universe as a Head-2-Head Living card game.
 
 Enjoy!
 
+[Currently Available Sets](http://dbzer0.com/pub/SWLCG/Sets/)
+---------
+
+While you can play the game with the auto-generated proxies, if you've already memorized the cards, the censored images will allow you to play and recognise cards quicker.
+Sets will be uncensored after 6 months.
+
+* Core *(Censored)*
+* Desolation of Hoth *(Censored)*
+* The Search for Skywalker *(Censored)*
+
+If you have the sets already from OCTGN 3.0 and you want to convert them to 3.1 without redownloading, [check this guide](https://github.com/db0/Star-Wars-LCG-OCTGN/blob/OCTGN-3.1.x/o8c_Convert_Guide.md).
+
 Tutorials
 ---------
 
 Step-by-Step Tutorial Video *(This is from v.1.0.2 and it's kinda obsolete and needs to be updated, but it will show you the basics. The current plugin is much more advanced.)*
 
 [![Step-by-Step Tutorial Video (v.1.0.2)](https://raw.github.com/db0/Star-Wars-LCG-OCTGN/OCTGN-3.1.x/Turorial_video_screenshot.png)](https://vimeo.com/54797455)
-
-[Currently Available Sets](http://dbzer0.com/pub/SWLCG/Sets/)
----------
-* Core *(Censored)*
-* Desolation of Hoth *(Censored)*
-* The Search for Skywalker *(Censored)*
 
 
 Other Links
