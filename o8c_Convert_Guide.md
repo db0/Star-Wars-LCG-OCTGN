@@ -13,6 +13,6 @@ This guide will show you some simple steps to achieve this in MS Windows (In oth
 5. Go to the directory you put your .o8s files. Inside you will see a "Conversion" folder. Open it.
 6. Inside you will see two folders. "Sets" and "SetImages". Enter "SetImages"
 7. Inside you will see a folder named as a GUID. Right click this folder and compress it into a .zip file with whatever program you want. Make sure you use the ZIP algorithm and nor rar or 7z! 
-8. Once you have a .zip file, rename it, and change .zip to .o8c. Your card file is now ready for import.
+8. Once you have a .zip file, rename it, and change .zip to .o8c. Your card file is now ready for import. You can now delete the conversion folder.
 
 Once you have your .o8c file, adding it into OCTGN is very easy. Simply go "Game Manager", Press "add .o8c" and select your newly created file.
