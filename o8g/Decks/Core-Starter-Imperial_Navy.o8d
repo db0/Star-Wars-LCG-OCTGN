@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<deck game="d5cf89e5-1984-4873-8ae0-f06eea411bb3">
+  <section name="Affiliation">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000095">Imperial Navy</card>
+  </section>
+  <section name="Command Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000070">Admiral Motti</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000071">Duty Officer</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000072">Heavy Stormtrooper Squad</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000073">Heavy Stormtrooper Squad</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000074">Orbital Bombardment</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000050">"Backstabber"</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000048">TIE Fighter</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000047">TIE Bomber</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000051">Tallon Roll</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000049">Death from Above</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000029">Grand Moff Tarkin</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000030">Superlaser Engineer</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000032">Control Room</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000031">Stormtrooper Elite</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000033">Superlaser Blast</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000035">Devastator</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000036">Imperial Officer</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000037">Control Room</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000038">Defense Upgrade</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000039">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000041">TIE Attack Squadron</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000042">TIE Fighter</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000043">Tallon Roll</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000044">Death from Above</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000045">Twist of Fate</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000059">AT-ST Commander</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000002">AT-ST</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000060">AT-ST</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000061">Aft Armor Plating</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000062">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000053">Death Star Trooper</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000054">Death Star Trooper</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000055">Detained</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000056">Trooper Assault</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000057">Tear This Ship Apart</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000088">Human Replica Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000089">Human Replica Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000090">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000091">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000092">Twist of Fate</card>
+  </section>
+  <section name="Objective Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000087">Reconnaissance Mission</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000069">Imperial Command</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000046">Kuat Reinforcements</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000028">The Ultimate Power</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000034">Death and Despayre</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000040">Defense Protocol</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000058">The Endor Gambit</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000052">Take Them Prisoner</card>
+  </section>
+</deck>

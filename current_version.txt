@@ -1,4 +1,4 @@
-1.2.1||
+1.2.0||
 ======New Version Information======
 
 The Search for Skywalker begins! 
@@ -10,8 +10,6 @@ You can use the provided patch to bring your existing sets up to date without lo
 As always it is with a lot of automated goodness.
 
 Enjoy and let me know of any bugs you find.
-
-(v.1.2.1 fixes a showstopper bug when Hoth Operations is on the table)
 ===============================
 ||
 Latest Core Set: 1.2.0

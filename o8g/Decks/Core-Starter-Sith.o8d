@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<deck game="d5cf89e5-1984-4873-8ae0-f06eea411bb3">
+  <section name="Affiliation">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000094">Sith</card>
+  </section>
+  <section name="Command Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000103">Darth Vader</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000104">Dark Side Apprentice</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000105">Vader's Lightsaber</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000106">Force Choke</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000107">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000115">Advisor to the Emperor</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000116">Kuati Security Team</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000117">Sith Library</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000118">Dark Precognition</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000119">Twist of Fate</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000127">Vader's TIE Advanced</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000128">TIE Advanced</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000129">Black Squadron Pilot</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000130">I'm On the Leader</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000131">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000023">Coruscant Defense Fleet</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000024">Kuati Security Team</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000025">Sith Library</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000026">Force Stasis</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000027">There Is No Escape</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000097">Emperor Palpatine</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000098">Emperor's Royal Guard</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000099">Sith Library</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000100">Force Lightning</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000101">Force Choke</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000123">Interrogation Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000122">Interrogation Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000125">ISB Interrogators</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000124">Intimidated</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000121">Interrogation</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000109">Nightsister</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000110">Nightsister</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000111">Rancor</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000112">The Hand's Blessing</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000113">A Disturbance In the Force</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000088">Human Replica Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000089">Human Replica Droid</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000090">Heat of Battle</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000091">Target of Opportunity</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000092">Twist of Fate</card>
+  </section>
+  <section name="Objective Deck">
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000102">Fall of the Jedi</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000114">Counsel of the Sith</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000126">Black Squadron Assault</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000022">The Heart of the Empire</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000096">The Emperor's Web</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000120">Cruel Interrogations</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000108">Shadows of Dathomir</card>
+    <card qty="1" id="ff4fb461-8060-457a-9c16-000000000087">Reconnaissance Mission</card>
+  </section>
+</deck>
