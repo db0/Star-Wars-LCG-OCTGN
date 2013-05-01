@@ -1007,7 +1007,7 @@ def GameX(Autoscript, announceText, card, targetCards = None, notification = Non
    if debugVerbosity >= 3: notify("<<< GameX()")
    return announceString
 
-def RetrieveX(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for drawing X Cards from the house deck to your hand.
+def RetrieveX(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for finding a specific card from a pile and putting it in hand or discard pile
    if debugVerbosity >= 1: notify(">>> RetrieveX(){}".format(extraASDebug(Autoscript))) #Debug
    if targetCards is None: targetCards = []
    action = re.search(r'\bRetrieve([0-9]+)Card', Autoscript)
