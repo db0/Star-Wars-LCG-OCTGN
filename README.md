@@ -18,9 +18,9 @@ Sets will be uncensored after 6 months.
 * [Desolation of Hoth](http://dbzer0.com/pub/SWLCG/Sets/SW-LCG-Desolation-Of-Hoth.o8c) *(Censored)*
 * [The Search for Skywalker](http://dbzer0.com/pub/SWLCG/Sets/SW-LCG-The-Search-For-Skywalker.o8c) *(Censored)*
 
-If you have the sets already from OCTGN 3.0 and you want to convert them to 3.1 without redownloading, [check this guide](o8c_Convert_Guide.md).
+If you have the sets already from OCTGN 3.0 and you want to convert them to 3.1 without redownloading, [check this guide](https://github.com/kellyelton/OCTGN/wiki/o8c-conversion-guide).
 
-If you have your own scans and want to use those instead of the censored card, you can [follow this guide to do so](o8c_Uncensor_Guide.md).
+If you have your own scans and want to use those instead of the censored card, you can [follow this guide to do so](https://github.com/kellyelton/OCTGN/wiki/o8c-modification-guide).
 
 Tutorials
 ---------
