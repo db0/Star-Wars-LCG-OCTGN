@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-onDiscard:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe||onDiscard:CaptureMyself-byOpponent$$Remove999Focus-AutoTargeted-targetOpponents-hasMarker{Focus}-byOppponent
+onDiscard:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe
 +++++
 
 .....
