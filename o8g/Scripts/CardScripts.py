@@ -1794,7 +1794,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000258
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
 +++++
 
 .....
@@ -2346,7 +2346,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000300
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
 +++++
 
 .....
