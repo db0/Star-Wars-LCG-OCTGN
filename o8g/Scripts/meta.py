@@ -337,6 +337,8 @@ def calculateCombatIcons(card = None, CIString = None):
                if debugVerbosity >= 2: notify("### extraRegex = {}".format(extraRegex.groups())) #Debug
                if not chkSuperiority(autoS, card): continue
                if not checkSpecialRestrictions(autoS,card): continue
+               if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
+               if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
                targetCards = findTarget(autoS,card = card)
                multiplier = per(autoS, card, 0, targetCards)               
                if extraRegex.group(1) == 'UD': Unit_Damage += num(extraRegex.group(2)) * multiplier

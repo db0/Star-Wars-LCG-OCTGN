@@ -55,6 +55,32 @@ def executePlayScripts(card, action):
          elif re.search(r'CustomScript', autoS): 
             CustomScript(card,action)
             Autoscripts.remove(autoS)
+      if debugVerbosity >= 2: notify ('Looking for multiple choice options') # Debug
+      if action == 'PLAY': trigger = 'onPlay' # We figure out what can be the possible multiple choice trigger
+      elif action == 'TRASH': trigger = 'onDiscard'
+      elif action == 'CAPTURE': trigger = 'onCapture'
+      else: trigger = 'N/A'
+      if debugVerbosity >= 2: notify ('trigger = {}'.format(trigger)) # Debug
+      if trigger != 'N/A': # If there's a possibility of a multiple choice trigger, we do the check
+         TriggersFound = [] # A List which will hold any valid abilities for this trigger
+         for AutoS in Autoscripts:
+            if re.search(r'{}:'.format(trigger),AutoS): # If the script has the appropriate trigger, we put it into the list.
+               TriggersFound.append(AutoS)
+         if debugVerbosity >= 2: notify ('TriggersFound = {}'.format(TriggersFound)) # Debug
+         if len(TriggersFound) > 1: # If we have more than one option for this trigger, we need to ask the player for which to use.
+            if Automations['WinForms']: ChoiceTXT = "This card has multiple abilities that can trigger at this point.\nSelect the ones you would like to use."
+            else: ChoiceTXT = "This card has multiple abilities that can trigger at this point.\nType the number of the one you would like to use."
+            triggerInstructions = re.search(r'{}\[(.*?)\]'.format(trigger),card.Instructions) # If the card has multiple options, it should also have some card instructions to have nice menu options.
+            if not triggerInstructions and debugVerbosity >= 1: notify("## Oops! No multiple choice instructions found and I expected some. Will crash prolly.") # Debug
+            cardInstructions = triggerInstructions.group(1).split('|-|') # We instructions for trigger have a slightly different split, so as not to conflict with the instructions from AutoActions.
+            choices = cardInstructions
+            abilChoice = SingleChoice(ChoiceTXT, choices, type = 'button')
+            if abilChoice == 'ABORT' or abilChoice == None: return # If the player closed the window, or pressed Cancel, abort.
+            TriggersFound.pop(abilChoice) # What we do now, is we remove the choice we made, from the list of possible choices. We remove it because then we will remove all the other options from the main list "Autoscripts"
+            for unchosenOption in TriggersFound:
+               if debugVerbosity >= 4: notify (' Removing unused option: {}'.format(unchosenOption)) # Debug
+               Autoscripts.remove(unchosenOption)
+            if debugVerbosity >= 2: notify ('Final Autoscripts after choices: {}'.format(Autoscripts)) # Debug
       if debugVerbosity >= 2: notify("#### List of autoscripts after scrubbing: {}".format(Autoscripts)) # Debug
       if len(Autoscripts) == 0 and debugVerbosity >= 2: notify("### No autoscripts remaining.") # Debug
       for autoS in Autoscripts:
@@ -496,6 +522,7 @@ def markerEffects(Time = 'Start'):
                and (re.search(r'Death from Above',marker[0])
                  or re.search(r'Vaders TIE Advance',marker[0])
                  or re.search(r'Yoda enhancements',marker[0])
+                 or re.search(r'Heavy Fire',marker[0])
                  or re.search(r'Ewok Scouted',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
@@ -512,6 +539,7 @@ def markerEffects(Time = 'Start'):
                   or Time == 'End')
                and (re.search(r'Munitions Expert',marker[0])
                 or re.search(r'Echo Caverns',marker[0])
+                or re.search(r'Ion Damaged',marker[0])
                 or re.search(r'Shelter from the Storm',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
@@ -1036,7 +1064,10 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
       for c in source: c.isFaceUp = True # We flip all cards in the player's deck face up so that we can grab their properties
    restrictions = prepareRestrictions(Autoscript, seek = 'type')
    cardList = []
-   for c in source:
+   countRestriction = re.search(r'-ontop([0-9]+)cards', Autoscript)
+   if countRestriction: topCount = num(countRestriction.group(1))
+   else: topCount = len(source)
+   for c in source.top(topCount):
       if debugVerbosity >= 4: notify("### Checking card: {}".format(c))
       if checkCardRestrictions(gatherCardProperties(c), restrictions):
          cardList.append(c)
@@ -1385,6 +1416,22 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       TokensX('Put1Echo Caverns:minus{}-isSilent'.format(IconList[choiceIcons]), '', sourceCard)
       TokensX('Put1Echo Caverns:{}-isSilent'.format(IconList[choiceIcons]), '', targetCard)
       notify("{} activates {} to move one {} icon from {} to {}".format(me,card,IconChoiceList[choiceIcons],sourceCard,targetCard))
+   elif card.name == "Prophet of the Dark Side" and action == 'PLAY':
+         cover = table.create("8b5a86df-fb10-4e5e-9133-7dc03fbae22d",0,0,1,True) 
+         cover.moveTo(me.piles['Command Deck'])
+         cardView = me.piles['Command Deck'][1]
+         cardView.isFaceUp = True
+         rnd(1,10)
+         if not haveForce():
+            delayed_whisper(":> The Prophet foresees that {} is upcoming!".format(cardView)) # If the player doesn't have the force, we just announce the card
+         else: # If the player has the force, he has a chance to draw the card in their hand.
+            StackTop = [cardView]
+            cardDetails = makeChoiceListfromCardList(StackTop, True)
+            if confirm("The Prophet Foresees:\n{}\n\nDo you want to draw this card".format(cardDetails[0])):
+               cardView.moveTo(me.hand)
+         if cardView.group ==  me.piles['Command Deck']: cardView.isFaceUp = False
+         rnd(1,10)
+         cover.moveTo(me.ScriptingPile) # we cannot delete cards so we just hide it.
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions
@@ -1586,6 +1633,12 @@ def checkSpecialRestrictions(Autoscript,card):
          currentTarget = Card(num(EngagedObjective))
          if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
          elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
+   if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
+      EngagedObjective = getGlobalVariable('Engaged Objective')
+      if EngagedObjective == 'None': validCard = False
+      else:
+         currentTarget = Card(num(EngagedObjective))
+         if not currentTarget.markers[mdict['Damage']]: validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
    markerName = re.search(r'-hasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
@@ -1669,7 +1722,7 @@ def compareValue(comparison, value, requirement):
    if comparison == 'gt' and value <= requirement: return False # 'gt' stands for "Greater Than"
    return True # If none of the requirements fail, we return true
      
-def makeChoiceListfromCardList(cardList):
+def makeChoiceListfromCardList(cardList,includeText = False):
 # A function that returns a list of strings suitable for a choice menu, out of a list of cards
 # Each member of the list includes a card's name, traits, resources, markers and, if applicable, combat icons
    if debugVerbosity >= 1: notify(">>> makeChoiceListfromCardList()")
@@ -1689,8 +1742,10 @@ def makeChoiceListfromCardList(cardList):
       if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
       if T.Type == 'Unit': combatIcons = "Printed Icons: " + parseCombatIcons(T.properties['Combat Icons'])
       else: combatIcons = ''
+      if includeText: cText = '\n' + fetchProperty(T, 'Text')
+      else: cText = ''
       if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
-      choiceTXT = "{}\n{}\n{}{}\n{}\nBlock: {}".format(T.name,T.Type,markers,stats,combatIcons,T.Block)
+      choiceTXT = "{}\n{}\n{}{}\n{}\nBlock: {}{}".format(T.name,T.Type,markers,stats,combatIcons,T.Block,cText)
       targetChoices.append(choiceTXT)
    return targetChoices
    if debugVerbosity >= 3: notify("<<< makeChoiceListfromCardList()")

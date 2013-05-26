@@ -259,6 +259,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          BotD.moveToTable(x, y + (playerside * 75))
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
+      autoscriptOtherPlayers('ForceStruggleWon',BotD)
    elif myStruggleTotal - opponentStruggleTotal < 0: 
       if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
       if (Side == 'Light' and BotD.alternate == '') or (Side == 'Dark' and BotD.alternate == 'DarkSide'):
@@ -271,6 +272,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          BotD.moveToTable(x - (playerside * 70), y)
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
+      autoscriptOtherPlayers('ForceStruggleLost',BotD)
    else: # If the current force totals are tied, we just announce that.
       if debugVerbosity >= 2: notify("Force struggle is tied") #Debug
       if BotD.alternate == 'DarkSide': BotDside = 'Dark'

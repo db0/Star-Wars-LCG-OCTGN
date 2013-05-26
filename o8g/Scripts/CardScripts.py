@@ -2314,7 +2314,7 @@ A Dark Time for the Rebellion
 -----
 ff4fb461-8060-457a-9c16-000000000307
 -----
-
+afterRefresh:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}
 +++++
 
 .....
@@ -2322,7 +2322,7 @@ Action-series Bulk Transport
 -----
 ff4fb461-8060-457a-9c16-000000000298
 -----
-
+onStrike:Retrieve1Card-typeCharacter-hasProperty{Cost}le2-toTable-isOptional$$ShuffleDeck
 +++++
 
 .....
@@ -2330,7 +2330,7 @@ Anger
 -----
 ff4fb461-8060-457a-9c16-000000000305
 -----
-
+Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-perForceStruggleLost-duringOpponentTurn
 +++++
 
 .....
@@ -2346,7 +2346,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000300
 -----
-
+onResolveFate:Deal1Damage-Targeted-atObjective-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective-targetMine-noTargetingError
 +++++
 
 .....
@@ -2354,7 +2354,7 @@ Carbonite Chamber Activation
 -----
 ff4fb461-8060-457a-9c16-000000000318
 -----
-
+onPlay:Put1Focus-Targeted-atUnit_and_nonVehicle
 +++++
 
 .....
@@ -2362,7 +2362,7 @@ Cloud CIty Incinerator
 -----
 ff4fb461-8060-457a-9c16-000000000317
 -----
-
+whileInPlay:DestroyTarget-Targeted-isCaptured-onlyOnce
 +++++
 
 .....
@@ -2370,7 +2370,7 @@ Colonel Starck
 -----
 ff4fb461-8060-457a-9c16-000000000308
 -----
-
+ExtraIcon:UD:2-isAttacking-isDamagedObjective||ExtraIcon:BD:2-isAttacking-isDamagedObjective
 +++++
 
 .....
@@ -2378,7 +2378,7 @@ Force Push
 -----
 ff4fb461-8060-457a-9c16-000000000306
 -----
-
+onPlay:Put2Focus-Targeted-atUnit_and_nonUnique
 +++++
 
 .....
@@ -2386,7 +2386,7 @@ Gotal Outcast
 -----
 ff4fb461-8060-457a-9c16-000000000290
 -----
-
+ExtraIcon:UD:2-ifHaveForce
 +++++
 
 .....
@@ -2394,7 +2394,7 @@ Gotal Outcast
 -----
 ff4fb461-8060-457a-9c16-000000000291
 -----
-
+ExtraIcon:UD:2-ifHaveForce
 +++++
 
 .....
@@ -2402,7 +2402,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000294
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -2410,7 +2410,7 @@ Heavy Fire
 -----
 ff4fb461-8060-457a-9c16-000000000312
 -----
-
+onPlay:Put1Heavy Fire:UD-Targeted-atUnit||onPlay:Put1Heavy Fire:BD-Targeted-atUnit
 +++++
 
 .....
@@ -2418,7 +2418,7 @@ Ion Cannon Burst
 -----
 ff4fb461-8060-457a-9c16-000000000299
 -----
-
+onPlay:Put1Ion Damaged-Targeted-atUnit_and_Vehicle_or_Unit_and_Droid
 +++++
 
 .....
@@ -2426,7 +2426,7 @@ MTV-7
 -----
 ff4fb461-8060-457a-9c16-000000000309
 -----
-
+ExtraIcon:BD:1-isAttacking-isDamagedObjective
 +++++
 
 .....
@@ -2434,7 +2434,7 @@ MTV-7
 -----
 ff4fb461-8060-457a-9c16-000000000310
 -----
-
+ExtraIcon:BD:1-isAttacking-isDamagedObjective
 +++++
 
 .....
@@ -2444,13 +2444,13 @@ ff4fb461-8060-457a-9c16-000000000295
 -----
 
 +++++
-
+R0:ReturnTarget-Targeted-atUnit
 .....
 Prophet of the Dark Side
 -----
 ff4fb461-8060-457a-9c16-000000000302
 -----
-
+onPlay:CustomScript
 +++++
 
 .....
@@ -2458,7 +2458,7 @@ Prophet of the Dark Side
 -----
 ff4fb461-8060-457a-9c16-000000000303
 -----
-
+onPlay:CustomScript
 +++++
 
 .....
