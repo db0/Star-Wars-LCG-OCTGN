@@ -152,6 +152,7 @@
 			<groupaction menu="Mulligan" default="False" execute="mulligan" />
 			<groupaction menu="Refill Hand" default="False" shortcut="Ctrl+Shift+R" execute="refillHand" />
 			<groupaction menu="Random Discard" default="False" execute="handRandomDiscard" />
+         <groupaction menu="Show a Card at Random" default="False" execute="showatrandom"/>
          <cardaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectCard" />
          <cardaction menu="Discard/Remove 4th Obejctive" default="False" shortcut="del" execute="handDiscard" />           
          <cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />

@@ -2506,7 +2506,7 @@ The Hunt for Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000313
 -----
-whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-perUnitCaptured
+whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-perUnitCardCaptured
 +++++
 
 .....
@@ -2522,7 +2522,7 @@ Ugnaught
 -----
 ff4fb461-8060-457a-9c16-000000000314
 -----
-
+whileInPlay:Remove1Focus-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Focus}-perCardCaptured
 +++++
 
 .....
@@ -2530,7 +2530,7 @@ Unwavering Resolve
 -----
 ff4fb461-8060-457a-9c16-000000000293
 -----
-
+onPlay:Put1Unwavering Resolve-Targeted-atUnit-targetMine
 +++++
 
 .....
@@ -2538,7 +2538,7 @@ Z-95 Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000315
 -----
-
+onStrike:CustomScript
 +++++
 
 .....
@@ -2546,7 +2546,7 @@ Z-95 Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000316
 -----
-
+onStrike:CustomScript
 +++++
 
 .....

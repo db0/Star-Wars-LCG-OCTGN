@@ -121,6 +121,10 @@ def checkUnique (card):
    if debugVerbosity >= 3: notify("<<< checkUnique() - Returning True") #Debug
    return True   
 
+def findOpponent():
+   # Just a quick function to make the code more readable
+   return ofwhom('ofOpponent')
+      
 def ofwhom(Autoscript, controller = me): 
    if debugVerbosity >= 1: notify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
    targetPL = None

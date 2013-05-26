@@ -226,11 +226,11 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       commitColor = DarkForceColor
       commitOpponent = LightForceColor
    if debugVerbosity >= 2: notify("### Counting my committed cards") #Debug
-   commitedCards = [c for c in table if c.controller == me and c.highlight == commitColor]
+   commitedCards = [c for c in table if c.controller == me and (c.highlight == commitColor or findMarker(c, "Unwavering Resolve"))]
    if debugVerbosity >= 2: notify("### About to loop") #Debug
    for card in commitedCards:
       try: 
-         if card.markers[mdict['Focus']] == 0: myStruggleTotal += num(card.Force)
+         if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve"): myStruggleTotal += num(card.Force)
       except: myStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
    if debugVerbosity >= 2: notify("### Counting my opponents cards") #Debug
    opponentCommitedCards  = [c for c in table if c.controller == opponent and c.highlight == commitOpponent]
@@ -1350,6 +1350,41 @@ def shuffle(group):
 
 def flipCard(card,x,y):
    card.isFaceUp = True
+   
+def showatrandom(group = None, count = 1, targetPL = None, silent = False, covered = False):
+   debugNotify(">>> showatrandom(){}".format(extraASDebug())) #Debug
+   mute()
+   shownCards = []
+   side = 1
+   if not targetPL: targetPL = me
+   if not group: group = targetPL.hand
+   if targetPL != me: side = -1
+   if len(group) == 0:
+      whisper(":::WARNING::: {} had no cards in their hand!".format(targetPL))
+      return shownCards
+   elif count > len(group):
+      whisper(":::WARNING::: {} has only {} cards in their hand.".format(targetPL,len(group)))
+      count = len(group)
+   for iter in range(count):
+      card = group.random()
+      if card.controller != me: # If we're revealing a card from another player's hand, we grab its properties before we put it on the table, as as not to give away if we're scanning it right now or not.
+         card.isFaceUp = True
+      if card == None:
+         notify(":::Info:::{} has no more cards in their hand to reveal".format(targetPL))
+         break
+      if covered:
+         cover = table.create("8b5a86df-fb10-4e5e-9133-7dc03fbae22d",playerside * side * iter * cwidth(card) - (count * cwidth(card) / 2), 0 - yaxisMove(card) * side,1,False)
+         cover.moveToTable(playerside * side * iter * cwidth(card) - (count * cwidth(card) / 2), 0 - yaxisMove(card) * side,False)
+      card.moveToTable(playerside * side * iter * cwidth(card) - (count * cwidth(card) / 2), 0 - yaxisMove(card) * side, False)
+      card.highlight = RevealedColor
+      card.sendToBack()
+      if not covered: loopChk(card) # A small delay to make sure we grab the card's name to announce
+      shownCards.append(card) # We put the revealed cards in a list to return to other functions that call us
+   if not silent: notify("{} reveals {} at random from their hand.".format(targetPL,card))
+   debugNotify("<<< showatrandom() with return {}".format(card), 2) #Debug
+   return shownCards
+
+
 #---------------------------------------------------------------------------
 # Tokens and Markers
 #---------------------------------------------------------------------------

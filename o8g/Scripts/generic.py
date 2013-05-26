@@ -507,7 +507,7 @@ def fetchProperty(card, property):
       if not card.isFaceUp and card.group == table:
          if debugVerbosity >= 3: notify("### Need to flip card up to read its properties.") #Debug
          #x,y = card.position
-         #cover = table.create("ac3a3d5d-7e3a-4742-b9b2-7f72596d9c1b",x,y,1,False)
+         #cover = table.create("8b5a86df-fb10-4e5e-9133-7dc03fbae22d",x,y,1,False)
          #cover.moveToTable(x,y,False)
          #if card.orientation == Rot90: cover.orientation = Rot90
          coverExists = True

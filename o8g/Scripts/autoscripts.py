@@ -540,6 +540,7 @@ def markerEffects(Time = 'Start'):
                and (re.search(r'Munitions Expert',marker[0])
                 or re.search(r'Echo Caverns',marker[0])
                 or re.search(r'Ion Damaged',marker[0])
+                or re.search(r'Unwavering Resolve',marker[0])
                 or re.search(r'Shelter from the Storm',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
@@ -1432,6 +1433,20 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if cardView.group ==  me.piles['Command Deck']: cardView.isFaceUp = False
          rnd(1,10)
          cover.moveTo(me.ScriptingPile) # we cannot delete cards so we just hide it.
+   elif card.name == "Z-95 Headhunter" and action == 'STRIKE':
+      if confirm("You you want to use Z-95 Headhunter's interrupt?"):
+         opponent = findOpponent()
+         shownCards = showatrandom(targetPL = opponent, silent = True)
+         if len(shownCards) == 0:
+            notify("{} has no cards in their hand".format(opponent))
+            return
+         notify("{} reveals {} in an surprise strike!".format(card,shownCards[0]))
+         rnd(1,10)
+         if fetchProperty(shownCards[0], 'Type') == 'Unit': 
+            capture(targetC = shownCards[0], silent = True)
+            notify("{} has captured a unit.")
+         else: shownCards[0].moveTo(shownCards[0].owner.hand)
+         rnd(1,10)
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions

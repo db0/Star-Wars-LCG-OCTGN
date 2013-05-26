@@ -55,6 +55,7 @@ DummyColor = "#005566"
 PriorityColor = "#00d7ff"
 ObjectiveSetupColor = "#b22222"
 ReadyEventColor = "#adff2f" # Used when an event has been paid but before it's effects go off.
+RevealedColor = "#999999"
 
 Xaxis = 'x'
 Yaxis = 'y'
