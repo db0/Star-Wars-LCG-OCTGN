@@ -1649,45 +1649,71 @@ def checkSpecialRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify(">>> checkSpecialRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
-   if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
-   if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
+   if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: 
+      debugNotify("Failing Because it's not current objective", 2)
+      validCard = False
+   if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: 
+      debugNotify("Failing Because it's not participating", 2)
+      validCard = False
    if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: 
       debugNotify("Was looking for a captured card but this ain't it", 2)
       validCard = False
-   if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: validCard = False
-   if re.search(r'isReady',Autoscript) and card.highlight != UnpaidColor and card.highlight != ReadyEventColor: validCard = False
-   if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
+   if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: 
+      debugNotify("Failing Because card is not Unpaid", 2)
+      validCard = False
+   if re.search(r'isReady',Autoscript) and card.highlight != UnpaidColor and card.highlight != ReadyEventColor: 
+      debugNotify("Failing Because card is not Paid", 2)
+      validCard = False
+   if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): 
+      debugNotify("Failing Because unit is participating", 2)
+      validCard = False
    if re.search(r'isAttacking',Autoscript) or re.search(r'isDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')
-      if EngagedObjective == 'None': validCard = False
+      if EngagedObjective == 'None': 
+         debugNotify("Failing Because we're looking for at Attacker/Defender and there's no objective", 2)
+         validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
-         elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
+         if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: 
+            debugNotify("Failing Because unit it not attacking", 2)
+            validCard = False
+         elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: 
+            debugNotify("Failing Because unit is not defending", 2)
+            validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
       debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
-      if EngagedObjective == 'None': validCard = False
+      if EngagedObjective == 'None': 
+         debugNotify("Failing Because we're looking for a damaged objective and there's no objective at all", 2)         
+         validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
          if not currentTarget.markers[mdict['Damage']]:
             try: debugNotify("Requires Damaged objective but {} Damage Markers found on {}".format(currentTarget.markers[mdict['Damage']],currentTarget),2)
             except: debugNotify("Oops! I guess markers were null", 2)
             validCard = False
-   if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
-   if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
+   if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: 
+      debugNotify("Failing Because card is not committed to the force", 2)
+      validCard = False
+   if not chkPlayer(Autoscript, card.controller, False, True): 
+      debugNotify("Failing Because not the right controller", 2)
+      validCard = False
    markerName = re.search(r'-hasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
       marker = findMarker(card, markerName.group(1))
-      if not marker: validCard = False
+      if not marker: 
+         debugNotify("Failing Because it's missing marker", 2)
+         validCard = False
    markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
    if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
       marker = findMarker(card, markerNeg.group(1))
-      if marker: validCard = False
+      if marker: 
+         debugNotify("Failing Because it has marker", 2)
+         validCard = False
    elif debugVerbosity >= 4: notify("### No negative marker restrictions.")
    # Checking if the target needs to have a property at a certiain value. 
    propertyReq = re.search(r'-hasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
@@ -1750,11 +1776,13 @@ def checkOriginatorRestrictions(Autoscript,card):
    return validCard
    
 def compareValue(comparison, value, requirement):
+   debugNotify(">>> compareValue()")
    if comparison == 'eq' and value != requirement: return False # 'eq' stands for "Equal to"
    if comparison == 'le' and value > requirement: return False # 'le' stands for "Less or Equal"
    if comparison == 'ge' and value < requirement: return False # 'ge' stands for "Greater or Equal"
    if comparison == 'lt' and value >= requirement: return False # 'lt' stands for "Less Than"
    if comparison == 'gt' and value <= requirement: return False # 'gt' stands for "Greater Than"
+   debugNotify("<<< compareValue() with return True")
    return True # If none of the requirements fail, we return true
      
 def makeChoiceListfromCardList(cardList,includeText = False):
