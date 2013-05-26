@@ -250,8 +250,10 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
             targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
             multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
             if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
-            if c.controller == me: myStruggleTotal += (num(bonusForce.group(1)) * multiplier)
-            else: opponentStruggleTotal += (num(bonusForce.group(1)) * multiplier)
+            fBonus = (num(bonusForce.group(1)) * multiplier)
+            if c.controller == me: myStruggleTotal += fBonus
+            else: opponentStruggleTotal += fBonus
+            if fBonus: notify("-- {} adds {} force to the force total of {}".format(c,fBonus,c.controller))
    if debugVerbosity >= 2: notify("### Checking Struggle") #Debug
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
@@ -346,11 +348,14 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          for autoS in Autoscripts:
             debugNotify("autoS: {}".format(autoS),4) #Debug
             bonusUnopposed = re.search(r'Unopposed([0-9])Bonus',autoS)
-            if bonusUnopposed and chkPlayer(autoS, c.controller):
+            if bonusUnopposed and chkPlayer(autoS, c.controller, False):
+               debugNotify("Found unopposed Bonus: {}".format(bonusUnopposed.group(1)),4) #Debug
                targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
                multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
                if debugVerbosity >= 2: notify("### Found card with Bonus Unopposed") #Debug
-               unopposedDamage += (num(bonusUnopposed.group(1)) * multiplier)
+               uBonus = (num(bonusUnopposed.group(1)) * multiplier)
+               if uBonus: notify("-- {} increases unopposed damage by {}".format(c,uBonus))
+               unopposedDamage += uBonus
       if not cancel:
          if debugVerbosity >= 2: notify("### Unopposed Damage not cancelled")
          if currentTarget.controller == me: attacker = opponent

@@ -1454,7 +1454,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if len(shownCards) == 0:
             notify("{} has no cards in their hand".format(opponent))
             return
-         notify("{} reveals {} in an surprise strike!".format(card,shownCards[0]))
+         notify("{} discovers {} in an surprise strike!".format(card,shownCards[0]))
          rnd(1,10)
          if fetchProperty(shownCards[0], 'Type') == 'Unit': 
             capture(targetC = shownCards[0], silent = True)
