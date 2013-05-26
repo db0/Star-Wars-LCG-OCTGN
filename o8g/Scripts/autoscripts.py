@@ -388,7 +388,13 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
       if len(Autoscripts) == 0: continue
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify('### autoS: {}'.format(autoS)) # Debug
-         if not re.search(r'{}'.format(lookup), autoS): continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
+         cardTriggerRegex = re.search(r'-per([A-Za-z]+)', autoS) # This regex extracts the card's trigger keyword. So if a card says "put1Focus-perCardCaptured", it's trigger word is "CardCaptured".
+         if not cardTriggerRegex: continue # If the card does not have a trigger word, it does not have an abilit that's autoscripted by other players.
+         debugNotify("cardTriggerRegex Keyword {}".format(cardTriggerRegex.groups(1)))
+         if not re.search(r'{}'.format(cardTriggerRegex.group(1)), lookup): # Now we look for the trigger keyword, in what kind of trigger is being checked in this instance.
+                                                                            # So if our instance's trigger is currently "UnitCardCapturedFromTable" then the trigger word "CardCaptured" is contained within and will match.
+            debugNotify("Couldn't lookup the trigger: {} in autoscript. Ignoring".format(lookup),2)
+            continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
          if chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
@@ -506,6 +512,8 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
                numberTuple = RequestInt(passedScript, announceText, card, targetC) # Returns like reshuffleX()
                if numberTuple == 'ABORT': break
                X = numberTuple[1] 
+            elif regexHooks['SimplyAnnounce'].search(passedScript): 
+               if SimplyAnnounce(passedScript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return
             elif regexHooks['CustomScript'].search(passedScript):
                if CustomScript(card, action = Time) == 'ABORT': break
             if failedRequirement: break # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
@@ -1444,7 +1452,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          rnd(1,10)
          if fetchProperty(shownCards[0], 'Type') == 'Unit': 
             capture(targetC = shownCards[0], silent = True)
-            notify("{} has captured a unit.")
+            notify("{} has captured a unit.".format(card))
          else: shownCards[0].moveTo(shownCards[0].owner.hand)
          rnd(1,10)
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.

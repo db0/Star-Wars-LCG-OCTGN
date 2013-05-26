@@ -59,7 +59,7 @@
       <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
       <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
 	</card>
-	<table name="Table" visibility="undefined" ordered="False" width="800" height="450" background="Table/background1.png">
+	<table name="Table" visibility="undefined" ordered="False" width="800" height="450" background="Table/background1.png" backgroundStyle="uniformToFill">
       <groupactions menu="Game...">
          <groupaction menu="Set up" default="False" shortcut="Ctrl+Shift+S" execute="gameSetup" />
          <groupaction menu="Concede" default="False" shortcut="Ctrl+Shift+C" execute="concede" />

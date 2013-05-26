@@ -2358,13 +2358,13 @@ onPlay:Put1Focus-Targeted-atUnit_and_nonVehicle
 +++++
 
 .....
-Cloud CIty Incinerator
+Cloud City Incinerator
 -----
 ff4fb461-8060-457a-9c16-000000000317
 -----
-whileInPlay:DestroyTarget-Targeted-isCaptured-onlyOnce
-+++++
 
++++++
+R0:DestroyTarget-Targeted-isCaptured-onlyOnce
 .....
 Colonel Starck
 -----
@@ -2482,7 +2482,7 @@ Self Preservation
 -----
 ff4fb461-8060-457a-9c16-000000000289
 -----
-ConstantEffect:Force1Bonus-AutoTargeted-atUnit-hasntMarker{Focus}-perEveryUnit
+ConstantEffect:Force1Bonus-AutoTargeted-atUnit-hasntMarker{Focus}-isCommited-perEveryUnit
 +++++
 
 .....
@@ -2522,7 +2522,7 @@ Ugnaught
 -----
 ff4fb461-8060-457a-9c16-000000000314
 -----
-whileInPlay:Remove1Focus-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Focus}-perCardCaptured
+whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-perCardCaptured
 +++++
 
 .....
