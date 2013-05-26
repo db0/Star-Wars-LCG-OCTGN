@@ -2522,7 +2522,7 @@ Ugnaught
 -----
 ff4fb461-8060-457a-9c16-000000000314
 -----
-whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-perCardCaptured
+whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-noTargetingError-perCardCaptured
 +++++
 
 .....
