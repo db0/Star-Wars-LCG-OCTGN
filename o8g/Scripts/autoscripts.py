@@ -1839,6 +1839,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
                if hostID: # If we do not have a parent, then we do nothing and return 0
                   targetCards = [Card(hostID)] # if we have a host, we make him the only one in the list of cards to process.
             for perCard in targetCards:
+               if not checkSpecialRestrictions(Autoscript,perCard): continue
                if debugVerbosity >= 2: notify("perCard = {}".format(perCard))
                if re.search(r'Marker',per.group(3)):
                   markerName = re.search(r'Marker{([\w :]+)}',per.group(3)) # I don't understand why I had to make the curly brackets optional, but it seens atTurnStart/End completely eats them when it parses the CardsAS.get(card.model,'')

@@ -54,7 +54,7 @@ def calcStringButtonHeight(STRING):
    newlines = 0
    for char in STRING:
       if char == '\n': newlines += 1
-   STRINGheight = 30 + (8 * newlines) + (7 * (len(STRING) / 30))
+   STRINGheight = 30 + (8 * newlines) + (7 * (len(STRING) / 20))
    return STRINGheight
    
 def formStringEscape(STRING): # A function to escape some characters that are not otherwise displayed by WinForms, like amperasands '&'
@@ -412,6 +412,13 @@ def multiChoice(title, options,card): # This displays a choice where the player 
 #---------------------------------------------------------------------------
 # Generic
 #---------------------------------------------------------------------------
+
+def debugNotify(msg = 'Debug Ping!', level = 1):
+   if not re.search(r'<<<',msg) and not re.search(r'>>>',msg):
+      hashes = '#' 
+      for iter in range(level): hashes += '#' # We add extra hashes at the start of debug messages equal to the level of the debug+1, to make them stand out more
+      msg = hashes + ' ' +  msg
+   if debugVerbosity >= level: notify(msg)
 
 def Pass(group, x = 0, y = 0): # Player says pass. A very common action.
    notify('{} Passes.'.format(me))

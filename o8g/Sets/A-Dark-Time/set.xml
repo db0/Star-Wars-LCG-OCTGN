@@ -262,7 +262,7 @@
 		<property name="Block" value="51" />
 		<property name="Block Number" value="6" />
 		<property name="Number" value="0246" />
-		<property name="Instructions" value="" />
+		<property name="Instructions" value="onPlay[Give 1 Unit Damage Icon on Target Unit|-|Give 1 Blast Damage on Target Icon Unit]" />
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>

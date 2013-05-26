@@ -240,12 +240,17 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
    if debugVerbosity >= 2: notify("### About to check for bonus force cards") #Debug
    for c in table:
-      if debugVerbosity >= 4: notify("#### Checking {}".format(c)) #Debug
-      bonusForce = re.search(r'Force([0-9])Bonus',CardsAS.get(c.model,''))
-      if bonusForce:
-         if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
-         if c.controller == me: myStruggleTotal += num(bonusForce.group(1))
-         else: opponentStruggleTotal += num(bonusForce.group(1))
+      debugNotify("Checking {}".format(c),4) #Debug
+      Autoscripts = CardsAS.get(c.model,'').split('||')
+      for autoS in Autoscripts:
+         debugNotify("autoS: {}".format(autoS),4) #Debug
+         bonusForce = re.search(r'Force([0-9])Bonus',autoS)
+         if bonusForce:
+            targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
+            multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
+            if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
+            if c.controller == me: myStruggleTotal += (num(bonusForce.group(1)) * multiplier)
+            else: opponentStruggleTotal += (num(bonusForce.group(1)) * multiplier)
    if debugVerbosity >= 2: notify("### Checking Struggle") #Debug
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
