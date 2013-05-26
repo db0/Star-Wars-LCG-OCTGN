@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" name="Desolation of Hoth" id="70668020-cc7b-4e3d-b79b-e8933b59d3e5" gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" gameVersion="1.1.0" version="1.1.0">
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="Desolation of Hoth" 
+     id="70668020-cc7b-4e3d-b79b-e8933b59d3e5" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
+     version="2.0.0.0">
 	<cards>
       <card id="ff4fb461-8060-457a-9c16-000000000223" name="A Message from Beyond">
 		<property name="Cost" value="0" />

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" name="Markers" id="71f6b540-64c6-4ddd-88f6-6cae1b41efc8" gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" gameVersion="2.0.0.0" version="2.0.0.0">
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="Markers" 
+     id="71f6b540-64c6-4ddd-88f6-6cae1b41efc8"
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
+     version="2.0.0.0">
 	<markers>
 		<marker id="c93d4582-16a0-4e2d-9e63-71be20fbfa0c" name="Focus" />
 		<marker id="8559643f-7a15-4605-937d-0f39d59c9eda" name="Shield" />

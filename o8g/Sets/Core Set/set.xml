@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" name="Core Set" id="3f4df791-7e9f-4542-8d12-fa87a5a61fef" gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" gameVersion="1.2.0" version="1.2.0">
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="Core Set" 
+     id="3f4df791-7e9f-4542-8d12-fa87a5a61fef" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
+     version="2.0.0.0">
 	<cards>
       <card id="ff4fb461-8060-457a-9c16-000000000050" name="&quot;Backstabber&quot;">
          <property name="Cost" value="3" />

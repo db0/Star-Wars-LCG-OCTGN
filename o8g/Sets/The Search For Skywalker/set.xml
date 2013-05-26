@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" name="The Search For Skywalker" id="4fb88357-5f6f-4a8c-a7b4-6b51ed7c9554" gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" gameVersion="1.2.0" version="1.2.0">
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="The Search For Skywalker" 
+     id="4fb88357-5f6f-4a8c-a7b4-6b51ed7c9554" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
+     version="2.0.0.0">
 	<cards>
    <card id="ff4fb461-8060-457a-9c16-000000000279" name="AAC-1 Speeder Tank">
 		<property name="Cost" value="2" />
