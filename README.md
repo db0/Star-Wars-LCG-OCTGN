@@ -14,9 +14,10 @@ Available Sets
 While you can play the game with the auto-generated proxies, if you've already memorized the cards, the censored images will allow you to play and recognise cards quicker.
 Sets will be uncensored after 6 months.
 
-* [Core](http://dbzer0.com/pub/SWLCG/Sets/SW-LCG-Core.o8c) *(Censored)*
-* [Desolation of Hoth](http://dbzer0.com/pub/SWLCG/Sets/SW-LCG-Desolation-Of-Hoth.o8c) *(Censored)*
-* [The Search for Skywalker](http://dbzer0.com/pub/SWLCG/Sets/SW-LCG-The-Search-For-Skywalker.o8c) *(Censored)*
+* [Core](http://octgn.dbzer0.com/SWLCG/o8c/SW-LCG-Core.o8c) *(Censored)*
+* [Desolation of Hoth](http://octgn.dbzer0.com/SWLCG/o8c/SW-LCG-Desolation-Of-Hoth.o8c) *(Censored)*
+* [The Search for Skywalker](http://octgn.dbzer0.com/SWLCG/o8c/SW-LCG-The-Search-For-Skywalker.o8c) *(Censored)*
+* [A Dark Time](http://octgn.dbzer0.com/SWLCG/o8c/SW-LCG-A-Dark-Time.o8c) *(Censored)*
 
 If you have the sets already from OCTGN 3.0 and you want to convert them to 3.1 without redownloading, [check this guide](https://github.com/kellyelton/OCTGN/wiki/o8c-conversion-guide).
 
