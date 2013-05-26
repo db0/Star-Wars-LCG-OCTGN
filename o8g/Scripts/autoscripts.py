@@ -410,6 +410,10 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
+         if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
+         confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
+                                                                    # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
+         if confirmText and not confirm(confirmText.group(1)): continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
@@ -465,10 +469,6 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if not chkDummy(autoS, card): continue
          if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
-         if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
-         confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', effect.group(2)) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
-                                                                              # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
-         if confirmText and not confirm(confirmText.group(1)): continue
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
             extraCountersTXT = '' 
