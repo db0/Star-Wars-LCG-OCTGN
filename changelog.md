@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.1.0.x
+
+* **A Dark Time** has been added but without any automations yet. Due to the complexity of the new stuff, I opted to put it out first and then I will add the automations with more leisure later
+
 ### 2.0.0.x
 
 * Game Definition converted to OCTGN 3.1 format.

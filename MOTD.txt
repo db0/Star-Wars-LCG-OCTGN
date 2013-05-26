@@ -1,14 +1,11 @@
 =====Message of the Day======
 
-Welcome to OCTGN 3.1!
+A Dark Time has been added, but it's not yet scripted.
 
-This new version now uses a proxy generator to create image-less cards on-the-fly. 
+This means that individual card automations do not exist, you'll have to take care of their effects manually for now.
 
-This means that you will be able to play the game without downloading any sets, but you will not see any images.
+I'll be adding the card scripting soon enough.
 
-If you prefer to go back to the images, you can download the new .o8c files which contained the censored versions.
-
-Do you want to open a browser page to the .o8c card pack downloads?
+Restart your OCTGN to get the latest update immediately.
 =============================
-&&
-https://github.com/db0/Star-Wars-LCG-OCTGN/tree/OCTGN-3.1.x#available-sets
+
