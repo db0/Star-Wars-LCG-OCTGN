@@ -2322,7 +2322,7 @@ Action-series Bulk Transport
 -----
 ff4fb461-8060-457a-9c16-000000000298
 -----
-onStrike:Retrieve1Card-typeCharacter-hasProperty{Cost}le2-toTable-isOptional$$ShuffleDeck
+onStrike:Retrieve1Card-typeCharacter-hasProperty{Cost}le2-toTable-onTop5Cards-isOptional$$ShuffleDeck
 +++++
 
 .....
@@ -2386,7 +2386,7 @@ Gotal Outcast
 -----
 ff4fb461-8060-457a-9c16-000000000290
 -----
-ExtraIcon:UD:2-ifHaveForce
+ExtraIcon:BD:2-ifHaveForce
 +++++
 
 .....
@@ -2394,7 +2394,7 @@ Gotal Outcast
 -----
 ff4fb461-8060-457a-9c16-000000000291
 -----
-ExtraIcon:UD:2-ifHaveForce
+ExtraIcon:BD:2-ifHaveForce
 +++++
 
 .....
@@ -2468,7 +2468,7 @@ ff4fb461-8060-457a-9c16-000000000296
 -----
 
 +++++
-Remove1Damage-DemiAutoTargeted-atVehicle-hasMarker{Damage}-choose1-isCost$$Put1Damage
+R0:Remove1Damage-DemiAutoTargeted-atVehicle-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Renegade Squadron Escort
 -----
@@ -2476,7 +2476,7 @@ ff4fb461-8060-457a-9c16-000000000297
 -----
 
 +++++
-Remove1Damage-DemiAutoTargeted-atVehicle-hasMarker{Damage}-choose1-isCost$$Put1Damage
+R0:Remove1Damage-DemiAutoTargeted-atVehicle-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Self Preservation
 -----

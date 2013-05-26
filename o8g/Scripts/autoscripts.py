@@ -1065,12 +1065,12 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
       for c in source: c.isFaceUp = True # We flip all cards in the player's deck face up so that we can grab their properties
    restrictions = prepareRestrictions(Autoscript, seek = 'type')
    cardList = []
-   countRestriction = re.search(r'-ontop([0-9]+)cards', Autoscript)
+   countRestriction = re.search(r'-onTop([0-9]+)Cards', Autoscript)
    if countRestriction: topCount = num(countRestriction.group(1))
    else: topCount = len(source)
    for c in source.top(topCount):
       if debugVerbosity >= 4: notify("### Checking card: {}".format(c))
-      if checkCardRestrictions(gatherCardProperties(c), restrictions):
+      if checkCardRestrictions(gatherCardProperties(c), restrictions) and checkSpecialRestrictions(Autoscript,c):
          cardList.append(c)
          if re.search(r'-isTopmost', Autoscript) and len(cardList) == count: break # If we're selecting only the topmost cards, we select only the first matches we get.         
    if debugVerbosity >= 3: notify("### cardList: {}".format(cardList))

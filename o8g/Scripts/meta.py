@@ -952,16 +952,40 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000238", # Snowspeeder
-                "ff4fb461-8060-457a-9c16-000000000269", # Echo Caverns
-                "ff4fb461-8060-457a-9c16-000000000266", # Renegade Squadron
-                "ff4fb461-8060-457a-9c16-000000000265", # Renegade Squadron Mobilization
-                "ff4fb461-8060-457a-9c16-000000000272", # Weequay Elite
-                "ff4fb461-8060-457a-9c16-000000000282", # Shelter from  Storm
-                "ff4fb461-8060-457a-9c16-000000000287"] # Death Squadron COmmand
+   testcards = ["ff4fb461-8060-457a-9c16-000000000289", # A Dark Time cards
+                "ff4fb461-8060-457a-9c16-000000000290",
+                "ff4fb461-8060-457a-9c16-000000000291",
+                "ff4fb461-8060-457a-9c16-000000000292",
+                "ff4fb461-8060-457a-9c16-000000000293",
+                "ff4fb461-8060-457a-9c16-000000000294",
+                "ff4fb461-8060-457a-9c16-000000000295",
+                "ff4fb461-8060-457a-9c16-000000000296",
+                "ff4fb461-8060-457a-9c16-000000000297",
+                "ff4fb461-8060-457a-9c16-000000000298",
+                "ff4fb461-8060-457a-9c16-000000000299",
+                "ff4fb461-8060-457a-9c16-000000000300",
+                "ff4fb461-8060-457a-9c16-000000000301",
+                "ff4fb461-8060-457a-9c16-000000000301",
+                "ff4fb461-8060-457a-9c16-000000000302",
+                "ff4fb461-8060-457a-9c16-000000000303",
+                "ff4fb461-8060-457a-9c16-000000000304",
+                "ff4fb461-8060-457a-9c16-000000000305",
+                "ff4fb461-8060-457a-9c16-000000000306",
+                "ff4fb461-8060-457a-9c16-000000000307",
+                "ff4fb461-8060-457a-9c16-000000000308",
+                "ff4fb461-8060-457a-9c16-000000000309",
+                "ff4fb461-8060-457a-9c16-000000000310",
+                "ff4fb461-8060-457a-9c16-000000000311",
+                "ff4fb461-8060-457a-9c16-000000000312",
+                "ff4fb461-8060-457a-9c16-000000000313",
+                "ff4fb461-8060-457a-9c16-000000000314",
+                "ff4fb461-8060-457a-9c16-000000000315",
+                "ff4fb461-8060-457a-9c16-000000000316",
+                "ff4fb461-8060-457a-9c16-000000000317",
+                "ff4fb461-8060-457a-9c16-000000000318"]
    if confirm("Spawn Test Cards?"):
       for idx in range(len(testcards)):
-         test = table.create(testcards[idx], (70 * idx) - 150, 0, 1, True)
+         test = table.create(testcards[idx], (70 * idx) - 500, 0, 1, True)
 
 def flipcard(card,x,y):
    card.switchImage
