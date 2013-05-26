@@ -2490,7 +2490,7 @@ Serve the Emperor
 -----
 ff4fb461-8060-457a-9c16-000000000301
 -----
-
+ConstantEffect:Force1Bonus
 +++++
 
 .....
@@ -2498,7 +2498,7 @@ Soresu Training
 -----
 ff4fb461-8060-457a-9c16-000000000292
 -----
-
+Placement:Force User_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -2506,7 +2506,7 @@ The Hunt for Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000313
 -----
-
+whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-perUnitCaptured
 +++++
 
 .....
@@ -2514,7 +2514,7 @@ The Moorsh Moraine
 -----
 ff4fb461-8060-457a-9c16-000000000311
 -----
-
+ConstantEffect:Unopposed1Bonus
 +++++
 
 .....

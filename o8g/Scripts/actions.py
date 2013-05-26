@@ -331,6 +331,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
       # We need to check for special restrictions for unopposed battles
       # These are by hardcoded for now, until I see more of them.
       cancel = False
+      unopposedDamage = 1
       for c in table:
          if debugVerbosity >= 4: notify("### Checking unopposed effects from {}".format(c)) # Debug
          if c.name == 'Echo Base Defense' and re.search(r'Hoth',currentTarget.Traits) and currentTarget.controller == c.controller:
@@ -340,13 +341,22 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
                cancel = True
                notify(":> The engagement at {} finished unopposed, but the extra damage is prevented by {}'s Echo Base Defense.".format(currentTarget,c.controller))
                break
+         Autoscripts = CardsAS.get(c.model,'').split('||')
+         for autoS in Autoscripts:
+            debugNotify("autoS: {}".format(autoS),4) #Debug
+            bonusUnopposed = re.search(r'Unopposed([0-9])Bonus',autoS)
+            if bonusUnopposed and chkPlayer(autoS, c.controller):
+               targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
+               multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
+               if debugVerbosity >= 2: notify("### Found card with Bonus Unopposed") #Debug
+               unopposedDamage += (num(bonusUnopposed.group(1)) * multiplier)
       if not cancel:
          if debugVerbosity >= 2: notify("### Unopposed Damage not cancelled")
          if currentTarget.controller == me: attacker = opponent
          else: attacker = me
          if debugVerbosity >= 1: notify("Unopposed prolly Happens because debugVerbosity >= 1")
-         else: notify(":> {} managed to finish the engagement at {} unopposed. They inflict an extra damage to the objective.".format(attacker,currentTarget))
-         currentTarget.markers[mdict['Damage']] += 1
+         else: notify(":> {} managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attacker,currentTarget,unopposedDamage))
+         currentTarget.markers[mdict['Damage']] += unopposedDamage
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    for card in table:
       if card.orientation == Rot90: card.orientation = Rot0
