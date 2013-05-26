@@ -308,7 +308,7 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
       ### Checking if any of the card's effects requires one or more targets first
       if re.search(r'(?<!Auto)Targeted', activeAutoscript) and findTarget(activeAutoscript,card = card) == []: return
    for activeAutoscript in selectedAutoscripts:
-      if not checkSpecialRestrictions(activeAutoscript,card): continue # If the card does not fulfil it's requirements do not execute this script.
+      if not checkOriginatorRestrictions(activeAutoscript,card): continue # If the card does not fulfil it's requirements do not execute this script.
       if re.search(r'onlyOnce',activeAutoscript) and oncePerTurn(card, silent = True) == 'ABORT': continue
       if not announceText.endswith(' in order to') and not announceText.endswith(' and'): announceText += ' and'   
       targetC = findTarget(activeAutoscript,card = card)
@@ -430,6 +430,8 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          elif regexHooks['ModifyStatus'].search(autoS): 
             if debugVerbosity >= 2: notify("### in ModifyStatus hook")
             if ModifyStatus(autoS, costText, card, targetCard, notification = 'Automatic', n = count) == 'ABORT': break
+         elif regexHooks['UseCustomAbility'].search(autoS):
+            if UseCustomAbility(autoS, costText, card, targetCard, notification = 'Automatic', n = count) == 'ABORT': break
    if debugVerbosity >= 3: notify("<<< autoscriptOtherPlayers()") # Debug
 
 #------------------------------------------------------------------------------
@@ -463,6 +465,10 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if not chkDummy(autoS, card): continue
          if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
+         if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
+         confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', effect.group(2)) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
+                                                                              # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
+         if confirmText and not confirm(confirmText.group(1)): continue
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
             extraCountersTXT = '' 
@@ -1114,8 +1120,8 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
    if debugVerbosity >= 3: notify("<<< RetrieveX()")
    return announceString
    
-def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notification = None, n = 0):
-   announceString = Autoscript
+def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # not used yet.
+   announceString = announceText 
    return announceString
 
 def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly unique to specific cards, not worth making a whole generic function for them.
@@ -1645,7 +1651,9 @@ def checkSpecialRestrictions(Autoscript,card):
    validCard = True
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
-   if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: validCard = False
+   if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: 
+      debugNotify("Was looking for a captured card but this ain't it", 2)
+      validCard = False
    if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: validCard = False
    if re.search(r'isReady',Autoscript) and card.highlight != UnpaidColor and card.highlight != ReadyEventColor: validCard = False
    if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
@@ -1657,11 +1665,15 @@ def checkSpecialRestrictions(Autoscript,card):
          if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
          elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
+      debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
       if EngagedObjective == 'None': validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if not currentTarget.markers[mdict['Damage']]: validCard = False
+         if not currentTarget.markers[mdict['Damage']]:
+            try: debugNotify("Requires Damaged objective but {} Damage Markers found on {}".format(currentTarget.markers[mdict['Damage']],currentTarget),2)
+            except: debugNotify("Oops! I guess markers were null", 2)
+            validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
    markerName = re.search(r'-hasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.

@@ -126,7 +126,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000317" name="Cloud CIty Incinerator">
+	<card id="ff4fb461-8060-457a-9c16-000000000317" name="Cloud City Incinerator">
 		<property name="Cost" value="2" />
 		<property name="Type" value="Enhancement" />	
 		<property name="Force" value="2" />	

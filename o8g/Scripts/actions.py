@@ -37,6 +37,7 @@ forceStruggleDone = False # A variable which tracks if the player's have actuall
 ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
 limitedPlayed = False # A Variable which records if the player has played a limited card this turn
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
+capturingObjective = None # A global variable which holds which objective just captured a card.
 
 warnZeroCostEvents = "This event is ready to take effect but has not been done automatically in order to allow your opponent to react.\
                     \nOnce your opponent had the chance to play any interrupts, double click on the event to finalize playing it and resolve any effects (remember to target any relevant cards).\
@@ -858,6 +859,7 @@ def discard(card, x = 0, y = 0, silent = False):
    return 'OK'
 
 def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False): # Tries to find a targeted card in the table or the oppomnent's hand to capture
+   global capturingObjective
    if debugVerbosity >= 1: notify(">>> capture(){}".format(extraASDebug())) #Debug
    if debugVerbosity >= 2 and chosenObj: notify("### chosenObj = {}".format(chosenObj)) #Debug
    if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
@@ -926,7 +928,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if debugVerbosity >= 2: notify("About to reset shared variable")
       setGlobalVariable('Captured Cards',str(capturedCards))
       if debugVerbosity >= 2: notify("About to initiate autoscripts")
+      capturingObjective = chosenObj # We use a global variable in order for scripts which require it, to find out which objective got the captured card.
       autoscriptOtherPlayers('{}CardCapturedFrom{}'.format(targetCType,captureGroup),targetC) # We send also the card type. Some capture hooks only trigger of a specific kind of captured card (e.g. bespin exchange)
+      capturingObjective = None # We clear it at the end.
    if debugVerbosity >= 1: notify("<<< capture()") #Debug
 
 def clearAttachLinks(card):

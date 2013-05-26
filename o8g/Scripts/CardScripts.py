@@ -2506,7 +2506,7 @@ The Hunt for Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000313
 -----
-whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-perUnitCardCaptured
+whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-noTargetingError-perUnitCardCaptured-ifCapturingObjective
 +++++
 
 .....
