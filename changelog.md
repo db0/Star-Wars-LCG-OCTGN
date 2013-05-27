@@ -1,6 +1,15 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.1.1.x
+
+* **Significant:** Scripted almost all A Dark Time cards.
+* Added helpful documents at documentation menu.
+  * [Unofficial Action Window Card](http://boardgamegeek.com/filepage/89570/star-wars-the-card-game-unofficial-action-window) a
+  * [Rules Summary 1.3](http://boardgamegeek.com/filepage/86297/star-wars-lcg-rules-summary)
+* Force and Unopposed Bonuses are now announced
+* Added new Damage marker
+
 ### 2.1.0.x
 
 * **A Dark Time** has been added but without any automations yet. Due to the complexity of the new stuff, I opted to put it out first and then I will add the automations with more leisure later

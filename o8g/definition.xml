@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.1.0.6" 
+      version="2.1.1.1" 
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -25,6 +25,10 @@
 	</scripts> 
    <proxygen definitionsrc="Proxy/proxydef.xml">
    </proxygen>   
+   <documents>
+      <document name="Unofficial Rules Summary" icon="Documents/Manual.png" src="Documents/Star_Wars_Guide_1.3.htm" />
+      <document name="Unofficial Action Window Reference" icon="Documents/Manual.png" src="Documents/UnofficialActionWindowReferenceCard_v1.0.htm" />
+   </documents>    
    <globalvariables> 
      <globalvariable name="gameEnded" value="False" /> 
      <globalvariable name="gameGUID" value="None" /> 

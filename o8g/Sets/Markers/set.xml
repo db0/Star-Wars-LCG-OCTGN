@@ -9,7 +9,8 @@
 		<marker id="c93d4582-16a0-4e2d-9e63-71be20fbfa0c" name="Focus" />
 		<marker id="8559643f-7a15-4605-937d-0f39d59c9eda" name="Shield" />
 		<marker id="224b865d-173b-49fd-9aed-17df678259b0" name="Damage" />
-		<marker id="e00d997f-6e3c-40e0-b0cf-2b25a7c69cfa" name="Damage x 3" />
+		<marker id="9a5a43b1-c620-4172-93e1-5e71dd2753b7" name="Wound" />
+		<marker id="e00d997f-6e3c-40e0-b0cf-2b25a7c69cfa" name="Wound x 3" />
 		<marker id="2246648d-1581-4be9-9636-1b75129313a6" name="Permanent +1" />
 		<marker id="987d0d3f-0965-49ae-a96c-03394783d47a" name="Temporary +1" />
 		<marker id="21487438-e108-4f0c-a804-bd2a7f9a1ae5" name="Temporary -1" />
