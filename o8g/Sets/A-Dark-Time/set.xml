@@ -109,7 +109,7 @@
 	<card id="ff4fb461-8060-457a-9c16-000000000318" name="Carbonite Chamber Activation">
 		<property name="Cost" value="1" />
 		<property name="Type" value="Event" />	
-		<property name="Force" value="0" />	
+		<property name="Force" value="2" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
 		<property name="Traits" value="" />
 		<property name="Damage Capacity" value="0" />

@@ -386,19 +386,20 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
 def gameSetup(group, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
    mute()
-   global SetupPhase, Side, Affiliation
+   global SetupPhase, Side, Affiliation, opponent
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
    if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
    versionCheck()
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
       if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
-      global opponent
       if not ofwhom('ofOpponent') and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
          whisper("Please wait until your opponent has placed their Affiliation down before proceeding")
          return
       if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
       opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
+      try: debugNotify("Opponent = {}".format(opponent),3)
+      except: debugNotify(":::ERROR::: I do not seem to have an 'opponent' variable. len(players) = {}".format(len(players)))
       for card in me.hand:
          if card.Type != 'Objective': 
             whisper(":::Warning::: You are not supposed to have any non-Objective cards in your hand at this point")

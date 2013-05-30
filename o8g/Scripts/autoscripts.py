@@ -1130,6 +1130,7 @@ def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notific
 def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly unique to specific cards, not worth making a whole generic function for them.
    if debugVerbosity >= 1: notify(">>> CustomScript() with action: {}".format(action)) #Debug
    mute()
+   global opponent
    discardPile = me.piles['Discard Pile']
    objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
@@ -1297,13 +1298,15 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             sendToBottomList.append(Card(cid))
       sendToBottom(sendToBottomList)
    elif card.name == 'Take Them Prisoner' and action == 'PLAY': 
+      debugNotify("Enterring 'Take Them Prisoner' Automation",1)
       if not confirm("Do you want to activate the optional ability of Take Them Prisoner?"): return
       turn = num(getGlobalVariable('Turn'))
       cardList = []
       cardNames = []
       cardDetails = []
+      debugNotify("About to move cards to me.ScriptingPile",2)
       for c in opponent.piles['Command Deck'].top(3):
-         c.moveTo(opponent.piles['Removed from Game'])
+         c.moveTo(me.ScriptingPile)
          cardList.append(c._id)
       rnd(1,10)
       for cid in cardList:
