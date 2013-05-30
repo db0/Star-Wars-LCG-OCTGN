@@ -1,6 +1,11 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.1.2.x
+
+* Changed triggers to support generic "card leaving play" events
+* Fixed Cruel Interrogations and Take them Prisoner.
+
 ### 2.1.1.x
 
 * **Significant:** Scripted almost all A Dark Time cards.
