@@ -673,7 +673,7 @@ def checkPaidResources(card):
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    if card.highlight == UnpaidAbilityColor:
       reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
-      if count >= selectedAbility[card._id][1] - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (selectedAbility[card._id][1] - reduction) == 0)):
+      if count >= selectedAbility[card._id][1] - reduction:
          if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return USEOK") #Debug
          reduceCost(card, 'USE', selectedAbility[card._id][1] - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'USEOK'
@@ -1296,7 +1296,7 @@ def sendToBottom(cards,x=0,y=0):
    if cards[0].group == me.hand:
       notify("{} sends {} cards from their hand to the bottom of their respective decks in random order.".format(me,len(cards)))
    else:
-      notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in cards]))
+      notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in sorted(cards)])) # We sort the list so that the players cannot see the true random order in the announcement
    for card in cards: 
       if card.group == table and card.highlight != EdgeColor and card.highlight != FateColor: 
          executePlayScripts(card, 'LEAVING')

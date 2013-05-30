@@ -298,6 +298,7 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
             for resdictKey in resdict:
                if resdict[resdictKey] == cMarkerKey: 
                   card.markers[cMarkerKey] = 0
+      else: return # If the ability is not ok  and the player does not confirm to continue, do nothing.
    if debugVerbosity >= 2: notify("### Executing Autoscripts: {}".format(selectedAutoscripts)) # Debug
    announceText = "{} activates {} in order to".format(me,card)
    X = 0 # Variable for special costs.

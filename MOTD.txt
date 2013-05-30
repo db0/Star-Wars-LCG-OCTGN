@@ -1,10 +1,8 @@
 =====Message of the Day======
 
-A Dark Time has been added, but it's not yet scripted.
+Full scripting for A Dark Time has been included.
 
-This means that individual card automations do not exist, you'll have to take care of their effects manually for now.
-
-I'll be adding the card scripting soon enough.
+Let me know of any bugs you discover.
 
 Restart your OCTGN to get the latest update immediately.
 =============================
