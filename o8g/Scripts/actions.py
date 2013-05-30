@@ -851,13 +851,13 @@ def discard(card, x = 0, y = 0, silent = False):
          except: notify("!!! ERROR !!! Retrieving 'Existing Units' shared var")
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
-      autoscriptOtherPlayers('UnitDestroyed',card)
    else:
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{} discards {}".format(me,card))
-   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor and card.Type != "Objective":  # Objectives are thwarted, not discarded
-      if debugVerbosity >= 2: notify("### Executing discard scripts. Highlight was {}".format(card.highlight))
-      executePlayScripts(card, 'DISCARD')
+   if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor:  
+      if debugVerbosity >= 2: notify("### Executing leaving play scripts. Highlight was {}".format(previousHighlight))
+      executePlayScripts(card, 'LEAVING')
+      autoscriptOtherPlayers('CardLeavingPlay',card)
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)
    if debugVerbosity >= 1: notify("<<< discard()") #Debug
@@ -924,6 +924,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if targetCType == '?': targetCType = ''
       if targetC.controller != me: xAxis = 1
       else: xAxis = -1
+      if captureGroup == 'Table' and targetC.highlight != EdgeColor and targetC.highlight != FateColor: # If the card was on the table, we also trigger "removed from play" effects
+         executePlayScripts(targetC, 'LEAVING')
+         autoscriptOtherPlayers('CardLeavingPlay',targetC)
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
@@ -1011,7 +1014,9 @@ def exileCard(card, silent = False):
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
    else:
-      if card.highlight != CapturedColor: executePlayScripts(card,'TRASH') # We don't want to run automations on simply revealed cards.
+      if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor:
+         executePlayScripts(targetCard, 'LEAVING')
+         autoscriptOtherPlayers('CardLeavingPlay',targetCard)
       card.moveTo(me.piles['Removed from Game'])
    if not silent: notify("{} removed {} from play{}.".format(me,card))
    executePlayScripts(card, 'DISCARD')
@@ -1292,6 +1297,9 @@ def sendToBottom(cards,x=0,y=0):
    else:
       notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in cards]))
    for card in cards: 
+      if card.group == table and card.highlight != EdgeColor and card.highlight != FateColor: 
+         executePlayScripts(card, 'LEAVING')
+         autoscriptOtherPlayers('CardLeavingPlay',card)      
       if card.group == table: clearAttachLinks(card)
       card.moveToBottom(card.owner.piles['Command Deck'])
 

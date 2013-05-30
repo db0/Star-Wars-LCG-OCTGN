@@ -103,14 +103,14 @@ def executePlayScripts(card, action):
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
          if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
-             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'DISCARD' and action != 'THWART') or # whieInPlay cards only trigger when played or discarded
+             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'LEAVING' and action != 'THWART') or # whieInPlay cards only trigger when played or discarded
              (effectType.group(1) == 'onResolveFate' and action != 'RESOLVEFATE') or
              (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
              (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
              (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
              (effectType.group(1) == 'onAttack' and action != 'ATTACK') or
              (effectType.group(1) == 'onParticipation' and action != 'PARTICIPATION') or
-             (effectType.group(1) == 'onDiscard' and action != 'DISCARD') or
+             (effectType.group(1) == 'onLeaving' and action != 'LEAVING') or
              (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
              (effectType.group(1) == 'onGenerate' and action != 'GENERATE') or
              (effectType.group(1) == 'onThwart' and action != 'THWART')):
@@ -1004,6 +1004,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
       elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
       elif action.group(1) == 'Return': 
+         if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor: 
+            executePlayScripts(targetCard, 'LEAVING')
+            autoscriptOtherPlayers('CardLeavingPlay',targetCard)
          targetCard.moveTo(targetCard.owner.hand)
          extraTXT = " to their owner's hand"
       elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)

@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-onDiscard:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe
+onLeaving:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe
 +++++
 
 .....
@@ -1490,7 +1490,7 @@ The Heart of the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000022
 -----
-onDiscard:LoseGame-forOwner
+onThwart:LoseGame-forOwner
 +++++
 
 .....
@@ -1570,7 +1570,7 @@ Trench Run
 -----
 ff4fb461-8060-457a-9c16-000000000009
 -----
-EngagedAsObjective||onPlay:CustomScript||onDiscard:LoseGame-forDark Side
+EngagedAsObjective||onPlay:CustomScript
 +++++
 
 .....
@@ -1730,7 +1730,7 @@ X-Wing Escort
 -----
 ff4fb461-8060-457a-9c16-000000000188
 -----
-onDiscard:SimplyAnnounce{force opponent to sacrifice a Vehicle unit they control}
+onLeaving:SimplyAnnounce{force opponent to sacrifice a Vehicle unit they control}
 +++++
 
 .....
@@ -1914,7 +1914,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000250
 -----
-onDiscard:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
+onLeaving:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
 +++++
 
 .....
@@ -1922,7 +1922,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000251
 -----
-onDiscard:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
+onLeaving:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
 +++++
 
 .....
@@ -2250,7 +2250,7 @@ Renegade Squadron Mobilization
 -----
 ff4fb461-8060-457a-9c16-000000000265
 -----
-whileInPlay:Draw1Card-perUnitDestroyed-forOpponent
+whileInPlay:Draw1Card-perCardLeftPlay-typeUnit-forOpponent
 +++++
 
 .....
