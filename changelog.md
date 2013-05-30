@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.1.3.x
+
+* Paid Abilities don't require an affiliation match anymore
+
 ### 2.1.2.x
 
 * Changed triggers to support generic "card leaving play" events
