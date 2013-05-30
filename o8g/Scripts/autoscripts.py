@@ -1086,6 +1086,7 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
    countRestriction = re.search(r'-onTop([0-9]+)Cards', Autoscript)
    if countRestriction: topCount = num(countRestriction.group(1))
    else: topCount = len(source)
+   if count == 999: count = topCount # Retrieve999Cards means the script will retrieve all cards that match the requirements, regardless of how many there are. As such, a '-onTop#Cards' modulator should always be included.
    for c in source.top(topCount):
       if debugVerbosity >= 4: notify("### Checking card: {}".format(c))
       if checkCardRestrictions(gatherCardProperties(c), restrictions) and checkSpecialRestrictions(Autoscript,c):
