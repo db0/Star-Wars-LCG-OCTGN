@@ -493,7 +493,7 @@
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
 		<property name="Traits" value="" />
 		<property name="Damage Capacity" value="5" />
-		<property name="Resources" value="0" />
+		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
 		<property name="Text" value="Reaction: After you capture a unit card at this objective, reveal it to remove 1 focus token from target [Scum and Villainy] card. If that card was Han Solo, increase the Death Star dial by 1." />
 		<property name="Flavor" value="" />
