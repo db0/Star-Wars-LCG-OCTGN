@@ -141,7 +141,7 @@ def executePlayScripts(card, action):
             if debugVerbosity >= 2: notify('### effects: {}'.format(effect.groups())) #Debug
             if effectType.group(1) == 'whileInPlay' or effectType.group(1) == 'whileScored':
                if effect.group(1) != 'Gain' and effect.group(1) != 'Lose': continue # The only things that whileInPlay affect in execute Automations is GainX scripts (for now).
-               if action == 'DISCARD' or action == 'THWART': Removal = True
+               if action == 'LEAVING' or action == 'THWART': Removal = True
                else: Removal = False
             else: Removal = False
             targetC = findTarget(activeAutoscript,card = card)
