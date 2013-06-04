@@ -2314,7 +2314,7 @@ A Dark Time for the Rebellion
 -----
 ff4fb461-8060-457a-9c16-000000000307
 -----
-afterRefresh:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}
+afterRefresh:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}-duringMyTurn
 +++++
 
 .....
