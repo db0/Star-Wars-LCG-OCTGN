@@ -2482,7 +2482,7 @@ Self Preservation
 -----
 ff4fb461-8060-457a-9c16-000000000289
 -----
-ConstantEffect:Force1Bonus-AutoTargeted-atUnit-hasntMarker{Focus}-isCommited-perEveryUnit
+ConstantEffect:Force1Bonus-AutoTargeted-atUnit-hasntMarker{Focus}-isCommited-targetMine-perEveryUnit
 +++++
 
 .....
