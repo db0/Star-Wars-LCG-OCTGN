@@ -857,7 +857,7 @@ def discard(card, x = 0, y = 0, silent = False):
       if not silent: notify("{} discards {}".format(me,card))
    if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor:  
       if debugVerbosity >= 2: notify("### Executing leaving play scripts. Highlight was {}".format(previousHighlight))
-      executePlayScripts(card, 'LEAVING')
+      if card.Type != "Objective": executePlayScripts(card, 'LEAVING') # Objective discard scripts are dealt with onThwart.
       autoscriptOtherPlayers('CardLeavingPlay',card)
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    clearAttachLinks(card)
