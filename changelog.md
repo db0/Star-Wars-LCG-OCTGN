@@ -1,6 +1,14 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.1.4.x
+
+* Added warning when trying to deploy a unit or enhancement out of phase.
+* Fixed Reconnaisence mission hopefully
+* Fixed Self-Preservation adding force per opposing units
+* Fixed A Dark Time for The Rebellion triggering on opponent's turn
+* Fixed Error with Jedi Mind Trick and It Binds all Things
+
 ### 2.1.3.x
 
 * Paid Abilities don't require an affiliation match anymore
