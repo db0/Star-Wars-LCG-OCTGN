@@ -44,6 +44,7 @@ def executePlayScripts(card, action):
              re.search(r'BonusIcons', autoS) or 
              re.search(r'Increase', autoS) or 
              re.search(r'ExtraIcon', autoS) or 
+             re.search(r'DeployAllowance', autoS) or 
              re.search(r'ConstantEffect', autoS) or 
              re.search(r'EngagedAsObjective', autoS) or 
              re.search(r'IgnoreAffiliationMatch', autoS) or 

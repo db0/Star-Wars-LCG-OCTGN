@@ -10,7 +10,7 @@ ScriptsLocal = '''
 -----
 ff4fb461-8060-457a-9c16-000000000050
 -----
-onPlay:Deal1Damage-AutoTargeted-atObjective-isOptional-isCurrentObjective-onlyDuringEngagement
+onPlay:Deal1Damage-AutoTargeted-atObjective-isOptional-isCurrentObjective-onlyDuringEngagement||DeployAllowance:Conflict
 +++++
 
 .....
@@ -58,7 +58,7 @@ Admiral Ackbar
 -----
 ff4fb461-8060-457a-9c16-000000000187
 -----
-onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponents-isParticipating-onlyDuringEngagement-isOptional
+onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponents-isParticipating-onlyDuringEngagement-isOptional||DeployAllowance:Conflict
 +++++
 
 .....
@@ -778,7 +778,7 @@ Human Replica Droid
 -----
 ff4fb461-8060-457a-9c16-000000000088
 -----
-
+DeployAllowance:Conflict
 +++++
 
 .....
@@ -786,7 +786,7 @@ Human Replica Droid
 -----
 ff4fb461-8060-457a-9c16-000000000089
 -----
-
+DeployAllowance:Conflict
 +++++
 
 .....

@@ -1055,12 +1055,17 @@ def rulings(card, x = 0, y = 0):
 
 def play(card):
    if debugVerbosity >= 1: notify(">>> play(){}".format(extraASDebug())) #Debug
-   global unpaidCard
+   global unpaidCard, limitedPlayed
    mute()
    extraTXT = ''
    if card.Type == 'Fate': 
       playEdge(card)
       return # If the player double clicked on a Fate card, assume he wanted to play it as an edge card.
+   if ((card.Type == 'Enhancement' or card.Type == 'Unit')
+      and (me.getGlobalVariable('Phase') != '4'
+         and (me.getGlobalVariable('Phase') == '5' and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))))
+      and not confirm(":::WARNING:::\n\nNormally this type of card cannot be played outside the deployment phase. Are you sure you want to continue?")):
+         return # If the card is a unit or enhancement, it can only be played during the deployment phase. Here we add a check to prevent the player from playing it out-of-phase.
    if card.Type == 'Enhancement':
       hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
       if hostType:
@@ -1071,7 +1076,6 @@ def play(card):
             return
          else: extraTXT = ' on {}'.format(host[0])
    if re.search(r'Limited\.',card.Text):
-      global limitedPlayed
       if limitedPlayed:
          if confirm("You've already played a limited card this turn. Bypass?"):
             extraTXT += " (Bypassing Limit!)"
