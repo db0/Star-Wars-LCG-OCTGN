@@ -874,7 +874,7 @@ It Binds All Things
 -----
 ff4fb461-8060-457a-9c16-000000000172
 -----
-onPlay:Draw1Card-fromDiscard-ifHaventForce||onPlay:Draw2Card-fromDiscard-ifHaveForce
+onPlay:Draw1Card-fromDiscard-ifHaventForce$$Draw2Card-fromDiscard-ifHaveForce
 +++++
 
 .....
@@ -930,7 +930,7 @@ Jedi Mind Trick
 -----
 ff4fb461-8060-457a-9c16-000000000003
 -----
-onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaveForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce
+onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaveForce$$Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce
 +++++
 
 .....
@@ -938,7 +938,7 @@ Jedi Mind Trick
 -----
 ff4fb461-8060-457a-9c16-000000000171
 -----
-onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaveForce||onPlay:Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce
+onPlay:Put2Focus-Targeted-atCharacter_or_Creature-ifHaveForce$$Put1Focus-Targeted-atCharacter_or_Creature-ifHaventForce
 +++++
 
 .....
