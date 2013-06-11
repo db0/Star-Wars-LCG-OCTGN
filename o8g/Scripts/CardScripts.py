@@ -2250,7 +2250,7 @@ Renegade Squadron Mobilization
 -----
 ff4fb461-8060-457a-9c16-000000000265
 -----
-whileInPlay:Draw1Card-perCardLeftPlay-typeUnit-forOpponent
+whileInPlay:Draw1Card-perCardLeavingPlay-typeUnit-forOpponent
 +++++
 
 .....
