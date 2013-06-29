@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.2.0.x
+
+* **Assault on Echo Base** has been added without automations. Those will be coming in v2.2.1.x
+
 ### 2.1.4.x
 
 * Added warning when trying to deploy a unit or enhancement out of phase.
