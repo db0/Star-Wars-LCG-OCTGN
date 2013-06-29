@@ -91,7 +91,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Vehicle-Walker." />
+		<property name="Traits" value="Vehicle-Walker" />
 		<property name="Damage Capacity" value="1" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -111,7 +111,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Vehicle-Walker." />
+		<property name="Traits" value="Vehicle-Walker" />
 		<property name="Damage Capacity" value="1" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -131,7 +131,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="2" />	
 		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:2, EE-T:0" />
-		<property name="Traits" value="Character-Renegade Squadron.-Unique" />
+		<property name="Traits" value="Character-Renegade Squadron-Unique" />
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -151,7 +151,7 @@
 		<property name="Type" value="Event" />	
 		<property name="Force" value="3" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Force-Sense." />
+		<property name="Traits" value="Force-Sense" />
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -171,7 +171,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Character." />
+		<property name="Traits" value="Character" />
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -191,7 +191,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Character." />
+		<property name="Traits" value="Character" />
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -211,7 +211,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="2" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
-		<property name="Traits" value="Character-Force User." />
+		<property name="Traits" value="Character-Force User" />
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -231,7 +231,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="2" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
-		<property name="Traits" value="Character-Force User." />
+		<property name="Traits" value="Character-Force User" />
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -271,7 +271,7 @@
 		<property name="Type" value="Enhancement" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Base-Hoth.-Unique" />
+		<property name="Traits" value="Base-Hoth-Unique" />
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -311,7 +311,7 @@
 		<property name="Type" value="Enhancement" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Base-Hoth." />
+		<property name="Traits" value="Base-Hoth" />
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -331,7 +331,7 @@
 		<property name="Type" value="Enhancement" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Base-Hoth." />
+		<property name="Traits" value="Base-Hoth" />
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -351,7 +351,7 @@
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Hoth." />
+		<property name="Traits" value="Hoth" />
 		<property name="Damage Capacity" value="4" />
 		<property name="Resources" value="3" />
 		<property name="Edge Priority" value="" />
@@ -371,7 +371,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
-		<property name="Traits" value="Droid." />
+		<property name="Traits" value="Droid" />
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -391,7 +391,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:1, EE-UD:0, EE-BD:1, EE-T:0" />
-		<property name="Traits" value="Character-Officer.-Unique" />
+		<property name="Traits" value="Character-Officer-Unique" />
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -411,7 +411,7 @@
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Dagobah." />
+		<property name="Traits" value="Dagobah" />
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -431,7 +431,7 @@
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Hoth." />
+		<property name="Traits" value="Hoth" />
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -451,7 +451,7 @@
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Tatooine." />
+		<property name="Traits" value="Tatooine" />
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="2" />
 		<property name="Edge Priority" value="" />
@@ -471,7 +471,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="3" />	
 		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
-		<property name="Traits" value="Vehicle-Mercenary-Black Sun." />
+		<property name="Traits" value="Vehicle-Mercenary-Black Sun" />
 		<property name="Damage Capacity" value="4" />
 		<property name="Resources" value="3" />
 		<property name="Edge Priority" value="" />
@@ -511,7 +511,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Character-Renegade Squadron." />
+		<property name="Traits" value="Character-Renegade Squadron" />
 		<property name="Damage Capacity" value="1" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -531,7 +531,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
-		<property name="Traits" value="Vehicle-Fighter-Renegade Squadron." />
+		<property name="Traits" value="Vehicle-Fighter-Renegade Squadron" />
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -551,7 +551,7 @@
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Hoth." />
+		<property name="Traits" value="Hoth" />
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -571,7 +571,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:2, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Character-Trooper." />
+		<property name="Traits" value="Character-Trooper" />
 		<property name="Damage Capacity" value="1" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -591,7 +591,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:3, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Character-Trooper." />
+		<property name="Traits" value="Character-Trooper" />
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -611,7 +611,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Creature-Hoth." />
+		<property name="Traits" value="Creature-Hoth" />
 		<property name="Damage Capacity" value="1" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -631,7 +631,7 @@
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Hoth." />
+		<property name="Traits" value="Hoth" />
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
@@ -651,7 +651,7 @@
 		<property name="Type" value="Enhancement" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Weapon." />
+		<property name="Traits" value="Weapon" />
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -691,7 +691,7 @@
 		<property name="Type" value="Unit" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Droid.-Unique" />
+		<property name="Traits" value="Droid-Unique" />
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
@@ -711,7 +711,7 @@
 		<property name="Type" value="Enhancement" />	
 		<property name="Force" value="1" />	
 		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-		<property name="Traits" value="Condition." />
+		<property name="Traits" value="Condition" />
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />

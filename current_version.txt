@@ -1,16 +1,9 @@
-1.2.0||
+2.2.0||
 ======New Version Information======
 
-The Search for Skywalker begins! 
+N/A
 
-Download the latest version of the game v1.2.0 definition to be able to enjoy the new expansion.
-
-You can use the provided patch to bring your existing sets up to date without losing your uncensored cards.
-
-As always it is with a lot of automated goodness.
-
-Enjoy and let me know of any bugs you find.
 ===============================
 ||
-Latest Core Set: 1.2.0
-Latest Markers Set: 1.2.0
+Latest Core Set: 2.x.x
+Latest Markers Set: 2.x.x

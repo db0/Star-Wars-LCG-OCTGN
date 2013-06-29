@@ -1,8 +1,8 @@
 =====Message of the Day======
 
-Full scripting for A Dark Time has been included.
+Cards for Assault on Echo Base has been added
 
-Let me know of any bugs you discover.
+Automation will be soon forthcoming in the next version.
 
 Restart your OCTGN to get the latest update immediately.
 =============================
