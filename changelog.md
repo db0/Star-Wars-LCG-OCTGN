@@ -14,7 +14,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * The General's Imperative - Your reserve won't be reduced when this objective is damaged. You'll need to modify it manually
     * Sabotage in the Snow - It won't autofire. You'll need to double click it at the appropriate time. Target the cards for quicker results.
     * Turbolaser Battery - Won't autofire. Double click on it to use it.
-    * Will engage only unfocused units
+    * A Stinging Insult - Will engage only unfocused units
 * Fixed the placement of Edge Cards and Dummy cards to not force zoom out.
 * Double clicking an objective at the start of the game will now select it to put at the bottom of the deck.
     
