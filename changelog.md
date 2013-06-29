@@ -4,13 +4,13 @@ Changelog - Star Wars LCG OCTGN Game Definition
 ### 2.2.1.x
 
 * **Significant:** Scripted almost all Assault on Echo Base cards
-  * Cards not scripted: 
+  * **Cards not scripted:**
     * Col Serra (Only the Edge(1) is scripted)
     * Confronting the Terror
     * Corrupt Official
     * Echo Control Center
     * Knowledge and Defense
-  * Cards with tricky scripting:
+  * **Cards with tricky scripting:**
     * The General's Imperative - Your reserve won't be reduced when this objective is damaged. You'll need to modify it manually
     * Sabotage in the Snow - It won't autofire. You'll need to double click it at the appropriate time. Target the cards for quicker results.
     * Turbolaser Battery - Won't autofire. Double click on it to use it.
