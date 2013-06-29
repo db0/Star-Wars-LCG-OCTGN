@@ -1,9 +1,7 @@
 =====Message of the Day======
 
-Cards for Assault on Echo Base has been added
+Cards for Assault on Echo Base has been added and automated
 
-Automation will be soon forthcoming in the next version.
-
-Restart your OCTGN to get the latest update immediately.
+Restart your OCTGN to get the latest update immediately and enjoy!
 =============================
 
