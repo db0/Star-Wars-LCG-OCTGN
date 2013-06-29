@@ -147,7 +147,7 @@ def executePlayScripts(card, action):
             targetC = findTarget(activeAutoscript,card = card)
             targetPL = ofwhom(activeAutoscript,card.controller) # So that we know to announce the right person the effect, affects.
             announceText = "{} uses {} to".format(targetPL,card)
-            if debugVerbosity >= 3: notify("#### targetC: {}".format(targetC)) # Debug
+            if debugVerbosity >= 3: notify("#### targetC: {}".format([c.name for c in targetC])) # Debug
             if effect.group(1) == 'Gain' or effect.group(1) == 'Lose':
                if Removal: 
                   if effect.group(1) == 'Gain': passedScript = "Lose{}{}".format(effect.group(2),effect.group(3))
@@ -409,6 +409,11 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          elif re.search(r'-ifAttacker', autoS) or re.search(r'-ifDefender', autoS): 
             if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
             continue # If we're looking for attakcer or defender and we're not in an enagement, return.
+         if re.search(r'-ifEngagementTarget', autoS): # If we have this modulator, then this script is only meant to fire if the card checked it the currently engaged objective 
+            if re.search(r'-ifEngagementTargetHost', autoS): # This submodulator fires only if the card being checked for scripts is currently hosted on the engaged objective.
+               hostCards = eval(getGlobalVariable('Host Cards')) 
+               if Card(num(currObjID)) != Card(hostCards[card._id]): continue
+            elif Card(num(currObjID)) != card: continue
          if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
          if re.search(r'-ifHaventForce', autoS) and haveForce(): continue
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
@@ -538,6 +543,7 @@ def markerEffects(Time = 'Start'):
                and (re.search(r'Death from Above',marker[0])
                  or re.search(r'Vaders TIE Advance',marker[0])
                  or re.search(r'Yoda enhancements',marker[0])
+                 or re.search(r'Cocky',marker[0])
                  or re.search(r'Heavy Fire',marker[0])
                  or re.search(r'Ewok Scouted',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
@@ -621,7 +627,9 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       for attachment in hostCards: # We check out attachments dictionary to find out who this card's host is.
          if attachment == card._id: targetCards.append(Card(hostCards[attachment]))
    if len(targetCards) == 0:
-      if re.search(r'AutoTargeted',Autoscript): return announceText # We abort if we need an automatic target but have no valid one
+      if re.search(r'AutoTargeted',Autoscript): 
+         if re.search(r'isCost', Autoscript): return 'ABORT' # If removing a token is an actual cost, then we abort the rest of the script
+         else: return announceText # Otherwise we continue with the rest of the script if we only need an automatic target but have no valid one
       else: #Otherwise we just put it on ourself and assume the player forgot to target first. They can move the marker manually if they need to.
          targetCards.append(card) # If there's been to target card given, assume the target is the card itself.
          targetCardlist = ' on it' 
@@ -629,20 +637,20 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       targetCardlist = ' on' # A text field holding which cards are going to get tokens.
       for targetCard in targetCards:
          targetCardlist += ' {},'.format(targetCard)
-   #confirm("TokensX List: {}".format(targetCardlist)) # Debug
    foundKey = False # We use this to see if the marker used in the AutoAction is already defined.
    infectTXT = '' # We only inject this into the announcement when this is an infect AutoAction.
    preventTXT = '' # Again for virus infections, to note down how much was prevented.
    action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
-   #confirm("{}".format(action.group(3))) # Debug
    if action.group(3) in mdict: token = mdict[action.group(3)]
+   elif action.group(3) == "AnyTokenType": pass # If the removed token can be of any type, 
+                                           # then we need to check which standard tokens the card has and provide the choice for one
+                                           # We will do this one we start checking the target cards one-by-one.
    else: # If the marker we're looking for it not defined, then either create a new one with a random color, or look for a token with the custom name we used above.
       if action.group(1) == 'Infect': 
          victim = ofwhom(Autoscript, card.controller)
          if targetCards[0] == card: targetCards[0] = getSpecial('Affiliation',victim)
       if targetCards[0].markers:
          for key in targetCards[0].markers:
-            #confirm("Key: {}\n\naction.group(3): {}".format(key[0],action.group(3))) # Debug
             if key[0] == action.group(3):
                foundKey = True
                token = key
@@ -656,7 +664,20 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    count = num(action.group(2))
    multiplier = per(Autoscript, card, n, targetCards, notification)
    for targetCard in targetCards:
-      #confirm("TargetCard ID: {}".format(targetCard._id)) # Debug
+      if action.group(3) == "AnyTokenType": # If we need to find which token to remove, we have to do it once we know which cards we're checking.
+         markerChoices = []
+         if action.group(1) == 'Remove':
+            if targetCard.markers[mdict['Shield']]: markerChoices.append("Shield")
+            if targetCard.markers[mdict['Focus']]: markerChoices.append("Focus")
+            if targetCard.markers[mdict['Damage']]: markerChoices.append("Damage")
+         else: markerChoices = ["Shield","Focus","Damage"] # If we're adding any type of token, then we always provide a full choice list.
+         if len(markerChoices) == 1: 
+            token = mdict[markerChoices[0]]
+         else:
+            tokenChoice = SingleChoice("Choose one token to {} from {}.".format(action.group(1),targetCard.name), markerChoices, type = 'button', default = 0)
+            if tokenChoice == 'ABORT': return 'ABORT'
+            token = mdict[markerChoices[tokenChoice]]
+         del markerChoices[:] # We clear the list for the next loop.
       if action.group(1) == 'Put':
          if re.search(r'isCost', Autoscript) and targetCard.markers[token] and targetCard.markers[token] > 0:
             whisper(":::ERROR::: This card already has a {} marker on it".format(token[0]))
@@ -676,16 +697,19 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
             return 'ABORT'
          else: modtokens = -count * multiplier
       else: #Last option is for removing tokens.
+         debugNotify("About to remove tokens",3)
          if count == 999: # 999 effectively means "all markers on card"
             if targetCard.markers[token]: count = targetCard.markers[token]
             else: 
                if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")
                count = 0
          elif re.search(r'isCost', Autoscript) and (not targetCard.markers[token] or (targetCard.markers[token] and count > targetCard.markers[token])):
-            if notification != 'Automatic': whisper ("No markers to remove. Aborting!") #Some end of turn effect put a special counter and then remove it so that they only run for one turn. This avoids us announcing that it doesn't have markers every turn.
+            if notification != 'Automatic': whisper ("No enough markers to remove. Aborting!") #Some end of turn effect put a special counter and then remove it so that they only run for one turn. This avoids us announcing that it doesn't have markers every turn.
+            debugNotify("Not enough markers to remove as cost. Aborting",2)
             return 'ABORT'
-         elif not targetCard.markers[token]: 
-            if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")        
+         elif not targetCard.markers[token]:
+            if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")
+            debugNotify("Found no {} tokens to remove".format(token[0]),2)
             count = 0 # If we don't have any markers, we have obviously nothing to remove.
          modtokens = -count * multiplier
       targetCard.markers[token] += modtokens # Finally we apply the marker modification
@@ -923,7 +947,7 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
          if debugVerbosity >= 2: notify('### about to pop information') # debug
          information('The dummy card just created is meant for your opponent. Please right-click on it and select "Pass control to {}"'.format(targetPL))
       if debugVerbosity >= 2: notify('### Finished warnings. About to announce.') # debug
-      dummyCard = table.create(card.model, playerside * 400, 100 * playerside, 1) # This will create a fake card like the one we just created.
+      dummyCard = table.create(card.model, playerside * 300, 150 * playerside, 1) # This will create a fake card like the one we just created.
       dummyCard.highlight = DummyColor
    if debugVerbosity >= 2: notify('### About to move to discard pile if needed') # debug
    if not re.search(r'doNotDiscard',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
@@ -1441,10 +1465,10 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       TokensX('Put1Echo Caverns:{}-isSilent'.format(IconList[choiceIcons]), '', targetCard)
       notify("{} activates {} to move one {} icon from {} to {}".format(me,card,IconChoiceList[choiceIcons],sourceCard,targetCard))
    elif card.name == "Prophet of the Dark Side" and action == 'PLAY':
-         cover = table.create("8b5a86df-fb10-4e5e-9133-7dc03fbae22d",0,0,1,True) 
-         cover.moveTo(me.piles['Command Deck'])
          cardView = me.piles['Command Deck'][1]
-         cardView.isFaceUp = True
+         ScriptingPile
+         cardView.moveTo(me.ScriptingPile)
+         #cardView.isFaceUp = True
          rnd(1,10)
          if not haveForce():
             delayed_whisper(":> The Prophet foresees that {} is upcoming!".format(cardView)) # If the player doesn't have the force, we just announce the card
@@ -1453,9 +1477,9 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             cardDetails = makeChoiceListfromCardList(StackTop, True)
             if confirm("The Prophet Foresees:\n{}\n\nDo you want to draw this card".format(cardDetails[0])):
                cardView.moveTo(me.hand)
-         if cardView.group ==  me.piles['Command Deck']: cardView.isFaceUp = False
+               notify("The Prophet of the Dark Side has drawn 1 card for {}".format(me))
+         if cardView.group == me.ScriptingPile: cardView.moveTo(me.piles['Command Deck'])
          rnd(1,10)
-         cover.moveTo(me.ScriptingPile) # we cannot delete cards so we just hide it.
    elif card.name == "Z-95 Headhunter" and action == 'STRIKE':
       if confirm("You you want to use Z-95 Headhunter's interrupt?"):
          opponent = findOpponent()
@@ -1470,6 +1494,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             notify("{} has captured a unit.".format(card))
          else: shownCards[0].moveTo(shownCards[0].owner.hand)
          rnd(1,10)
+   elif card.name == "Last Defense of Hoth" and action == 'USE':
+      if oncePerTurn(card, silent = True, act = 'manual') == 'ABORT': return
+      if confirm("Do you want to use Last Defence of Hoth's special ability?"):
+         topCard = me.piles['Command Deck'].top()
+         if playEdge(topCard,True) != 'ABORT':
+            notify("{} used {} to play an edge card from the top of their command deck".format(me,card))
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions
@@ -1509,7 +1539,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                      if debugVerbosity >= 3: notify("### About to append {}".format(targetLookup)) #Debug
                      foundTargets.append(targetLookup) # I don't know why but the first match is always processed twice by the for loop.
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
-         if debugVerbosity >= 2: notify("### Finished seeking. foundTargets List = {}".format(foundTargets))
+         if debugVerbosity >= 2: notify("### Finished seeking. foundTargets List = {}".format([c.name for c in foundTargets]))
          if re.search(r'DemiAutoTargeted', Autoscript):
             if debugVerbosity >= 2: notify("### Checking DemiAutoTargeted switches")# Debug
             targetNRregex = re.search(r'-choose([1-9])',Autoscript)
@@ -1711,10 +1741,15 @@ def checkSpecialRestrictions(Autoscript,card):
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
-      marker = findMarker(card, markerName.group(1))
-      if not marker: 
-         debugNotify("Failing Because it's missing marker", 2)
-         validCard = False
+      if markerName.group(1) == 'AnyTokenType': #
+         if not (card.markers[mdict['Focus']] or card.markers[mdict['Shield']] or card.markers[mdict['Damage']]): 
+            debugNotify("Failing Because card is missing all default markers", 2)
+            validCard = False
+      else: 
+         marker = findMarker(card, markerName.group(1))
+         if not marker: 
+            debugNotify("Failing Because it's missing marker", 2)
+            validCard = False
    markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
    if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking negative marker restrictions")# Debug

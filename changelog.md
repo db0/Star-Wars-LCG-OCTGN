@@ -1,6 +1,26 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.2.1.x
+
+* **Significant:** Scripted almost all Assault on Echo Base cards
+  * Cards not scripted: 
+    * Col Serra (Only the Edge(1) is scripted)
+    * Confronting the Terror
+    * Corrupt Official
+    * Echo Control Center
+    * Knowledge and Defense
+  * Cards with tricky scripting:
+    * The General's Imperative - Your reserve won't be reduced when this objective is damaged. You'll need to modify it manually
+    * Sabotage in the Snow - It won't autofire. You'll need to double click it at the appropriate time. Target the cards for quicker results.
+    * Turbolaser Battery - Won't autofire. Double click on it to use it.
+    * Will engage only unfocused units
+* Fixed the placement of Edge Cards and Dummy cards to not force zoom out.
+* Double clicking an objective at the start of the game will now select it to put at the bottom of the deck.
+    
+    
+   
+
 ### 2.2.0.x
 
 * **Assault on Echo Base** has been added without automations. Those will be coming in v2.2.1.x

@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2554,7 +2554,7 @@ A Stinging Insult
 -----
 ff4fb461-8060-457a-9c16-000000000329
 -----
-
+onPlay:EngageTarget-Targeted-atUnit-targetOpponents-hasntMarker{Focus}
 +++++
 
 .....
@@ -2562,7 +2562,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000336
 -----
-
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
 +++++
 
 .....
@@ -2570,7 +2570,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000342
 -----
-
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
 +++++
 
 .....
@@ -2578,7 +2578,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000354
 -----
-
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
 +++++
 
 .....
@@ -2586,7 +2586,7 @@ Blizzard Force AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000339
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -2594,7 +2594,7 @@ Blizzard Force AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000340
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -2602,31 +2602,7 @@ Col Serra
 -----
 ff4fb461-8060-457a-9c16-000000000326
 -----
-
-+++++
-
-.....
-Confronting the Terror
------
-ff4fb461-8060-457a-9c16-000000000323
------
-
-+++++
-
-.....
-Corrupt Official
------
-ff4fb461-8060-457a-9c16-000000000345
------
-
-+++++
-
-.....
-Corrupt Official
------
-ff4fb461-8060-457a-9c16-000000000346
------
-
+ConstantEffect:Edge1Bonus
 +++++
 
 .....
@@ -2634,7 +2610,7 @@ Daughters of Allya
 -----
 ff4fb461-8060-457a-9c16-000000000320
 -----
-
+onCommit:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine
 +++++
 
 .....
@@ -2642,7 +2618,7 @@ Daughters of Allya
 -----
 ff4fb461-8060-457a-9c16-000000000321
 -----
-
+onCommit:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine
 +++++
 
 .....
@@ -2650,15 +2626,7 @@ Don't Get Cocky
 -----
 ff4fb461-8060-457a-9c16-000000000330
 -----
-
-+++++
-
-.....
-Echo Control Center
------
-ff4fb461-8060-457a-9c16-000000000335
------
-
+onPlay:Put2Cocky:BD
 +++++
 
 .....
@@ -2666,7 +2634,7 @@ Explosive Charge
 -----
 ff4fb461-8060-457a-9c16-000000000347
 -----
-
+onPlay:DestroyTarget-Targeted-atEnhancement
 +++++
 
 .....
@@ -2674,7 +2642,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000352
 -----
-
+whileInPlay:IncreaseBD:1-byMe-forUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2682,15 +2650,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000353
 -----
-
-+++++
-
-.....
-Frozen Refuge
------
-ff4fb461-8060-457a-9c16-000000000331
------
-
+whileInPlay:IncreaseBD:1-byMe-forUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2698,7 +2658,7 @@ FX-7 Medical Assistant
 -----
 ff4fb461-8060-457a-9c16-000000000333
 -----
-
+onStrike:Remove1AnyTokenType-AutoTargeted-atEnhancement_or_Character-hasMarker{AnyTokenType}-choose1
 +++++
 
 .....
@@ -2706,15 +2666,7 @@ General Veers
 -----
 ff4fb461-8060-457a-9c16-000000000338
 -----
-
-+++++
-
-.....
-Knowledge and Defense
------
-ff4fb461-8060-457a-9c16-000000000319
------
-
+whileInPlay:IncreaseUD:1-byMe-forWalker_or_Trooper
 +++++
 
 .....
@@ -2722,23 +2674,15 @@ Last Defense of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000325
 -----
-
+afterEngagement:Remove999Activation-isSilent
 +++++
-
+R0:CustomScript
 .....
 Lucrative Contract
 -----
 ff4fb461-8060-457a-9c16-000000000343
 -----
-
-+++++
-
-.....
-Outer Rim Space Pirates
------
-ff4fb461-8060-457a-9c16-000000000344
------
-
+afterRefresh:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetMine-choose1-hasMarker{Focus}-duringMyTurn
 +++++
 
 .....
@@ -2746,15 +2690,7 @@ Protection
 -----
 ff4fb461-8060-457a-9c16-000000000324
 -----
-
-+++++
-
-.....
-Renegade Squadron Recruit
------
-ff4fb461-8060-457a-9c16-000000000328
------
-
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
 +++++
 
 .....
@@ -2764,7 +2700,7 @@ ff4fb461-8060-457a-9c16-000000000327
 -----
 
 +++++
-
+R0:SacrificeMyself$$ReturnTarget-Targeted-atUnit-hasProperty{Cost}le2
 .....
 Sabotage in the Snow
 -----
@@ -2772,29 +2708,13 @@ ff4fb461-8060-457a-9c16-000000000349
 -----
 
 +++++
-
-.....
-Snowtrooper
------
-ff4fb461-8060-457a-9c16-000000000350
------
-
-+++++
-
+R0:Remove1Shield-DemiAutoTargeted-hasMarker{Shield}-targetOpponents-choose1-isCost$$Put1Shield-DemiAutoTargeted-atUnit_or_Objective-hasntMarker{Shield}-targetMine-choose1
 .....
 Snowtrooper Vanguard
 -----
 ff4fb461-8060-457a-9c16-000000000351
 -----
-
-+++++
-
-.....
-Tauntaun
------
-ff4fb461-8060-457a-9c16-000000000334
------
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
 
 .....
@@ -2802,7 +2722,7 @@ The General's Imperative
 -----
 ff4fb461-8060-457a-9c16-000000000337
 -----
-
+onPlay:Gain1Reserves
 +++++
 
 .....
@@ -2812,13 +2732,13 @@ ff4fb461-8060-457a-9c16-000000000341
 -----
 
 +++++
-
+R0:SacrificeMyself$$DestroyMulti-AutoTargeted-atEnhancement
 .....
 Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000348
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -2826,7 +2746,7 @@ WED-15-1016
 -----
 ff4fb461-8060-457a-9c16-000000000332
 -----
-
+afterRefresh:Remove1AnyTokenType-AutoTargeted-atObjective_and_Hoth-hasMarker{AnyTokenType}-choose1
 +++++
 
 .....
@@ -2834,7 +2754,7 @@ Yoda's Protection
 -----
 ff4fb461-8060-457a-9c16-000000000322
 -----
-
+Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-perEngagedObjective-ifEngagementTargetHost
 +++++
 
 .....

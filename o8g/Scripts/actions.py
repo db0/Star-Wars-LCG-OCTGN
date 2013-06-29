@@ -310,6 +310,7 @@ def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
    if debugVerbosity >= 2: notify("About to announce") #Debug
    notify("{} forces have engaged {}'s {}".format(me,targetObjective.controller, targetObjective))
    rnd(1,10)
+   autoscriptOtherPlayers('EngagedObjective',targetObjective)
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
 def finishEngagement(group = table, x=0, y=0, automated = False):
@@ -1061,6 +1062,9 @@ def play(card):
    if card.Type == 'Fate': 
       playEdge(card)
       return # If the player double clicked on a Fate card, assume he wanted to play it as an edge card.
+   elif card.Type == 'Objective': 
+      handDiscard(card)
+      return # If the player double clicked on an objective, we assume they were selecting one of their three objectives to to put at the bot. of their deck.
    if ((card.Type == 'Enhancement' or card.Type == 'Unit')
       and (me.getGlobalVariable('Phase') != '4'
          and (me.getGlobalVariable('Phase') == '5' and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))))
@@ -1118,22 +1122,23 @@ def readyEvent(card):
       warnZeroCostEvents = None
    if debugVerbosity >= 3: notify("<<< readyEvent()") #Debug      
       
-def playEdge(card):
+def playEdge(card, silent = False):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
    if getGlobalVariable('Engaged Objective') == 'None': 
       whisper(":::ERROR::: You have to be in an engagement to play edge cards. ABORTING!")
-      return
+      return 'ABORT'
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    global edgeCount
    mute()
-   card.moveToTable(playerside * 450, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
+   card.moveToTable(playerside * 300, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    card.highlight = EdgeColor
+   card.peek()
    edgeCount += 1
    if edgeCount > 7: edgeCount = 0 # Just in case.
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    edgeRevealed[card.owner.name] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
-   notify("{} places a card in their edge stack.".format(me, card))
+   if not silent: notify("{} places a card in their edge stack.".format(me, card))
    
 def revealEdge(group = table, x=0, y=0, forceCalc = False):
    mute()
