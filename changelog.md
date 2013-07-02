@@ -4,6 +4,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 ### 2.2.2.x
 
 * Fixed Hoth Operations not adding edge bonuses per participating speeders.
+* Moorsh Moraine should now only provide the bonus to the owner.
 
 ### 2.2.1.x
 
