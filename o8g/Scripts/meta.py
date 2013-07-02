@@ -576,7 +576,9 @@ def compareObjectiveTraits(Trait):
       Objectives = eval(player.getGlobalVariable('currentObjectives'))
       if debugVerbosity >= 2: notify("### Checking {} Objectives".format(player.name)) # Debug
       for obj in [Card(obj_ID) for obj_ID in Objectives]:
-         if re.search(r'{}'.format(Trait),obj.Traits): playerTraitCounts[player.name] += 1
+         if re.search(r'{}'.format(Trait),obj.Traits): 
+            playerTraitCounts[player.name] += 1
+            debugNotify("Found {} Trait in Objective {}. {}'s Counter now {}".format(Trait,obj,player,playerTraitCounts[player.name]),2)
       for card in table: # We check for cards for give bonus objective traits (e.g. Echo Base)
          if card.controller == player:
             Autoscripts = CardsAS.get(card.model,'').split('||')
@@ -586,14 +588,18 @@ def compareObjectiveTraits(Trait):
                search = 'Trait{Objective_and_' + Trait + '}([0-9])Bonus' # Doing a concatenate because python b0rks if I try to do it with format.
                if debugVerbosity >= 3: notify("### Finished concatenating") # Debug
                TraitBonus = re.search(r'{}'.format(search),autoS)
-               if TraitBonus: playerTraitCounts[player.name] += num(TraitBonus.group(1))
+               if TraitBonus: 
+                  playerTraitCounts[player.name] += num(TraitBonus.group(1))
+                  debugNotify("Found {} Trait Bonus in Autoscripts of {}. {}'s Counter now {}".format(Trait,card,player,playerTraitCounts[player.name]),2)
    if debugVerbosity >= 2: notify("### Comparing Objectives count") # Debug
    topPlayers = []
    currentMaxCount = 0
    for player in players:
+      debugNotify("Comparing {} with counter at {}. Current Max at {} ".format(player,playerTraitCounts[player.name],currentMaxCount),2)
       if playerTraitCounts[player.name] > currentMaxCount:
          del topPlayers[:] # If that player has the highest current total, remove all other players from the list.
          topPlayers.append(player)
+         currentMaxCount = playerTraitCounts[player.name]
       elif playerTraitCounts[player.name] == currentMaxCount:
          topPlayers.append(player)
    if debugVerbosity >= 3: notify("<<< compareObjectiveTraits(). TopPlayers = {}".format([pl.name for pl in topPlayers])) #Debug
