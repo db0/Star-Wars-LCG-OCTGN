@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.2.2.x
+
+* Fixed Hoth Operations not adding edge bonuses per participating speeders.
+
 ### 2.2.1.x
 
 * **Significant:** Scripted almost all Assault on Echo Base cards
@@ -17,9 +21,6 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * A Stinging Insult - Will engage only unfocused units
 * Fixed the placement of Edge Cards and Dummy cards to not force zoom out.
 * Double clicking an objective at the start of the game will now select it to put at the bottom of the deck.
-    
-    
-   
 
 ### 2.2.0.x
 
