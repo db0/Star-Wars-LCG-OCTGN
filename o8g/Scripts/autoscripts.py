@@ -390,7 +390,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
       if len(Autoscripts) == 0: continue
       for autoS in Autoscripts:
          if debugVerbosity >= 2: notify('### autoS: {}'.format(autoS)) # Debug
-         cardTriggerRegex = re.search(r'-per([A-Za-z]+)', autoS) # This regex extracts the card's trigger keyword. So if a card says "put1Focus-perCardCaptured", it's trigger word is "CardCaptured".
+         cardTriggerRegex = re.search(r'-foreach([A-Za-z]+)', autoS) # This regex extracts the card's trigger keyword. So if a card says "put1Focus-perCardCaptured", it's trigger word is "CardCaptured".
          if not cardTriggerRegex: continue # If the card does not have a trigger word, it does not have an abilit that's autoscripted by other players.
          debugNotify("cardTriggerRegex Keyword {}".format(cardTriggerRegex.groups(1)))
          if not re.search(r'{}'.format(cardTriggerRegex.group(1)), lookup): # Now we look for the trigger keyword, in what kind of trigger is being checked in this instance.

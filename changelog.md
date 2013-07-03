@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.2.3.x
+
+* Fixed Rogue Squadron Mobilization triggering
+* Added confirm dialogue about trying to play a unit or enhancement outside the deployment phase
+* Added confirm dialogue about trying to strike with a unit, before finishing edge battle. Should prevent mistakes due to misclicks.
+
 ### 2.2.2.x
 
 * Fixed Hoth Operations not adding edge bonuses per participating speeders.
