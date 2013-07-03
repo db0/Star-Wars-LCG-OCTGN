@@ -837,6 +837,7 @@ def versionCheck():
       
 def MOTD():
    if debugVerbosity >= 1: notify(">>> MOTD()") #Debug
+   if me.name == 'db0' or me.name == 'dbzer0': return # I don't need to see those
    try: (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt',3000)
    except: MOTDcode = MOTDurl = None
    try: (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt',3000)
@@ -877,7 +878,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
    ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")
-   if len(players) > 1 or debugVerbosity == 0:
+   if (len(players) > 1 or debugVerbosity == 0) and me.name != 'dbzer0':
       try: (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/o8g/Scripts/CardScripts.py',5000)
       except: 
          if debugVerbosity >= 0: notify("Timeout Error when trying to download scripts")

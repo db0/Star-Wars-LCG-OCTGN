@@ -397,7 +397,11 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                                                                             # So if our instance's trigger is currently "UnitCardCapturedFromTable" then the trigger word "CardCaptured" is contained within and will match.
             debugNotify("Couldn't lookup the trigger: {} in autoscript. Ignoring".format(lookup),2)
             continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
-         if chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         if re.search(r'-chkOriginController', autoS): # If we have the -chkOriginController modulator, our scripts need to check the controller of the card that triggered the script, rather than the card has the script 
+                                                       # See for example Renegade Squadron Mobilization, where we need to check that the controller of the card leaving play is the opponent.
+                                                       # If we had let it as it was, it would simply check if Renegade Squadron Mobilization is controlled by the opponent, thus triggering the script each time our opponent's action discarded a unit, even if the unit was ours.
+            if chkPlayer(autoS, origin_card.controller,False) == 0: continue
+         elif chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
             if re.search(r'-ifAttacker', autoS) and Card(num(currObjID)).controller == card.controller: 
@@ -1033,6 +1037,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor: 
             executePlayScripts(targetCard, 'LEAVING')
             autoscriptOtherPlayers('CardLeavingPlay',targetCard)
+            rnd(1,10)
          targetCard.moveTo(targetCard.owner.hand)
          extraTXT = " to their owner's hand"
       elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)

@@ -520,7 +520,9 @@ def strike(card, x = 0, y = 0):
          and not confirm("Unit is already exhausted. Bypass?")):
       return 
    #notify("{} strikes with {}.".format(me, card))
-   if num(getGlobalVariable('Engagement Phase')) < 4: nextPhase(setTo = 4)
+   if num(getGlobalVariable('Engagement Phase')) < 4:
+      if confirm("Have you resolved the edge battle already?\n\n(If you press Yes, Edge will be resolved and you'll proceed to strike with this unit)"): nextPhase(setTo = 4)
+      else: return
    card.markers[mdict['Focus']] += 1
    if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
    if debugVerbosity >= 2: notify("Focus Added") #Debug
@@ -1067,7 +1069,7 @@ def play(card):
       return # If the player double clicked on an objective, we assume they were selecting one of their three objectives to to put at the bot. of their deck.
    if ((card.Type == 'Enhancement' or card.Type == 'Unit')
       and (me.getGlobalVariable('Phase') != '4'
-         and (me.getGlobalVariable('Phase') == '5' and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))))
+         or (me.getGlobalVariable('Phase') == '5' and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))))
       and not confirm(":::WARNING:::\n\nNormally this type of card cannot be played outside the deployment phase. Are you sure you want to continue?")):
          return # If the card is a unit or enhancement, it can only be played during the deployment phase. Here we add a check to prevent the player from playing it out-of-phase.
    if card.Type == 'Enhancement':
