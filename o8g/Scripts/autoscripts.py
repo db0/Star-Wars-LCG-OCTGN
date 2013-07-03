@@ -371,7 +371,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
 # This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
 # For example a card that would produce credits whenever a trace was attempted. 
    if not Automations['Triggers']: return
-   if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {}".format(lookup)) #Debug
+   if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {} and origin_card: {}".format(lookup,origin_card)) #Debug
    if not Automations['Play']: return # If automations have been disabled, do nothing.
    for card in table:
       if debugVerbosity >= 2: notify('### Checking {}'.format(card)) # Debug
