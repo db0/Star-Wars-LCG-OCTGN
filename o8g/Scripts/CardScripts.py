@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whileInPlay:Deal1Damage-foreachCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce
+whileInPlay:Deal1Damage-perCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce
 +++++
 
 .....
@@ -394,7 +394,7 @@ Decoy at Dantooine
 -----
 ff4fb461-8060-457a-9c16-000000000192
 -----
-whileInPlay:Lose1Dial-foreachObjectiveThwarted-byOpponent
+whileInPlay:Lose1Dial-perObjectiveThwarted-byOpponent
 +++++
 
 .....
@@ -626,7 +626,7 @@ Forgotten Heroes
 -----
 ff4fb461-8060-457a-9c16-000000000144
 -----
-whileInPlay:Draw1Card-foreachCardPlayed-byMe-typeForce User
+whileInPlay:Draw1Card-perCardPlayed-byMe-typeForce User
 +++++
 
 .....
@@ -762,7 +762,7 @@ Hit and Run
 -----
 ff4fb461-8060-457a-9c16-000000000210
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachAttackerEdgeWin-ifAttacker-onlyOnce
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-perAttackerEdgeWin-ifAttacker-onlyOnce
 +++++
 
 .....
@@ -1154,7 +1154,7 @@ Rebel Sympathizer
 -----
 ff4fb461-8060-457a-9c16-000000000199
 -----
-whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
+whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-onlyforDummy-isSilent
 +++++
 R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
@@ -1162,7 +1162,7 @@ Rebel Sympathizer
 -----
 ff4fb461-8060-457a-9c16-000000000200
 -----
-whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
+whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-onlyforDummy-isSilent
 +++++
 R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
@@ -1194,7 +1194,7 @@ Red Two
 -----
 ff4fb461-8060-457a-9c16-000000000177
 -----
-whileInPlay:Remove1Focus-foreachObjectiveThwarted
+whileInPlay:Remove1Focus-perObjectiveThwarted
 +++++
 
 .....
@@ -1450,7 +1450,7 @@ The Bespin Exchange
 -----
 ff4fb461-8060-457a-9c16-000000000075
 -----
-whileInPlay:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-foreachUnitCardCapturedFromTable
+whileInPlay:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-perUnitCardCapturedFromTable
 +++++
 
 .....
@@ -1530,7 +1530,7 @@ TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000128
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachUnopposedEngagement-ifAttacker-ifParticipating
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-perUnopposedEngagement-ifAttacker-ifParticipating
 +++++
 
 .....
@@ -1538,7 +1538,7 @@ TIE Attack Squadron
 -----
 ff4fb461-8060-457a-9c16-000000000041
 -----
-whileInPlay:Put1TIE Attack Squadron:UD-foreachResolveFate-byMe-onlyOnce-ifParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
+whileInPlay:Put1TIE Attack Squadron:UD-perResolveFate-byMe-onlyOnce-ifParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
 +++++
 
 .....
@@ -2090,7 +2090,7 @@ Admiral's Orders
 -----
 ff4fb461-8060-457a-9c16-000000000288
 -----
-onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-isSilent||whileInPlay:Reduce2CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
+onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-isSilent||whileInPlay:Reduce2CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2098,7 +2098,7 @@ Death Squadron Command
 -----
 ff4fb461-8060-457a-9c16-000000000287
 -----
-whileInPlay:Remove1Focus-foreachObjectiveThwarted
+whileInPlay:Remove1Focus-perObjectiveThwarted
 +++++
 
 .....
@@ -2122,7 +2122,7 @@ Deploy the Fleet
 -----
 ff4fb461-8060-457a-9c16-000000000283
 -----
-whileInPlay:Reduce1CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
+whileInPlay:Reduce1CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-perCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
 R0:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 1}$$CreateDummy-isSilent-doNotDiscard
 .....
@@ -2250,7 +2250,7 @@ Renegade Squadron Mobilization
 -----
 ff4fb461-8060-457a-9c16-000000000265
 -----
-whileInPlay:Draw1Card-foreachCardLeavingPlay-typeUnit-forOpponent-chkOriginController
+whileInPlay:Draw1Card-perCardLeavingPlay-typeUnit-forOpponent-chkOriginController
 +++++
 
 .....
@@ -2330,7 +2330,7 @@ Anger
 -----
 ff4fb461-8060-457a-9c16-000000000305
 -----
-Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-foreachForceStruggleLost-duringOpponentTurn
+Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-perForceStruggleLost-duringOpponentTurn
 +++++
 
 .....
@@ -2506,7 +2506,7 @@ The Hunt for Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000313
 -----
-whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-noTargetingError-foreachUnitCardCaptured-ifCapturingObjective
+whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-noTargetingError-perUnitCardCaptured-ifCapturingObjective
 +++++
 
 .....
@@ -2522,7 +2522,7 @@ Ugnaught
 -----
 ff4fb461-8060-457a-9c16-000000000314
 -----
-whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-noTargetingError-foreachCardCaptured
+whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-noTargetingError-perCardCaptured
 +++++
 
 .....
@@ -2754,7 +2754,7 @@ Yoda's Protection
 -----
 ff4fb461-8060-457a-9c16-000000000322
 -----
-Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-foreachEngagedObjective-ifEngagementTargetHost
+Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-perEngagedObjective-ifEngagementTargetHost
 +++++
 
 .....
