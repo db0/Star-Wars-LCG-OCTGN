@@ -754,11 +754,13 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    if debugVerbosity >= 3: notify("### Setting Destination")
    preventDraw = False
    if source == targetPL.piles['Command Deck'] and destination == targetPL.hand: # We need to look if there's card on the table which prevent card draws.
+      debugNotify("About to check for Draw Prevention",2)
       for c in table:
          if preventDraw: break #If we already found a card effect which prevents draws, don't check any more cards on the table.
          Autoscripts = CardsAS.get(c.model,'').split('||')
          for autoS in Autoscripts:
-            if re.search(r'\bPreventDraw', autoS) and chkPlayer(autoS,c.controller,False) and checkOriginatorRestrictions(autoS,c):
+            debugNotify("Checking autoS {}".format(autoS),2)
+            if re.search(r'\bPreventDraw', autoS) and chkPlayer(autoS,targetPL,False) and checkOriginatorRestrictions(autoS,c):
                preventDraw = True
                notify(":> {}'s {} draw effects were blocked by {}".format(card.controller,card,c))
    if not preventDraw:
