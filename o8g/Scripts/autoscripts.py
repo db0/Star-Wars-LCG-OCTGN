@@ -752,23 +752,34 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
       destiVerb = 'discard'   
    else: destination = targetPL.hand
    if debugVerbosity >= 3: notify("### Setting Destination")
-   if destiVerb == 'draw' and ModifyDraw > 0 and not confirm("You have a card effect in play that modifies the amount of cards you draw. Do you want to continue as normal anyway?\n\n(Answering 'No' will abort this action so that you can prepare for the special changes that happen to your draw."): return 'ABORT'
-   draw = num(action.group(1))
-   if draw == 999:
-      multiplier = 1
-      if currentHandSize(targetPL) >= len(targetPL.hand): # Otherwise drawMany() is going to try and draw "-1" cards which somehow draws our whole deck except one card.
-         count = drawMany(source, currentHandSize(targetPL) - len(targetPL.hand), destination, True) # 999 means we refresh our hand
-      else: count = 0 
-      #confirm("cards drawn: {}".format(count)) # Debug
-   else: # Any other number just draws as many cards.
-      multiplier = per(Autoscript, card, n, targetCards, notification)
-      count = drawMany(source, draw * multiplier, destination, True)
-   if targetPL == me:
-      if destiVerb != 'discard': destPath = " to their {}".format(destination.name)
-      else: destPath = ''
-   else: 
-      if destiVerb != 'discard': destPath = " to {}'s {}".format(targetPL,destination.name)
-      else: destPath = ''
+   preventDraw = False
+   if source == targetPL.piles['Command Deck'] and destination == targetPL.hand: # We need to look if there's card on the table which prevent card draws.
+      for c in table:
+         if preventDraw: break #If we already found a card effect which prevents draws, don't check any more cards on the table.
+         Autoscripts = CardsAS.get(c.model,'').split('||')
+         for autoS in Autoscripts:
+            if re.search(r'\bPreventDraw', autoS) and chkPlayer(autoS,c.controller,False) and checkOriginatorRestrictions(autoS,c):
+               preventDraw = True
+               notify(":> {}'s {} draw effects were blocked by {}".format(card.controller,card,c))
+   if not preventDraw:
+      if destiVerb == 'draw' and ModifyDraw > 0 and not confirm("You have a card effect in play that modifies the amount of cards you draw. Do you want to continue as normal anyway?\n\n(Answering 'No' will abort this action so that you can prepare for the special changes that happen to your draw."): return 'ABORT'
+      draw = num(action.group(1))
+      if draw == 999:
+         multiplier = 1
+         if currentHandSize(targetPL) >= len(targetPL.hand): # Otherwise drawMany() is going to try and draw "-1" cards which somehow draws our whole deck except one card.
+            count = drawMany(source, currentHandSize(targetPL) - len(targetPL.hand), destination, True) # 999 means we refresh our hand
+         else: count = 0 
+         #confirm("cards drawn: {}".format(count)) # Debug
+      else: # Any other number just draws as many cards.
+         multiplier = per(Autoscript, card, n, targetCards, notification)
+         count = drawMany(source, draw * multiplier, destination, True)
+      if targetPL == me:
+         if destiVerb != 'discard': destPath = " to their {}".format(destination.name)
+         else: destPath = ''
+      else: 
+         if destiVerb != 'discard': destPath = " to {}'s {}".format(targetPL,destination.name)
+         else: destPath = ''
+   else: count = 0
    if debugVerbosity >= 2: notify("### About to announce.")
    if count == 0: return announceText # If there are no cards, then we effectively did nothing, so we don't change the notification.
    if notification == 'Quick': announceString = "{} draw {} cards{}".format(announceText, count,sourcePath)
