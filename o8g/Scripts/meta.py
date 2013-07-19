@@ -960,7 +960,7 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
-   testcards = ["ff4fb461-8060-457a-9c16-000000000322", # AoEB cards
+   testcards = ["ff4fb461-8060-457a-9c16-000000000397", # EoD  cards
                 "ff4fb461-8060-457a-9c16-000000000332",
                 "ff4fb461-8060-457a-9c16-000000000341",
                 "ff4fb461-8060-457a-9c16-000000000349",
