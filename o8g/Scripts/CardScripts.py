@@ -2802,7 +2802,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000360
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -2850,7 +2850,7 @@ Swindled
 -----
 ff4fb461-8060-457a-9c16-000000000366
 -----
-
+onPlay:ReturnTarget-Targeted-atUnit-hasProperty{Cost}le2
 +++++
 
 .....
@@ -2898,7 +2898,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000372
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -2946,7 +2946,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000378
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -3042,7 +3042,7 @@ Protection
 -----
 ff4fb461-8060-457a-9c16-000000000390
 -----
-
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
 +++++
 
 .....
@@ -3282,7 +3282,7 @@ Protection
 -----
 ff4fb461-8060-457a-9c16-000000000420
 -----
-
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
 +++++
 
 .....
@@ -3426,7 +3426,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000438
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -3474,7 +3474,7 @@ Protection
 -----
 ff4fb461-8060-457a-9c16-000000000444
 -----
-
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
 +++++
 
 .....
@@ -3522,7 +3522,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000450
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
@@ -3570,7 +3570,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000456
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -3810,7 +3810,7 @@ Protection
 -----
 ff4fb461-8060-457a-9c16-000000000486
 -----
-
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
 +++++
 
 .....
