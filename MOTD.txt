@@ -1,6 +1,6 @@
 =====Message of the Day======
 
-Cards for Assault on Echo Base has been added and automated
+Card for Edge of Darkness have been added. No automations yet except for existing cards. Full automations will be coming soon.
 
 Restart your OCTGN to get the latest update immediately and enjoy!
 =============================

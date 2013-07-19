@@ -1,6 +1,11 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.2.4.x
+
+* **Edge of Darkness** has been added without most automations. Fate Cards and 1-2 known automations were copied in. The rest will be coming in v2.2.5.x
+* Embers of Hope scripting was added already in order to prevent card draws happening automatically when it shouldn't.
+
 ### 2.2.3.x
 
 * Fixed Rogue Squadron Mobilization triggering
