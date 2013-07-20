@@ -349,7 +349,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          for autoS in Autoscripts:
             debugNotify("autoS: {}".format(autoS),4) #Debug
             bonusUnopposed = re.search(r'Unopposed([0-9])Bonus',autoS)
-            if bonusUnopposed and chkPlayer(autoS, c.controller, False):
+            if bonusUnopposed and chkPlayer(autoS, c.controller, False) and checkOriginatorRestrictions(autoS,c):
                debugNotify("Found unopposed Bonus: {}".format(bonusUnopposed.group(1)),4) #Debug
                targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
                multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()

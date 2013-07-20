@@ -428,6 +428,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
+         if not checkOriginatorRestrictions(autoS,card): continue
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'automatic') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          if re.search(r'onTriggerCard',autoS): targetCard = [origin_card] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card (e.g. see Grimoire)
          else: targetCard = findTarget(autoS, card = card)
@@ -1021,7 +1022,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if targetCards is None: targetCards = []
    targetCardlist = '' # A text field holding which cards are going to get tokens.
    extraTXT = ''
-   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|SendToBottom|Commit|Uncommit|Engage|Disengage|Sacrifice)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
+   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|BringToPlay|SendToBottom|Commit|Uncommit|Engage|Disengage|Sacrifice)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
@@ -1053,6 +1054,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             rnd(1,10)
          targetCard.moveTo(targetCard.owner.hand)
          extraTXT = " to their owner's hand"
+      elif action.group(1) == 'BringToPlay': placeCard(card)
       elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
       elif action.group(1) == 'Engage': participate(targetCard, silent = True)
       elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)

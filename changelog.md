@@ -1,6 +1,20 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.2.5.x
+
+  * **Cards not scripted:**
+    * Wookie Life Debt (Just drag the damage tokens afterwards manually)
+    * Chewbacca
+    * Blockade Runner
+    * Cloud City Operative (Just Manually Drag the token)
+    * Bothan Spy    
+  * **Cards with tricky scripting:**
+    * Smuggling Compartment - Just double click the enhancement to draw a card and notify why)
+    * Millennium Falcon - Target the unit in your hand and then use the Falcon's ability
+    
+
+
 ### 2.2.4.x
 
 * **Edge of Darkness** has been added without most automations. Fate Cards and 1-2 known automations were copied in. The rest will be coming in v2.2.5.x

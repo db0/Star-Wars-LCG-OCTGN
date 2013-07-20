@@ -2758,27 +2758,11 @@ Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shie
 +++++
 
 .....
-Wookiee Life Debt
------
-ff4fb461-8060-457a-9c16-000000000355
------
-
-+++++
-
-.....
-Chewbacca
------
-ff4fb461-8060-457a-9c16-000000000356
------
-
-+++++
-
-.....
 Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000357
 -----
-
+ExtraIcon:BD:2-hasMarker{Damage}
 +++++
 
 .....
@@ -2786,7 +2770,7 @@ Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000358
 -----
-
+ExtraIcon:BD:2-hasMarker{Damage}
 +++++
 
 .....
@@ -2794,7 +2778,7 @@ Let the Wookiee Win
 -----
 ff4fb461-8060-457a-9c16-000000000359
 -----
-
+onPlay:Put1Damage-Targeted-atUnit-targetMine&&Put1Damage-Targeted-atUnit_and_nonVehicle
 +++++
 
 .....
@@ -2810,7 +2794,7 @@ Raise the Stakes
 -----
 ff4fb461-8060-457a-9c16-000000000361
 -----
-
+ConstantEffect:Unopposed1Bonus-forMe-ifOrigHasntMarker{Damage}
 +++++
 
 .....
@@ -2844,7 +2828,7 @@ ff4fb461-8060-457a-9c16-000000000365
 -----
 
 +++++
-
+R0:Draw1Card
 .....
 Swindled
 -----
@@ -2860,7 +2844,7 @@ ff4fb461-8060-457a-9c16-000000000367
 -----
 
 +++++
-
+Put2Damage$$SimplyAnnounce{cancel the effects of the event card}$$Put1Effects Cancelled-DemiAutoTargeted-atEvent-isReady-choose1-isSilent
 .....
 Lando Calrissian
 -----
@@ -2868,21 +2852,13 @@ ff4fb461-8060-457a-9c16-000000000368
 -----
 
 +++++
-
+R1:DisengageTarget-Targeted-atUnit-onlyOnce
 .....
 Saboteur
 -----
 ff4fb461-8060-457a-9c16-000000000369
 -----
-
-+++++
-
-.....
-Cloud City Casino
------
-ff4fb461-8060-457a-9c16-000000000370
------
-
+onPlay:DestroyTarget-DemiAutoTargeted-atEnhancement-hasProperty{Cost}le2-choose1
 +++++
 
 .....
@@ -2890,7 +2866,7 @@ Sabotage
 -----
 ff4fb461-8060-457a-9c16-000000000371
 -----
-
+onPlay:DestroyMultiple-AutoTargeted-atUnit-isParticipating
 +++++
 
 .....
@@ -2906,7 +2882,7 @@ Asteroid Sanctuary
 -----
 ff4fb461-8060-457a-9c16-000000000373
 -----
-
+whileInPlay:Draw1Card-foreachAttackerEdgeWin-ifOrigAttacking||whileInPlay:Draw1Card-foreachDefenderEdgeWin-ifOrigDefending
 +++++
 
 .....
@@ -2914,9 +2890,9 @@ Millennium Falcon
 -----
 ff4fb461-8060-457a-9c16-000000000374
 -----
-
+ConstantEffect:Edge1Bonus
 +++++
-
+R0:ReturnMyself&&BringToPlayTarget-Targeted-atCharacter_or_Droid-fromHand
 .....
 Cloud City Operative
 -----
