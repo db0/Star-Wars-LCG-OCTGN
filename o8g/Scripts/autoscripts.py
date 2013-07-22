@@ -1520,6 +1520,55 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          topCard = me.piles['Command Deck'].top()
          if playEdge(topCard,True) != 'ABORT':
             notify("{} used {} to play an edge card from the top of their command deck".format(me,card))
+   elif card.name == "Bamboozle" and action == 'PLAY':
+      currentTargets = findTarget('Targeted-atUnit_and_Character')
+      if len(currentTargets) != 2:
+         delayed_whisper(":::ERROR::: You must target exactly 2 units to use this ability.")
+         return
+      sourceTargets = findTarget('Targeted-atUnit_and_Character-hasMarker{Focus}')
+      if not sourceTargets:
+         delayed_whisper(":::ERROR::: You must target at least 1 unit with a focus token.")
+         return
+      elif len(sourceTargets) > 1:
+         targetChoices = makeChoiceListfromCardList(sourceTargets)
+         choiceC = SingleChoice("Choose from which card to remove the focus token", targetChoices, type = 'button', default = 0)
+         if choiceC == 'ABORT': return
+         if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
+         if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
+         sourceCard = sourceTargets.pop(choiceC)
+      else: sourceCard = sourceTargets[0]
+      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
+      currentTargets.remove(sourceCard) # We remove the source card since we know which it is already. The other targeted card must be the target.
+      targetCard = currentTargets[0] # After we pop() the choice card, whatever remains is the target card.
+      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
+      sourceCard.markers[mdict['Focus'] -= 1
+      targetCard.markers[mdict['Focus'] += 1
+      notify("{} has bamboozled {}".format(sourceCard,targetCard))       
+   elif card.name == "Cloud City Operative" and action == 'USE':
+      currentTargets = findTarget('Targeted-atUnit')
+      if len(currentTargets) != 2:
+         delayed_whisper(":::ERROR::: You must target exactly 2 units to use this ability.")
+         return
+      sourceTargets = findTarget('Targeted-atUnit-hasMarker{Focus}')
+      if not sourceTargets:
+         delayed_whisper(":::ERROR::: You must target at least 1 unit with a focus token.")
+         return
+      elif len(sourceTargets) > 1:
+         targetChoices = makeChoiceListfromCardList(sourceTargets)
+         choiceC = SingleChoice("Choose from which card to remove the focus token", targetChoices, type = 'button', default = 0)
+         if choiceC == 'ABORT': return
+         if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
+         if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
+         sourceCard = sourceTargets.pop(choiceC)
+      else: sourceCard = sourceTargets[0]
+      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
+      destTargets = findTarget('Targeted-atUnit-hasProperty{Cost}le2')
+      if sourceCard in destTargets: destTargets.remove(sourceCard) # If the source card is targeted and also a valid destination, we remove it from the choices list.
+      targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
+      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
+      sourceCard.markers[mdict['Focus'] -= 1
+      targetCard.markers[mdict['Focus'] += 1
+      notify("{} has moved one focus token from {} to {}".format(card,sourceCard,targetCard))
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions

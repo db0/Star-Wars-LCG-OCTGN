@@ -1868,7 +1868,7 @@ ff4fb461-8060-457a-9c16-000000000242
 -----
 
 +++++
-R0:SacrificeMyself$$DisengageTarget-Targeted-atUnit_and_nonVehicle$$Put1Damage-Targeted-atUnit_and_nonVehicle
+R0:SacrificeMyself$$DisengageTarget-Targeted-atUnit_and_nonVehicle$$Deal1Damage-Targeted-atUnit_and_nonVehicle
 .....
 Icetromper
 -----
@@ -1876,7 +1876,7 @@ ff4fb461-8060-457a-9c16-000000000243
 -----
 
 +++++
-R0:SacrificeMyself$$DisengageTarget-Targeted-atUnit_and_nonVehicle$$Put1Damage-Targeted-atUnit_and_nonVehicle
+R0:SacrificeMyself$$DisengageTarget-Targeted-atUnit_and_nonVehicle$$Deal1Damage-Targeted-atUnit_and_nonVehicle
 .....
 Imperial Suppression
 -----
@@ -1914,7 +1914,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000250
 -----
-onLeaving:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
+onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
 +++++
 
 .....
@@ -1922,7 +1922,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000251
 -----
-onLeaving:Put1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
+onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
 +++++
 
 .....
@@ -2778,7 +2778,7 @@ Let the Wookiee Win
 -----
 ff4fb461-8060-457a-9c16-000000000359
 -----
-onPlay:Put1Damage-Targeted-atUnit-targetMine&&Put1Damage-Targeted-atUnit_and_nonVehicle
+onPlay:Put1Damage-Targeted-atUnit-targetMine&Deal1Damage-Targeted-atUnit_and_nonVehicle
 +++++
 
 .....
@@ -2900,21 +2900,13 @@ ff4fb461-8060-457a-9c16-000000000375
 -----
 
 +++++
-
-.....
-Cloud City Guest Quarters
------
-ff4fb461-8060-457a-9c16-000000000376
------
-
-+++++
-
+R0:CustomScript
 .....
 Bamboozle
 -----
 ff4fb461-8060-457a-9c16-000000000377
 -----
-
+onPlay:CustomScript
 +++++
 
 .....
