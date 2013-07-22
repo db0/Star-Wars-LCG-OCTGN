@@ -1178,7 +1178,7 @@ Reconnaissance Mission
 -----
 ff4fb461-8060-457a-9c16-000000000087
 -----
-whileInPlay:Gain1Reserves
+onPlay:Gain1Reserves||onLeaving:Lose1Reserves
 +++++
 
 .....
@@ -2812,7 +2812,7 @@ ff4fb461-8060-457a-9c16-000000000363
 -----
 
 +++++
-
+R0:CustomScript
 .....
 Bothan Spy
 -----
@@ -2922,7 +2922,7 @@ Escape from Ord Mantell
 -----
 ff4fb461-8060-457a-9c16-000000000379
 -----
-
+whileInPlay:Remove1Damage-AutoTargeted-atObjective-foreachCardPlayed-typeEvent-isOptional
 +++++
 
 .....
@@ -2930,7 +2930,7 @@ Mission Commander
 -----
 ff4fb461-8060-457a-9c16-000000000380
 -----
-
+onStrike:Put1Damage-isOptional$$RescueTarget-Targeted-isCaptured
 +++++
 
 .....
@@ -2938,7 +2938,7 @@ Covert Sniper
 -----
 ff4fb461-8060-457a-9c16-000000000381
 -----
-
+afterRefresh:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited
 +++++
 
 .....
@@ -2954,7 +2954,7 @@ Bring 'Em On
 -----
 ff4fb461-8060-457a-9c16-000000000383
 -----
-
+onPlay:Put2Bring Em On:UD
 +++++
 
 .....
@@ -2962,7 +2962,7 @@ Over My Dead Body
 -----
 ff4fb461-8060-457a-9c16-000000000384
 -----
-
+onPlay:SimplyAnnounce{cancel the effects of the unit's ability}$$Put1Effects Cancelled-Targeted-atUnit-isReady-isSilent
 +++++
 
 .....

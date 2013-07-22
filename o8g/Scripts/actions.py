@@ -39,9 +39,9 @@ limitedPlayed = False # A Variable which records if the player has played a limi
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
 capturingObjective = None # A global variable which holds which objective just captured a card.
 
-warnZeroCostEvents = "This event is ready to take effect but has not been done automatically in order to allow your opponent to react.\
-                    \nOnce your opponent had the chance to play any interrupts, double click on the event to finalize playing it and resolve any effects (remember to target any relevant cards).\
-                 \n\n(This message will not appear again)" # Warning about playing events. Only displayed once.
+warnImminentEffects = "This effect is ready to happen but has not been done automatically in order to allow your opponent to react.\
+                     \nOnce your opponent had the chance to play any interrupts, double click on the highlighted card to finalize paying it and resolve any effects (remember to target any relevant cards).\
+                   \n\n(This message will not appear again)" # Warning about playing events. Only displayed once.
 #---------------------------------------------------------------------------
 # Phases
 #---------------------------------------------------------------------------
@@ -468,6 +468,7 @@ def gameSetup(group, x = 0, y = 0):
 def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
+   global selectedAbility
    if card.highlight == FateColor: 
       #whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
       notify("{} resolves the ability of fate card {}".format(me,card))
@@ -489,7 +490,36 @@ def defaultAction(card, x = 0, y = 0):
          notify("--> {} of the Dark Side has the initiative".format(me))
          me.setActivePlayer() # If we're DS, set ourselves as the current player, since the Dark Side goes first.
    elif card.highlight == EdgeColor: revealEdge()
-   elif card.highlight == UnpaidColor or card.highlight == ReadyEventColor: purchaseCard(card)
+   elif card.highlight == ReadyEffectColor:
+      debugNotify("selectedAbility Tuple = {}".format(selectedAbility[card._id]),4)
+      Autoscript = selectedAbility[card._id][0]
+      debugNotify("AS = {}".format(Autoscript),2)
+      card.highlight = selectedAbility[card._id][2] 
+      action = selectedAbility[card._id][3]
+      if findMarker(card, "Effects Cancelled"): 
+         notify("{}'s effects have been cancelled".format(card))
+      else: 
+         if card.Type == 'Event':
+            Autoscripts = CardsAS.get(card.model,'').split('||')
+            if len(Autoscripts) > 0:
+               for autoS in Autoscripts:
+                  if re.search(r'(?<!Auto)Targeted', autoS) and re.search(r'onPlay', autoS) and findTarget(autoS,card = card) == []: return # If the script needs a target but we don't have any, abort.
+         notify("{} resolves the effects of {}".format(me,card)) 
+         executeAutoscripts(card,Autoscript,action = action)
+      debugNotify("Deleting selectedAbility tuple",3)
+      del selectedAbility[card._id]
+      for cMarkerKey in card.markers: 
+         for resdictKey in resdict:
+            if resdict[resdictKey] == cMarkerKey: 
+               card.markers[cMarkerKey] = 0
+      if card.Type == 'Event': 
+         autoscriptOtherPlayers('CardPlayed',card)
+         if findMarker(card, "Destination:Command Deck"):
+            notify(" -- {} is moved to the top of {}'s command deck".format(card,card.owner))
+            rnd(1,100) # To allow any notifications to announce the card correctly first.
+            card.moveTo(card.owner.piles['Command Deck'])
+         else: card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.      
+   elif card.highlight == UnpaidColor: purchaseCard(card) # If the player is double clicking on an unpaid card, we assume they just want to bypass complete payment.
    elif num(card.Resources) > 0 and findUnpaidCard(): 
       if debugVerbosity >= 2: notify("Card has resources") # Debug
       generate(card)
@@ -638,10 +668,9 @@ def generate(card, x = 0, y = 0):
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
    resResult = checkPaidResources(unpaidC)
-   if resResult == 'OK': 
-      if unpaidC.Type == 'Event': readyEvent(unpaidC)
-      else: purchaseCard(unpaidC, manual = False)
-   elif resResult == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
+   if resResult == 'OK': purchaseCard(unpaidC, manual = False)
+   elif resResult == 'USEOK': readyEffect(unpaidC)
+   # elif resResult == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
@@ -700,17 +729,12 @@ def checkPaidResources(card):
 def purchaseCard(card, x=0, y=0, manual = True):
    if debugVerbosity >= 1: notify(">>> purchaseCard(){}".format(extraASDebug())) #Debug
    global unpaidCard
-   if manual and card.highlight != ReadyEventColor: checkPaid = checkPaidResources(card)
+   if manual and card.highlight != ReadyEffectColor: checkPaid = checkPaidResources(card)
    # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
-   # Events marked as 'ReadyEventColor' have already been paid, so we do not need to check them again.
+   # Events marked as 'ReadyEffectColor' have already been paid, so we do not need to check them again.
    else: checkPaid = 'OK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
    if checkPaid == 'OK' or confirm(":::ERROR::: You do have not yet paid the cost of this card. Bypass?"):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
-      if card.Type == 'Event':
-         Autoscripts = CardsAS.get(card.model,'').split('||')
-         if len(Autoscripts) > 0:
-            for autoS in Autoscripts:
-               if re.search(r'(?<!Auto)Targeted', autoS) and re.search(r'onPlay', autoS) and findTarget(autoS,card = card) == []: return # If the script needs a target but we don't have any, abort.
       card.highlight = None
       placeCard(card)
       for cMarkerKey in card.markers: 
@@ -720,21 +744,11 @@ def purchaseCard(card, x=0, y=0, manual = True):
                card.markers[cMarkerKey] = 0
                break
       unpaidCard = None
-      if checkPaid == 'OK':
-         if card.Type == 'Event': 
-            if findMarker(card, "Effects Cancelled"): notify("{}'s effects have been cancelled".format(card))
-            else: notify("{} resolves the effects of {}".format(me,card)) 
-         else: notify("{} has paid for {}".format(me,card)) 
+      if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has played {} by skipping its full cost".format(me,card))
-      if card.Type == 'Event' and findMarker(card, "Effects Cancelled"): pass
+      if findMarker(card, "Effects Cancelled"): pass
       else: executePlayScripts(card, 'PLAY') 
       autoscriptOtherPlayers('CardPlayed',card)
-      if card.Type == "Event": 
-         if findMarker(card, "Destination:Command Deck"):
-            notify(" -- {} is moved to the top of {}'s command deck".format(card,card.owner))
-            rnd(1,100) # To allow any notifications to announce the card correctly first.
-            card.moveTo(card.owner.piles['Command Deck'])
-         else: card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
@@ -1104,25 +1118,25 @@ def play(card):
       card.highlight = UnpaidColor 
       unpaidCard = card
       notify("{} attempts to play {}{}.".format(me, card,extraTXT))
-      # if num(card.Cost) == 0 and card.Type == 'Event': readyEvent(card)
+      # if num(card.Cost) == 0 and card.Type == 'Event': readyEffect(card)
    else: 
-      if card.Type == 'Event': readyEvent(card) # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
+      if card.Type == 'Event': executePlayScripts(card, 'PLAY') # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
       else:
          placeCard(card)
          notify("{} plays {}{}.".format(me, card,extraTXT))
          executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
          autoscriptOtherPlayers('CardPlayed',card)
 
-def readyEvent(card):
+def readyEffect(card):
 # This function prepares an event for being activated and puts the initial warning out if necessary.
-   if debugVerbosity >= 1: notify(">>> readyEvent()") #Debug
-   card.highlight = ReadyEventColor
-   notify(":::NOTICE::: {}'s {} is about to take effect. Opponents can play any interrupts now!".format(me,card))
-   global warnZeroCostEvents
-   if warnZeroCostEvents:
-      information(warnZeroCostEvents)
-      warnZeroCostEvents = None
-   if debugVerbosity >= 3: notify("<<< readyEvent()") #Debug      
+   if debugVerbosity >= 1: notify(">>> readyEffect()") #Debug
+   card.highlight = ReadyEffectColor
+   notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
+   global warnImminentEffects
+   if warnImminentEffects:
+      information(warnImminentEffects)
+      warnImminentEffects = None
+   if debugVerbosity >= 3: notify("<<< readyEffect()") #Debug      
       
 def playEdge(card, silent = False):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
