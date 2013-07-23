@@ -469,7 +469,7 @@ def gameSetup(group, x = 0, y = 0):
 def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
-   global selectedAbility
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))
    if card.highlight == FateColor: 
       #whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
       notify("{} resolves the ability of fate card {}".format(me,card))
@@ -491,7 +491,7 @@ def defaultAction(card, x = 0, y = 0):
          notify("--> {} of the Dark Side has the initiative".format(me))
          me.setActivePlayer() # If we're DS, set ourselves as the current player, since the Dark Side goes first.
    elif card.highlight == EdgeColor: revealEdge()
-   elif card.highlight == ReadyEffectColor:
+   elif selectedAbility.has_key(card._id): # we check via the dictionary, as this can be then used without a highlight via the "Hardcore mode"
       debugNotify("selectedAbility Tuple = {}".format(selectedAbility[card._id]),4)
       if selectedAbility[card._id][4]: preTargets = [Card(selectedAbility[card._id][4])] # The 5th value of the tuple is special target card's we'll be using for this run.
       else: preTargets = None
@@ -505,13 +505,7 @@ def defaultAction(card, x = 0, y = 0):
                   if re.search(r'(?<!Auto)Targeted', autoS) and re.search(r'onPlay', autoS) and findTarget(autoS,card = card) == []: return # If the script needs a target but we don't have any, abort.
          notify("{} resolves the effects of {}".format(me,card)) 
          if executeAutoscripts(card,selectedAbility[card._id][0],action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': return
-      card.highlight = selectedAbility[card._id][2] 
-      debugNotify("Deleting selectedAbility tuple",3)
-      del selectedAbility[card._id]
-      for cMarkerKey in card.markers: 
-         for resdictKey in resdict:
-            if resdict[resdictKey] == cMarkerKey: 
-               card.markers[cMarkerKey] = 0
+      clearStoredEffects(card,True)
       if card.Type == 'Event': 
          autoscriptOtherPlayers('CardPlayed',card)
          if findMarker(card, "Destination:Command Deck"):
@@ -629,16 +623,10 @@ def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from partic
 def cancelPaidAbility(card,x=0,y=0):
 # This function clears a card's paid ability in case the player tried to use it but realized they couldn't.
    mute()
-   if selectedAbility.has_key(card._id):
-      card.highlight = selectedAbility[card._id][2]
-      del selectedAbility[card._id]
-      for cMarkerKey in card.markers: 
-         for resdictKey in resdict:
-            if resdict[resdictKey] == cMarkerKey: 
-               card.markers[cMarkerKey] = 0
-      notify("{} has canceled {}'s ability".format(me,card))
+   clearStoredEffects(card, True)
+   clrResourceMarkers(card)
+   notify("{} has canceled {}'s ability".format(me,card))
 
-   
 def generate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
    mute()
@@ -670,7 +658,6 @@ def generate(card, x = 0, y = 0):
    resResult = checkPaidResources(unpaidC)
    if resResult == 'OK': purchaseCard(unpaidC, manual = False)
    elif resResult == 'USEOK': readyEffect(unpaidC)
-   # elif resResult == 'USEOK': useAbility(unpaidC, paidAbility = True, manual = False) 
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
@@ -704,6 +691,7 @@ def checkPaidResources(card):
          affiliationMatch = True
    if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    if card.highlight == UnpaidAbilityColor:
+      selectedAbility = eval(getGlobalVariable('Stored Effects'))
       reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
       if count >= selectedAbility[card._id][1] - reduction:
          if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return USEOK") #Debug
@@ -737,12 +725,7 @@ def purchaseCard(card, x=0, y=0, manual = True):
       # if the card has been fully paid, we remove the resource markers and move it at its final position.
       card.highlight = None
       placeCard(card)
-      for cMarkerKey in card.markers: 
-         if debugVerbosity >= 3: notify("### Checking marker {}.".format(cMarkerKey[0]))
-         for resdictKey in resdict:
-            if resdict[resdictKey] == cMarkerKey or cMarkerKey[0] == 'Ignores Affiliation Match': 
-               card.markers[cMarkerKey] = 0
-               break
+      clrResourceMarkers(card)
       unpaidCard = None
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has played {} by skipping its full cost".format(me,card))
@@ -1132,17 +1115,6 @@ def play(card):
          notify("{} plays {}{}.".format(me, card,extraTXT))
          executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
          autoscriptOtherPlayers('CardPlayed',card)
-
-def readyEffect(card):
-# This function prepares an event for being activated and puts the initial warning out if necessary.
-   if debugVerbosity >= 1: notify(">>> readyEffect()") #Debug
-   card.highlight = ReadyEffectColor
-   notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
-   global warnImminentEffects
-   if warnImminentEffects:
-      information(warnImminentEffects)
-      warnImminentEffects = None
-   if debugVerbosity >= 3: notify("<<< readyEffect()") #Debug      
       
 def playEdge(card, silent = False):
    if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug

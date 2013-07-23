@@ -17,7 +17,7 @@
 import re
 
 failedRequirement = True #A Global boolean that we set in case an Autoscript cost cannot be paid, so that we know to abort the rest of the script.
-selectedAbility = {} # Used to track which ability of multiple the player is trying to pay.
+#selectedAbility = {} # Used to track which ability of multiple the player is trying to pay.
 Dummywarn = True
 TitleDone = 'Unset'
 #------------------------------------------------------------------------------
@@ -27,7 +27,7 @@ TitleDone = 'Unset'
 def executePlayScripts(card, action):
    #action = action.upper() # Just in case we passed the wrong case
    if debugVerbosity >= 1: notify(">>> executePlayScripts() with action: {}".format(action)) #Debug
-   global failedRequirement, selectedAbility
+   global failedRequirement
    if not Automations['Play']: return
    if not card.isFaceUp: return
    if CardsAS.get(card.model,'') != '': # Commented in order to allow scripts in attacked cards to trigger
@@ -55,8 +55,8 @@ def executePlayScripts(card, action):
              re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
          elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
          elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
-         elif re.search(r'CustomScript', autoS): 
-            selectedAbility[card._id] = (autoS,0,card.highlight,action,None) 
+         elif re.search(r'CustomScript', autoS):
+            storeCardEffects(card,autoS,0,card.highlight,action,None)
             readyEffect(card)
             Autoscripts.remove(autoS)
       if debugVerbosity >= 2: notify ('Looking for multiple choice options') # Debug
@@ -135,7 +135,7 @@ def executePlayScripts(card, action):
             continue         
          if re.search(r'-isReact', autoS) or card.Type == 'Event': #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
-            selectedAbility[card._id] = (autoS,0,card.highlight,action,None) 
+            storeCardEffects(card,autoS,0,card.highlight,action,None) 
             readyEffect(card)
          else:
             ### Otherwise the automation is uninterruptible and we just go on with the scripting.
@@ -159,10 +159,10 @@ def executeAttachmentScripts(card, action):
 # Card Use trigger
 #------------------------------------------------------------------------------
 
-def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The start of autoscript activation.
+def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript activation.
    if debugVerbosity >= 1: notify(">>> useAbility(){}".format(extraASDebug())) #Debug
    mute()
-   global failedRequirement,selectedAbility
+   global failedRequirement
    AutoscriptsList = [] # An empty list which we'll put the AutoActions to execute.
    failedRequirement = False # We set it to false when we start a new autoscript.
    if debugVerbosity >= 4: notify("+++ Not a tracing card. Checking highlight...")
@@ -174,9 +174,6 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
       whisper("Play automations have been disabled. Aborting!")
       return
    if debugVerbosity >= 4: notify("+++ Automations active. Checking for CustomScript...")
-   if re.search(r'CustomScript', CardsAA.get(card.model,'')): 
-      CustomScript(card,'USE') # Some cards just have a fairly unique effect and there's no use in trying to make them work in the generic framework.
-      return
    Autoscripts = CardsAA.get(card.model,'').split('||')
    AutoScriptSnapshot = list(Autoscripts)
    for autoS in AutoScriptSnapshot: # Checking and removing any clickscripts which were put here in error.
@@ -187,112 +184,36 @@ def useAbility(card, x = 0, y = 0, paidAbility = False, manual = True): # The st
    if len(Autoscripts) == 0:
       whisper("This card has no automated abilities. Aborting")
       return 
-   if not paidAbility and not selectedAbility.has_key(card._id): # If the player has already paid the ability of this card, we skip all the checking and go straight to the autoscripts
-      if debugVerbosity >= 2: notify("### Ability not paid.")
-      if debugVerbosity >= 4: notify("+++ All checks done!. Starting Choice Parse...")
-      ### Checking if card has multiple autoscript options and providing choice to player.
-      if len(Autoscripts) > 1: 
-         #abilConcat = "This card has multiple abilities.\nWhich one would you like to use?\
-                   #\n\n(Tip: You can put multiple abilities one after the the other (e.g. '110'). Max 9 at once)\n\n" # We start a concat which we use in our confirm window.
-         if Automations['WinForms']: ChoiceTXT = "This card has multiple abilities.\nSelect the ones you would like to use, in order, and press the [Finish Selection] button"
-         else: ChoiceTXT = "This card has multiple abilities.\nType the ones you would like to use, in order, and press the [OK] button"
-         choices = card.Instructions.split('||') # A card with multiple abilities on use MUST use the Instructions properties
-         choice = SingleChoice(ChoiceTXT, choices, type = 'button', default = 0)
-         if choice == 'ABORT': return
-         selectedAutoscript = Autoscripts[choice]
-         if debugVerbosity >= 2: notify("### AutoscriptsList: {}".format(AutoscriptsList)) # Debug
-      else: 
-         selectedAutoscript = Autoscripts[0]
-         choice = 0 
-      actionCostRegex = re.match(r"R([0-9]+):", selectedAutoscript) # Any cost will always be at the start
-      if not actionCostRegex: actionCost = 0
-      else: actionCost = num(actionCostRegex.group(1))
-      selectedAbility[card._id] = (selectedAutoscript,num(actionCost.group(1)),card.highlight,action,None) 
-      # We set a tuple of variables for when we come back to executre the scripts
-      # The first variable is tracking which script is going to be used
-      # The Second is the amount of resource payment 
-      # The third entry in the tuple is the card's previous highlight if it had any.
+   if debugVerbosity >= 4: notify("+++ All checks done!. Starting Choice Parse...")
+   ### Checking if card has multiple autoscript options and providing choice to player.
+   if len(Autoscripts) > 1: 
+      #abilConcat = "This card has multiple abilities.\nWhich one would you like to use?\
+                #\n\n(Tip: You can put multiple abilities one after the the other (e.g. '110'). Max 9 at once)\n\n" # We start a concat which we use in our confirm window.
+      if Automations['WinForms']: ChoiceTXT = "This card has multiple abilities.\nSelect the ones you would like to use, in order, and press the [Finish Selection] button"
+      else: ChoiceTXT = "This card has multiple abilities.\nType the ones you would like to use, in order, and press the [OK] button"
+      choices = card.Instructions.split('||') # A card with multiple abilities on use MUST use the Instructions properties
+      choice = SingleChoice(ChoiceTXT, choices, type = 'button', default = 0)
+      if choice == 'ABORT': return
+      selectedAutoscript = Autoscripts[choice]
+      if debugVerbosity >= 2: notify("### AutoscriptsList: {}".format(AutoscriptsList)) # Debug
+   else: selectedAutoscript = Autoscripts[0]
+   debugNotify("selectedAutoscript = {}".format(selectedAutoscript),2)
+   debugNotify("About to check for actionCostRegex",2)
+   actionCostRegex = re.match(r"R([0-9]+):", selectedAutoscript) # Any cost will always be at the start
+   debugNotify("About to store selectedAbility",2)
+   if actionCostRegex and num(actionCostRegex.group(1)):
+      storeCardEffects(card,selectedAutoscript,num(actionCostRegex.group(1)),card.highlight,'USE',None) 
       card.highlight = UnpaidAbilityColor # We put a special highlight on the card to allow resource generation to be assigned to it.
-      notify("{} Attempts to use {}'s ability".format(me,card))
-      return
-   else: # If we're returning after paying a card's abilities cost, we re-set out selectedAutoscripts
-      if manual and card.highlight != ReadyEffectColor: checkPaid = checkPaidResources(card) # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
-      else: checkPaid = 'USEOK' #If it's not manual, then it means the checkPaidResources() has been run successfully, so we proceed.
-      if checkPaid == 'USEOK' or confirm(":::ERROR::: You do have not yet paid the cost of this card's abilities. Bypass?"):
-         # if the card has been fully paid, we remove the resource markers and move it at its final position.
-         card.highlight = selectedAbility[card._id][2]
-         selectedAutoscripts = selectedAbility[card._id][0].split('$$')
-         del selectedAbility[card._id]
-         for cMarkerKey in card.markers: 
-            for resdictKey in resdict:
-               if resdict[resdictKey] == cMarkerKey: 
-                  card.markers[cMarkerKey] = 0
-      else: return # If the ability is not ok  and the player does not confirm to continue, do nothing.
-   if debugVerbosity >= 2: notify("### Executing Autoscripts: {}".format(selectedAutoscripts)) # Debug
-   if findMarker(card, "Effects Cancelled"):
-      notify("{}'s ability has been cancelled".format(card))
-      return 
-   announceText = "{} activates {} in order to".format(me,card)
-   X = 0 # Variable for special costs.
-   if card.highlight == DummyColor: lingering = ' the lingering effect of' # A text that we append to point out when a player is using a lingering effect in the form of a dummy card.
-   else: lingering = ''
-   for activeAutoscript in selectedAutoscripts:
-      #confirm("Active Autoscript: {}".format(activeAutoscript)) #Debug
-      ### Checking if any of the card's effects requires one or more targets first
-      if re.search(r'(?<!Auto)Targeted', activeAutoscript) and findTarget(activeAutoscript,card = card) == []: return
-   for activeAutoscript in selectedAutoscripts:
-      if not checkOriginatorRestrictions(activeAutoscript,card): continue # If the card does not fulfil it's requirements do not execute this script.
-      if re.search(r'onlyOnce',activeAutoscript) and oncePerTurn(card, silent = True) == 'ABORT': continue
-      if not announceText.endswith(' in order to') and not announceText.endswith(' and'): announceText += ' and'   
-      targetC = findTarget(activeAutoscript,card = card)
-      ### Warning the player in case we need to
-      if chkWarn(card, activeAutoscript) == 'ABORT': return
-      ### Check if the action needs the player or his opponent to be targeted
-      targetPL = ofwhom(activeAutoscript)
-      if debugVerbosity >= 2: notify("### Entering useAbility() Choice with Autoscript: {}".format(activeAutoscript)) # Debug
-      if regexHooks['GainX'].search(activeAutoscript): 
-         gainTuple = GainX(activeAutoscript, announceText, card, targetC, n = X)
-         if gainTuple == 'ABORT': announceText == 'ABORT'
-         else:
-            announceText = gainTuple[0] 
-            X = gainTuple[1] 
-      elif regexHooks['CreateDummy'].search(activeAutoscript): announceText = CreateDummy(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['ReshuffleX'].search(activeAutoscript): 
-         reshuffleTuple = ReshuffleX(activeAutoscript, announceText, card) # The reshuffleX() function is special because it returns a tuple.
-         announceText = reshuffleTuple[0] # The first element of the tuple contains the announceText string
-         X = reshuffleTuple[1] # The second element of the tuple contains the number of cards that were reshuffled from the hand in the deck.
-      elif regexHooks['RollX'].search(activeAutoscript): 
-         rollTuple = RollX(activeAutoscript, announceText, card) # Returns like reshuffleX()
-         announceText = rollTuple[0] 
-         X = rollTuple[1] 
-      elif regexHooks['RequestInt'].search(activeAutoscript): 
-         numberTuple = RequestInt(activeAutoscript, announceText, card) # Returns like reshuffleX()
-         if numberTuple == 'ABORT': announceText == 'ABORT'
-         else:
-            announceText = numberTuple[0] 
-            X = numberTuple[1] 
-      elif regexHooks['DiscardX'].search(activeAutoscript): 
-         discardTuple = DiscardX(activeAutoscript, announceText, card, targetC, n = X) # Returns like reshuffleX()
-         announceText = discardTuple[0] 
-         X = discardTuple[1] 
-      elif regexHooks['TokensX'].search(activeAutoscript):           announceText = TokensX(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['DrawX'].search(activeAutoscript):             announceText = DrawX(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['RetrieveX'].search(activeAutoscript):         announceText = RetrieveX(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['ShuffleX'].search(activeAutoscript):          announceText = ShuffleX(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['ModifyStatus'].search(activeAutoscript):      announceText = ModifyStatus(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['SimplyAnnounce'].search(activeAutoscript):    announceText = SimplyAnnounce(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['ChooseKeyword'].search(activeAutoscript):     announceText = ChooseKeyword(activeAutoscript, announceText, card, targetC, n = X)
-      elif regexHooks['UseCustomAbility'].search(activeAutoscript):  announceText = UseCustomAbility(activeAutoscript, announceText, card, targetC, n = X)
-      if debugVerbosity >= 3: notify("<<< useAbility() choice. TXT = {}".format(announceText)) # Debug
-      if announceText == 'ABORT': 
-         whisper(":::ABORTING:::")
-         return
-      if failedRequirement: break # If part of an AutoAction could not pay the cost, we stop the rest of it.
-   if announceText.endswith(' in order to'): # If our text annouce ends with " to", it means that nothing happened. Try to undo and inform player.
-      notify("{}, but there was nothing to do.".format(announceText[:-len(' in order to')]))
-   elif announceText.endswith(' and'):
-      announceText = announceText[:-len(' and')] # If for some reason we end with " and" (say because the last action did nothing), we remove it.
-   notify("{}.".format(announceText)) # Finally announce what the player just did by using the concatenated string.
+      notify("{} is paying to use {}'s ability".format(me,card))
+   else: 
+      storeCardEffects(card,selectedAutoscript,0,card.highlight,'USE',None) 
+      readyEffect(card)
+   # We set a tuple of variables for when we come back to executre the scripts
+   # The first variable is tracking which script is going to be used
+   # The Second is the amount of resource payment 
+   # The third entry in the tuple is the card's previous highlight if it had any.
+   # The fourth entry in the tuple is the type of autoscript this is. In this case it's a 'USE' script, which means it was manually triggered by the player
+   # The last entry is not used here, but it's used to parse pre-selected targets for the card effects. Primarily used in autoscriptOtherPlayers()
       
 #------------------------------------------------------------------------------
 # Other Player trigger
@@ -368,7 +289,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          else: targetCards = None
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
-            selectedAbility[card._id] = (autoS,0,card.highlight,'Automatic',targetCards) # We pass the special target in our global variable to allow it to be retrieved by later scripts.
+            storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCards) # We pass the special target in our global variable to allow it to be retrieved by later scripts.
             readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
@@ -417,8 +338,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'dryRun') == 'ABORT': continue
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
-            previousHighlight = card.highlight
-            selectedAbility[card._id] = (autoS,0,previousHighlight,Time,None) 
+            storeCardEffects(card,autoS,0,card.highlight,Time,None) 
             readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.

@@ -730,6 +730,52 @@ def checkDeckLegality():
    else: notify(" -> Deck of {} is Illegal!".format(me))
    if debugVerbosity >= 3: notify("<<< checkDeckLegality() with return: {}".format(ok)) #Debug
    return ok
+   
+def readyEffect(card):
+# This function prepares an event for being activated and puts the initial warning out if necessary.
+   if debugVerbosity >= 1: notify(">>> readyEffect()") #Debug
+   card.highlight = ReadyEffectColor
+   clrResourceMarkers(card)
+   notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
+   global warnImminentEffects
+   if warnImminentEffects:
+      information(warnImminentEffects)
+      warnImminentEffects = None
+   if debugVerbosity >= 3: notify("<<< readyEffect()") #Debug         
+   
+def clrResourceMarkers(card):
+   for cMarkerKey in card.markers: 
+      if debugVerbosity >= 3: notify("### Checking marker {}.".format(cMarkerKey[0]))
+      for resdictKey in resdict:
+         if resdict[resdictKey] == cMarkerKey or cMarkerKey[0] == 'Ignores Affiliation Match': 
+            card.markers[cMarkerKey] = 0
+            break
+
+def clearStoredEffects(card, silent = False): # A function which clears a card's waiting-to-be-activated scripts
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))   
+   debugNotify("Deleting selectedAbility tuple",3)
+   card.highlight = selectedAbility[card._id][2] 
+   del selectedAbility[card._id]
+   setGlobalVariable('Stored Effects',str(selectedAbility))
+   if not silent: notify(":> {}'s trigger was ignored.".format(card))
+
+def clearAllEffects(group = table, silent = False): # A function which clears all card's waiting-to-be-activated scripts. This is not looping clearStoredEffects() to avoid too many setGlobalVariable calls
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))   
+   for cID in selectedAbility:
+      debugNotify("Clearing Effects for {}".format(Card(cID)),3)
+      Card(cID).highlight = selectedAbility[cID][2] 
+      del selectedAbility[cID]
+   setGlobalVariable('Stored Effects',str(selectedAbility))
+   if not silent: notify(":> All existing card effect triggers were ignored.".format(card))
+
+def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTargetCard):
+   debugNotify(">>> storeCardEffects()")
+   # A function which store's a bunch of variables inside a shared dictionary
+   # These variables are recalled later on, when the player clicks on a triggered card, to recall the script to execute and it's peripheral variables.
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))   
+   selectedAbility[card._id] = (Autoscript,cost,previousHighlight,actionType,preTargetCard)
+   setGlobalVariable('Stored Effects',str(selectedAbility))
+   debugNotify("<<< storeCardEffects()")
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------
