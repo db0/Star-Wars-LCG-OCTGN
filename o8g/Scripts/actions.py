@@ -39,8 +39,8 @@ limitedPlayed = False # A Variable which records if the player has played a limi
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
 capturingObjective = None # A global variable which holds which objective just captured a card.
 
-warnImminentEffects = "This effect is ready to happen but has not been done automatically in order to allow your opponent to react.\
-                     \nOnce your opponent had the chance to play any interrupts, double click on the highlighted card to finalize paying it and resolve any effects (remember to target any relevant cards).\
+warnImminentEffects = "An effect is ready to trigger but has not been done automatically in order to allow your opponent to react.\
+                     \nOnce your opponent had the chance to play any interrupts, double click on the green-highlighted card to finalize it and resolve any effects (remember to target any relevant cards if required).\
                    \n\n(This message will not appear again)" # Warning about playing events. Only displayed once.
 #---------------------------------------------------------------------------
 # Phases
@@ -289,26 +289,27 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
    forceStruggleDone = True # Set that the forcestruggle is done.
    if debugVerbosity >= 3: notify("<<< resolveForceStruggle()") #Debug
          
-def engageTarget(group = table, x = 0, y = 0): # Start an Engagement Phase
+def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = False): # Start an Engagement Phase
    if debugVerbosity >= 1: notify(">>> engageTarget(){}".format(extraASDebug())) #Debug
    mute()
    if me.getGlobalVariable('Phase') != '5' and not confirm("You need to be in the conflict phase before you can engage an objective. Bypass?"):
       return
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() 
    if debugVerbosity >= 2: notify("About to find targeted objectives.") #Debug
-   cardList = [c for c in table if (c.Type == 'Objective' or re.search(r'EngagedAsObjective',CardsAS.get(c.model,'')))  and c.targetedBy and c.targetedBy == me and c.controller == opponent]
-   if debugVerbosity >= 2: notify("About to count found objectives list. List is {}".format(cardList)) #Debug
-   if len(cardList) == 0: 
-      whisper("You need to target an opposing Objective to start an Engagement")
-      return
-   else: targetObjective = cardList[0]
+   if not targetObjective:
+      cardList = [c for c in table if (c.Type == 'Objective' or re.search(r'EngagedAsObjective',CardsAS.get(c.model,'')))  and c.targetedBy and c.targetedBy == me and c.controller == opponent]
+      if debugVerbosity >= 2: notify("About to count found objectives list. List is {}".format(cardList)) #Debug
+      if len(cardList) == 0: 
+         whisper("You need to target an opposing Objective to start an Engagement")
+         return
+      else: targetObjective = cardList[0]
    targetObjective.highlight = DefendColor
    if debugVerbosity >= 2: notify("About set the global variable") #Debug
    setGlobalVariable('Engaged Objective',str(targetObjective._id))
    showCurrentPhase()
    #setGlobalVariable('Engagement Phase','1')
    if debugVerbosity >= 2: notify("About to announce") #Debug
-   notify("{} forces have engaged {}'s {}".format(me,targetObjective.controller, targetObjective))
+   if not silent: notify("{} forces have engaged {}'s {}".format(me,targetObjective.controller, targetObjective))
    rnd(1,10)
    autoscriptOtherPlayers('EngagedObjective',targetObjective)
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
@@ -492,10 +493,8 @@ def defaultAction(card, x = 0, y = 0):
    elif card.highlight == EdgeColor: revealEdge()
    elif card.highlight == ReadyEffectColor:
       debugNotify("selectedAbility Tuple = {}".format(selectedAbility[card._id]),4)
-      Autoscript = selectedAbility[card._id][0]
-      debugNotify("AS = {}".format(Autoscript),2)
-      card.highlight = selectedAbility[card._id][2] 
-      action = selectedAbility[card._id][3]
+      if selectedAbility[card._id][4]: preTargets = [Card(selectedAbility[card._id][4])] # The 5th value of the tuple is special target card's we'll be using for this run.
+      else: preTargets = None
       if findMarker(card, "Effects Cancelled"): 
          notify("{}'s effects have been cancelled".format(card))
       else: 
@@ -505,7 +504,8 @@ def defaultAction(card, x = 0, y = 0):
                for autoS in Autoscripts:
                   if re.search(r'(?<!Auto)Targeted', autoS) and re.search(r'onPlay', autoS) and findTarget(autoS,card = card) == []: return # If the script needs a target but we don't have any, abort.
          notify("{} resolves the effects of {}".format(me,card)) 
-         executeAutoscripts(card,Autoscript,action = action)
+         if executeAutoscripts(card,selectedAbility[card._id][0],action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': return
+      card.highlight = selectedAbility[card._id][2] 
       debugNotify("Deleting selectedAbility tuple",3)
       del selectedAbility[card._id]
       for cMarkerKey in card.markers: 
@@ -978,11 +978,13 @@ def clearAttachLinks(card):
    
 def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
    if debugVerbosity >= 1: notify(">>> removeCapturedCard()") #Debug
+   parentObjective = None
    try: 
       mute()
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       if capturedCards.has_key(card._id):
          if debugVerbosity >= 2: notify("{} was in the capturedCards dict.".format(card))
+         parentObjective = Card(capturedCards[card._id])
          del capturedCards[card._id]
          if debugVerbosity >= 3: notify("Double Checking if entry exists: {}".format(capturedCards.get(card._id,'DELETED')))
       card.highlight = None
@@ -992,6 +994,7 @@ def removeCapturedCard(card): # This function removes a captured card from the d
       setGlobalVariable('Captured Cards',str(capturedCards))
    except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
    if debugVerbosity >= 3: notify("<<< removeCapturedCard()") #Debug
+   return parentObjective
 
 def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
    try:
@@ -1015,14 +1018,17 @@ def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game t
    whisper("All associated captured cards for this objective have been cleared")
    
 def rescue(card,x = 0, y = 0):
-   removeCapturedCard(card) 
+   obj = removeCapturedCard(card)
    card.moveTo(card.owner.hand)
+   notify("{} rescued a card from {}".format(me,obj))
+   
 
 def rescueTargets(group,x = 0, y = 0):
    for card in table:
       if card.highlight == CapturedColor and card.targetedBy and card.targetedBy == me:
-         removeCapturedCard(card) 
+         obj = removeCapturedCard(card) 
          card.moveTo(card.owner.hand)
+         notify("{} rescued a card from {}".format(me,obj))
 
 def exileCard(card, silent = False):
    if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug

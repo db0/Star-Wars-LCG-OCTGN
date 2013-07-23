@@ -10,7 +10,7 @@ ScriptsLocal = '''
 -----
 ff4fb461-8060-457a-9c16-000000000050
 -----
-onPlay:Deal1Damage-AutoTargeted-atObjective-isOptional-isCurrentObjective-onlyDuringEngagement||DeployAllowance:Conflict
+onPlay:Deal1Damage-AutoTargeted-atObjective-isOptional-isCurrentObjective-onlyDuringEngagement-isReact||DeployAllowance:Conflict
 +++++
 
 .....
@@ -50,7 +50,7 @@ A-Wing
 -----
 ff4fb461-8060-457a-9c16-000000000012
 -----
-onStrike:Draw1Card
+onStrike:Draw1Card-isReact
 +++++
 
 .....
@@ -58,7 +58,7 @@ Admiral Ackbar
 -----
 ff4fb461-8060-457a-9c16-000000000187
 -----
-onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponents-isParticipating-onlyDuringEngagement-isOptional||DeployAllowance:Conflict
+onPlay:Deal1Damage-AutoTargeted-atUnit-targetOpponents-isParticipating-onlyDuringEngagement-isReact||DeployAllowance:Conflict
 +++++
 
 .....
@@ -66,7 +66,7 @@ Admiral Motti
 -----
 ff4fb461-8060-457a-9c16-000000000070
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atUnit-targetMine-choose1-hasMarker{Focus}-duringMyTurn
+afterRefresh:Remove1Focus-AutoTargeted-atUnit-targetMine-choose1-hasMarker{Focus}-duringMyTurn-isReact
 +++++
 
 .....
@@ -106,7 +106,7 @@ AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000002
 -----
-onPlay:Draw1Card
+onPlay:Draw1Card-isReact
 +++++
 
 .....
@@ -114,7 +114,7 @@ AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000060
 -----
-onPlay:Draw1Card
+onPlay:Draw1Card-isReact
 +++++
 
 .....
@@ -124,13 +124,13 @@ ff4fb461-8060-457a-9c16-000000000059
 -----
 
 +++++
-
+R1:Put1Shield-AutoTargeted-atUnit_and_Vehicle-isParticipating-targetMine-choose1-hasntMarker{Shield}
 .....
 Battlefield Engineers
 -----
 ff4fb461-8060-457a-9c16-000000000015
 -----
-onAttack:Remove1Focus-AutoTargeted-atEnhancement-choose1-hasMarker{Focus}
+onAttack:Remove1Focus-AutoTargeted-atEnhancement-choose1-hasMarker{Focus}-isReact
 +++++
 
 .....
@@ -156,7 +156,7 @@ ff4fb461-8060-457a-9c16-000000000126
 -----
 
 +++++
-Put1Focus-isCost$$Remove1Focus-Targeted-atBlack Squadron
+R0:Put1Focus-isCost$$Remove1Focus-Targeted-atBlack Squadron
 .....
 Black Squadron Pilot
 -----
@@ -180,7 +180,7 @@ ff4fb461-8060-457a-9c16-000000000076
 -----
 
 +++++
-CaptureTarget-Targeted-atCharacter
+R0:CaptureTarget-Targeted-atCharacter
 .....
 Bounty Collection
 -----
@@ -196,7 +196,7 @@ ff4fb461-8060-457a-9c16-000000000156
 -----
 
 +++++
-DestroyMyself$$SimplyAnnounce{cancel the effects of the event card}$$Put1Effects Cancelled-DemiAutoTargeted-atEvent-isReady-choose1-isSilent
+R0:DestroyMyself$$SimplyAnnounce{cancel the effects of the event card}$$Put1Effects Cancelled-DemiAutoTargeted-atEvent-isReady-choose1-isSilent
 .....
 Cloud City Casino
 -----
@@ -244,7 +244,7 @@ ff4fb461-8060-457a-9c16-000000000081
 -----
 
 +++++
-Put1Focus-isCost$$SimplyAnnounce{put a unit of printed cost 1 or lower into play}
+R0:Put1Focus-isCost$$BringToPlayTarget-Targeted-atUnit-fromHand
 .....
 Coruscant Defense Fleet
 -----
@@ -252,13 +252,13 @@ ff4fb461-8060-457a-9c16-000000000023
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
 +++++
-Remove1Damage-DemiAutoTargeted-atCoruscant-hasMarker{Damage}-choose1-isCost$$Put1Damage
+R0:Remove1Damage-DemiAutoTargeted-atCoruscant-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Counsel of the Sith
 -----
 ff4fb461-8060-457a-9c16-000000000114
 -----
-atTurnStart:Draw1Card-duringOpponentTurn
+atTurnStart:Draw1Card-duringOpponentTurn-isReact
 +++++
 
 .....
@@ -290,7 +290,7 @@ Cruel Interrogations
 -----
 ff4fb461-8060-457a-9c16-000000000120
 -----
-onPlay:CustomScript
+onPlay:CustomScript-isReact
 +++++
 
 .....
@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whileInPlay:Deal1Damage-foreachCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce
+whileInPlay:Deal1Damage-foreachCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce-isReact
 +++++
 
 .....
@@ -394,7 +394,7 @@ Decoy at Dantooine
 -----
 ff4fb461-8060-457a-9c16-000000000192
 -----
-whileInPlay:Lose1Dial-foreachObjectiveThwarted-byOpponent
+whileInPlay:Lose1Dial-foreachObjectiveThwarted-byOpponent-isReact
 +++++
 
 .....
@@ -402,7 +402,7 @@ Defense Protocol
 -----
 ff4fb461-8060-457a-9c16-000000000040
 -----
-afterRefresh:Lose1Reserves-isOptional-duringMyTurn$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
+afterRefresh:Lose1Reserves-duringMyTurn-isReact$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
 +++++
 
 .....
@@ -466,9 +466,9 @@ Emperor Palpatine
 -----
 ff4fb461-8060-457a-9c16-000000000097
 -----
-
+whileInPlay:Retrieve1Card-grabEvent_and_Sith-fromDiscard-foreachObjectiveThwarted-isReact
 +++++
-R0:Retrieve1Card-typeEvent_and_Sith-fromDiscard
+
 .....
 Emperor's Royal Guard
 -----
@@ -476,7 +476,7 @@ ff4fb461-8060-457a-9c16-000000000098
 -----
 
 +++++
-Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
+R0:Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Espo Trooper
 -----
@@ -530,7 +530,7 @@ Ewok Scout
 -----
 ff4fb461-8060-457a-9c16-000000000206
 -----
-onAttack:Put1Ewok Scouted-DemiAutoTargeted-atUnit-hasntMarker{Focus}-targetOpponents-choose1
+onAttack:Put1Ewok Scouted-DemiAutoTargeted-atUnit-hasntMarker{Focus}-targetOpponents-choose1-isReact
 +++++
 
 .....
@@ -546,7 +546,7 @@ Fall of the Jedi
 -----
 ff4fb461-8060-457a-9c16-000000000102
 -----
-
+afterRefresh:SimplyAnnounce{place 1 card from their hand to the bottom of their deck}-isReact
 +++++
 
 .....
@@ -554,7 +554,7 @@ False Lead
 -----
 ff4fb461-8060-457a-9c16-000000000195
 -----
-Placement:Objective||onHostObjectiveThwarted:Lose1Dial
+Placement:Objective||onHostObjectiveThwarted:Lose1Dial-isReact
 +++++
 
 .....
@@ -562,7 +562,7 @@ Fleeing the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000132
 -----
-afterRefresh:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn
+afterRefresh:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
 +++++
 
 .....
@@ -570,7 +570,7 @@ Fleet Command Center
 -----
 ff4fb461-8060-457a-9c16-000000000190
 -----
-afterRefresh:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn
+afterRefresh:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -626,7 +626,7 @@ Forgotten Heroes
 -----
 ff4fb461-8060-457a-9c16-000000000144
 -----
-whileInPlay:Draw1Card-foreachCardPlayed-byMe-typeForce User
+whileInPlay:Draw1Card-foreachCardPlayed-byMe-typeForce User-isReact
 +++++
 
 .....
@@ -658,7 +658,7 @@ Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000017
 -----
-onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
+onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1-isReact
 +++++
 
 .....
@@ -762,7 +762,7 @@ Hit and Run
 -----
 ff4fb461-8060-457a-9c16-000000000210
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachAttackerEdgeWin-ifAttacker-onlyOnce
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachAttackerEdgeWin-ifAttacker-onlyOnce-isReact
 +++++
 
 .....
@@ -770,7 +770,7 @@ Home One
 -----
 ff4fb461-8060-457a-9c16-000000000181
 -----
-onStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifAttacker
+onStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifAttacker-isReact
 +++++
 
 .....
@@ -842,7 +842,7 @@ Interrogation Droid
 -----
 ff4fb461-8060-457a-9c16-000000000122
 -----
-onPlay:Discard1Card-ofOpponent
+onPlay:Discard1Card-ofOpponent-isRandom-isReact
 +++++
 
 .....
@@ -850,7 +850,7 @@ Interrogation Droid
 -----
 ff4fb461-8060-457a-9c16-000000000123
 -----
-onPlay:Discard1Card-ofOpponent
+onPlay:Discard1Card-ofOpponent-isRandom-isReact
 +++++
 
 .....
@@ -858,7 +858,7 @@ Intimidated
 -----
 ff4fb461-8060-457a-9c16-000000000124
 -----
-Placement:Character_and_Unit-byOpponent||onHostStrike:Put1Focus-atHost
+Placement:Character_and_Unit-byOpponent||onHostStrike:Put1Focus-atHost-isReact
 +++++
 
 .....
@@ -956,7 +956,7 @@ ff4fb461-8060-457a-9c16-000000000046
 -----
 
 +++++
-
+R0:Discard0Card-Targeted-fromHand$$Put1Resource:Neutral-AutoTargeted-isUnpaid-perX
 .....
 Kuati Security Team
 -----
@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-afterRefresh:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-targetMine-duringMyTurn
+afterRefresh:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-targetMine-duringMyTurn-isReact
 +++++
 
 .....
@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-onLeaving:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe
+onLeaving:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe-isReact
 +++++
 
 .....
@@ -1004,7 +1004,7 @@ ff4fb461-8060-457a-9c16-000000000207
 -----
 
 +++++
-Put1Focus-isCost$$SimplyAnnounce{force opponent to put 1 focus one 1 attacking unit}
+R0:Put1Focus-isCost$$SimplyAnnounce{force opponent to put 1 focus one 1 attacking unit}
 .....
 Looking for Droids
 -----
@@ -1018,7 +1018,7 @@ Luke Skywalker
 -----
 ff4fb461-8060-457a-9c16-000000000064
 -----
-atTurnStart:Remove1Focus-duringOpponentTurn
+atTurnStart:Remove1Focus-duringOpponentTurn-isReact
 +++++
 
 .....
@@ -1034,7 +1034,7 @@ Mission Briefing
 -----
 ff4fb461-8060-457a-9c16-000000000010
 -----
-atTurnStart:Draw1Card-duringOpponentTurn
+atTurnStart:Draw1Card-duringOpponentTurn-isReact
 +++++
 
 .....
@@ -1042,7 +1042,7 @@ Mobilize the Squadrons
 -----
 ff4fb461-8060-457a-9c16-000000000004
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-targetMine-choose1-duringMyTurn
+afterRefresh:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-targetMine-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -1058,7 +1058,7 @@ Nightsister
 -----
 ff4fb461-8060-457a-9c16-000000000109
 -----
-onCommit:Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1
+onCommit:Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1-isReact
 +++++
 
 .....
@@ -1066,7 +1066,7 @@ Nightsister
 -----
 ff4fb461-8060-457a-9c16-000000000110
 -----
-onCommit:Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1
+onCommit:Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1-isReact
 +++++
 
 .....
@@ -1098,7 +1098,7 @@ Outer Rim Hunter
 -----
 ff4fb461-8060-457a-9c16-000000000077
 -----
-onAttack:SimplyAnnounce{force opponent to deal 1 damage to one of their objectives}
+onAttack:SimplyAnnounce{force opponent to deal 1 damage to one of their objectives}-isReact
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-afterRefresh:Put1Damage-isOptional-duringMyTurn$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
+afterRefresh:Put1Damage-isOptional-duringMyTurn-isReact$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....
@@ -1122,7 +1122,7 @@ Rancor
 -----
 ff4fb461-8060-457a-9c16-000000000111
 -----
-afterRefresh:CustomScript
+afterRefresh:CustomScript-isReact
 +++++
 
 .....
@@ -1194,7 +1194,7 @@ Red Two
 -----
 ff4fb461-8060-457a-9c16-000000000177
 -----
-whileInPlay:Remove1Focus-foreachObjectiveThwarted
+whileInPlay:Remove1Focus-foreachObjectiveThwarted-isReact
 +++++
 
 .....
@@ -1204,7 +1204,7 @@ ff4fb461-8060-457a-9c16-000000000162
 -----
 
 +++++
-
+R0:ReturnTarget-Targeted-atUnit-onlyOnce
 .....
 Repair Droid
 -----
@@ -1212,7 +1212,7 @@ ff4fb461-8060-457a-9c16-000000000183
 -----
 
 +++++
-Remove1Damage-DemiAutoTargeted-atVehicle-targetMine-choose1-onlyOnce
+R0:Remove1Damage-DemiAutoTargeted-atVehicle-targetMine-choose1-onlyOnce
 .....
 Rescue Mission
 -----
@@ -1260,7 +1260,7 @@ ff4fb461-8060-457a-9c16-000000000211
 -----
 
 +++++
-CustomScript
+R0:CustomScript
 .....
 Secret Informant
 -----
@@ -1268,7 +1268,7 @@ ff4fb461-8060-457a-9c16-000000000212
 -----
 
 +++++
-CustomScript
+R0:CustomScript
 .....
 Shadows of Dathomir
 -----
@@ -1330,7 +1330,7 @@ Stolen Plans
 -----
 ff4fb461-8060-457a-9c16-000000000133
 -----
-Placement:Objective-byOpponent||onHostGenerate:Draw1Card
+Placement:Objective-byOpponent||onHostGenerate:Draw1Card-isReact
 +++++
 
 .....
@@ -1354,7 +1354,7 @@ Superlaser Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000030
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}||onPlay:CustomScript
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}||onPlay:CustomScript-isReact
 +++++
 
 .....
@@ -1370,7 +1370,7 @@ Take Them Prisoner
 -----
 ff4fb461-8060-457a-9c16-000000000052
 -----
-onPlay:CustomScript
+onPlay:CustomScript-isReact
 +++++
 
 .....
@@ -1450,7 +1450,7 @@ The Bespin Exchange
 -----
 ff4fb461-8060-457a-9c16-000000000075
 -----
-whileInPlay:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-foreachUnitCardCapturedFromTable
+whileInPlay:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-choose1-foreachUnitCardCapturedFromTable-isReact
 +++++
 
 .....
@@ -1460,7 +1460,7 @@ ff4fb461-8060-457a-9c16-000000000174
 -----
 
 +++++
-
+R0:Discard0Card-Targeted-fromHand$$Put1Resource:Neutral-AutoTargeted-isUnpaid-perX
 .....
 The Emperor's Web
 -----
@@ -1474,7 +1474,7 @@ The Endor Gambit
 -----
 ff4fb461-8060-457a-9c16-000000000058
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetMine
+afterRefresh:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetMine-isReact
 +++++
 
 .....
@@ -1482,7 +1482,7 @@ The Hand's Blessing
 -----
 ff4fb461-8060-457a-9c16-000000000112
 -----
-Placement:Character_and_Unit||afterRefresh:Remove999Focus-AutoTargeted-onHost-duringMyTurn
+Placement:Character_and_Unit||afterRefresh:Remove999Focus-AutoTargeted-onHost-duringMyTurn-isReact
 +++++
 
 .....
@@ -1508,7 +1508,7 @@ ff4fb461-8060-457a-9c16-000000000155
 -----
 
 +++++
-CustomScript
+R0:CustomScript-isReact
 .....
 The Ultimate Power
 -----
@@ -1530,7 +1530,7 @@ TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000128
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachUnopposedEngagement-ifAttacker-ifParticipating
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachUnopposedEngagement-ifAttacker-ifParticipating-isReact
 +++++
 
 .....
@@ -1578,7 +1578,7 @@ Tribal Support
 -----
 ff4fb461-8060-457a-9c16-000000000204
 -----
-
+afterRefresh:Discard1Card-Targeted-fromHand-isCost-isReact$$Retrieve1Card-fromDiscard-grabEwok
 +++++
 
 .....
@@ -1596,7 +1596,7 @@ ff4fb461-8060-457a-9c16-000000000065
 -----
 Placement:Character_and_Unit
 +++++
-Put1Focus-isCost$$Remove1Focus-AutoTargeted-onHost
+R0:Put1Focus-isCost$$Remove1Focus-AutoTargeted-onHost
 .....
 Twi'lek Loyalist
 -----
@@ -1682,7 +1682,7 @@ Vader's TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000127
 -----
-onStrike:CustomScript
+onStrike:CustomScript-isReact
 +++++
 
 .....
@@ -1706,7 +1706,7 @@ Wookiee Navigator
 -----
 ff4fb461-8060-457a-9c16-000000000193
 -----
-
+whileInPlay:AttackTarget-AutoTargeted-atObjective-isParticipating-ifAttacker-ifParticipating-isReact
 +++++
 
 .....
@@ -1730,7 +1730,7 @@ X-Wing Escort
 -----
 ff4fb461-8060-457a-9c16-000000000188
 -----
-onLeaving:SimplyAnnounce{force opponent to sacrifice a Vehicle unit they control}
+onLeaving:SimplyAnnounce{force opponent to sacrifice a Vehicle unit they control}-isReact
 +++++
 
 .....
@@ -1788,7 +1788,7 @@ ff4fb461-8060-457a-9c16-000000000223
 -----
 
 +++++
-R0:Put1Damage$$Retrieve1Card-typeEnhancement-fromDiscard-isTopmost
+R0:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost
 .....
 Battle of Hoth
 -----
@@ -2170,7 +2170,7 @@ First Marker
 -----
 ff4fb461-8060-457a-9c16-000000000264
 -----
-Placement:Objective_and_Hoth||ConstantEffect:Protection-fromVehicle-onHost
+Placement:Objective_and_Hoth||ConstantEffect:Protection-typeVehicle-onHost
 +++++
 
 .....
@@ -2322,7 +2322,7 @@ Action-series Bulk Transport
 -----
 ff4fb461-8060-457a-9c16-000000000298
 -----
-onStrike:Retrieve1Card-typeCharacter-hasProperty{Cost}le2-toTable-onTop5Cards-isOptional$$ShuffleDeck
+onStrike:Retrieve1Card-grabCharacter-hasProperty{Cost}le2-toTable-onTop5Cards-isOptional$$ShuffleDeck
 +++++
 
 .....
@@ -2892,7 +2892,7 @@ ff4fb461-8060-457a-9c16-000000000374
 -----
 ConstantEffect:Edge1Bonus
 +++++
-R0:ReturnMyself&&BringToPlayTarget-Targeted-atCharacter_or_Droid-fromHand
+R0:ReturnMyself$$BringToPlayTarget-Targeted-atCharacter_or_Droid-fromHand
 .....
 Cloud City Operative
 -----
