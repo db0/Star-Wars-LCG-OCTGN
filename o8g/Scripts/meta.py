@@ -468,7 +468,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
       global costModifiers
       del costModifiers[:]
       RC_cardList = sortPriority([c for c in table if c.isFaceUp])
-      reductionRegex = re.compile(r'(Reduce|Increase)([0-9#X]+)Cost({}|All)-for([A-Z][A-Za-z ]+)(-not[A-Za-z_& ]+)?'.format(type)) # Doing this now, to reduce load.
+      reductionRegex = re.compile(r'(Reduce|Increase)([0-9#X]+)Cost({}|All)-affects([A-Z][A-Za-z ]+)(-not[A-Za-z_& ]+)?'.format(type)) # Doing this now, to reduce load.
       for c in RC_cardList: # Then check if there's other cards in the table that reduce its costs.
          Autoscripts = CardsAS.get(c.model,'').split('||')
          if len(Autoscripts) == 0: continue
@@ -498,7 +498,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
       autoS = cTuple[2]
       if debugVerbosity >= 2: notify("### cTuple[0] (i.e. card) is: {}".format(c)) #Debug
       if debugVerbosity >= 4: notify("### cTuple[2] (i.e. autoS) is: {}".format(autoS)) #Debug
-      if reductionSearch.group(4) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)):
+      if reductionSearch.group(4) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,seek = 'reduce')):
          if debugVerbosity >= 3: notify(" ### Search match! Reduction Value is {}".format(reductionSearch.group(2))) # Debug
          if re.search(r'onlyOnce',autoS):
             if dryRun: # For dry Runs we do not want to add the "Activated" token on the card. 

@@ -826,7 +826,7 @@ In You Must Go
 -----
 ff4fb461-8060-457a-9c16-000000000137
 -----
-whileInPlay:Reduce1CostPlay-forEnhancement-onlyOnce-byMe
+whileInPlay:Reduce1CostPlay-affectsEnhancement-onlyOnce-byMe
 +++++
 
 .....
@@ -1154,7 +1154,7 @@ Rebel Sympathizer
 -----
 ff4fb461-8060-457a-9c16-000000000199
 -----
-whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
+whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
 +++++
 R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
@@ -1162,7 +1162,7 @@ Rebel Sympathizer
 -----
 ff4fb461-8060-457a-9c16-000000000200
 -----
-whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-forAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
+whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
 +++++
 R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
 .....
@@ -1466,7 +1466,7 @@ The Emperor's Web
 -----
 ff4fb461-8060-457a-9c16-000000000096
 -----
-whileInPlay:Reduce1CostPlay-forEvent_and_Sith-onlyOnce
+whileInPlay:Reduce1CostPlay-affectsEvent_and_Sith-onlyOnce
 +++++
 
 .....
@@ -2122,7 +2122,7 @@ Deploy the Fleet
 -----
 ff4fb461-8060-457a-9c16-000000000283
 -----
-whileInPlay:Reduce1CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
+whileInPlay:Reduce1CostPlay-affectsCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
 R0:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 1}$$CreateDummy-isSilent-doNotDiscard
 .....
