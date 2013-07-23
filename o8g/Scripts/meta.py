@@ -752,22 +752,30 @@ def clrResourceMarkers(card):
             break
 
 def clearStoredEffects(card, silent = False): # A function which clears a card's waiting-to-be-activated scripts
+   debugNotify(">>> clearStoredEffects with card: {}".format(card))
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
+   debugNotify("Clearing Hihlight",3)
+   if card.highlight == ReadyEffectColor: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
    debugNotify("Deleting selectedAbility tuple",3)
-   card.highlight = selectedAbility[card._id][2] 
    del selectedAbility[card._id]
+   debugNotify("Uploading selectedAbility tuple",3)
    setGlobalVariable('Stored Effects',str(selectedAbility))
    if not silent: notify(":> {}'s trigger was ignored.".format(card))
+   debugNotify("<<< clearStoredEffects")
 
 def clearAllEffects(group = table, silent = False): # A function which clears all card's waiting-to-be-activated scripts. This is not looping clearStoredEffects() to avoid too many setGlobalVariable calls
+   debugNotify(">>> clearAllEffects")
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
    for cID in selectedAbility:
       debugNotify("Clearing Effects for {}".format(Card(cID)),3)
-      Card(cID).highlight = selectedAbility[cID][2] 
+      if Card(cID).highlight == ReadyEffectColor: Card(cID).highlight = selectedAbility[cID][2] 
       del selectedAbility[cID]
+   for card in table:
+      if card.highlight == ReadyEffectColor: card.highlight = None
    setGlobalVariable('Stored Effects',str(selectedAbility))
    if not silent: notify(":> All existing card effect triggers were ignored.".format(card))
-
+   debugNotify("<<< clearAllEffects")
+   
 def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTargetCard):
    debugNotify(">>> storeCardEffects()")
    # A function which store's a bunch of variables inside a shared dictionary
@@ -776,6 +784,28 @@ def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTarget
    selectedAbility[card._id] = (Autoscript,cost,previousHighlight,actionType,preTargetCard)
    setGlobalVariable('Stored Effects',str(selectedAbility))
    debugNotify("<<< storeCardEffects()")
+   
+def freeUnitPlacement(card):
+   if Automations['Placement'] and card.Type == 'Unit':
+      if card.owner == me and card.highlight != DummyColor and card.highlight != UnpaidColor and card.highlight != CapturedColor:
+         freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
+         freePositions.append(card.position)
+         me.setGlobalVariable('freePositions',str(freePositions))
+      try:
+         unitAmount = eval(getGlobalVariable('Existing Units'))
+         unitAmount[card.owner.name] -= 1
+         setGlobalVariable('Existing Units',str(unitAmount))
+      except: notify("!!! ERROR !!! Retrieving 'Existing Units' shared var")
+
+def chkEffectTrigger(card,actionType = 'Discard',silent = False):
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))
+   if selectedAbility.has_key(card._id):
+      if not silent: scriptPostponeNotice(actionType)
+      return True # If the unit now has the Ready Effect Highlight, it means we're pausing our attack to allow the player to decide to use the react or not. 
+   return False
+
+def scriptPostponeNotice(actionType = 'Discard'):
+   delayed_whisper(":::INFO::: {} Paused while card's React in progress. Use or ignore the react trigger to continue".format(actionType))
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

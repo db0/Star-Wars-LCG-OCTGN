@@ -28,6 +28,7 @@ def executePlayScripts(card, action):
    #action = action.upper() # Just in case we passed the wrong case
    if debugVerbosity >= 1: notify(">>> executePlayScripts() with action: {}".format(action)) #Debug
    global failedRequirement
+   scriptEffect = 'INCOMPLETE'
    if not Automations['Play']: return
    if not card.isFaceUp: return
    if CardsAS.get(card.model,'') != '': # Commented in order to allow scripts in attacked cards to trigger
@@ -55,10 +56,6 @@ def executePlayScripts(card, action):
              re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
          elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
          elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
-         elif re.search(r'CustomScript', autoS):
-            storeCardEffects(card,autoS,0,card.highlight,action,None)
-            readyEffect(card)
-            Autoscripts.remove(autoS)
       if debugVerbosity >= 2: notify ('Looking for multiple choice options') # Debug
       if action == 'PLAY': trigger = 'onPlay' # We figure out what can be the possible multiple choice trigger
       elif action == 'TRASH': trigger = 'onDiscard'
@@ -107,14 +104,13 @@ def executePlayScripts(card, action):
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
          if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
-             (effectType.group(1) == 'whileInPlay' and action != 'PLAY' and action != 'LEAVING' and action != 'THWART') or # whieInPlay cards only trigger when played or discarded
              (effectType.group(1) == 'onResolveFate' and action != 'RESOLVEFATE') or
              (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
              (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
              (effectType.group(1) == 'onDefense' and action != 'DEFENSE') or
              (effectType.group(1) == 'onAttack' and action != 'ATTACK') or
              (effectType.group(1) == 'onParticipation' and action != 'PARTICIPATION') or
-             (effectType.group(1) == 'onLeaving' and action != 'LEAVING') or
+             (effectType.group(1) == 'onLeaving' and not re.search(r'LEAVING',action)) or
              (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
              (effectType.group(1) == 'onGenerate' and action != 'GENERATE') or
              (effectType.group(1) == 'onThwart' and action != 'THWART')):
@@ -137,11 +133,14 @@ def executePlayScripts(card, action):
             ### Setting card's selectedAbility Global Variable.
             storeCardEffects(card,autoS,0,card.highlight,action,None) 
             readyEffect(card)
+            scriptEffect = 'POSTPONED'
          else:
             ### Otherwise the automation is uninterruptible and we just go on with the scripting.
             executeAutoscripts(card,autoS,action = action)
+            scriptEffect = 'COMPLETE'
    if debugVerbosity >= 2: notify("#### About to go check if I'm to go into executeAttachmentScripts()") # Debug
    if not re.search(r'HOST-',action): executeAttachmentScripts(card, action) # if the automation we're doing now is not for an attachment, then we check the current card's attachments for more scripts
+   return scriptEffect
 
 #------------------------------------------------------------------------------
 # Attached cards triggers
@@ -939,7 +938,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    else: dest = 'hand'
    if debugVerbosity >= 2: notify("### targetCards(){}".format(targetCards)) #Debug   
    for targetCard in targetCards: 
-      if action.group(1) == 'Capture': targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
+      if action.group(1) == 'Capture': 
+         targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
+         rnd(1,10)
       else: targetCardlist += '{},'.format(targetCard)
    if debugVerbosity >= 3: notify("### Preparing targetCardlist")      
    targetCardlist = targetCardlist.strip(',') # Re remove the trailing comma
@@ -958,10 +959,11 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
       elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
       elif action.group(1) == 'Return': 
          if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor: 
-            executePlayScripts(targetCard, 'LEAVING')
+            executePlayScripts(targetCard, 'LEAVING-HAND')
             autoscriptOtherPlayers('CardLeavingPlay',targetCard)
             rnd(1,10)
-         targetCard.moveTo(targetCard.owner.hand)
+         if not chkEffectTrigger(targetCard,'Card Return'):
+            targetCard.moveTo(targetCard.owner.hand)
          extraTXT = " to their owner's hand"
       elif action.group(1) == 'BringToPlay': placeCard(card)
       elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)

@@ -34,7 +34,7 @@ A Journey to Dagobah
 -----
 ff4fb461-8060-457a-9c16-000000000149
 -----
-onThwart:CustomScript
+onThwart:CustomScript-isReact
 +++++
 
 .....
@@ -546,7 +546,7 @@ Fall of the Jedi
 -----
 ff4fb461-8060-457a-9c16-000000000102
 -----
-afterRefresh:SimplyAnnounce{place 1 card from their hand to the bottom of their deck}-isReact
+afterRefresh:SendToBottomTarget-Targeted-fromHand-isReact
 +++++
 
 .....
@@ -1706,7 +1706,7 @@ Wookiee Navigator
 -----
 ff4fb461-8060-457a-9c16-000000000193
 -----
-whileInPlay:AttackTarget-AutoTargeted-atObjective-isParticipating-ifAttacker-ifParticipating-isReact
+whileInPlay:AttackTarget-AutoTargeted-atObjective-isParticipating-ifAttacker-ifParticipating-foreachFinishedEngagement-isReact
 +++++
 
 .....
