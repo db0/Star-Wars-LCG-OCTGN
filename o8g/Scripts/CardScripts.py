@@ -10,7 +10,7 @@ ScriptsLocal = '''
 -----
 ff4fb461-8060-457a-9c16-000000000050
 -----
-onPlay:Deal1Damage-AutoTargeted-atObjective-isOptional-isCurrentObjective-onlyDuringEngagement-isReact||DeployAllowance:Conflict
+onPlay:Deal1Damage-AutoTargeted-atObjective-isCurrentObjective-onlyDuringEngagement-isReact||DeployAllowance:Conflict
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-afterCardRefreshing:Put1Damage-isOptional-duringMyTurn-isReact$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
+afterCardRefreshing:Put1Damage-duringMyTurn-isReact$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....
@@ -2242,7 +2242,7 @@ Renegade Squadron
 -----
 ff4fb461-8060-457a-9c16-000000000266
 -----
-onStrike:Put1Damage-isOptional$$RescueTarget-Targeted-isCaptured
+onStrike:Put1Damage-isReact$$RescueTarget-Targeted-isCaptured
 +++++
 
 .....
@@ -2322,7 +2322,7 @@ Action-series Bulk Transport
 -----
 ff4fb461-8060-457a-9c16-000000000298
 -----
-onStrike:Retrieve1Card-grabCharacter-hasProperty{Cost}le2-toTable-onTop5Cards-isOptional$$ShuffleDeck
+onStrike:Retrieve1Card-grabCharacter-hasProperty{Cost}le2-toTable-onTop5Cards-isReact$$ShuffleDeck
 +++++
 
 .....
@@ -2922,7 +2922,7 @@ Escape from Ord Mantell
 -----
 ff4fb461-8060-457a-9c16-000000000379
 -----
-whileInPlay:Remove1Damage-AutoTargeted-atObjective-foreachCardPlayed-typeEvent-isOptional
+whileInPlay:Remove1Damage-AutoTargeted-atObjective-foreachCardPlayed-typeEvent-isReact
 +++++
 
 .....
@@ -2930,7 +2930,7 @@ Mission Commander
 -----
 ff4fb461-8060-457a-9c16-000000000380
 -----
-onStrike:Put1Damage-isOptional$$RescueTarget-Targeted-isCaptured
+onStrike:Put1Damage-isReact$$RescueTarget-Targeted-isCaptured
 +++++
 
 .....
@@ -3073,7 +3073,7 @@ Bail Organa
 -----
 ff4fb461-8060-457a-9c16-000000000404
 -----
-ExtraIcon:Tactics:1-perEveryAlderaan-max1-AutoTargeted-atAlderaan_and_Objective||whileInPlay:SacrificeMyself-foreachObjectiveThwarted-typeAlderaan's Promise
+ExtraIcon:Tactics:1-perEveryAlderaan-max1-AutoTargeted-atAlderaan_and_Objective||whileInPlay:SacrificeMyself-foreachObjectiveThwarted-typeAlderaan's Promise-isReact-isForced
 +++++
 
 .....
@@ -3081,7 +3081,7 @@ Tantive IV
 -----
 ff4fb461-8060-457a-9c16-000000000405
 -----
-
+onPlay:Retrieve1Card-grabUnique-onTop5Cards-isReact$$ShuffleDeck
 +++++
 
 .....
