@@ -318,7 +318,9 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if not effect: continue
          if debugVerbosity >= 3: notify("### Time maches. Script triggers on: {}".format(effect.group(1)))
          if chkPlayer(effect.group(2), card.controller,False) == 0: continue # Check that the effect's origninator is valid. 
-         if effect.group(1) != Time: continue # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
+         if effect.group(1) != Time or (effect.group(1) == 'afterPhase' and not re.search(r'after(Balance|Refresh|Draw|Deployment|Conflict|Force)',Time) and Time != 'End'): continue 
+         # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
+         # An effect for 'afterPhase' triggers after each Phase or Turn End.
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
          if not chkDummy(autoS, card): continue
          if re.search(r'isOptional', effect.group(2)):

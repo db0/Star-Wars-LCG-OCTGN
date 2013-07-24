@@ -12,6 +12,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Cloud City Wing Guard (Couldn't figure how to script this without being too annoying.)
     * Sleuth Scout
     * Undercover Operative
+    * Force Precognition
   * **Cards with tricky scripting:**
     * Smuggling Compartment - Just double click the enhancement to draw a card and notify why)
     * Millennium Falcon - Target the unit in your hand and then use the Falcon's ability

@@ -3017,7 +3017,7 @@ Over My Dead Body
 -----
 ff4fb461-8060-457a-9c16-000000000396
 -----
-
+onPlay:SimplyAnnounce{cancel the effects of the unit's ability}$$Put1Effects Cancelled-Targeted-atUnit-isReady-isSilent
 +++++
 
 .....
@@ -3035,7 +3035,7 @@ ff4fb461-8060-457a-9c16-000000000398
 -----
 
 +++++
-
+R0:Remove1Damage-DemiAutoTargeted-atTatooine-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Moisture Farmer
 -----
@@ -3043,21 +3043,13 @@ ff4fb461-8060-457a-9c16-000000000399
 -----
 
 +++++
-
+R0:Remove1Damage-DemiAutoTargeted-atTatooine-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
 Makashi Training
 -----
 ff4fb461-8060-457a-9c16-000000000400
 -----
-
-+++++
-
-.....
-Force Precognition
------
-ff4fb461-8060-457a-9c16-000000000401
------
-
+Placement:Force User
 +++++
 
 .....
@@ -3065,7 +3057,7 @@ Secret Guardian
 -----
 ff4fb461-8060-457a-9c16-000000000402
 -----
-
+onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand$$Put1Secret Guardian-Targeted-atCharacter||afterPhase:ReturnTarget-AutoTargeted-atCharacter-hasMarker{Secret Guardian}
 +++++
 
 .....
