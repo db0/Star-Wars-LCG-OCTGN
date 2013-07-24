@@ -842,6 +842,7 @@ def chkEffectTrigger(card,actionType = 'Discard',silent = False):
 
 def scriptPostponeNotice(actionType = 'Discard'):
    delayed_whisper(":::INFO::: {} Paused while card's React in progress. Use or ignore the react trigger to continue".format(actionType))
+   
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

@@ -15,9 +15,17 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Force Precognition
     * Opening Moves (Just attack the appropriate objective)
     * Reversal of Fate (Just grab the edge manually as required)
+    * Spice Visions
+    * Bib Fortuna
+    * Krayt Dragon (Just don't play any enhancements on it)
+    * Dark Memories
   * **Cards with tricky scripting:**
     * Smuggling Compartment - Just double click the enhancement to draw a card and notify why)
     * Millennium Falcon - Target the unit in your hand and then use the Falcon's ability
+    * Assassin Droid (Just use its ability to remove a focus)
+    * Tractor Beam (Does not check the printed costs)
+    * Bossk (Drawing the cards is not automated)
+    * Trandoshan Hunter (Just Target the non-participating Wookie)
     
 
 

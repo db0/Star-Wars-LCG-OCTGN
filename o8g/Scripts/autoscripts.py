@@ -999,7 +999,10 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             if not chkEffectTrigger(targetCard,'Card Return'):
                targetCard.moveTo(targetCard.owner.hand)
             extraTXT = " to their owner's hand"
-         elif action.group(1) == 'BringToPlay': placeCard(card)
+         elif action.group(1) == 'BringToPlay': 
+            placeCard(card)
+            executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
+            autoscriptOtherPlayers('CardPlayed',card)            
          elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
@@ -1736,7 +1739,7 @@ def checkSpecialRestrictions(Autoscript,card):
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: 
       debugNotify("Failing Because it's not participating", 2)
       validCard = False
-   if re.search(r'ifOrigAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
+   if re.search(r'ifAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
          if c != card and c.orientation == Rot90 and c.controller == card.controller: 
             debugNotify("Failing Because it's not participating alone", 2)
@@ -1744,6 +1747,11 @@ def checkSpecialRestrictions(Autoscript,card):
    if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: 
       debugNotify("Was looking for a captured card but this ain't it", 2)
       validCard = False
+   if re.search(r'hasCaptures',Autoscript):
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      if card._id not in capturedCards.values():
+         debugNotify("Was looking for card that has captured other cards but this doesn't", 2)
+         validCard = False
    if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: 
       debugNotify("Failing Because card is not Unpaid", 2)
       validCard = False
@@ -1780,6 +1788,9 @@ def checkSpecialRestrictions(Autoscript,card):
             validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: 
       debugNotify("Failing Because card is not committed to the force", 2)
+      validCard = False
+   if re.search(r'isNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): 
+      debugNotify("Failing Because card is committed to the force", 2)
       validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): 
       debugNotify("Failing Because not the right controller", 2)
@@ -1830,6 +1841,9 @@ def checkOriginatorRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
    if re.search(r'ifOrigCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
+   if re.search(r'ifOrighasCaptures',Autoscript):
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      if card._id not in capturedCards.values(): validCard = False
    if re.search(r'ifOrigParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
    if re.search(r'ifOrigAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
@@ -1843,6 +1857,7 @@ def checkOriginatorRestrictions(Autoscript,card):
          if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
          elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
    if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
+   if re.search(r'ifOrigNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
    markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers

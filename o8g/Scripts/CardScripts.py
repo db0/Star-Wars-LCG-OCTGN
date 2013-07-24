@@ -3289,15 +3289,15 @@ Sandcrawler
 -----
 ff4fb461-8060-457a-9c16-000000000436
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}||onLeaving:Put1Focus-AutoTargeted-atCharacter_or_Droid-isReact-isForced
 +++++
 
 .....
-Utinni&#33;
+Utinni!
 -----
 ff4fb461-8060-457a-9c16-000000000437
 -----
-
+onPlay:CaptureTarget-Targeted-atEnhancement-targetOpponents
 +++++
 
 .....
@@ -3313,7 +3313,7 @@ The Shadow of Nar Shaddaa
 -----
 ff4fb461-8060-457a-9c16-000000000439
 -----
-
+R0:Put2Focus-isCost$$Put1Focus-DemiAutoTargeted-atUnit-isAttacking
 +++++
 
 .....
@@ -3323,13 +3323,13 @@ ff4fb461-8060-457a-9c16-000000000440
 -----
 
 +++++
-
+R0:Remove1Focus
 .....
 Aqualish Thug
 -----
 ff4fb461-8060-457a-9c16-000000000441
 -----
-
+onPlay:SimplyAnnounce{force each opponent to deal 2 damage divided among any number of objectives he controls.}-isReact
 +++++
 
 .....
@@ -3337,7 +3337,7 @@ Aqualish Thug
 -----
 ff4fb461-8060-457a-9c16-000000000442
 -----
-
+onPlay:SimplyAnnounce{force each opponent to deal 2 damage divided among any number of objectives he controls.}-isReact
 +++++
 
 .....
@@ -3361,7 +3361,7 @@ Carbonite Transport
 -----
 ff4fb461-8060-457a-9c16-000000000445
 -----
-
+afterCardRefreshing:CaptureTarget-Targeted-isCaptured-isReact
 +++++
 
 .....
@@ -3369,7 +3369,7 @@ Slave I
 -----
 ff4fb461-8060-457a-9c16-000000000446
 -----
-
+ExtraIcon:BD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-targetMine
 +++++
 
 .....
@@ -3377,15 +3377,7 @@ Traitorous Wing Guard
 -----
 ff4fb461-8060-457a-9c16-000000000447
 -----
-
-+++++
-
-.....
-Prized Possession
------
-ff4fb461-8060-457a-9c16-000000000448
------
-
+ExtraIcon:UD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetMine
 +++++
 
 .....
@@ -3393,7 +3385,7 @@ Tractor Beam
 -----
 ff4fb461-8060-457a-9c16-000000000449
 -----
-
+onPlay:Transfer1Focus-Targeted-atVehicle-sourceVehicle-hasMarker{Focus}-destinationVehicle
 +++++
 
 .....
@@ -3405,35 +3397,11 @@ onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
 +++++
 
 .....
-Trandoshan Terror
------
-ff4fb461-8060-457a-9c16-000000000451
------
-
-+++++
-
-.....
 Bossk
 -----
 ff4fb461-8060-457a-9c16-000000000452
 -----
-
-+++++
-
-.....
-Trandoshan Hunter
------
-ff4fb461-8060-457a-9c16-000000000453
------
-
-+++++
-
-.....
-Trandoshan Hunter
------
-ff4fb461-8060-457a-9c16-000000000454
------
-
+onPlay:Put2Focus-isCost-isReact$$CaptureTarget-DemiAutoTargeted-atCharacter-hasMarker{Focus}-choose1
 +++++
 
 .....
@@ -3441,7 +3409,7 @@ Bounty
 -----
 ff4fb461-8060-457a-9c16-000000000455
 -----
-
+Placement:Unit-targetOpponents||whileInPlay:SacrificeMyself-foreachAttackerEdgeWin-ifOrigDefending-ifEdgeDiffge3||whileInPlay:SacrificeMyself-foreachDefenderEdgeWin-ifOrigAttacking-ifEdgeDiffge3||afterCardRefreshing:CaptureHost
 +++++
 
 .....
@@ -3459,31 +3427,7 @@ ff4fb461-8060-457a-9c16-000000000457
 -----
 
 +++++
-
-.....
-Bib Fortuna
------
-ff4fb461-8060-457a-9c16-000000000458
------
-
-+++++
-
-.....
-Krayt Dragon
------
-ff4fb461-8060-457a-9c16-000000000459
------
-
-+++++
-
-.....
-Gamorrean Guard
------
-ff4fb461-8060-457a-9c16-000000000460
------
-
-+++++
-
+R0:DestroyTarget-Targeted-isCaptured$$Remove1Damage$$Draw1Card
 .....
 Spice Visions
 -----
@@ -3497,15 +3441,15 @@ The Almighty Sarlacc
 -----
 ff4fb461-8060-457a-9c16-000000000462
 -----
-
+Placement:Objective_and_Tatooine-targetMine
 +++++
-
+R0:Put1Damage-AutoTargeted-onHost$$Remove1Focus-AutoTargeted-onHost
 .....
 The Ghosts of the Dark Side
 -----
 ff4fb461-8060-457a-9c16-000000000463
 -----
-
+ConstantEffect:Force1Bonus
 +++++
 
 .....
@@ -3513,7 +3457,7 @@ Force Wraith
 -----
 ff4fb461-8060-457a-9c16-000000000464
 -----
-
+ConstantEffect:Unwavering
 +++++
 
 .....
@@ -3521,7 +3465,7 @@ Force Wraith
 -----
 ff4fb461-8060-457a-9c16-000000000465
 -----
-
+ConstantEffect:Unwavering
 +++++
 
 .....
@@ -3529,7 +3473,7 @@ Dark Memories
 -----
 ff4fb461-8060-457a-9c16-000000000466
 -----
-
+Placement:Character-targetOpponents
 +++++
 
 .....
@@ -3537,7 +3481,7 @@ Dark Memories
 -----
 ff4fb461-8060-457a-9c16-000000000467
 -----
-
+Placement:Character-targetOpponents
 +++++
 
 .....
@@ -3545,7 +3489,7 @@ Force Shockwave
 -----
 ff4fb461-8060-457a-9c16-000000000468
 -----
-
+onPlay:Deal1Damage-AutoTargeted-atUnit-isNotCommited-targetOpponents
 +++++
 
 .....
@@ -3553,7 +3497,7 @@ Imperial Blockade
 -----
 ff4fb461-8060-457a-9c16-000000000469
 -----
-
+whileInPlay:Increase1CostPlay-affectsUnits-byOpponent-ifOrigHasntMarker{Damage}-onlyOnce
 +++++
 
 .....
@@ -3561,23 +3505,7 @@ Captain Needa
 -----
 ff4fb461-8060-457a-9c16-000000000470
 -----
-
-+++++
-
-.....
-Imperial I-class Star Destroyer
------
-ff4fb461-8060-457a-9c16-000000000471
------
-
-+++++
-
-.....
-Imperial I-class Star Destroyer
------
-ff4fb461-8060-457a-9c16-000000000472
------
-
+whileInPlay:Reduce2CostPlay-affectsCapital Ship-onlyOnce-byMe
 +++++
 
 .....
@@ -3585,7 +3513,7 @@ Apology Accepted
 -----
 ff4fb461-8060-457a-9c16-000000000473
 -----
-
+onPlay:SacrificeTarget-Targeted-atUnit_and_Imperial Navy_and_Officer$$Remove999Focus-Targeted-atUnit_and_Imperial Navy_and_Vehicle
 +++++
 
 .....
@@ -3593,7 +3521,7 @@ Tractor Beam
 -----
 ff4fb461-8060-457a-9c16-000000000474
 -----
-
+onPlay:Transfer1Focus-Targeted-atVehicle-sourceVehicle-hasMarker{Focus}-destinationVehicle
 +++++
 
 .....
@@ -3601,7 +3529,7 @@ Across the Jundland Wastes
 -----
 ff4fb461-8060-457a-9c16-000000000475
 -----
-
+whileInPlay:Put1Focus-foreachUnitStrike-onTriggerCard-typeCharacter-isReact-isForced
 +++++
 
 .....
@@ -3609,7 +3537,7 @@ Bantha
 -----
 ff4fb461-8060-457a-9c16-000000000476
 -----
-
+whileInPlay:Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-foreachCardPlayed-typeScavenger
 +++++
 
 .....
@@ -3617,7 +3545,7 @@ Tusken Raider
 -----
 ff4fb461-8060-457a-9c16-000000000477
 -----
-
+onStrike:ReturnMyself
 +++++
 
 .....
@@ -3625,7 +3553,7 @@ Tusken Raider
 -----
 ff4fb461-8060-457a-9c16-000000000478
 -----
-
+onStrike:ReturnMyself
 +++++
 
 .....
@@ -3633,7 +3561,7 @@ Tusken Raider
 -----
 ff4fb461-8060-457a-9c16-000000000479
 -----
-
+onStrike:ReturnMyself
 +++++
 
 .....
@@ -3641,7 +3569,7 @@ Gaffi Stick
 -----
 ff4fb461-8060-457a-9c16-000000000480
 -----
-
+Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetMine-isParticipating-isDistributedEffect
 +++++
 
 .....
@@ -3649,7 +3577,7 @@ Asteroid Pursuit
 -----
 ff4fb461-8060-457a-9c16-000000000481
 -----
-
+afterCardRefreshing:Deal1Damage-isReact-isForced
 +++++
 
 .....
@@ -3657,7 +3585,7 @@ Lictor-class Dungeon Ship
 -----
 ff4fb461-8060-457a-9c16-000000000482
 -----
-
+ExtraIcon:UD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetMine||ExtraIcon:BD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetMine
 +++++
 
 .....
@@ -3665,7 +3593,7 @@ Trooper Sentry
 -----
 ff4fb461-8060-457a-9c16-000000000483
 -----
-
+onPlay:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-isReact
 +++++
 
 .....
@@ -3673,7 +3601,7 @@ Trooper Sentry
 -----
 ff4fb461-8060-457a-9c16-000000000484
 -----
-
+onPlay:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-isReact
 +++++
 
 .....
@@ -3681,7 +3609,7 @@ Armed and Ready
 -----
 ff4fb461-8060-457a-9c16-000000000485
 -----
-
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....

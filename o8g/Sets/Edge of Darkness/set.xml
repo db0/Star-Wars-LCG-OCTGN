@@ -1635,7 +1635,7 @@
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Shielding. (When this unit enters an engagement, place 1 shield on any unit or objective in the engagement.)&#xD;&#xA;&#xD;&#xA;Forced Interrupt: When this unit leaves play, place 1 focust token on each character and each Droid unit." />
+		<property name="Text" value="Shielding. (When this unit enters an engagement, place 1 shield on any unit or objective in the engagement.)&#xD;&#xA;&#xD;&#xA;Forced Interrupt: When this unit leaves play, place 1 focus token on each character and each Droid unit." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Neutral" />
