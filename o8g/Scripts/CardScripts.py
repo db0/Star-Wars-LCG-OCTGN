@@ -858,7 +858,7 @@ Intimidated
 -----
 ff4fb461-8060-457a-9c16-000000000124
 -----
-Placement:Character_and_Unit-byOpponent||onHostStrike:Put1Focus-atHost-isReact
+Placement:Character_and_Unit-byOpponent||onHostStrike:Put1Focus-atHost-isReact-isForced
 +++++
 
 .....
@@ -1122,7 +1122,7 @@ Rancor
 -----
 ff4fb461-8060-457a-9c16-000000000111
 -----
-afterCardRefreshing:CustomScript-isReact
+afterCardRefreshing:CustomScript-isReact-isForced
 +++++
 
 .....
@@ -3065,7 +3065,7 @@ Alderaan's Promise
 -----
 ff4fb461-8060-457a-9c16-000000000403
 -----
-
+onThwart:Gain1Dial-isReact-isForced
 +++++
 
 .....

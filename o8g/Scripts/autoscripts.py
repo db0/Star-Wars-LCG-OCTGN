@@ -127,8 +127,9 @@ def executePlayScripts(card, action):
             else: notify("{} activates {}'s optional ability".format(me,card))
          if re.search(r'-isReact', autoS) or card.Type == 'Event': #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
-            storeCardEffects(card,autoS,0,card.highlight,action,None) 
-            readyEffect(card)
+            storeCardEffects(card,autoS,0,card.highlight,action,None)
+            if re.search(r'-isForced', autoS): readyEffect(card,True)
+            else: readyEffect(card)
             scriptEffect = 'POSTPONED'
          else:
             ### Otherwise the automation is uninterruptible and we just go on with the scripting.
@@ -283,7 +284,8 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
             storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCards) # We pass the special target in our global variable to allow it to be retrieved by later scripts.
-            readyEffect(card)
+            if re.search(r'-isForced', autoS): readyEffect(card,True)
+            else: readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
          executeAutoscripts(card,autoS,action = 'Automatic',targetCards = targetCards)
@@ -334,7 +336,8 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
             storeCardEffects(card,autoS,0,card.highlight,Time,None) 
-            readyEffect(card)
+            if re.search(r'-isForced', autoS): readyEffect(card,True)
+            else: readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
          executeAutoscripts(card,autoS,action = Time)
