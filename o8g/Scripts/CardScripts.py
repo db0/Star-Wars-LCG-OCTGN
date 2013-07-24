@@ -402,7 +402,7 @@ Defense Protocol
 -----
 ff4fb461-8060-457a-9c16-000000000040
 -----
-afterCardRefreshing:Lose1Reserves-duringMyTurn-isReact$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
+afterRefresh:Lose1Reserves-duringMyTurn-isReact$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
 +++++
 
 .....
@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-afterCardRefreshing:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-targetMine-duringMyTurn-isReact
+afterCardRefreshing:Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-choose1-targetMine-duringMyTurn-isReact
 +++++
 
 .....
@@ -1178,7 +1178,7 @@ Reconnaissance Mission
 -----
 ff4fb461-8060-457a-9c16-000000000087
 -----
-onPlay:Gain1Reserves||onLeaving:Lose1Reserves
+onPlay:Gain1Reserves||onThwart:Lose1Reserves
 +++++
 
 .....
@@ -1508,7 +1508,7 @@ ff4fb461-8060-457a-9c16-000000000155
 -----
 
 +++++
-R0:CustomScript-isReact
+R0:CustomScript-isReact-onlyOnce
 .....
 The Ultimate Power
 -----

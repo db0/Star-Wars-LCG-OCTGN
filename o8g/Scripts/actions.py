@@ -521,8 +521,8 @@ def defaultAction(card, x = 0, y = 0):
       debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
       if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
          strike(card, Continuing = True)
-      if re.search(r'LEAVING',selectedAbility[card._id][3]): # If the action is LEAVING, it means we pause the card movement to give an opportunity to use the react.
-         if re.search(r'-DISCARD',selectedAbility[card._id][3]): discard(card,Continuing = True)
+      if re.search(r'LEAVING',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': # If the action is LEAVING, it means we pause the card movement to give an opportunity to use the react.
+         if re.search(r'-DISCARD',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': discard(card,Continuing = True)
          elif re.search(r'-HAND',selectedAbility[card._id][3]): 
             card.moveTo(card.owner.hand)
             if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
@@ -761,8 +761,7 @@ def purchaseCard(card, x=0, y=0, manual = True):
       unpaidCard = None
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has played {} by skipping its full cost".format(me,card))
-      if findMarker(card, "Effects Cancelled"): pass
-      else: executePlayScripts(card, 'PLAY') 
+      executePlayScripts(card, 'PLAY') 
       if card.Type != 'Event': autoscriptOtherPlayers('CardPlayed',card) # We script for playing events only after their events have finished resolving in the default action.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
@@ -798,7 +797,7 @@ def clearCommit(card, x=0, y=0): # Clears a unit from participating in a battle,
    else: whisper(":::ERROR::: Unit is not currently committed to the force.")
 
 def handDiscard(card):
-   if debugVerbosity >= 1: notify(">>> handDiscard(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> handDiscard()") #Debug
    mute()
    if card.Type == "Objective": 
       card.moveToBottom(me.piles['Objective Deck']) # This should only happen during the game setup
@@ -806,6 +805,7 @@ def handDiscard(card):
    else:
       card.moveTo(me.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
+   debugNotify("<<< handDiscard()") #Debug
       
 def discard(card, x = 0, y = 0, silent = False, Continuing = False):
    if debugVerbosity >= 1: notify(">>> discard() card = {}".format(card)) #Debug
@@ -818,7 +818,12 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
       if not silent: notify("{}'s resident effect ends".format(card))
    elif card.Type == "Objective":
       if card.controller == me:
-         if not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
+         if not Continuing and not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
+         if not Continuing and card._id not in cardsLeavingPlay:
+            execution = executePlayScripts(card, 'THWART')
+            if execution == 'POSTPONED': 
+               scriptPostponeNotice('Objective Thwart')
+               return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          if debugVerbosity >= 2: notify("### About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
          currentObjectives.remove(card._id)
@@ -835,14 +840,18 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
                notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
-         executePlayScripts(card, 'THWART')
          global reversePlayerChk
          reversePlayerChk = True
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          reversePlayerChk = False
          card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
       else:
-         if not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
+         if not Continuing and not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
+         if not Continuing and card._id not in cardsLeavingPlay:
+            execution = executePlayScripts(card, 'THWART')
+            if execution == 'POSTPONED': 
+               scriptPostponeNotice('Objective Thwart')
+               return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
          # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
          # Then when the other player tries to refresh, it first removes any destroyed objectives from their list.
@@ -860,9 +869,9 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             if opponent.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
                notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
-         executePlayScripts(card, 'THWART')
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
+      if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
@@ -969,7 +978,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
-      targetC.peek()
+      if chosenObj.owner == me: targetC.peek()
       targetC.orientation = Rot0
       targetC.highlight = CapturedColor
       targetC.target(False)

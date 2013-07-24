@@ -125,12 +125,6 @@ def executePlayScripts(card, action):
                notify("{} opts not to activate {}'s optional ability".format(me,card))
                continue
             else: notify("{} activates {}'s optional ability".format(me,card))
-         if re.search(r'-ifHaveForce', autoS) and not haveForce(): 
-            if debugVerbosity >= 2: notify("### Rejected -ifHaveForce script")
-            continue
-         if re.search(r'-ifHaventForce', autoS) and haveForce(): 
-            if debugVerbosity >= 2: notify("### Rejected -ifHaventForce script")
-            continue         
          if re.search(r'-isReact', autoS) or card.Type == 'Event': #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
             storeCardEffects(card,autoS,0,card.highlight,action,None) 
@@ -199,6 +193,7 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
       if debugVerbosity >= 2: notify("### AutoscriptsList: {}".format(AutoscriptsList)) # Debug
    else: selectedAutoscript = Autoscripts[0]
    debugNotify("selectedAutoscript = {}".format(selectedAutoscript),2)
+   if re.search(r'onlyOnce',selectedAutoscript) and oncePerTurn(card) == 'ABORT': return 'ABORT'
    debugNotify("About to check for actionCostRegex",2)
    actionCostRegex = re.match(r"R([0-9]+):", selectedAutoscript) # Any cost will always be at the start
    debugNotify("About to store selectedAbility",2)
@@ -244,7 +239,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if debugVerbosity >= 2: notify('### autoS: {}'.format(autoS)) # Debug
          cardTriggerRegex = re.search(r'-foreach([A-Za-z]+)', autoS) # This regex extracts the card's trigger keyword. So if a card says "put1Focus-perCardCaptured", it's trigger word is "CardCaptured".
          if not cardTriggerRegex: continue # If the card does not have a trigger word, it does not have an abilit that's autoscripted by other players.
-         debugNotify("cardTriggerRegex Keyword {}".format(cardTriggerRegex.groups(1)))
+         debugNotify("cardTriggerRegex Keyword {}".format(cardTriggerRegex.group(1)))
          if not re.search(r'{}'.format(cardTriggerRegex.group(1)), lookup): # Now we look for the trigger keyword, in what kind of trigger is being checked in this instance.
                                                                             # So if our instance's trigger is currently "UnitCardCapturedFromTable" then the trigger word "CardCaptured" is contained within and will match.
             debugNotify("Couldn't lookup the trigger: {} in autoscript. Ignoring".format(lookup),2)
@@ -270,8 +265,6 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                hostCards = eval(getGlobalVariable('Host Cards')) 
                if Card(num(currObjID)) != Card(hostCards[card._id]): continue
             elif Card(num(currObjID)) != card: continue
-         if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
-         if re.search(r'-ifHaventForce', autoS) and haveForce(): continue
          if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
          if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
@@ -328,8 +321,6 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if effect.group(1) != Time: continue # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
          if not chkDummy(autoS, card): continue
-         if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
-         if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
             extraCountersTXT = '' 
@@ -402,6 +393,12 @@ def executeAutoscripts(card,Autoscript,count = 0,action = 'PLAY',targetCards = N
       for passedScript in selectedAutoscripts: 
          if chkWarn(card, passedScript) == 'ABORT': return 'ABORT'
          if chkPlayer(passedScript, card.controller,False) == 0: continue
+         if re.search(r'-ifHaveForce', passedScript) and not haveForce(): 
+            if debugVerbosity >= 2: notify("### Rejected -ifHaveForce script")
+            continue
+         if re.search(r'-ifHaventForce', passedScript) and haveForce(): 
+            if debugVerbosity >= 2: notify("### Rejected -ifHaventForce script")
+            continue         
          if re.search(r'onlyOnce',passedScript) and oncePerTurn(card, silent = True) == 'ABORT': continue
          X = redirect(passedScript, card, action, X,targetCards)
          if failedRequirement or X == 'ABORT': return 'ABORT' # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
@@ -709,19 +706,23 @@ def DiscardX(Autoscript, announceText, card, targetCards = None, notification = 
    if discardNR == 999:
       multiplier = 1
       discardNR = len(targetPL.hand) # 999 means we discard our whole hand
-   elif re.search(r'-isRandom',Autoscript): # the -isRandom modulator just discard as many cards at random.
+   if re.search(r'-isRandom',Autoscript): # the -isRandom modulator just discard as many cards at random.
       multiplier = per(Autoscript, card, n, targetCards, notification)
       count = handRandomDiscard(targetPL.hand, discardNR * multiplier, targetPL, silent = True)
       if re.search(r'isCost', Autoscript) and count < discardNR:
          whisper("You do not have enough cards in your hand to discard")
          return ('ABORT',0)
-   else: # Otherwise we just discard the targeted cards from hand    
+   else: # Otherwise we just discard the targeted cards from hand  
+      multiplier = 1
       count = len(targetCards)
       if re.search(r'isCost', Autoscript) and count < discardNR:
          whisper("You do not have enough cards in your hand to discard")
          return ('ABORT',0)
       for targetC in targetCards: handDiscard(targetC)
-   if count == 0: return (announceText,count) # If there are no cards, then we effectively did nothing, so we don't change the notification.
+      debugNotify("Finished discarding targeted cards from hand")
+   if count == 0: 
+      debugNotify("Exiting because count == 0")
+      return (announceText,count) # If there are no cards, then we effectively did nothing, so we don't change the notification.
    if notification == 'Quick': announceString = "{} discards {} cards".format(announceText, count)
    else: announceString = "{}{} discard {} cards from their hand".format(announceText,otherTXT, count)
    if notification and multiplier > 0: notify(':> {}.'.format(announceString))
@@ -1359,7 +1360,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if currentTarget.controller != me or currentTarget == card:
             whisper(":::Error::: Current engagement not at another on of your objectives.")
             return
-      if oncePerTurn(card) == 'ABORT': return
       currentTarget.highlight = None
       card.highlight = DefendColor
       setGlobalVariable('Engaged Objective',str(card._id))
