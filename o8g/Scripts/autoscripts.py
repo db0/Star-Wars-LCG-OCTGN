@@ -265,16 +265,16 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
                                                                     # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
          if confirmText and not confirm(confirmText.group(1)): continue
-         edgeDiffRegex = re.search(r'ifEdgeDiff(ge|le|eq)([0-9])', autoS): # If the card is expecting a specific Edge Difference, it should have been passed via the count above.
-            if edgeDiffRegex.group(1) == 'ge' and count < num(edgeDiffRegex.group(2)): 
-               debugNotify("Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
-               continue
-            if edgeDiffRegex.group(1) == 'le' and count > num(edgeDiffRegex.group(2)): 
-               debugNotify("Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
-               continue
-            if edgeDiffRegex.group(1) == 'eq' and count != num(edgeDiffRegex.group(2)): 
-               debugNotify("Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
-               continue
+         edgeDiffRegex = re.search(r'ifEdgeDiff(ge|le|eq)([0-9])', autoS) # If the card is expecting a specific Edge Difference, it should have been passed via the count above.
+         if edgeDiffRegex.group(1) == 'ge' and count < num(edgeDiffRegex.group(2)): 
+            debugNotify("Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
+            continue
+         if edgeDiffRegex.group(1) == 'le' and count > num(edgeDiffRegex.group(2)): 
+            debugNotify("Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
+            continue
+         if edgeDiffRegex.group(1) == 'eq' and count != num(edgeDiffRegex.group(2)): 
+            debugNotify("Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
+            continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
@@ -292,7 +292,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
             else: readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
-         executeAutoscripts(card,autoS,action = 'Automatic',targetCards = targetCards,count)
+         executeAutoscripts(card,autoS,count,action = 'Automatic',targetCards = targetCards)
    if debugVerbosity >= 3: notify("<<< autoscriptOtherPlayers()") # Debug
 
 #------------------------------------------------------------------------------
