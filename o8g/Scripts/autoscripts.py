@@ -400,7 +400,7 @@ def executeAutoscripts(card,Autoscript,count = 0,action = 'PLAY',targetCards = N
       CustomScript(card,action) # If it's a customscript, we don't need to try and split it and it has its own checks.
    else: 
       for passedScript in selectedAutoscripts: 
-         if chkWarn(card, passedScript) == 'ABORT': continue
+         if chkWarn(card, passedScript) == 'ABORT': return 'ABORT'
          if chkPlayer(passedScript, card.controller,False) == 0: continue
          if re.search(r'onlyOnce',passedScript) and oncePerTurn(card, silent = True) == 'ABORT': continue
          X = redirect(passedScript, card, action, X,targetCards)
@@ -941,49 +941,50 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    else: dest = 'hand'
    if debugVerbosity >= 2: notify("### targetCards(){}".format(targetCards)) #Debug   
    for targetCard in targetCards: 
-      if action.group(1) == 'Capture': 
+      if (action.group(1) == 'Capture' or action.group(1) == 'BringToPlay' or  action.group(1) == 'Return') and targetCard.group == table: 
          targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
-         rnd(1,10)
       else: targetCardlist += '{},'.format(targetCard)
+   rnd(1,10) # Dela yto be able to grab the names
    if debugVerbosity >= 3: notify("### Preparing targetCardlist")      
    targetCardlist = targetCardlist.strip(',') # Re remove the trailing comma
    if action.group(1) == 'SendToBottom': # For SendToBottom, we need a different mthod, as we need to shuffle the cards.
       if action.group(2) == 'Multi': 
          if debugVerbosity >= 3: notify("### Sending Multiple card to the bottom")   
-         sendToBottom(targetCards) 
+         sendToBottom(targetCards)
       else: 
          if debugVerbosity >= 3: notify("### Sending Single card to the bottom")   
          sendToBottom([targetCards[0]])
-   for targetCard in targetCards:
-      if action.group(1) == 'Destroy' or action.group(1) == 'Sacrifice':
-         trashResult = discard(targetCard, silent = True)
-         if trashResult == 'ABORT': return 'ABORT'
-         elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
-      elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
-      elif action.group(1) == 'Return': 
-         if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor: 
-            executePlayScripts(targetCard, 'LEAVING-HAND')
-            autoscriptOtherPlayers('CardLeavingPlay',targetCard)
-            rnd(1,10)
-         if not chkEffectTrigger(targetCard,'Card Return'):
-            targetCard.moveTo(targetCard.owner.hand)
-         extraTXT = " to their owner's hand"
-      elif action.group(1) == 'BringToPlay': placeCard(card)
-      elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
-      elif action.group(1) == 'Engage': participate(targetCard, silent = True)
-      elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
-      elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
-      elif action.group(1) == 'Rescue':
-         if targetCard.isFaceUp: 
-            notify(":::ERROR::: Target Card was not captured!")
-            return 'ABORT'
-         else: rescue(targetCard)
-      elif action.group(1) == 'Uncommit':
-         if targetCard.Side == 'Light': commitColor = LightForceColor
-         else: commitColor = DarkForceColor
-         if targetCard.highlight == commitColor: targetCard.highlight = None
-      else: return 'ABORT'
-      if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
+   else:
+      for targetCard in targetCards:
+         if action.group(1) == 'Destroy' or action.group(1) == 'Sacrifice':
+            trashResult = discard(targetCard, silent = True)
+            if trashResult == 'ABORT': return 'ABORT'
+            elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
+         elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
+         elif action.group(1) == 'Return': 
+            if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor: 
+               executePlayScripts(targetCard, 'LEAVING-HAND')
+               autoscriptOtherPlayers('CardLeavingPlay',targetCard)
+               rnd(1,10)
+            if not chkEffectTrigger(targetCard,'Card Return'):
+               targetCard.moveTo(targetCard.owner.hand)
+            extraTXT = " to their owner's hand"
+         elif action.group(1) == 'BringToPlay': placeCard(card)
+         elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
+         elif action.group(1) == 'Engage': participate(targetCard, silent = True)
+         elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
+         elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
+         elif action.group(1) == 'Rescue':
+            if targetCard.isFaceUp: 
+               notify(":::ERROR::: Target Card was not captured!")
+               return 'ABORT'
+            else: rescue(targetCard)
+         elif action.group(1) == 'Uncommit':
+            if targetCard.Side == 'Light': commitColor = LightForceColor
+            else: commitColor = DarkForceColor
+            if targetCard.highlight == commitColor: targetCard.highlight = None
+         else: return 'ABORT'
+         if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
    if debugVerbosity >= 2: notify("### Finished Processing Modifications. About to announce")
    if notification == 'Quick': announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
    else: announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist, extraTXT)

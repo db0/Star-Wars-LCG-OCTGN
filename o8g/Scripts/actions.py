@@ -175,10 +175,11 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
       card = me.piles['Objective Deck'].top()
       storeObjective(card)
       currentObjectives = eval(me.getGlobalVariable('currentObjectives')) # We don't need to clear destroyed objectives anymore, since that is taken care of during storeObjective()
-   atTimedEffects(Time = 'afterRefresh') # We put "afterRefresh" in the refresh phase, as cards trigger immediately after refreshing. Not afte the refresh phase as a whole.
-
+   atTimedEffects(Time = 'afterCardRefreshing') 
+   
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
+   atTimedEffects(Time = 'afterRefresh') # We put "afterRefresh" in the refresh phase, as cards trigger immediately after refreshing. Not after the refresh phase as a whole.
    mute()
    global handRefillDone
    handRefillDone = False
@@ -762,7 +763,7 @@ def purchaseCard(card, x=0, y=0, manual = True):
       else: notify(":::ATTENTION::: {} has played {} by skipping its full cost".format(me,card))
       if findMarker(card, "Effects Cancelled"): pass
       else: executePlayScripts(card, 'PLAY') 
-      autoscriptOtherPlayers('CardPlayed',card)
+      if card.Type != 'Event': autoscriptOtherPlayers('CardPlayed',card) # We script for playing events only after their events have finished resolving in the default action.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
@@ -895,7 +896,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
 def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False, Continuing = False): # Tries to find a targeted card in the table or the oppomnent's hand to capture
    global capturingObjective, cardsLeavingPlay
    if Continuing: chosenObj = capturingObjective
-   if debugVerbosity >= 1: notify(">>> capture(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> capture(){}".format(extraASDebug())) #Debug
    debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
    if debugVerbosity >= 2 and chosenObj: notify("### chosenObj = {}".format(chosenObj)) #Debug
    if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
@@ -968,17 +969,19 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
+      targetC.peek()
       targetC.orientation = Rot0
       targetC.highlight = CapturedColor
       targetC.target(False)
-      if targetC in cardsLeavingPlay: cardsLeavingPlay.remove(targetC._id)
-      if debugVerbosity >= 2: notify("About to reset shared variable")
+      debugNotify("Finished Capturing. Removing from cardsLeavingPlay var",2)
+      if targetC._id in cardsLeavingPlay: cardsLeavingPlay.remove(targetC._id)
+      debugNotify("About to reset shared variable",2)
       setGlobalVariable('Captured Cards',str(capturedCards))
-      if debugVerbosity >= 2: notify("About to initiate autoscripts")
+      debugNotify("About to initiate autoscripts",2)
       capturingObjective = chosenObj # We use a global variable in order for scripts which require it, to find out which objective got the captured card.
       autoscriptOtherPlayers('{}CardCapturedFrom{}'.format(targetCType,captureGroup),targetC) # We send also the card type. Some capture hooks only trigger of a specific kind of captured card (e.g. bespin exchange)
       capturingObjective = None # We clear it at the end.
-   if debugVerbosity >= 1: notify("<<< capture()") #Debug
+   debugNotify("<<< capture()") #Debug
 
 def clearAttachLinks(card):
 # This function takes care to discard any attachments of a card that left play (discarded or captured)
@@ -1332,7 +1335,7 @@ def randomDiscard(group):
 	notify("{} randomly discards {}.".format(me,card.name))
 	card.moveTo(me.piles['Discard Pile'])
 
-def sendToBottom(cards = None,x=0,y=0, Continuing = False):
+def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
    debugNotify(">>> sendToBottom()") #Debug
    global randomizedArray,cardsLeavingPlay
    debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
@@ -1355,9 +1358,9 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False):
          cards[iter], cards[swap] = cards[swap], cards[iter]
       if debugVerbosity >= 2: notify("### Randomized List: {}".format([card.name for card in cards])) #Debug
       if cards[0].group == me.hand:
-         notify("{} sends {} cards from their hand to the bottom of their respective decks in random order.".format(me,len(cards)))
+         if not silent: notify("{} sends {} cards from their hand to the bottom of their respective decks in random order.".format(me,len(cards)))
       else:
-         notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in sorted(cards)])) # We sort the list so that the players cannot see the true random order in the announcement
+         if not silent: notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in sorted(cards)])) # We sort the list so that the players cannot see the true random order in the announcement
    debugNotify("Executing card scripts one by one",2)
    for card in cards: 
       if not scriptWaiting and not Continuing and card._id not in cardsLeavingPlay and card.group == table and card.highlight != EdgeColor and card.highlight != FateColor and card.highlight != CapturedColor: 
@@ -1366,9 +1369,9 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False):
          autoscriptOtherPlayers('CardLeavingPlay',card)
    debugNotify("Checking if we've already executed the scripts",2)
    for card in cards: 
-      if Continuing: silent = True
-      else: silent = False
-      if chkEffectTrigger(card,'send to bottom',silent): # We check all cards in our array to see if any still have scripts to use
+      if Continuing: silentChk = True
+      else: silentChk = False
+      if chkEffectTrigger(card,'send to bottom',silentChk): # We check all cards in our array to see if any still have scripts to use
          randomizedArray = cards
          scriptWaiting = True
    debugNotify("Checking if we need to abort or ask.",2)

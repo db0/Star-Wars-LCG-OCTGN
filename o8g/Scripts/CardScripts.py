@@ -66,7 +66,7 @@ Admiral Motti
 -----
 ff4fb461-8060-457a-9c16-000000000070
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atUnit-targetMine-choose1-hasMarker{Focus}-duringMyTurn-isReact
+afterCardRefreshing:Remove1Focus-AutoTargeted-atUnit-targetMine-choose1-hasMarker{Focus}-duringMyTurn-isReact
 +++++
 
 .....
@@ -402,7 +402,7 @@ Defense Protocol
 -----
 ff4fb461-8060-457a-9c16-000000000040
 -----
-afterRefresh:Lose1Reserves-duringMyTurn-isReact$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
+afterCardRefreshing:Lose1Reserves-duringMyTurn-isReact$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
 +++++
 
 .....
@@ -546,7 +546,7 @@ Fall of the Jedi
 -----
 ff4fb461-8060-457a-9c16-000000000102
 -----
-afterDraw:SendToBottomTarget-Targeted-fromHand-isReact
+afterRefresh:SendToBottomTarget-Targeted-fromHand-isReact
 +++++
 
 .....
@@ -562,7 +562,7 @@ Fleeing the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000132
 -----
-afterRefresh:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
+afterCardRefreshing:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
 +++++
 
 .....
@@ -570,7 +570,7 @@ Fleet Command Center
 -----
 ff4fb461-8060-457a-9c16-000000000190
 -----
-afterRefresh:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
+afterCardRefreshing:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-afterRefresh:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-targetMine-duringMyTurn-isReact
+afterCardRefreshing:Remove1Damage-AutoTargeted-atUnit-hasDamage-choose1-targetMine-duringMyTurn-isReact
 +++++
 
 .....
@@ -1042,7 +1042,7 @@ Mobilize the Squadrons
 -----
 ff4fb461-8060-457a-9c16-000000000004
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-targetMine-choose1-duringMyTurn-isReact
+afterCardRefreshing:Remove1Focus-AutoTargeted-atEnhancement_or_Objective-hasMarker{Focus}-targetMine-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-afterRefresh:Put1Damage-isOptional-duringMyTurn-isReact$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
+afterCardRefreshing:Put1Damage-isOptional-duringMyTurn-isReact$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....
@@ -1122,7 +1122,7 @@ Rancor
 -----
 ff4fb461-8060-457a-9c16-000000000111
 -----
-afterRefresh:CustomScript-isReact
+afterCardRefreshing:CustomScript-isReact
 +++++
 
 .....
@@ -1474,7 +1474,7 @@ The Endor Gambit
 -----
 ff4fb461-8060-457a-9c16-000000000058
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetMine-isReact
+afterCardRefreshing:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetMine-isReact
 +++++
 
 .....
@@ -1482,7 +1482,7 @@ The Hand's Blessing
 -----
 ff4fb461-8060-457a-9c16-000000000112
 -----
-Placement:Character_and_Unit||afterRefresh:Remove999Focus-AutoTargeted-onHost-duringMyTurn-isReact
+Placement:Character_and_Unit||afterCardRefreshing:Remove999Focus-AutoTargeted-onHost-duringMyTurn-isReact
 +++++
 
 .....
@@ -1578,7 +1578,7 @@ Tribal Support
 -----
 ff4fb461-8060-457a-9c16-000000000204
 -----
-afterRefresh:Discard1Card-Targeted-fromHand-isCost-isReact$$Retrieve1Card-fromDiscard-grabEwok
+afterCardRefreshing:Discard1Card-Targeted-fromHand-isCost-isReact$$Retrieve1Card-fromDiscard-grabEwok
 +++++
 
 .....
@@ -2314,7 +2314,7 @@ A Dark Time for the Rebellion
 -----
 ff4fb461-8060-457a-9c16-000000000307
 -----
-afterRefresh:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}-duringMyTurn
+afterCardRefreshing:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}-duringMyTurn
 +++++
 
 .....
@@ -2682,7 +2682,7 @@ Lucrative Contract
 -----
 ff4fb461-8060-457a-9c16-000000000343
 -----
-afterRefresh:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetMine-choose1-hasMarker{Focus}-duringMyTurn
+afterCardRefreshing:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetMine-choose1-hasMarker{Focus}-duringMyTurn
 +++++
 
 .....
@@ -2746,7 +2746,7 @@ WED-15-1016
 -----
 ff4fb461-8060-457a-9c16-000000000332
 -----
-afterRefresh:Remove1AnyTokenType-AutoTargeted-atObjective_and_Hoth-hasMarker{AnyTokenType}-choose1
+afterCardRefreshing:Remove1AnyTokenType-AutoTargeted-atObjective_and_Hoth-hasMarker{AnyTokenType}-choose1
 +++++
 
 .....
@@ -2938,7 +2938,7 @@ Covert Sniper
 -----
 ff4fb461-8060-457a-9c16-000000000381
 -----
-afterRefresh:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited
+afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited
 +++++
 
 .....

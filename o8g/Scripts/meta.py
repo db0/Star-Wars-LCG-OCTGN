@@ -764,7 +764,7 @@ def clearStoredEffects(card, silent = False): # A function which clears a card's
    debugNotify("Clearing Hihlight",3)
    if card.highlight == ReadyEffectColor: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
    debugNotify("Deleting selectedAbility tuple",3)
-   del selectedAbility[card._id]
+   if selectedAbility.has_key(card._id): del selectedAbility[card._id]
    debugNotify("Uploading selectedAbility tuple",3)
    setGlobalVariable('Stored Effects',str(selectedAbility))
    if not silent: notify(":> {}'s trigger was ignored.".format(card))
