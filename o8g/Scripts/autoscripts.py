@@ -934,7 +934,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if targetCards is None: targetCards = []
    targetCardlist = '' # A text field holding which cards are going to get tokens.
    extraTXT = ''
-   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|BringToPlay|SendToBottom|Commit|Uncommit|Engage|Disengage|Sacrifice|Attack)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
+   action = re.search(r'\b(Destroy|Exile|Capture|Rescue|Return|BringToPlay|SendToBottom|Commit|Uncommit|Engage|Disengage|Sacrifice|Attack|Takeover)(Target|Host|Multi|Myself)[-to]*([A-Z][A-Za-z&_ ]+)?', Autoscript)
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
@@ -975,6 +975,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
          elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
+         elif action.group(1) == 'Takeover': 
+            targetCard.setController(me)
+            targetCard.moveToTable(0, 0 + yaxisMove(card))
          elif action.group(1) == 'Rescue':
             if targetCard.isFaceUp: 
                notify(":::ERROR::: Target Card was not captured!")
@@ -1681,6 +1684,11 @@ def checkSpecialRestrictions(Autoscript,card):
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: 
       debugNotify("Failing Because it's not participating", 2)
       validCard = False
+   if re.search(r'ifOrigAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
+      for c in table:
+         if c != card and c.orientation == Rot90 and c.controller == card.controller: 
+            debugNotify("Failing Because it's not participating alone", 2)
+            validCard = False
    if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: 
       debugNotify("Was looking for a captured card but this ain't it", 2)
       validCard = False
@@ -1771,6 +1779,9 @@ def checkOriginatorRestrictions(Autoscript,card):
    validCard = True
    if re.search(r'ifOrigCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
    if re.search(r'ifOrigParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
+   if re.search(r'ifOrigAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
+      for c in table:
+         if c != card and c.orientation == Rot90 and c.controller == card.controller: validCard = False
    if re.search(r'ifOrigNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
    if re.search(r'ifOrigAttacking',Autoscript) or re.search(r'ifOrigDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')

@@ -303,6 +303,7 @@ def calculateCombatIcons(card = None, CIString = None):
       combatIcons = CIString
    else: return
    if debugVerbosity >= 2: notify("### Setting Variables") #Debug
+   LobotBlocked = False
    Unit_Damage = 0
    Blast_Damage = 0
    Tactics = 0
@@ -372,6 +373,8 @@ def calculateCombatIcons(card = None, CIString = None):
                   if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
             else:
                if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
+            if c.model = "ff4fb461-8060-457a-9c16-000000000386" # Lobot's ability is pretty unique.
+               LobotBlocked = True
    if card: # We only check attachments if we're checking a host's Combat Icons.
       if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
       hostCards = eval(getGlobalVariable('Host Cards'))
@@ -391,6 +394,10 @@ def calculateCombatIcons(card = None, CIString = None):
    if Unit_Damage < 0: Unit_Damage = 0 # We cannot have a negative combat icon.
    if Blast_Damage < 0: Blast_Damage = 0
    if Tactics < 0: Tactics = 0
+   if LobotBlocked and not gotEdge(): #If Lobot is taking part and we don't have the edge, then we can't do anything.
+      Unit_Damage = 0
+      Blast_Damage = 0
+      Tactics = 0
    return (Unit_Damage,Blast_Damage,Tactics)
 
 def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to be triggered for a (non) Dummy card
@@ -1051,14 +1058,14 @@ def TrialError(group, x=0, y=0): # Debugging
       chooseSide()
       #createStartingCards()
    testcards = ["ff4fb461-8060-457a-9c16-000000000397", # EoD  cards
-                "ff4fb461-8060-457a-9c16-000000000332",
-                "ff4fb461-8060-457a-9c16-000000000341",
-                "ff4fb461-8060-457a-9c16-000000000349",
-                "ff4fb461-8060-457a-9c16-000000000343",
-                "ff4fb461-8060-457a-9c16-000000000325",
-                "ff4fb461-8060-457a-9c16-000000000338",
-                "ff4fb461-8060-457a-9c16-000000000333",
-                "ff4fb461-8060-457a-9c16-000000000353",
+                "ff4fb461-8060-457a-9c16-000000000384",
+                #"ff4fb461-8060-457a-9c16-000000000341",
+                #"ff4fb461-8060-457a-9c16-000000000349",
+                #"ff4fb461-8060-457a-9c16-000000000343",
+                #"ff4fb461-8060-457a-9c16-000000000325",
+                #"ff4fb461-8060-457a-9c16-000000000338",
+                #"ff4fb461-8060-457a-9c16-000000000333",
+                #"ff4fb461-8060-457a-9c16-000000000353",
                 #"ff4fb461-8060-457a-9c16-000000000321",
                 #"ff4fb461-8060-457a-9c16-000000000329",
                 # "ff4fb461-8060-457a-9c16-000000000300",

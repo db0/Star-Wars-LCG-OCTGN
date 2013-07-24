@@ -2966,35 +2966,11 @@ onPlay:SimplyAnnounce{cancel the effects of the unit's ability}$$Put1Effects Can
 +++++
 
 .....
-The Defense of Cloud City
------
-ff4fb461-8060-457a-9c16-000000000385
------
-
-+++++
-
-.....
 Lobot
 -----
 ff4fb461-8060-457a-9c16-000000000386
 -----
-
-+++++
-
-.....
-Cloud City Wing Guard
------
-ff4fb461-8060-457a-9c16-000000000387
------
-
-+++++
-
-.....
-Cloud City Wing Guard
------
-ff4fb461-8060-457a-9c16-000000000388
------
-
+whileInPlay:CustomScript-ifOrigParticipating
 +++++
 
 .....
@@ -3002,7 +2978,7 @@ Security Control Center
 -----
 ff4fb461-8060-457a-9c16-000000000389
 -----
-
+whileInPlay:Put1Shield-foreachCardPlayed-onTriggerCard-typeUnit-isReact
 +++++
 
 .....
@@ -3018,23 +2994,7 @@ Across the Anoat Sector
 -----
 ff4fb461-8060-457a-9c16-000000000391
 -----
-
-+++++
-
-.....
-Sleuth Scout
------
-ff4fb461-8060-457a-9c16-000000000392
------
-
-+++++
-
-.....
-Sleuth Scout
------
-ff4fb461-8060-457a-9c16-000000000393
------
-
+whileInPlay:IncreaseBD:1-byMe-forSmugglers and Spies-isAttacking-isAlone
 +++++
 
 .....
@@ -3042,7 +3002,6 @@ Undercover Operative
 -----
 ff4fb461-8060-457a-9c16-000000000394
 -----
-
 +++++
 
 .....
@@ -3050,7 +3009,7 @@ Smuggler's Run
 -----
 ff4fb461-8060-457a-9c16-000000000395
 -----
-
+whileInPlay:TakeoverTarget-Targeted-atEnhancement-targetOpponents-foreachObjectiveThwarted-isReact
 +++++
 
 .....
