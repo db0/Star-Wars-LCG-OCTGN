@@ -14,6 +14,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Undercover Operative
     * Force Precognition
     * Opening Moves (Just attack the appropriate objective)
+    * Reversal of Fate (Just grab the edge manually as required)
   * **Cards with tricky scripting:**
     * Smuggling Compartment - Just double click the enhancement to draw a card and notify why)
     * Millennium Falcon - Target the unit in your hand and then use the Falcon's ability

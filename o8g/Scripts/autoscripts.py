@@ -1526,6 +1526,13 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
    if debugVerbosity >= 1: notify(">>> findTarget(){}".format(extraASDebug(Autoscript))) #Debug
    try:
       if fromHand == True or re.search(r'-fromHand',Autoscript): group = me.hand
+      elif re.search(r'-fromTopDeckMine',Autoscript): # Quick job because I cannot be bollocksed.
+         debugNotify("Returing my top deck card",2)
+         return me.piles['Command Deck'].top()
+      elif re.search(r'-fromTopDeckOpponents',Autoscript): 
+         debugNotify("Returing opponent top deck card",2)
+         opponent = findOpponent()
+         return opponent.piles['Command Deck'].top()
       else: group = table
       foundTargets = []
       if re.search(r'Targeted', Autoscript):

@@ -3243,29 +3243,13 @@ ff4fb461-8060-457a-9c16-000000000428
 -----
 
 +++++
-
+R0:Put1Focus-isCost$$BringToPlayTarget-Targeted-atUnit_or_Enhancement-hasProperty{Cost}le2-fromHand
 .....
 Jabba's Pleasure Barge
 -----
 ff4fb461-8060-457a-9c16-000000000429
 -----
-
-+++++
-
-.....
-Gamorrean Guard
------
-ff4fb461-8060-457a-9c16-000000000430
------
-
-+++++
-
-.....
-Prized Possession
------
-ff4fb461-8060-457a-9c16-000000000431
------
-
+afterDeployment:Remove1Focus-DemiAutoTargeted-atCharacter-targetMine-choose1-isCost-isReact$$Put1Focus
 +++++
 
 .....
@@ -3281,7 +3265,7 @@ The Tatooine Crash
 -----
 ff4fb461-8060-457a-9c16-000000000433
 -----
-
+afterCardRefreshing:CaptureTarget-AutoTargeted-fromTopDeckOpponents-isReact
 +++++
 
 .....
@@ -3289,7 +3273,7 @@ Jawa Scavenger
 -----
 ff4fb461-8060-457a-9c16-000000000434
 -----
-
+whileInPlay:ReturnMyself-foreachAttackerEdgeWin-ifOrigDefending-isReact-isForced||whileInPlay:ReturnMyself-foreachDefenderEdgeWin-ifOrigAttacking-isReact-isForced
 +++++
 
 .....
@@ -3297,7 +3281,7 @@ Jawa Scavenger
 -----
 ff4fb461-8060-457a-9c16-000000000435
 -----
-
+whileInPlay:ReturnMyself-foreachAttackerEdgeWin-ifOrigDefending-isReact-isForced||whileInPlay:ReturnMyself-foreachDefenderEdgeWin-ifOrigAttacking-isReact-isForced
 +++++
 
 .....
