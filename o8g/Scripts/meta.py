@@ -373,7 +373,7 @@ def calculateCombatIcons(card = None, CIString = None):
                   if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
             else:
                if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
-            if c.model = "ff4fb461-8060-457a-9c16-000000000386" # Lobot's ability is pretty unique.
+            if c.model == "ff4fb461-8060-457a-9c16-000000000386": # Lobot's ability is pretty unique.
                LobotBlocked = True
    if card: # We only check attachments if we're checking a host's Combat Icons.
       if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
@@ -788,10 +788,14 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
    for cID in selectedAbility:
       debugNotify("Clearing Effects for {}".format(Card(cID)),3)
-      if Card(cID).highlight == ReadyEffectColor and not re.search(r'-isForced',selectedAbility[cID][0]): Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
-      del selectedAbility[cID]
+      debugNotify("selectedAbility[cID] = {}".format(selectedAbility[cID]),3)
+      if not re.search(r'-isForced',selectedAbility[cID][0]):
+         if Card(cID).highlight == ReadyEffectColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
+         del selectedAbility[cID]
+      else: 
+         notify(":::WARNING::: {}'s FORCED Trigger is still remaining.".format(Card(cID)))
    for card in table:
-      if card.highlight == ReadyEffectColor and not re.search(r'-isForced',selectedAbility[cID][0]): card.highlight = None
+      if card.highlight == ReadyEffectColor and not selectedAbility.has_key(card._id): card.highlight = None # If the card is still in the selectedAbility, it means it has a forced effect we don't want to clear.
    setGlobalVariable('Stored Effects',str(selectedAbility))
    if not silent: notify(":> All existing card effect triggers were ignored.".format(card))
    debugNotify("<<< clearAllEffects")

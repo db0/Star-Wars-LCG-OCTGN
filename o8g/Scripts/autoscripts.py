@@ -1170,7 +1170,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       turn = num(getGlobalVariable('Turn'))
       captureTarget = opponent.hand.random()
       capture(chosenObj = card, targetC = captureTarget)
-   elif card.name == 'Rancor' and action == 'afterRefresh' and card.controller == me:
+   elif card.name == 'Rancor' and action == 'afterCardRefreshing' and card.controller == me:
       possibleTargets = [c for c in table if c.Type == 'Unit' and not re.search('Vehicle',c.Traits)]
       if len(possibleTargets) == 0: return 'ABORT' # Nothing to kill
       minCost = 10 
