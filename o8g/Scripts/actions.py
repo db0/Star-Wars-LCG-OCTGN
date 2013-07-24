@@ -468,6 +468,7 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 3: notify("### Reshuffling Deck")
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
+      debugNotify(str(Automations),4)
 
 def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
@@ -496,6 +497,9 @@ def defaultAction(card, x = 0, y = 0):
          me.setActivePlayer() # If we're DS, set ourselves as the current player, since the Dark Side goes first.
    elif card.highlight == EdgeColor: revealEdge()
    elif selectedAbility.has_key(card._id): # we check via the dictionary, as this can be then used without a highlight via the "Hardcore mode"
+      if card.highlight != ReadyEffectColor: # If the card has a selectedAbility entry but no highlight, it means the player is in hardcore mode, so we need to light up the card to allow their opponent to react.
+         readyEffect(card,True)
+         return
       debugNotify("selectedAbility Tuple = {}".format(selectedAbility[card._id]),4)
       if selectedAbility[card._id][4]: preTargets = [Card(selectedAbility[card._id][4])] # The 5th value of the tuple is special target card's we'll be using for this run.
       else: preTargets = None
@@ -967,7 +971,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.orientation = Rot0
       targetC.highlight = CapturedColor
       targetC.target(False)
-      cardsLeavingPlay.remove(targetC._id)
+      if targetC in cardsLeavingPlay: cardsLeavingPlay.remove(targetC._id)
       if debugVerbosity >= 2: notify("About to reset shared variable")
       setGlobalVariable('Captured Cards',str(capturedCards))
       if debugVerbosity >= 2: notify("About to initiate autoscripts")
@@ -1329,13 +1333,16 @@ def randomDiscard(group):
 	card.moveTo(me.piles['Discard Pile'])
 
 def sendToBottom(cards = None,x=0,y=0, Continuing = False):
-   if debugVerbosity >= 1: notify(">>> sendToBottom()") #Debug
+   debugNotify(">>> sendToBottom()") #Debug
    global randomizedArray,cardsLeavingPlay
    debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
    scriptWaiting = False
    firstTime = False
    if Continuing: 
       cards = randomizedArray
+   elif not cards:
+      delayed_whisper(":::ERROR::: There's no cards selected to send to the Bottom of your deck. Aborting!")
+      return
    else:
       if debugVerbosity >= 1: notify("### Card List = {}".format([c.name for c in cards])) #Debug
       mute()
@@ -1379,6 +1386,7 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False):
          card.moveToBottom(card.owner.piles['Command Deck'])
          if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          randomizedArray = None
+   debugNotify("<<< sendToBottom()") #Debug
 
 def drawCommand(group, silent = False):
    if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug

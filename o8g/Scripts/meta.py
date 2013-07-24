@@ -18,6 +18,7 @@
 import re, time
 
 Automations = {'Play'    : True, # If True, game will automatically trigger card effects when playing or double-clicking on cards. Requires specific preparation in the sets.
+               'HARDCORE'               : False, # If True, game will not anymore display highlights and announcements on card waiting to trigger.
                'Phase'                  : True, # If True, game will automatically trigger effects happening at the start of the player's phase, from cards they control.                
                'Triggers'               : True, # If True, game will search the table for triggers based on player's actions, such as installing a card, or discarding one.
                'Reacts'                 : True, # If True, game will search the table for triggers based on player's actions, such as installing a card, or discarding one.
@@ -731,14 +732,20 @@ def checkDeckLegality():
    if debugVerbosity >= 3: notify("<<< checkDeckLegality() with return: {}".format(ok)) #Debug
    return ok
    
-def readyEffect(card):
+def readyEffect(card,forced = False):
 # This function prepares an event for being activated and puts the initial warning out if necessary.
    if debugVerbosity >= 1: notify(">>> readyEffect()") #Debug
-   card.highlight = ReadyEffectColor
+   if card.owner == me: hardcoreMode = Automations['HARDCORE']
+   else: 
+      oppAutomations = eval(card.owner.getGlobalVariable('Switches'))
+      hardcoreMode = oppAutomations['HARDCORE']
+   if not hardcoreMode or forced or card.Type == 'Event':
+      card.highlight = ReadyEffectColor
+      notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
+   else: debugNotify("Hardcore mode enabled. Not Highlighting")
    clrResourceMarkers(card)
-   notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
    global warnImminentEffects
-   if warnImminentEffects:
+   if (not hardcoreMode or card.type == 'Event' or forced) and card.owner == me and warnImminentEffects:
       information(warnImminentEffects)
       warnImminentEffects = None
    if debugVerbosity >= 3: notify("<<< readyEffect()") #Debug         
@@ -814,11 +821,14 @@ def switchAutomation(type,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchAutomation(){}".format(extraASDebug())) #Debug
    global Automations
    if (Automations[type] and command == 'Off') or (not Automations[type] and command == 'Announce'):
-      notify ("--> {}'s {} automations are OFF.".format(me,type))
+      if type == 'HARDCORE': notify ("--> The force is not strong within {}. HARDCORE mode deactivated.".format(me))
+      else: notify ("--> {}'s {} automations are OFF.".format(me,type))
       if command != 'Announce': Automations[type] = False
    else:
-      notify ("--> {}'s {} automations are ON.".format(me,type))
+      if type == 'HARDCORE': notify ("--> {} trusts their feelings. HARDCORE mode activated!".format(me))
+      else: notify ("--> {}'s {} automations are ON.".format(me,type))
       if command != 'Announce': Automations[type] = True
+   me.setGlobalVariable('Switches',str(Automations))
    
 def switchPlayAutomation(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchPlayAutomation(){}".format(extraASDebug())) #Debug
@@ -847,6 +857,10 @@ def switchWinForms(group,x=0,y=0):
 def switchPlacement(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchPlacement(){}".format(extraASDebug())) #Debug
    switchAutomation('Placement')
+   
+def switchHardcore(group,x=0,y=0):
+   if debugVerbosity >= 1: notify(">>> switchHardcore(){}".format(extraASDebug())) #Debug
+   switchAutomation('HARDCORE')
    
 def switchUniCode(group,x=0,y=0,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchUniCode(){}".format(extraASDebug())) #Debug

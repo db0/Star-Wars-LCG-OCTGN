@@ -29,7 +29,9 @@ def executePlayScripts(card, action):
    if debugVerbosity >= 1: notify(">>> executePlayScripts() with action: {}".format(action)) #Debug
    global failedRequirement
    scriptEffect = 'INCOMPLETE'
-   if not Automations['Play']: return
+   if not Automations['Play']: 
+      whisper(":::WARNING::: Your play automations have been deactivated. Aborting.")
+      return
    if not card.isFaceUp: return
    if CardsAS.get(card.model,'') != '': # Commented in order to allow scripts in attacked cards to trigger
       if debugVerbosity >= 2: notify("#### We have autoScripts!") # Debug
@@ -170,7 +172,7 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
       return
    if debugVerbosity >= 4: notify("+++ Not an inactive card. Checking Stored_Autoactions{}...")
    if not Automations['Play']:
-      whisper("Play automations have been disabled. Aborting!")
+      whisper(":::WARNING::: Play automations have been deactivated. Aborting!")
       return
    if debugVerbosity >= 4: notify("+++ Automations active. Checking for CustomScript...")
    Autoscripts = CardsAA.get(card.model,'').split('||')
@@ -221,9 +223,8 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
 def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Function that triggers effects based on the opponent's cards.
 # This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
 # For example a card that would produce credits whenever a trace was attempted. 
-   if not Automations['Triggers']: return
+   if not Automations['Triggers']: return # If automations have been disabled, do nothing.
    if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {} and origin_card: {}".format(lookup,origin_card)) #Debug
-   if not Automations['Play']: return # If automations have been disabled, do nothing.
    for card in table:
       if debugVerbosity >= 2: notify('### Checking {}'.format(card)) # Debug
       if not card.isFaceUp: 
@@ -303,7 +304,9 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
    mute()
    global TitleDone
    if debugVerbosity >= 1: notify(">>> atTimedEffects() at time: {}".format(Time)) #Debug
-   if not Automations['Start/End-of-Turn/Phase']: return
+   if not Automations['Start/End-of-Turn/Phase']: 
+      whisper(":::WARNING::: Your phase automations have been deactivated. Aborting.")
+      return
    TitleDone = False
    X = 0
    for card in table:
