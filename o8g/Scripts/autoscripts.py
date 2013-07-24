@@ -549,9 +549,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       for targetCard in targetCards:
          targetCardlist += ' {},'.format(targetCard)
    foundKey = False # We use this to see if the marker used in the AutoAction is already defined.
-   infectTXT = '' # We only inject this into the announcement when this is an infect AutoAction.
-   preventTXT = '' # Again for virus infections, to note down how much was prevented.
-   action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
+   action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal|Transfer)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
    if action.group(3) in mdict: token = mdict[action.group(3)]
    elif action.group(3) in resdict: token = resdict[action.group(3)]
    elif action.group(3) == "AnyTokenType": pass # If the removed token can be of any type, 
@@ -575,62 +573,76 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          token = ("{}".format(action.group(3)),"00000000-0000-0000-0000-00000000000{}".format(rndGUID)) #This GUID is one of the builtin ones
    count = num(action.group(2))
    multiplier = per(Autoscript, card, n, targetCards, notification)
-   for targetCard in targetCards:
-      if action.group(3) == "AnyTokenType": # If we need to find which token to remove, we have to do it once we know which cards we're checking.
-         markerChoices = []
-         if action.group(1) == 'Remove':
-            if targetCard.markers[mdict['Shield']]: markerChoices.append("Shield")
-            if targetCard.markers[mdict['Focus']]: markerChoices.append("Focus")
-            if targetCard.markers[mdict['Damage']]: markerChoices.append("Damage")
-         else: markerChoices = ["Shield","Focus","Damage"] # If we're adding any type of token, then we always provide a full choice list.
-         if len(markerChoices) == 1: 
-            token = mdict[markerChoices[0]]
-         else:
-            tokenChoice = SingleChoice("Choose one token to {} from {}.".format(action.group(1),targetCard.name), markerChoices, type = 'button', default = 0)
-            if tokenChoice == 'ABORT': return 'ABORT'
-            token = mdict[markerChoices[tokenChoice]]
-         del markerChoices[:] # We clear the list for the next loop.
-      if action.group(1) == 'Put':
-         if re.search(r'isCost', Autoscript) and targetCard.markers[token] and targetCard.markers[token] > 0:
-            whisper(":::ERROR::: This card already has a {} marker on it".format(token[0]))
-            return 'ABORT'
-         else: modtokens = count * multiplier
-      elif action.group(1) == 'Deal': modtokens = count * multiplier
-      elif action.group(1) == 'Refill': modtokens = count - targetCard.markers[token]
-      elif action.group(1) == 'Infect':
-         targetCardlist = '' #We don't want to mention the target card for infections. It's always the same.
-         victim = ofwhom(Autoscript, card.controller)
-         if targetCard == card: targetCard = getSpecial('Affiliation',victim) # For infecting targets, the target is never the card causing the effect.
-         modtokens = count * multiplier
-         infectTXT = ' {} with'.format(victim)
-      elif action.group(1) == 'USE':
-         if not targetCard.markers[token] or count > targetCard.markers[token]: 
-            whisper("There's not enough counters left on the card to use this ability!")
-            return 'ABORT'
-         else: modtokens = -count * multiplier
-      else: #Last option is for removing tokens.
-         debugNotify("About to remove tokens",3)
-         if count == 999: # 999 effectively means "all markers on card"
-            if targetCard.markers[token]: count = targetCard.markers[token]
-            else: 
+   if action.group(1) == 'Transfer':
+      if len(targetCards) != 2:
+         delayed_whisper(":::ERROR::: You must target exactly 2 cards to use this ability.")
+         return
+      sourceRegex = re.search(r'-source(.*?)-Destination',Autoscript)
+      debugNotify("sourceRegex = {}".format(sourceRegex.groups()),2)
+      sourceTargets = findTarget('Targeted-at{}'.format(sourceRegex.group(1)))
+      if len(sourceTargets) == 0:
+         delayed_whisper(":::ERROR::: No valid source card targeted.")
+         return
+      elif len(sourceTargets) > 1:
+         targetChoices = makeChoiceListfromCardList(sourceTargets)
+         choiceC = SingleChoice("Choose from which card to remove the token", targetChoices, type = 'button', default = 0)
+         if choiceC == 'ABORT': return 'ABORT'
+         if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
+         if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
+         sourceCard = sourceTargets.pop(choiceC)
+      else: sourceCard = sourceTargets[0]
+      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
+      destRegex = re.search(r'-destination(.*?)',Autoscript)
+      debugNotify("destRegex = {}".format(destRegex.groups()),2)
+      destTargets = findTarget('Targeted-at{}'.format(destRegex.group(1)))
+      if sourceCard in destTargets: destTargets.remove(sourceCard) # If the source card is targeted and also a valid destination, we remove it from the choices list.
+      targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
+      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
+      if action.group(3) == "AnyTokenType": token = chooseAnyToken(sourceCard,action.group(1))
+      if count == 999: modtokens = sourceCard.markers[token] # 999 means move all tokens from one card to the other.
+      else: modtokens = count * multiplier
+      sourceCard.markers[token] -= modtokens
+      targetCard.markers[token] += modtokens
+      notify("{} has moved one focus token from {} to {}".format(card,sourceCard,targetCard))
+   else:
+      for targetCard in targetCards:
+         if action.group(3) == "AnyTokenType": token = chooseAnyToken(targetCard,action.group(1)) # If we need to find which token to remove, we have to do it once we know which cards we're checking.
+         if action.group(1) == 'Put':
+            if re.search(r'isCost', Autoscript) and targetCard.markers[token] and targetCard.markers[token] > 0:
+               whisper(":::ERROR::: This card already has a {} marker on it".format(token[0]))
+               return 'ABORT'
+            else: modtokens = count * multiplier
+         elif action.group(1) == 'Deal': modtokens = count * multiplier
+         elif action.group(1) == 'Refill': modtokens = count - targetCard.markers[token]
+         elif action.group(1) == 'USE':
+            if not targetCard.markers[token] or count > targetCard.markers[token]: 
+               whisper("There's not enough counters left on the card to use this ability!")
+               return 'ABORT'
+            else: modtokens = -count * multiplier
+         else: #Last option is for removing tokens.
+            debugNotify("About to remove tokens",3)
+            if count == 999: # 999 effectively means "all markers on card"
+               if targetCard.markers[token]: count = targetCard.markers[token]
+               else: 
+                  if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")
+                  count = 0
+            elif re.search(r'isCost', Autoscript) and (not targetCard.markers[token] or (targetCard.markers[token] and count > targetCard.markers[token])):
+               if notification != 'Automatic': whisper ("No enough markers to remove. Aborting!") #Some end of turn effect put a special counter and then remove it so that they only run for one turn. This avoids us announcing that it doesn't have markers every turn.
+               debugNotify("Not enough markers to remove as cost. Aborting",2)
+               return 'ABORT'
+            elif not targetCard.markers[token]:
                if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")
-               count = 0
-         elif re.search(r'isCost', Autoscript) and (not targetCard.markers[token] or (targetCard.markers[token] and count > targetCard.markers[token])):
-            if notification != 'Automatic': whisper ("No enough markers to remove. Aborting!") #Some end of turn effect put a special counter and then remove it so that they only run for one turn. This avoids us announcing that it doesn't have markers every turn.
-            debugNotify("Not enough markers to remove as cost. Aborting",2)
-            return 'ABORT'
-         elif not targetCard.markers[token]:
-            if not re.search(r'isSilent', Autoscript): whisper("There was nothing to remove.")
-            debugNotify("Found no {} tokens to remove".format(token[0]),2)
-            count = 0 # If we don't have any markers, we have obviously nothing to remove.
-         modtokens = -count * multiplier
-      targetCard.markers[token] += modtokens # Finally we apply the marker modification
+               debugNotify("Found no {} tokens to remove".format(token[0]),2)
+               count = 0 # If we don't have any markers, we have obviously nothing to remove.
+            modtokens = -count * multiplier
+         targetCard.markers[token] += modtokens # Finally we apply the marker modification
    if abs(num(action.group(2))) == abs(999): total = 'all'
    else: total = abs(modtokens)
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
    if action.group(1) == 'Deal': countersTXT = '' # If we "deal damage" we do not want to be writing "deals 1 damage counters"
    else: countersTXT = 'counters'
-   announceString = "{} {}{} {} {} {}{}{}".format(announceText, action.group(1).lower(),infectTXT, total, token[0],countersTXT,targetCardlist,preventTXT)
+   if action.group(1) == 'Transfer': announceString = "{} {} {} {} {} from {} to {}".format(announceText, action.group(1).lower(), total, token[0],countersTXT,sourceCard,targetCard)
+   else: announceString = "{} {} {} {} {}{}".format(announceText, action.group(1).lower(), total, token[0],countersTXT,targetCardlist)
    if notification and modtokens != 0 and not re.search(r'isSilent', Autoscript): notify(':> {}.'.format(announceString))
    if debugVerbosity >= 2: notify("### TokensX() String: {}".format(announceString)) #Debug
    if debugVerbosity >= 3: notify("<<< TokensX()")
@@ -1683,6 +1695,11 @@ def checkSpecialRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify(">>> checkSpecialRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
+   if re.search(r'Transfer[0-9]',Autoscript): # If we're using the Transfer core command, then we're going to have source and destination conditions which will mess checks. We need to remove them.
+      debugNotify("We got Transfer core command",2)
+      newASregex = re.search(r'(Transfer-.*?)-source',2)
+      debugNotify('newASregex = {}'.format(newASregex.groups()),2)
+      Autoscript = newASregex.group(1) # We keep only everything in the basic targetting
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: 
       debugNotify("Failing Because it's not current objective", 2)
       validCard = False
@@ -2002,3 +2019,17 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
    if finalMultiplier > max: finalMultiplier == max
    return finalMultiplier
    
+def chooseAnyToken(card,action):
+   markerChoices = []
+   if action == 'Remove' or action == 'Transfer':
+      if card.markers[mdict['Shield']]: markerChoices.append("Shield")
+      if card.markers[mdict['Focus']]: markerChoices.append("Focus")
+      if card.markers[mdict['Damage']]: markerChoices.append("Damage")
+   else: markerChoices = ["Shield","Focus","Damage"] # If we're adding any type of token, then we always provide a full choice list.
+   if len(markerChoices) == 1: 
+      token = mdict[markerChoices[0]]
+   else:
+      tokenChoice = SingleChoice("Choose one token to {} from {}.".format(action,card.name), markerChoices, type = 'button', default = 0)
+      if tokenChoice == 'ABORT': return 'ABORT'
+      token = mdict[markerChoices[tokenChoice]]
+   return token

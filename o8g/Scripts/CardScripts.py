@@ -1330,7 +1330,7 @@ Stolen Plans
 -----
 ff4fb461-8060-457a-9c16-000000000133
 -----
-Placement:Objective-byOpponent||onHostGenerate:Draw1Card-isReact
+Placement:Objective-targetOpponents||onHostGenerate:Draw1Card-isReact
 +++++
 
 .....
@@ -2812,7 +2812,7 @@ ff4fb461-8060-457a-9c16-000000000363
 -----
 
 +++++
-R0:CustomScript
+R0:Transfer1Focus-Targeted-atUnit-sourceUnit-hasMarker{Focus}-destinationUnit-hasProperty{Cost}le2
 .....
 Bothan Spy
 -----
@@ -2900,13 +2900,13 @@ ff4fb461-8060-457a-9c16-000000000375
 -----
 
 +++++
-R0:CustomScript
+R0:Transfer1Focus-Targeted-atUnit-sourceUnit-hasMarker{Focus}-destinationUnit-hasProperty{Cost}le2
 .....
 Bamboozle
 -----
 ff4fb461-8060-457a-9c16-000000000377
 -----
-onPlay:CustomScript
+onPlay:Transfer1Focus-Targeted-atCharacter-sourceCharacter-hasMarker{Focus}-destinationCharacter
 +++++
 
 .....
@@ -3089,7 +3089,7 @@ Alderaanian Artist
 -----
 ff4fb461-8060-457a-9c16-000000000406
 -----
-
+whileInPlay:SacrificeMyself-foreachObjectiveThwarted-typeAlderaan's Promise-isReact-isForced
 +++++
 
 .....
@@ -3097,7 +3097,7 @@ Diplomatic Presence
 -----
 ff4fb461-8060-457a-9c16-000000000407
 -----
-
+Placement:Objective-targetMine
 +++++
 
 .....
@@ -3105,7 +3105,7 @@ Misdirection
 -----
 ff4fb461-8060-457a-9c16-000000000408
 -----
-
+onPlay:Transfer1Damage-Targeted-atObjective-targetMine-sourceObjective-targetMine-hasMarker{Damage}-destinationObjective-targetMine
 +++++
 
 .....
