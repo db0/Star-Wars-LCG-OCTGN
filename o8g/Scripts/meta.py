@@ -364,13 +364,18 @@ def calculateCombatIcons(card = None, CIString = None):
          if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
          if not checkOriginatorRestrictions(autoS,c): continue
          if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
-            increaseRegex = re.search(r'Increase(UD|BD|Tactics):([0-9])',autoS)
+            increaseRegex = re.search(r'(Increase|Decrease)(UD|BD|Tactics):([0-9])',autoS)
             if increaseRegex:
                if debugVerbosity >= 2: notify("### increaseRegex = {}".format(increaseRegex.groups())) #Debug
-               if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS)) and checkSpecialRestrictions(autoS,card): # We check that the current card is a valid one for the constant ability.
-                  if increaseRegex.group(1) == 'UD': Unit_Damage += num(increaseRegex.group(2))
-                  if increaseRegex.group(1) == 'BD': Blast_Damage += num(increaseRegex.group(2))
-                  if increaseRegex.group(1) == 'Tactics': Tactics += num(increaseRegex.group(2))
+               if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,'type')) and checkSpecialRestrictions(autoS,card): # We check that the current card is a valid one for the constant ability.
+                  if increaseRegex.group(1) == 'Increase': 
+                     if increaseRegex.group(2) == 'UD': Unit_Damage += num(increaseRegex.group(3))
+                     if increaseRegex.group(2) == 'BD': Blast_Damage += num(increaseRegex.group(3))
+                     if increaseRegex.group(2) == 'Tactics': Tactics += num(increaseRegex.group(3))
+                  else: 
+                     if increaseRegex.group(2) == 'UD': Unit_Damage -= num(increaseRegex.group(3))
+                     if increaseRegex.group(2) == 'BD': Blast_Damage -= num(increaseRegex.group(3))
+                     if increaseRegex.group(2) == 'Tactics': Tactics -= num(increaseRegex.group(3))
             else:
                if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
             if c.model == "ff4fb461-8060-457a-9c16-000000000386": # Lobot's ability is pretty unique.
@@ -800,12 +805,19 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
    if not silent: notify(":> All existing card effect triggers were ignored.".format(card))
    debugNotify("<<< clearAllEffects")
    
-def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTargetCard):
+def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTargetCard,count = 0):
    debugNotify(">>> storeCardEffects()")
    # A function which store's a bunch of variables inside a shared dictionary
    # These variables are recalled later on, when the player clicks on a triggered card, to recall the script to execute and it's peripheral variables.
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
-   selectedAbility[card._id] = (Autoscript,cost,previousHighlight,actionType,preTargetCard)
+   selectedAbility[card._id] = (Autoscript,cost,previousHighlight,actionType,preTargetCard,count)
+   # We set a tuple of variables for when we come back to executre the scripts
+   # The first variable is tracking which script is going to be used
+   # The Second is the amount of resource payment 
+   # The third entry in the tuple is the card's previous highlight if it had any.
+   # The fourth entry in the tuple is the type of autoscript this is. In this case it's a 'USE' script, which means it was manually triggered by the player
+   # The fifth is used to parse pre-selected targets for the card effects. Primarily used in autoscriptOtherPlayers()
+   # The sixth entry is used to pass an amount some scripts require (e.g. the difference in edge ranks for Bounty)
    setGlobalVariable('Stored Effects',str(selectedAbility))
    debugNotify("<<< storeCardEffects()")
    

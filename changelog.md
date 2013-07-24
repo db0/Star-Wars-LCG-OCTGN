@@ -9,10 +9,11 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Blockade Runner
     * Cloud City Operative (Just Manually Drag the token)
     * Bothan Spy
-    * Cloud City Wing Guard (Couldn't figure how to script this without being too annoying.)
+    * Cloud City Wing Guard/Chewbaca Bowcaster strike "outside of combat" (Just use the manual "Strike" ability in the card's context menu.)
     * Sleuth Scout
     * Undercover Operative
     * Force Precognition
+    * Opening Moves (Just attack the appropriate objective)
   * **Cards with tricky scripting:**
     * Smuggling Compartment - Just double click the enhancement to draw a card and notify why)
     * Millennium Falcon - Target the unit in your hand and then use the Falcon's ability

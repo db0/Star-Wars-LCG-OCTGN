@@ -1082,7 +1082,7 @@ Orbital Bombardment
 -----
 ff4fb461-8060-457a-9c16-000000000074
 -----
-whileInPlay:IncreaseBD:1-byMe-forUnit
+whileInPlay:IncreaseBD:1-byMe-typeUnit
 +++++
 
 .....
@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-forTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-byMe-forTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-typeTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-byMe-typeTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
@@ -1818,7 +1818,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000248
 -----
-whileInPlay:IncreaseBD:1-byMe-forUnit-isAttacking-ifOrigParticipating
+whileInPlay:IncreaseBD:1-byMe-typeUnit-isAttacking-ifOrigParticipating
 +++++
 
 .....
@@ -1850,7 +1850,7 @@ Hoth Operations
 -----
 ff4fb461-8060-457a-9c16-000000000235
 -----
-whileInPlay:Edge1Bonus-perEverySpeeder-AutoTargeted-atSpeeder-targetMine-isParticipating-isDistributedEffect-ifSuperiorityHoth
+ConstantEffect:Edge1Bonus-perEverySpeeder-AutoTargeted-atSpeeder-targetMine-isParticipating-isDistributedEffect-ifSuperiorityHoth
 +++++
 
 .....
@@ -1890,7 +1890,7 @@ Lord Vader's Command
 -----
 ff4fb461-8060-457a-9c16-000000000247
 -----
-whileInPlay:Increase1CostPlay-forEvent-byOpponent-ifOrigHasntMarker{Damage}
+whileInPlay:Increase1CostPlay-affectsEvent-byOpponent-ifOrigHasntMarker{Damage}
 +++++
 
 .....
@@ -2234,7 +2234,7 @@ Preparation for Battle
 -----
 ff4fb461-8060-457a-9c16-000000000277
 -----
-whileInPlay:IncreaseBD:1-byMe-forUnit-hasMarker{Shield}-ifDialge8
+whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}-ifDialge8
 +++++
 
 .....
@@ -2642,7 +2642,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000352
 -----
-whileInPlay:IncreaseBD:1-byMe-forUnit-hasMarker{Shield}
+whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2650,7 +2650,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000353
 -----
-whileInPlay:IncreaseBD:1-byMe-forUnit-hasMarker{Shield}
+whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2666,7 +2666,7 @@ General Veers
 -----
 ff4fb461-8060-457a-9c16-000000000338
 -----
-whileInPlay:IncreaseUD:1-byMe-forWalker_or_Trooper
+whileInPlay:IncreaseUD:1-byMe-typeWalker_or_Trooper
 +++++
 
 .....
@@ -2994,7 +2994,7 @@ Across the Anoat Sector
 -----
 ff4fb461-8060-457a-9c16-000000000391
 -----
-whileInPlay:IncreaseBD:1-byMe-forSmugglers and Spies-isAttacking-isAlone
+whileInPlay:IncreaseBD:1-byMe-typeSmugglers and Spies-isAttacking-isAlone
 +++++
 
 .....
@@ -3109,11 +3109,11 @@ onPlay:Transfer1Damage-Targeted-atObjective-targetMine-sourceObjective-targetMin
 +++++
 
 .....
-To Arms&#33;
+To Arms!
 -----
 ff4fb461-8060-457a-9c16-000000000409
 -----
-
+whileInPlay:Reduce2CostPlay-affectsEnhancement_and_Weapon-onlyOnce-byMe
 +++++
 
 .....
@@ -3121,7 +3121,7 @@ Sullustan Weapon Tech
 -----
 ff4fb461-8060-457a-9c16-000000000410
 -----
-
+whileInPlay:Draw1Card-foreachCardPlayed-typeEnhancement_and_Weapon-byMe-isReact
 +++++
 
 .....
@@ -3129,7 +3129,7 @@ Sullustan Weapon Tech
 -----
 ff4fb461-8060-457a-9c16-000000000411
 -----
-
+whileInPlay:Draw1Card-foreachCardPlayed-typeEnhancement_and_Weapon-byMe-isReact
 +++++
 
 .....
@@ -3137,7 +3137,7 @@ Han's Heavy Blaster Pistol
 -----
 ff4fb461-8060-457a-9c16-000000000412
 -----
-
+Placement:Character||BonusIcons:UD:1, BD:1||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-onHost-atHan Solo
 +++++
 
 .....
@@ -3145,7 +3145,7 @@ Chewbacca's Bowcaster
 -----
 ff4fb461-8060-457a-9c16-000000000413
 -----
-
+Placement:Character||BonusIcons:UD:1, BD:1
 +++++
 
 .....
@@ -3153,15 +3153,7 @@ Hidden Cache
 -----
 ff4fb461-8060-457a-9c16-000000000414
 -----
-
-+++++
-
-.....
-Opening Moves
------
-ff4fb461-8060-457a-9c16-000000000415
------
-
+onPlay:Retrieve1Card-grabEnhancement_and_Weapon$$ShuffleDeck
 +++++
 
 .....
@@ -3169,7 +3161,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000416
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce||whileInPlay:Pass-perFinishedEngagement-onlyOnce
 +++++
 
 .....
@@ -3177,7 +3169,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000417
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce||whileInPlay:Pass-perFinishedEngagement-onlyOnce
 +++++
 
 .....
@@ -3185,7 +3177,7 @@ Ion Cannon Barrage
 -----
 ff4fb461-8060-457a-9c16-000000000418
 -----
-
+onPlay:Remove999Shield-AutoTargeted
 +++++
 
 .....
@@ -3195,7 +3187,7 @@ ff4fb461-8060-457a-9c16-000000000419
 -----
 
 +++++
-
+R0:SacrificeMyself$$Deal2Damage-AutoTargeted-atUnit-isAttacking-targetOpponents
 .....
 Protection
 -----
@@ -3209,7 +3201,7 @@ Hive of Scum and Villainy
 -----
 ff4fb461-8060-457a-9c16-000000000421
 -----
-
+whileInPlay:DecreaseUD:1-typeUnit-isAttacking-ifOrigCurrentObjective
 +++++
 
 .....
@@ -3217,23 +3209,7 @@ Greedo
 -----
 ff4fb461-8060-457a-9c16-000000000422
 -----
-
-+++++
-
-.....
-Paid Informant
------
-ff4fb461-8060-457a-9c16-000000000423
------
-
-+++++
-
-.....
-Paid Informant
------
-ff4fb461-8060-457a-9c16-000000000424
------
-
+whileInPlay:Deal1Damage-foreachAttackerEdgeWin-ifOrigDefending-isReact-isForced||whileInPlay:Deal1Damage-foreachDefenderEdgeWin-ifOrigAttacking-isReact-isForced
 +++++
 
 .....
@@ -3241,7 +3217,7 @@ Bounty
 -----
 ff4fb461-8060-457a-9c16-000000000425
 -----
-
+Placement:Unit-targetOpponents||whileInPlay:SacrificeMyself-foreachAttackerEdgeWin-ifOrigDefending-ifEdgeDiffge3||whileInPlay:SacrificeMyself-foreachDefenderEdgeWin-ifOrigAttacking-ifEdgeDiffge3||afterCardRefreshing:CaptureHost
 +++++
 
 .....

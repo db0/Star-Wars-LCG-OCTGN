@@ -535,6 +535,14 @@ def loopChk(card,property = 'Type'):
    if debugVerbosity >= 4: notify("<<< loopChk()") #Debug
    return 'OK'         
       
+def fetchHost(card):
+   debugNotify(">>> fetchHost()") #Debug
+   host = None
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   hostID = hostCards.get(card._id,None)
+   if hostID: host = Card(hostID) 
+   debugNotify("<<< fetchHost() with return {}".format(host)) #Debug
+      
 #---------------------------------------------------------------------------
 # Card Placement functions
 #---------------------------------------------------------------------------

@@ -205,12 +205,6 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
    else: 
       storeCardEffects(card,selectedAutoscript,0,card.highlight,'USE',None) 
       readyEffect(card)
-   # We set a tuple of variables for when we come back to executre the scripts
-   # The first variable is tracking which script is going to be used
-   # The Second is the amount of resource payment 
-   # The third entry in the tuple is the card's previous highlight if it had any.
-   # The fourth entry in the tuple is the type of autoscript this is. In this case it's a 'USE' script, which means it was manually triggered by the player
-   # The last entry is not used here, but it's used to parse pre-selected targets for the card effects. Primarily used in autoscriptOtherPlayers()
       
 #------------------------------------------------------------------------------
 # Other Player trigger
@@ -271,6 +265,16 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
                                                                     # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
          if confirmText and not confirm(confirmText.group(1)): continue
+         edgeDiffRegex = re.search(r'ifEdgeDiff(ge|le|eq)([0-9])', autoS): # If the card is expecting a specific Edge Difference, it should have been passed via the count above.
+            if edgeDiffRegex.group(1) == 'ge' and count < num(edgeDiffRegex.group(2)): 
+               debugNotify("Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
+               continue
+            if edgeDiffRegex.group(1) == 'le' and count > num(edgeDiffRegex.group(2)): 
+               debugNotify("Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
+               continue
+            if edgeDiffRegex.group(1) == 'eq' and count != num(edgeDiffRegex.group(2)): 
+               debugNotify("Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
+               continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
@@ -283,12 +287,12 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          else: targetCards = None
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
-            storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCards) # We pass the special target in our global variable to allow it to be retrieved by later scripts.
+            storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCards,count) # We pass the special target in our global variable to allow it to be retrieved by later scripts.
             if re.search(r'-isForced', autoS): readyEffect(card,True)
             else: readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
-         executeAutoscripts(card,autoS,action = 'Automatic',targetCards = targetCards)
+         executeAutoscripts(card,autoS,action = 'Automatic',targetCards = targetCards,count)
    if debugVerbosity >= 3: notify("<<< autoscriptOtherPlayers()") # Debug
 
 #------------------------------------------------------------------------------
@@ -955,6 +959,14 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    if action.group(2) == 'Myself': 
       del targetCards[:] # Empty the list, just in case.
       targetCards.append(card)
+   if action.group(2) == 'Host': 
+      del targetCards[:] # Empty the list, just in case.
+      debugNotify("Finding Host")
+      host = fetchHost(card)
+      if host: targetCards = [host]
+      else: 
+         debugNotify("No Host Found? Aborting")
+         return 'ABORT'      
    if action.group(3): dest = action.group(3)
    else: dest = 'hand'
    if debugVerbosity >= 2: notify("### targetCards(){}".format(targetCards)) #Debug   
@@ -1948,7 +1960,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
    if targetCards is None: targetCards = []
    div = 1
    ignore = 0
-   per = re.search(r'\b(per|upto)(Target|Parent|Every)?([A-Z][^-]*)-?', Autoscript) # We're searching for the word per, and grabbing all after that, until the first dash "-" as the variable.   
+   per = re.search(r'\b(per|upto)(Target|Host|Every)?([A-Z][^-]*)-?', Autoscript) # We're searching for the word per, and grabbing all after that, until the first dash "-" as the variable.   
    if per: # If the  search was successful...
       multiplier = 0
       if debugVerbosity >= 2: notify("Groups: {}. Count: {}".format(per.groups(),count)) #Debug
@@ -1959,12 +1971,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
             # If we were expecting a target card and we have none we shouldn't even be in here. But in any case, we return a multiplier of 0
          elif per.group(2) == 'Every' and len(targetCards) == 0: pass #If we looking for a number of cards and we found none, then obviously we return 0
          else:
-            if per.group(2) == 'Host': 
-               if debugVerbosity >= 2: notify("Checking for perHost")
-               hostCards = eval(getGlobalVariable('Host Cards'))
-               hostID = hostCards.get(card._id,None)
-               if hostID: # If we do not have a parent, then we do nothing and return 0
-                  targetCards = [Card(hostID)] # if we have a host, we make him the only one in the list of cards to process.
+            if per.group(2) == 'Host': targetCards = [fetchHost(card)]
             for perCard in targetCards:
                if not checkSpecialRestrictions(Autoscript,perCard): continue
                if debugVerbosity >= 2: notify("perCard = {}".format(perCard))

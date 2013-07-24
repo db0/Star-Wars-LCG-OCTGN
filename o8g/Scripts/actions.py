@@ -516,7 +516,7 @@ def defaultAction(card, x = 0, y = 0):
          if re.search(r'LEAVING',selectedAbility[card._id][3]): 
             cardsLeavingPlay.append(card._id)
             debugNotify("updated cardsLeavingPlay = {}".format(cardsLeavingPlay),2)         
-         if executeAutoscripts(card,selectedAbility[card._id][0],action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': return
+         if executeAutoscripts(card,selectedAbility[card._id][0],count = selectedAbility[card._id][5], action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': return
       clearStoredEffects(card,True)
       debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
       if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
@@ -1217,6 +1217,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
       edgeRevealed[me.name] = True
       setGlobalVariable('Revealed Edge',str(edgeRevealed))
    else:
+      winnerDifference = 0
       if debugVerbosity >= 2: notify("Edge cards already revealed. Gonna calculate edge") #Debug
       if forceCalc: # forceCalc is only used to make sure the edge has been assigned. If a player already has the edge, we don't change it
          for player in players: # This is because they may have calculated the edge in the edge phase and discarded their edge cards laready.
@@ -1237,16 +1238,18 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             else: opponentEdgeTotal += bonusEdge
       currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find out what the current objective as we can use it to figure out if we're an attacker or defender.
       if myEdgeTotal > opponentEdgeTotal:
+         winnerDifference = myEdgeTotal - opponentEdgeTotal
          if debugVerbosity >= 2: notify("### I've got the edge") #Debug
          if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
          # We check to see if we already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             Affiliation.markers[mdict['Edge']] = 1
             notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
-            if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
-            else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
+            if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
+            else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
          elif not forceCalc: delayed_whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
+         winnerDifference = opponentEdgeTotal - myEdgeTotal
          if debugVerbosity >= 2: notify("### Opponent has the edge") #Debug
          oppAffiliation = getSpecial('Affiliation',opponent)
          if not (oppAffiliation.markers[mdict['Edge']] and oppAffiliation.markers[mdict['Edge']] == 1): 
@@ -1254,8 +1257,8 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             oppAffiliation.markers[mdict['Edge']] = 1
             notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
-            if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
-            else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
+            if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
+            else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
          elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
@@ -1270,7 +1273,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                Affiliation.markers[mdict['Edge']] = 1
                notify("The engagement of {} is unopposed, so {} automatically gains edge as the attacker.".format(currentTarget,me))
-               autoscriptOtherPlayers('AttackerEdgeWin',currentTarget)
+               autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, 0)
             elif not forceCalc: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
          else:
             if debugVerbosity >= 2: notify("### Defender's Advantage") #Debug
@@ -1278,7 +1281,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                defenderAffiliation.markers[mdict['Edge']] = 1
                notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.controller))
-               autoscriptOtherPlayers('DefenderEdgeWin',currentTarget)
+               autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, 0)
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
