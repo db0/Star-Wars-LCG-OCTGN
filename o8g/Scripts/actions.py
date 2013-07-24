@@ -58,7 +58,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
    global firstTurn
    if debugVerbosity >= 1: notify(">>> nextPhase(){}".format(extraASDebug())) #Debug
    mute()
-   clearAllEffects() # First we clear all non-used triggered effects.
+   clearAllEffects(True) # First we clear all non-used triggered effects.
    if getGlobalVariable('Engaged Objective') != 'None':
       phase = num(getGlobalVariable('Engagement Phase'))
       if setTo: phase = setTo
@@ -520,7 +520,7 @@ def defaultAction(card, x = 0, y = 0):
          if re.search(r'-DISCARD',selectedAbility[card._id][3]): discard(card,Continuing = True)
          elif re.search(r'-HAND',selectedAbility[card._id][3]): 
             card.moveTo(card.owner.hand)
-            cardsLeavingPlay.remove(card._id)
+            if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          elif re.search(r'-DECKBOTTOM',selectedAbility[card._id][3]): sendToBottom(Continuing = True)
          elif re.search(r'-EXILE',selectedAbility[card._id][3]): exileCard(card, Continuing = True)
          elif re.search(r'-CAPTURE',selectedAbility[card._id][3]): capture(targetC = card, Continuing = True)
@@ -648,6 +648,11 @@ def cancelPaidAbility(card,x=0,y=0):
    clearStoredEffects(card, True)
    clrResourceMarkers(card)
    notify("{} has canceled {}'s ability".format(me,card))
+
+def ignoreTrigger(card,x=0,y=0):
+   mute()
+   clearStoredEffects(card, True)
+   notify("{} chose not to activate {}'s ability".format(card))
 
 def generate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
@@ -876,7 +881,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          debugNotify("About to discard card. Highlight is {}. Group is {}".format(card.highlight,card.group.name),2)
          if card.group == table and card.highlight != CapturedColor: 
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
-            cardsLeavingPlay.remove(card._id)
+            if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          if not silent: notify("{} discards {}".format(me,card))
    if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
    if card.group != table: clearAttachLinks(card) # If a card effect did not prevent the card from leaving the table, then we clear all attachments
@@ -1063,7 +1068,7 @@ def exileCard(card, silent = False,Continuing = False):
       if card.highlight != CapturedColor or (card.highlight == CapturedColor and not Continuing):
          if card.group == table: clearAttachLinks(card)
          card.moveTo(me.piles['Removed from Game'])
-         cardsLeavingPlay.remove(card._id)
+         if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
    if not silent: notify("{} removed {} from play{}.".format(me,card))
    executePlayScripts(card, 'DISCARD')
  
@@ -1372,7 +1377,7 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False):
       if card.highlight != CapturedColor or (card.highlight == CapturedColor and not Continuing):
          if card.group == table: clearAttachLinks(card)
          card.moveToBottom(card.owner.piles['Command Deck'])
-         cardsLeavingPlay.remove(card._id)
+         if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          randomizedArray = None
 
 def drawCommand(group, silent = False):

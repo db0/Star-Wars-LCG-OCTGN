@@ -763,7 +763,7 @@ def clearStoredEffects(card, silent = False): # A function which clears a card's
    if not silent: notify(":> {}'s trigger was ignored.".format(card))
    debugNotify("<<< clearStoredEffects")
 
-def clearAllEffects(group = table, silent = False): # A function which clears all card's waiting-to-be-activated scripts. This is not looping clearStoredEffects() to avoid too many setGlobalVariable calls
+def clearAllEffects(silent = False): # A function which clears all card's waiting-to-be-activated scripts. This is not looping clearStoredEffects() to avoid too many setGlobalVariable calls
    debugNotify(">>> clearAllEffects")
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
    for cID in selectedAbility:
