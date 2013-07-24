@@ -3073,7 +3073,7 @@ Bail Organa
 -----
 ff4fb461-8060-457a-9c16-000000000404
 -----
-
+ExtraIcon:Tactics:1-perEveryAlderaan-max1-AutoTargeted-atAlderaan_and_Objective||whileInPlay:SacrificeMyself-foreachObjectiveThwarted-typeAlderaan's Promise
 +++++
 
 .....

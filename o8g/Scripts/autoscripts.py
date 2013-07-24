@@ -1993,7 +1993,12 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
       if debugVerbosity >= 2: notify("### Checking div") # Debug.            
       divS = re.search(r'-div([0-9]+)',Autoscript)
       if divS: div = num(divS.group(1))
+      if debugVerbosity >= 2: notify("### Checking max") # Debug.            
+      maxS = re.search(r'-max([0-9]+)',Autoscript)
+      if maxS: max = num(maxS.group(1))
    else: multiplier = 1
    if debugVerbosity >= 2: notify("<<< per() with Multiplier: {}".format((multiplier - ignore) / div)) # Debug
-   return (multiplier - ignore) / div
+   finalMultiplier = (multiplier - ignore) / div
+   if finalMultiplier > max: finalMultiplier == max
+   return finalMultiplier
    
