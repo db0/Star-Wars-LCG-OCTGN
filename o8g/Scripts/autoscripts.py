@@ -1551,6 +1551,17 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                         if debugVerbosity >= 2: notify("### Host found! {}".format(targetLookup))
                         isHost = True
                   if not isHost: continue
+               if re.search(r'-isJailer',Autoscript): # With this modulator, we're trying to target only cards which are captured by a specific objective
+                  if debugVerbosity >= 2: notify("### Looking for Captured Cards")
+                  if not card: continue # If this targeting script targets only a captured card's Jailer and we have not passed what the attachment is, we cannot find the Jailer, so we abort.
+                  if debugVerbosity >= 2: notify("### Captured Card is: {}".format(card))
+                  capturedCards = eval(getGlobalVariable('Captured Cards'))
+                  isJailer = False
+                  for capturedC in capturedCards:
+                     if capturedCards[capturedC] == card._id and capturedC == targetLookup._id: 
+                        if debugVerbosity >= 2: notify("### Captured Card found! {}".format(targetLookup))
+                        isJailer = True
+                  if not isJailer: continue
                if checkCardRestrictions(gatherCardProperties(targetLookup), targetGroups): 
                   if not targetLookup in foundTargets: 
                      if debugVerbosity >= 3: notify("### About to append {}".format(targetLookup)) #Debug

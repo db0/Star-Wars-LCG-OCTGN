@@ -1051,8 +1051,11 @@ def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game t
    whisper("All associated captured cards for this objective have been cleared")
    
 def rescue(card,x = 0, y = 0):
-   obj = removeCapturedCard(card)
+   global capturingObjective
+   capturingObjective = removeCapturedCard(card) # We use a global variable in order for scripts which require it, to find out from which objective we rescued the card from.
    card.moveTo(card.owner.hand)
+   autoscriptOtherPlayers('CardRescued',card) 
+   capturingObjective = None # We clear it at the end.
    notify("{} rescued a card from {}".format(me,obj))
    
 

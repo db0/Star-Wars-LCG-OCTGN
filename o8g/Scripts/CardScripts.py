@@ -3225,7 +3225,7 @@ Captured
 -----
 ff4fb461-8060-457a-9c16-000000000426
 -----
-
+onPlay:CaptureTarget-Targeted-atUnit
 +++++
 
 .....
@@ -3233,7 +3233,7 @@ Jabba's Reach
 -----
 ff4fb461-8060-457a-9c16-000000000427
 -----
-
+whileInPlay:Gain1Reserves-foreachCardCaptured-ifCapturingObjective||whileInPlay:Lose1Reserves-foreachCardRescued-ifCapturingObjective||onThwart:Lose1Reserves-perEveryCard-AutoTargeted-isCaptured-isJailer-noTargetingError
 +++++
 
 .....
