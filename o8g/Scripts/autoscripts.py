@@ -333,9 +333,11 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if re.search(r'after([A-za-z]+)',Time): effect = re.search(r'(after[A-za-z]+):(.*)', autoS) # Putting Run in a group, only to retain the search results groupings later
          else: effect = re.search(r'atTurn(Start|End):(.*)', autoS) #Putting "Start" or "End" in a group to compare with the Time variable later
          if not effect: continue
-         if debugVerbosity >= 3: notify("### Time maches. Script triggers on: {}".format(effect.group(1)))
+         debugNotify("Time Regex fits. Script triggers on: {}".format(effect.group(1)))
          if chkPlayer(effect.group(2), card.controller,False) == 0: continue # Check that the effect's origninator is valid. 
-         if effect.group(1) != Time or (effect.group(1) == 'afterPhase' and not re.search(r'after(Balance|Refresh|Draw|Deployment|Conflict|Force)',Time) and Time != 'End'): continue 
+         if effect.group(1) != Time and (effect.group(1) == 'afterPhase' and not re.search(r'after(Balance|Refresh|Draw|Deployment|Conflict|Force)',Time) and Time != 'End'):
+            debugNotify("Time didn't match!")
+            continue 
          # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
          # An effect for 'afterPhase' triggers after each Phase or Turn End.
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
@@ -631,8 +633,12 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       if action.group(3) == "AnyTokenType": token = chooseAnyToken(sourceCard,action.group(1))
       if count == 999: modtokens = sourceCard.markers[token] # 999 means move all tokens from one card to the other.
       else: modtokens = count * multiplier
-      sourceCard.markers[token] -= modtokens
-      targetCard.markers[token] += modtokens
+      if token[0] == 'Damage' or token[0] == 'Shield' or token[0] == 'Focus':
+         subMarker(sourceCard, token[0], abs(modtokens),True)
+         addMarker(targetCard, token[0], modtokens,True)
+      else: 
+         sourceCard.markers[token] -= modtokens
+         targetCard.markers[token] += modtokens
       notify("{} has moved one focus token from {} to {}".format(card,sourceCard,targetCard))
    else:
       debugNotify("In normal tokens module",2)
@@ -665,7 +671,11 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
                debugNotify("Found no {} tokens to remove".format(token[0]),2)
                count = 0 # If we don't have any markers, we have obviously nothing to remove.
             modtokens = -count * multiplier
-         targetCard.markers[token] += modtokens # Finally we apply the marker modification
+         if token[0] == 'Damage' or token[0] == 'Shield' or token[0] == 'Focus':
+            if modtokens < 0: subMarker(targetCard, token[0], abs(modtokens),True)
+            else: addMarker(targetCard, token[0], modtokens,True)
+         else: targetCard.markers[token] += modtokens # Finally we apply the marker modification
+            
    if abs(num(action.group(2))) == abs(999): total = 'all'
    else: total = abs(modtokens)
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
@@ -1450,7 +1460,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       IconList = ["UD","EE-UD","BD","EE-BD","Tactics","EE-Tactics"] # This list has the same icons as the above, but uses the keywords that the game expects in a marker, so it makes it easier to figure out which icon the user selected.
       if debugVerbosity >= 2: notify("### About to select combat icon to steal")
       choiceIcons = SingleChoice("The card has the following printed Combat Icons: {}.\nChoose a combat icon to steal.\n(We leave the choice open, in case the card has received a combat icon from a card effect)".format(printedIcons), IconChoiceList, type = 'button', default = 0)
-      card.markers[mdict['Focus']] += 1
+      #card.markers[mdict['Focus']] += 1
+      addMarker(card, 'Focus',1, True)
       TokensX('Put1Echo Caverns:minus{}-isSilent'.format(IconList[choiceIcons]), '', sourceCard)
       TokensX('Put1Echo Caverns:{}-isSilent'.format(IconList[choiceIcons]), '', targetCard)
       notify("{} activates {} to move one {} icon from {} to {}".format(me,card,IconChoiceList[choiceIcons],sourceCard,targetCard))
@@ -1490,55 +1501,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          topCard = me.piles['Command Deck'].top()
          if playEdge(topCard,True) != 'ABORT':
             notify("{} used {} to play an edge card from the top of their command deck".format(me,card))
-   elif card.name == "Bamboozle" and action == 'PLAY':
-      currentTargets = findTarget('Targeted-atUnit_and_Character')
-      if len(currentTargets) != 2:
-         delayed_whisper(":::ERROR::: You must target exactly 2 units to use this ability.")
-         return
-      sourceTargets = findTarget('Targeted-atUnit_and_Character-hasMarker{Focus}')
-      if not sourceTargets:
-         delayed_whisper(":::ERROR::: You must target at least 1 unit with a focus token.")
-         return
-      elif len(sourceTargets) > 1:
-         targetChoices = makeChoiceListfromCardList(sourceTargets)
-         choiceC = SingleChoice("Choose from which card to remove the focus token", targetChoices, type = 'button', default = 0)
-         if choiceC == 'ABORT': return
-         if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
-         if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
-         sourceCard = sourceTargets.pop(choiceC)
-      else: sourceCard = sourceTargets[0]
-      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
-      currentTargets.remove(sourceCard) # We remove the source card since we know which it is already. The other targeted card must be the target.
-      targetCard = currentTargets[0] # After we pop() the choice card, whatever remains is the target card.
-      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
-      sourceCard.markers[mdict['Focus']] -= 1
-      targetCard.markers[mdict['Focus']] += 1
-      notify("{} has bamboozled {}".format(sourceCard,targetCard))       
-   elif card.name == "Cloud City Operative" and action == 'USE':
-      currentTargets = findTarget('Targeted-atUnit')
-      if len(currentTargets) != 2:
-         delayed_whisper(":::ERROR::: You must target exactly 2 units to use this ability.")
-         return
-      sourceTargets = findTarget('Targeted-atUnit-hasMarker{Focus}')
-      if not sourceTargets:
-         delayed_whisper(":::ERROR::: You must target at least 1 unit with a focus token.")
-         return
-      elif len(sourceTargets) > 1:
-         targetChoices = makeChoiceListfromCardList(sourceTargets)
-         choiceC = SingleChoice("Choose from which card to remove the focus token", targetChoices, type = 'button', default = 0)
-         if choiceC == 'ABORT': return
-         if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
-         if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
-         sourceCard = sourceTargets.pop(choiceC)
-      else: sourceCard = sourceTargets[0]
-      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
-      destTargets = findTarget('Targeted-atUnit-hasProperty{Cost}le2')
-      if sourceCard in destTargets: destTargets.remove(sourceCard) # If the source card is targeted and also a valid destination, we remove it from the choices list.
-      targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
-      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
-      sourceCard.markers[mdict['Focus']] -= 1
-      targetCard.markers[mdict['Focus']] += 1
-      notify("{} has moved one focus token from {} to {}".format(card,sourceCard,targetCard))
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions

@@ -586,8 +586,10 @@ def strike(card, x = 0, y = 0, Continuing = False):
       if num(getGlobalVariable('Engagement Phase')) < 4:
          if confirm("Have you resolved the edge battle already?\n\n(If you press Yes, Edge will be resolved and you'll proceed to strike with this unit)"): nextPhase(setTo = 4)
          else: return
-      card.markers[mdict['Focus']] += 1
-      if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
+      #card.markers[mdict['Focus']] += 1
+      addMarker(card, 'Focus',1, True)
+      #if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
+      if card.highlight == LightForceColor or card.highlight == DarkForceColor: addMarker(card, 'Focus',1, True)
       if debugVerbosity >= 2: notify("Focus Added") #Debug
       debugNotify("Executing Strike Scripts",2)      
       if executePlayScripts(card, 'STRIKE') == 'POSTPONED': 
@@ -602,14 +604,17 @@ def strike(card, x = 0, y = 0, Continuing = False):
    Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
    if currentTarget.controller == opponent and not hasDamageProtection(currentTarget,card): 
-      currentTarget.markers[mdict['Damage']] += Blast_Damage # We assign the blast damage automatically, since there's only ever one target for it.
+      #currentTarget.markers[mdict['Damage']] += Blast_Damage 
+      addMarker(currentTarget, 'Damage',Blast_Damage, True) # We assign the blast damage automatically, since there's only ever one target for it.
    for c in table: # We check to see if the attacking player has already selected a target.
       if c.targetedBy and c.targetedBy == me and c.Type == 'Unit': targetUnit = c
    if Unit_Damage and not Tactics and targetUnit and not hasDamageProtection(targetUnit,card):  # if our strike only does unit damage, and we've already targeted a unit, then just automatically apply it to it.
-      targetUnit.markers[mdict['Damage']] += Unit_Damage
+      #targetUnit.markers[mdict['Damage']] += Unit_Damage
+      addMarker(targetUnit, 'Damage',Unit_Damage, True)
       Unit_DamageTXT = " to {}".format(targetUnit)
    elif not Unit_Damage and Tactics == 1 and targetUnit:  # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
-      targetUnit.markers[mdict['Focus']] += Tactics
+      #targetUnit.markers[mdict['Focus']] += Tactics
+      addMarker(targetUnit, 'Focus',Tactics, True)
       TacticsTXT = " (exhausting {})".format(targetUnit)
    elif ((Unit_Damage and Tactics) or Tactics > 1) and targetUnit: # We inform the user why we didn't assign markers automatically.
       delayed_whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
@@ -698,7 +703,8 @@ def generate(card, x = 0, y = 0):
    else: count = 1
    try: unpaidC.markers[resdict['Resource:{}'.format(card.Affiliation)]] += count
    except: unpaidC.markers[resdict['Resource:Neutral']] += count
-   card.markers[mdict['Focus']] += count
+   #card.markers[mdict['Focus']] += count
+   addMarker(card, 'Focus',count, True)
    notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
    executePlayScripts(card, 'GENERATE')
    autoscriptOtherPlayers('ResourceGenerated',card)
@@ -1585,14 +1591,16 @@ def addShieldTarget(group, x = 0, y = 0, count = 1):
       if card.targetedBy and card.targetedBy == me: addMarker(card,'Shield',count)
 
 def addMarker(card, tokenType,count = 1, silent = False):
+   debugNotify(">>> addMarker() with tokenType = {}".format(tokenType))
    mute()
    if tokenType == 'Shield':
       if not silent and card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type)): return 'ABORT'
    card.markers[mdict[tokenType]] += count	
-   if not silent: notify("{} adds a {} to {}.".format(me, tokenType, card))
+   if not silent: notify("{} adds {} {} to {}.".format(me, count, tokenType, card))
    if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
       executePlayScripts(card, 'MARKERADD{}'.format(tokenType.upper()))
-      autoscriptOtherPlayers('{}MarkerAdded'.format(tokenType),card,count)
+      #autoscriptOtherPlayers('{}MarkerAdded'.format(tokenType),card,count) # Don't need it yet, so I reduce the load
+   debugNotify("<<< addMarker()")
       
 def subFocus(card, x = 0, y = 0, count = 1):
    subMarker(card,'Focus',count)
@@ -1616,15 +1624,17 @@ def subShieldTarget(group, x = 0, y = 0, count = 1):
       if card.targetedBy and card.targetedBy == me: subMarker(card,'Shield',count)
 
 def subMarker(card, tokenType,count = 1):
+   debugNotify(">>> subMarker() with tokenType = {}".format(tokenType))
    mute()
-   notify("{} removes a {} from {}.".format(me, tokenType, card))
+   notify("{} removes {} {} from {}.".format(me, count, tokenType, card))
    card.markers[mdict[tokenType]] -= count	
    if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
       executePlayScripts(card, 'MARKERSUB{}'.format(tokenType.upper()))
-      autoscriptOtherPlayers('{}MarkerRemoved'.format(tokenType),card,count)
+      # autoscriptOtherPlayers('{}MarkerRemoved'.format(tokenType),card,count)  # Don't need it yet, so I reduce the load
    if tokenType == 'Damage' and not card.markers[mdict[tokenType]]:
       executePlayScripts(card, 'CARDHEAL')
-      autoscriptOtherPlayers('CardHealed',card,count)
+      # autoscriptOtherPlayers('CardHealed',card,count)  # Don't need it yet, so I reduce the load
+   debugNotify("<<< subMarker()")
    
     
 def addCustomMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.
