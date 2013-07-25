@@ -130,6 +130,7 @@ def executePlayScripts(card, action):
                continue
          if re.search(r'-onlyDuringEngagement', autoS) and getGlobalVariable('Engaged Objective') == 'None': 
             continue # If this is an optional ability only for engagements, then we abort
+         if not checkOriginatorRestrictions(autoS,card): continue
          if re.search(r'-isOptional', autoS):
             if not confirm("This card has an optional ability you can activate at this point. Do you want to do so?"): 
                notify("{} opts not to activate {}'s optional ability".format(me,card))
