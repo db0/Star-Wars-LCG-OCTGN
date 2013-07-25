@@ -1600,6 +1600,8 @@ def addMarker(card, tokenType,count = 1, silent = False):
    if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
       executePlayScripts(card, 'MARKERADD{}'.format(tokenType.upper()))
       #autoscriptOtherPlayers('{}MarkerAdded'.format(tokenType),card,count) # Don't need it yet, so I reduce the load
+   if tokenType == 'Damage' and card.markers[mdict[tokenType]] == 1: # If this is the first damage marker this card gets, then we consider the card to be freshly damaged.
+      executePlayScripts(card, 'DAMAGE')
    debugNotify("<<< addMarker()")
       
 def subFocus(card, x = 0, y = 0, count = 1):
@@ -1632,7 +1634,7 @@ def subMarker(card, tokenType,count = 1):
       executePlayScripts(card, 'MARKERSUB{}'.format(tokenType.upper()))
       # autoscriptOtherPlayers('{}MarkerRemoved'.format(tokenType),card,count)  # Don't need it yet, so I reduce the load
    if tokenType == 'Damage' and not card.markers[mdict[tokenType]]:
-      executePlayScripts(card, 'CARDHEAL')
+      executePlayScripts(card, 'HEAL')
       # autoscriptOtherPlayers('CardHealed',card,count)  # Don't need it yet, so I reduce the load
    debugNotify("<<< subMarker()")
    

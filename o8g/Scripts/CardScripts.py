@@ -2730,7 +2730,7 @@ The General's Imperative
 -----
 ff4fb461-8060-457a-9c16-000000000337
 -----
-onPlay:Gain1Reserves
+onPlay:Gain1Reserves||onDamage:Lose1Reserves||onHeal:Gain1Reserves
 +++++
 
 .....

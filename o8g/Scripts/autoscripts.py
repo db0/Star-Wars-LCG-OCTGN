@@ -115,6 +115,8 @@ def executePlayScripts(card, action):
              (effectType.group(1) == 'onLeaving' and not re.search(r'LEAVING',action)) or
              (effectType.group(1) == 'onCommit' and action != 'COMMIT') or
              (effectType.group(1) == 'onGenerate' and action != 'GENERATE') or
+             (effectType.group(1) == 'onDamage' and action != 'DAMAGE') or
+             (effectType.group(1) == 'onHeal' and action != 'HEAL') or
              (effectType.group(1) == 'onThwart' and action != 'THWART')):
             if debugVerbosity >= 2: notify("### Skipping autoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
             continue 
