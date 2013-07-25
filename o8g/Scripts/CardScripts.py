@@ -3066,7 +3066,7 @@ Secret Guardian ### We use this weird 'whileInPlay' trick because you cannot put
 -----
 ff4fb461-8060-457a-9c16-000000000402
 -----
-onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand||whileInPlay:Put1Secret Guardian-foreachCardPlayed-onTriggerCard-typeCharacter
+onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand||whileInPlay:Put1Secret Guardian-foreachCardPlayed-onTriggerCard-typeCharacter-isSilent
 +++++
 
 .....
@@ -3170,7 +3170,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000416
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce||whileInPlay:Pass-perFinishedEngagement-onlyOnce
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce||whileInPlay:Pass-perFinishedEngagement-onlyOnce-failSilently
 +++++
 
 .....

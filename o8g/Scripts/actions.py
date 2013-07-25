@@ -670,7 +670,7 @@ def cancelPaidAbility(card,x=0,y=0):
 
 def ignoreTrigger(card,x=0,y=0):
    mute()
-   clearStoredEffects(card)
+   clearStoredEffects(card,silent = True)
    notify("{} chose not to activate {}'s ability".format(me,card))
 
 def generate(card, x = 0, y = 0):
