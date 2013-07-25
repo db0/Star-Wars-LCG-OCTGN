@@ -1792,6 +1792,12 @@ def checkSpecialRestrictions(Autoscript,card):
    if re.search(r'isNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): 
       debugNotify("Failing Because card is committed to the force", 2)
       validCard = False
+   if re.search(r'ifhasEdge',Autoscript) and not gotEdge(card.controller): 
+      debugNotify("Failing Because card's controller does not have the edge", 2)
+      validCard = False
+   if re.search(r'ifhasntEdge',Autoscript) and gotEdge(card.controller): 
+      debugNotify("Failing Because card's controller has the edge", 2)
+      validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): 
       debugNotify("Failing Because not the right controller", 2)
       validCard = False
@@ -1841,7 +1847,7 @@ def checkOriginatorRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
    if re.search(r'ifOrigCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
-   if re.search(r'ifOrighasCaptures',Autoscript):
+   if re.search(r'ifOrigCaptures',Autoscript):
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       if card._id not in capturedCards.values(): validCard = False
    if re.search(r'ifOrigParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
@@ -1858,6 +1864,8 @@ def checkOriginatorRestrictions(Autoscript,card):
          elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
    if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if re.search(r'ifOrigNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): validCard = False
+   if re.search(r'ifOrighasEdge',Autoscript) and not gotEdge(card.controller): validCard = False
+   if re.search(r'ifOrighasntEdge',Autoscript) and gotEdge(card.controller): validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
    markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers

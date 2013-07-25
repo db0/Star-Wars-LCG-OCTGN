@@ -1788,7 +1788,7 @@ ff4fb461-8060-457a-9c16-000000000223
 -----
 
 +++++
-R0:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost
+R0:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-osReact
 .....
 Battle of Hoth
 -----
@@ -1900,7 +1900,7 @@ ff4fb461-8060-457a-9c16-000000000224
 -----
 Placement:Character_and_Unit
 +++++
-R0:DestroyMyself$$Remove999Damage-AutoTargeted-onHost
+R0:DestroyMyself$$Remove999Damage-AutoTargeted-onHost-isReact
 .....
 Old Ben's Spirit
 -----
@@ -1914,7 +1914,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000250
 -----
-onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
+onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe-isReact
 +++++
 
 .....
@@ -1922,7 +1922,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000251
 -----
-onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe
+onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe-isReact
 +++++
 
 .....
@@ -2098,7 +2098,7 @@ Death Squadron Command
 -----
 ff4fb461-8060-457a-9c16-000000000287
 -----
-whileInPlay:Remove1Focus-foreachObjectiveThwarted
+whileInPlay:Remove1Focus-foreachObjectiveThwarted-isReact
 +++++
 
 .....
@@ -2250,7 +2250,7 @@ Renegade Squadron Mobilization
 -----
 ff4fb461-8060-457a-9c16-000000000265
 -----
-whileInPlay:Draw1Card-foreachCardLeavingPlay-typeUnit-forOpponent-chkOriginController
+whileInPlay:Draw1Card-foreachCardLeavingPlay-typeUnit-forOpponent-chkOriginController-isReact
 +++++
 
 .....
@@ -2314,7 +2314,7 @@ A Dark Time for the Rebellion
 -----
 ff4fb461-8060-457a-9c16-000000000307
 -----
-afterCardRefreshing:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}-duringMyTurn
+afterCardRefreshing:SimplyAnnounce{force each opponent to deal 1 damage to a unit or objective they control}-duringMyTurn-isReact
 +++++
 
 .....
@@ -2330,7 +2330,7 @@ Anger
 -----
 ff4fb461-8060-457a-9c16-000000000305
 -----
-Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-foreachForceStruggleLost-duringOpponentTurn
+Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-foreachForceStruggleLost-duringOpponentTurn-isReact-isForced
 +++++
 
 .....
@@ -2362,9 +2362,9 @@ Cloud City Incinerator
 -----
 ff4fb461-8060-457a-9c16-000000000317
 -----
-
+whileInPlay:DestroyTarget-Targeted-isCaptured-onlyOnce-foreachCardCaptured-ifHaveForce-isReact
 +++++
-R0:DestroyTarget-Targeted-isCaptured-onlyOnce
+
 .....
 Colonel Starck
 -----
@@ -2442,15 +2442,15 @@ Prepare for Evacuation
 -----
 ff4fb461-8060-457a-9c16-000000000295
 -----
-
+whileInPlay:ReturnTarget-Targeted-atUnit-foreachObjectiveThwarted-typeHoth-isReact
 +++++
-R0:ReturnTarget-Targeted-atUnit
+
 .....
 Prophet of the Dark Side
 -----
 ff4fb461-8060-457a-9c16-000000000302
 -----
-onPlay:CustomScript
+onPlay:CustomScript-isReact
 +++++
 
 .....
@@ -2458,7 +2458,7 @@ Prophet of the Dark Side
 -----
 ff4fb461-8060-457a-9c16-000000000303
 -----
-onPlay:CustomScript
+onPlay:CustomScript-isReact
 +++++
 
 .....
@@ -2506,7 +2506,7 @@ The Hunt for Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000313
 -----
-whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-noTargetingError-foreachUnitCardCaptured-ifCapturingObjective
+whileInPlay:Remove1Focus-DemiAutoTargeted-atScum and Villainy-choose1-hasMarker{Focus}-foreachUnitCardCaptured-ifCapturingObjective-isReact
 +++++
 
 .....
@@ -2522,7 +2522,7 @@ Ugnaught
 -----
 ff4fb461-8060-457a-9c16-000000000314
 -----
-whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-noTargetingError-foreachCardCaptured
+whileInPlay:Remove1Damage-DemiAutoTargeted-atUnit_and_Vehicle_or_Unit_and_Droid-targetMine-choose1-hasMarker{Damage}-foreachCardCaptured-isReact
 +++++
 
 .....
@@ -2538,7 +2538,7 @@ Z-95 Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000315
 -----
-onStrike:CustomScript
+onStrike:CustomScript-isReact
 +++++
 
 .....
@@ -2546,7 +2546,7 @@ Z-95 Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000316
 -----
-onStrike:CustomScript
+onStrike:CustomScript-isReact
 +++++
 
 .....
@@ -2602,7 +2602,7 @@ Col Serra
 -----
 ff4fb461-8060-457a-9c16-000000000326
 -----
-ConstantEffect:Edge1Bonus
+ConstantEffect:Edge1Bonus||ConstantEffect:Protection-ifhasEdge
 +++++
 
 .....
@@ -2610,7 +2610,7 @@ Daughters of Allya
 -----
 ff4fb461-8060-457a-9c16-000000000320
 -----
-onCommit:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine
+onCommit:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine-isReact
 +++++
 
 .....
@@ -2618,7 +2618,7 @@ Daughters of Allya
 -----
 ff4fb461-8060-457a-9c16-000000000321
 -----
-onCommit:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine
+onCommit:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine-isReact
 +++++
 
 .....
@@ -2658,7 +2658,7 @@ FX-7 Medical Assistant
 -----
 ff4fb461-8060-457a-9c16-000000000333
 -----
-onStrike:Remove1AnyTokenType-AutoTargeted-atEnhancement_or_Character-hasMarker{AnyTokenType}-choose1
+onStrike:Remove1AnyTokenType-AutoTargeted-atEnhancement_or_Character-hasMarker{AnyTokenType}-choose1-isReact
 +++++
 
 .....
@@ -2669,6 +2669,14 @@ ff4fb461-8060-457a-9c16-000000000338
 whileInPlay:IncreaseUD:1-byMe-typeWalker_or_Trooper
 +++++
 
+.....
+Knowledge and Defense
+-----
+ff4fb461-8060-457a-9c16-000000000319
+-----
+
++++++
+R0:ReturnTarget-Targeted-atUnit
 .....
 Last Defense of Hoth
 -----
@@ -2682,7 +2690,7 @@ Lucrative Contract
 -----
 ff4fb461-8060-457a-9c16-000000000343
 -----
-afterCardRefreshing:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetMine-choose1-hasMarker{Focus}-duringMyTurn
+afterCardRefreshing:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetMine-choose1-hasMarker{Focus}-duringMyTurn-isReact
 +++++
 
 .....
@@ -2706,9 +2714,9 @@ Sabotage in the Snow
 -----
 ff4fb461-8060-457a-9c16-000000000349
 -----
-
+afterDeployment:Remove1Shield-DemiAutoTargeted-hasMarker{Shield}-targetOpponents-choose1-isCost-isReact$$Put1Shield-DemiAutoTargeted-atUnit_or_Objective-hasntMarker{Shield}-targetMine-choose1
 +++++
-R0:Remove1Shield-DemiAutoTargeted-hasMarker{Shield}-targetOpponents-choose1-isCost$$Put1Shield-DemiAutoTargeted-atUnit_or_Objective-hasntMarker{Shield}-targetMine-choose1
+
 .....
 Snowtrooper Vanguard
 -----
@@ -2730,15 +2738,15 @@ Turbolaser Battery
 -----
 ff4fb461-8060-457a-9c16-000000000341
 -----
-
+whileInPlay:SacrificeMyself-foreachObjectiveThwarted-byMe-isReact$$DestroyMulti-AutoTargeted-atEnhancement
 +++++
-R0:SacrificeMyself$$DestroyMulti-AutoTargeted-atEnhancement
+
 .....
 Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000348
 -----
-onResolveFate:CustomScript
+onResolveFate:CustomScript-isReact
 +++++
 
 .....
@@ -2754,7 +2762,7 @@ Yoda's Protection
 -----
 ff4fb461-8060-457a-9c16-000000000322
 -----
-Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-foreachEngagedObjective-ifEngagementTargetHost
+Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-foreachEngagedObjective-ifEngagementTargetHost-isReact
 +++++
 
 .....

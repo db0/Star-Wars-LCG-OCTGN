@@ -411,12 +411,19 @@ def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to 
    if re.search(r'excludeDummy', Autoscript) and card.highlight == DummyColor: return False
    return True
 
-def gotEdge():
-   if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: return True
-   else: return False
+def gotEdge(targetPL = None):
+   debugNotify(">>> gotEdge()") #Debug
+   gotIt = False
+   if targetPL:
+      targetAffiliation = getSpecial('Affiliation',targetPL)
+      if targetAffiliation.markers[mdict['Edge']] and targetAffiliation.markers[mdict['Edge']] == 1: gotIt = True
+   else:
+      if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: gotIt = True
+   debugNotify("<<< gotEdge() returns {}".format(gotIt)) #Debug
+   return gotIt
 
 def getKeywords(card): # A function which combines the existing card keywords, with markers which give it extra ones.
-   if debugVerbosity >= 1: notify(">>> getKeywords(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> getKeywords()") #Debug
    global Stored_Keywords
    #confirm("getKeywords") # Debug
    keywordsList = []
@@ -660,7 +667,7 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
    protected = False
    Autoscripts = CardsAS.get(target.model,'').split('||')
    for autoS in Autoscripts:
-      if re.search(r'ConstantEffect:Protection',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+      if re.search(r'ConstantEffect:Protection',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')) and checkSpecialRestrictions(autoS,target): 
          protected = True
          notify(":> {} is protected against {}'s damage".format(target,attacker))
    hostCards = eval(getGlobalVariable('Host Cards'))
@@ -669,7 +676,7 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
          if hostCards[attachment] == target._id:
             Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
             for autoS in Autoscripts:
-               if re.search(r'ConstantEffect:Protection',autoS) and re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')): 
+               if re.search(r'ConstantEffect:Protection',autoS) and re.search(r'-onHost',autoS) and checkCardRestrictions(gatherCardProperties(attacker), prepareRestrictions(autoS, seek = 'type')) and checkSpecialRestrictions(autoS,target): 
                   protected = True
                   notify(":> {} is protected against {}'s damage".format(target,attacker))
    if not protected: # We don't check more if we've found protection already.
