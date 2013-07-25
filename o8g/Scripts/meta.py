@@ -175,6 +175,9 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    hostCards = eval(getGlobalVariable('Host Cards'))
    hostCards.clear()
    setGlobalVariable('Host Cards',str(hostCards))
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))
+   selectedAbility.clear()
+   setGlobalVariable('Stored Effects',str(selectedAbility))
    if len(players) > 1: debugVerbosity = -1 # Reset means normal game.
    elif debugVerbosity != -1 and confirm("Reset Debug Verbosity?"): debugVerbosity = -1 
    unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
@@ -830,7 +833,7 @@ def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTarget
    setGlobalVariable('Stored Effects',str(selectedAbility))
    debugNotify("<<< storeCardEffects()")
    
-def freeUnitPlacement(card):
+def freeUnitPlacement(card): # A function which stores a unit's position when it leaves play, so that it can be re-used by a different unit
    if Automations['Placement'] and card.Type == 'Unit':
       if card.owner == me and card.highlight != DummyColor and card.highlight != UnpaidColor and card.highlight != CapturedColor:
          freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position

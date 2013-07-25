@@ -284,16 +284,17 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          if debugVerbosity >= 2: notify("### Automatic Autoscripts: {}".format(autoS)) # Debug
          if re.search(r'onTriggerCard',autoS): 
             debugNotify("Target Card is the origin card",2)
-            targetCards = [origin_card._id] # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card
-         else: targetCards = None
+            targetCardID = origin_card._id # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card
+         else: targetCardID = None
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
             ### Setting card's selectedAbility Global Variable.
-            storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCards,count) # We pass the special target in our global variable to allow it to be retrieved by later scripts.
+            storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCardID,count) # We pass the special target's ID in our global variable to allow it to be retrieved by later scripts.
             if re.search(r'-isForced', autoS): readyEffect(card,True)
             else: readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
-         executeAutoscripts(card,autoS,count,action = 'Automatic',targetCards = targetCards)
+         if targetCardID: executeAutoscripts(card,autoS,count,action = 'Automatic',targetCards = [Card(targetCardID)])
+         else: executeAutoscripts(card,autoS,count,action = 'Automatic',None)
    if debugVerbosity >= 3: notify("<<< autoscriptOtherPlayers()") # Debug
 
 #------------------------------------------------------------------------------
@@ -1005,6 +1006,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
                autoscriptOtherPlayers('CardLeavingPlay',targetCard)
                rnd(1,10)
             if not chkEffectTrigger(targetCard,'Card Return'):
+               freeUnitPlacement(targetCard)
                targetCard.moveTo(targetCard.owner.hand)
             extraTXT = " to their owner's hand"
          elif action.group(1) == 'BringToPlay': 
@@ -1738,7 +1740,7 @@ def checkSpecialRestrictions(Autoscript,card):
    validCard = True
    if re.search(r'Transfer[0-9]',Autoscript): # If we're using the Transfer core command, then we're going to have source and destination conditions which will mess checks. We need to remove them.
       debugNotify("We got Transfer core command",2)
-      newASregex = re.search(r'(Transfer.*?)-source',Autoscript)
+      newASregex = re.search(r'(Transfer.*?)-destination',Autoscript)
       if newASregex: debugNotify('newASregex = {}'.format(newASregex.groups()),2)
       else: debugNotify("Script could not find newASregex. Will error",2)
       Autoscript = newASregex.group(1) # We keep only everything in the basic targetting

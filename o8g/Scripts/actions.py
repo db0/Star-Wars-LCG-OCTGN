@@ -977,6 +977,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
                scriptPostponeNotice('Capture')
                return
             selectedAbility = eval(getGlobalVariable('Stored Effects'))
+      freeUnitPlacement(targetC)
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
       targetC.isFaceUp = False
@@ -1088,6 +1089,7 @@ def exileCard(card, silent = False,Continuing = False):
                return
       if card.highlight != CapturedColor or (card.highlight == CapturedColor and not Continuing):
          if card.group == table: clearAttachLinks(card)
+         freeUnitPlacement(card)
          card.moveTo(me.piles['Removed from Game'])
          if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
    if not silent: notify("{} removed {} from play{}.".format(me,card))
@@ -1403,6 +1405,7 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
    for card in cards: 
       if card.highlight != CapturedColor or (card.highlight == CapturedColor and not Continuing):
          if card.group == table: clearAttachLinks(card)
+         freeUnitPlacement(card)
          card.moveToBottom(card.owner.piles['Command Deck'])
          if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          randomizedArray = None
