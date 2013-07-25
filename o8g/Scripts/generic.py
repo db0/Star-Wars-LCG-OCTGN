@@ -478,7 +478,7 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
    if debugVerbosity >= 1: notify(">>> oncePerTurn() with act = {}".format(act)) #Debug
    mute()
    if card.markers[mdict['Activation']] and card.markers[mdict['Activation']] >= 1:
-      if act != 'manual' or re.search(r'-failSilently',CardsAS.get(c.model,'')) # If the card has the 'failsSilently' modulator for onlyOnce, then we don't want to ask the player if the ability has been used already. 
+      if act != 'manual' or re.search(r'-failSilently',CardsAS.get(card.model,'')): # If the card has the 'failsSilently' modulator for onlyOnce, then we don't want to ask the player if the ability has been used already. 
          if debugVerbosity >= 3: notify("<<< oncePerTurn() exit NOK (not-manual)") #Debug
          return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
       elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): 

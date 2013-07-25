@@ -1789,12 +1789,16 @@ def checkSpecialRestrictions(Autoscript,card):
          validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: 
-            debugNotify("!!! Failing because unit it not attacking", 2)
-            validCard = False
-         elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: 
-            debugNotify("!!! Failing because unit is not defending", 2)
-            validCard = False
+         if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller:
+            if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-attacking fail because we're debugging")
+            else: 
+               debugNotify("!!! Failing because unit it not attacking", 2)
+               validCard = False
+         elif re.search(r'isDefending',Autoscript) and currentTarget.controller != card.controller: 
+            if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-defending fail because we're debugging")
+            else: 
+               debugNotify("!!! Failing because unit is not defending", 2)
+               validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
       debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
@@ -1814,11 +1818,15 @@ def checkSpecialRestrictions(Autoscript,card):
       debugNotify("!!! Failing because card is committed to the force", 2)
       validCard = False
    if re.search(r'ifhasEdge',Autoscript) and not gotEdge(card.controller): 
-      debugNotify("!!! Failing because card's controller does not have the edge", 2)
-      validCard = False
+      if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing have-edge fail because we're debugging")
+      else: 
+         debugNotify("!!! Failing because card's controller does not have the edge", 2)
+         validCard = False
    if re.search(r'ifhasntEdge',Autoscript) and gotEdge(card.controller): 
-      debugNotify("!!! Failing because card's controller has the edge", 2)
-      validCard = False
+      if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing hasn't-edge fail because we're debugging")
+      else: 
+         debugNotify("!!! Failing because card's controller has the edge", 2)
+         validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): 
       debugNotify("!!! Failing because not the right controller", 2)
       validCard = False
@@ -1882,8 +1890,12 @@ def checkOriginatorRestrictions(Autoscript,card):
       if EngagedObjective == 'None': validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
-         elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
+         if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller == card.controller: 
+            if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-attacking fail because we're debugging")
+            else: validCard = False
+         elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: 
+            if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-defending fail because we're debugging")
+            else: validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
       debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
@@ -1898,8 +1910,12 @@ def checkOriginatorRestrictions(Autoscript,card):
             validCard = False
    if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if re.search(r'ifOrigNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): validCard = False
-   if re.search(r'ifOrighasEdge',Autoscript) and not gotEdge(card.controller): validCard = False
-   if re.search(r'ifOrighasntEdge',Autoscript) and gotEdge(card.controller): validCard = False
+   if re.search(r'ifOrighasEdge',Autoscript) and not gotEdge(card.controller): 
+      if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing have-edge fail because we're debugging")
+      else: validCard = False
+   if re.search(r'ifOrighasntEdge',Autoscript) and gotEdge(card.controller): 
+      if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing hasn't-edge fail because we're debugging")
+      else: validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
    markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
