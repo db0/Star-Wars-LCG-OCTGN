@@ -336,7 +336,8 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    if unopposed: # If the attacker still has units remaining then we check to see if the defender has any as well. 
       for card in table: # If they do, then the battle is not unnoposed.
          if card.orientation == Rot90 and card.controller == currentTarget.controller: unopposed = False
-   if (unopposed and currentTarget in table) or debugVerbosity >= 1: # last part is for Debug
+   if len(players) == 1 and debugVerbosity >= 0 and confirm("Set unopposed for single-player debug?"): unopposed = True # last part is for Debug
+   if (unopposed and currentTarget in table): 
       # We need to check for special restrictions for unopposed battles
       # These are by hardcoded for now, until I see more of them.
       cancel = False
@@ -1296,9 +1297,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
          defenderAffiliation = getSpecial('Affiliation',currentTarget.controller)
          unopposed = True
          for card in table:
-            if card.orientation == Rot90 and card.controller == currentTarget.controller: 
-               if len(players) == 1 and debugVerbosity >= 0 and confirm("Set unopposed for single-player debug?"): unopposed = True
-               else: unopposed = False
+            if card.orientation == Rot90 and card.controller == currentTarget.controller: unopposed = False
          if unopposed: 
             if debugVerbosity >= 2: notify("### Unopposed Attacker") #Debug
             if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 

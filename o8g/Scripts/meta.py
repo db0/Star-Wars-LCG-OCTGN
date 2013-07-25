@@ -405,6 +405,9 @@ def calculateCombatIcons(card = None, CIString = None):
    if Blast_Damage < 0: Blast_Damage = 0
    if Tactics < 0: Tactics = 0
    if LobotBlocked and not gotEdge(): #If Lobot is taking part and we don't have the edge, then we can't do anything.
+      if Unit_Damage > 0 or Blast_Damage > 0 or Tactics > 0: # If we were actually doing anything, then we announce that it was blocked by Lobot, so that they don't get confused.
+         if card: notify(":> {}'s combat icons were made edge-enabled by Lobot".format(card))
+         else: notify(":> Unit's combat icons were made edge-enabled by Lobot")
       Unit_Damage = 0
       Blast_Damage = 0
       Tactics = 0

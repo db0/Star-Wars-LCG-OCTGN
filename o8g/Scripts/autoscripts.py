@@ -438,55 +438,56 @@ def redirect(Autoscript, card, action, X = 0,targetC = None):
    else: announceText = "{} uses {} to".format(targetPL,card)
    debugNotify(" targetC: {}. Notification Type = {}".format([c.name for c in targetC],'Quick'), 3) # Debug   
    if regexHooks['GainX'].search(Autoscript):
+      debugNotify("in GainX hook")
       gainTuple = GainX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X)
       if gainTuple == 'ABORT': return 'ABORT'
       X = gainTuple[1] 
    if regexHooks['CreateDummy'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in CreateDummy hook")
+      debugNotify("in CreateDummy hook")
       if CreateDummy(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['DrawX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in DrawX hook")
+      debugNotify("in DrawX hook")
       if DrawX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['RetrieveX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in RetrieveX hook")
+      debugNotify("in RetrieveX hook")
       if RetrieveX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['TokensX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in TokensX hook")
+      debugNotify("in TokensX hook")
       if TokensX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['RollX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in RollX hook")
+      debugNotify("in RollX hook")
       rollTuple = RollX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X)
       if rollTuple == 'ABORT': return 'ABORT'
       X = rollTuple[1] 
    elif regexHooks['RequestInt'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in RequestInt hook")
+      debugNotify("in RequestInt hook")
       numberTuple = RequestInt(Autoscript, announceText, card, targetC, notification = 'Quick', n = X)
       if numberTuple == 'ABORT': return 'ABORT'
       X = numberTuple[1] 
    elif regexHooks['DiscardX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in DiscardX hook")
+      debugNotify("in DiscardX hook")
       discardTuple = DiscardX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X)
       if discardTuple == 'ABORT': return 'ABORT'
       X = discardTuple[1] 
    elif regexHooks['ReshuffleX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in ReshuffleX hook")
+      debugNotify("in ReshuffleX hook")
       reshuffleTuple = ReshuffleX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X)
       if reshuffleTuple == 'ABORT': return 'ABORT'
       X = reshuffleTuple[1]
    elif regexHooks['ShuffleX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in ShuffleX hook")
+      debugNotify("in ShuffleX hook")
       if ShuffleX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['ChooseKeyword'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in ChooseKeyword hook")
+      debugNotify("in ChooseKeyword hook")
       if ChooseKeyword(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['ModifyStatus'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in ModifyStatus hook")
+      debugNotify("in ModifyStatus hook")
       if ModifyStatus(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['GameX'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in GameX hook")
+      debugNotify("in GameX hook")
       if GameX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['SimplyAnnounce'].search(Autoscript): 
-      if debugVerbosity >= 2: notify("### in SimplyAnnounce hook")
+      debugNotify("in SimplyAnnounce hook")
       if SimplyAnnounce(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    else: debugNotify(" No regexhook match! :(") # Debug
    debugNotify("Loop for scipt {} finished".format(Autoscript), 2)
@@ -1747,7 +1748,7 @@ def checkSpecialRestrictions(Autoscript,card):
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: 
       debugNotify("!!! Failing because it's not participating", 2)
       validCard = False
-   if re.search(r'ifAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
+   if re.search(r'isAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
          if c != card and c.orientation == Rot90 and c.controller == card.controller: 
             debugNotify("!!! Failing because it's not participating alone", 2)

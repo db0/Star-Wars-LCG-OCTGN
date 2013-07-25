@@ -2890,7 +2890,7 @@ Asteroid Sanctuary
 -----
 ff4fb461-8060-457a-9c16-000000000373
 -----
-whileInPlay:Draw1Card-foreachAttackerEdgeWin-ifOrigAttacking||whileInPlay:Draw1Card-foreachDefenderEdgeWin-ifOrigDefending
+whileInPlay:Draw1Card-foreachAttackerEdgeWin-ifOrigAttacking-isReact||whileInPlay:Draw1Card-foreachDefenderEdgeWin-ifOrigDefending-isReact
 +++++
 
 .....
@@ -3170,7 +3170,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000416
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce-failSilently||whileInPlay:Pass-perFinishedEngagement-onlyOnce-failSilently
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce-failSilently||afterEngagement:Pass-onlyOnce-failSilently
 +++++
 
 .....
@@ -3178,7 +3178,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000417
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce||afterEngagement:Pass-onlyOnce
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce-failSilently||afterEngagement:Pass-onlyOnce-failSilently
 +++++
 
 .....
