@@ -590,29 +590,35 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if action.group(1) == 'Transfer':
       debugNotify("In transfer module",2)
       if len(targetCards) != 2:
-         delayed_whisper(":::ERROR::: You must target exactly 2 cards to use this ability.")
-         return
-      sourceRegex = re.search(r'-source(.*?)-destination',Autoscript)
-      debugNotify("sourceRegex = {}".format(sourceRegex.groups()),2)
-      sourceTargets = findTarget('Targeted-at{}'.format(sourceRegex.group(1)))
-      if len(sourceTargets) == 0:
-         delayed_whisper(":::ERROR::: No valid source card targeted.")
-         return
-      elif len(sourceTargets) > 1:
-         targetChoices = makeChoiceListfromCardList(sourceTargets)
-         choiceC = SingleChoice("Choose from which card to remove the token", targetChoices, type = 'button', default = 0)
-         if choiceC == 'ABORT': return 'ABORT'
-         if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
-         if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
-         sourceCard = sourceTargets.pop(choiceC)
-      else: sourceCard = sourceTargets[0]
-      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
-      destRegex = re.search(r'-destination(.*?)',Autoscript)
-      debugNotify("destRegex = {}".format(destRegex.groups()),2)
-      destTargets = findTarget('Targeted-at{}'.format(destRegex.group(1)))
-      if sourceCard in destTargets: destTargets.remove(sourceCard) # If the source card is targeted and also a valid destination, we remove it from the choices list.
-      targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
-      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
+         delayed_whisper(":::ERROR::: You must target exactly 2 valid cards to use this ability.")
+         return 'ABORT'
+      completedSeek = False
+      while not completedSeek:
+         sourceRegex = re.search(r'-source(.*?)-destination',Autoscript)
+         debugNotify("sourceRegex = {}".format(sourceRegex.groups()),2)
+         sourceTargets = findTarget('Targeted-at{}'.format(sourceRegex.group(1)))
+         if len(sourceTargets) == 0:
+            delayed_whisper(":::ERROR::: No valid source card targeted.")
+            return 'ABORT'
+         elif len(sourceTargets) > 1:
+            targetChoices = makeChoiceListfromCardList(sourceTargets)
+            choiceC = SingleChoice("Choose from which card to remove the token", targetChoices, type = 'button', default = 0)
+            if choiceC == 'ABORT': return 'ABORT'
+            if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
+            if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
+            sourceCard = sourceTargets.pop(choiceC)
+         else: sourceCard = sourceTargets[0]
+         if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
+         destRegex = re.search(r'-destination(.*)',Autoscript)
+         debugNotify("destRegex = {}".format(destRegex.groups()),2)
+         destTargets = findTarget('Targeted-at{}'.format(destRegex.group(1)))
+         if sourceCard in destTargets: destTargets.remove(sourceCard) # If the source card is targeted and also a valid destination, we remove it from the choices list.
+         if len(destTargets) == 0:
+            if not confirm("Your choices have left you without a valid destination to transfer the token. Try again?"): return 'ABORT'
+            else: continue
+         completedSeek = True #If we have a valid source and destination card, then we can exit the loop
+         targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
+         if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
       if action.group(3) == "AnyTokenType": token = chooseAnyToken(sourceCard,action.group(1))
       if count == 999: modtokens = sourceCard.markers[token] # 999 means move all tokens from one card to the other.
       else: modtokens = count * multiplier

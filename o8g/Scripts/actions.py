@@ -520,13 +520,20 @@ def defaultAction(card, x = 0, y = 0):
                   clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
                   if card.Type == 'Event': card.moveTo(card.owner.hand)
                   notify("{} has aborted using {}".format(me,card))
+                  return
                else: return # If the script needs a target but we don't have any, abort.
          notify("{} resolves the effects of {}".format(me,card)) 
          clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
          if re.search(r'LEAVING',selectedAbility[card._id][3]): 
             cardsLeavingPlay.append(card._id)
             debugNotify("updated cardsLeavingPlay = {}".format(cardsLeavingPlay),2)         
-         if executeAutoscripts(card,selectedAbility[card._id][0],count = selectedAbility[card._id][5], action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': return
+         if executeAutoscripts(card,selectedAbility[card._id][0],count = selectedAbility[card._id][5], action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': 
+            # If we have an abort, we need to restore the card to its triggered mode so that the player may change targets and try again. 
+            # Since we've already cleared the card to avoid it's "in-a-trigger" state from affecting effects which remove it from play, we need to re-store it now.
+            # Since we already have its tuple stored locally, we just use storeCardEffects to save it back again.
+            storeCardEffects(card,selectedAbility[card._id][0],selectedAbility[card._id][1],selectedAbility[card._id][2],selectedAbility[card._id][3],selectedAbility[card._id][4],selectedAbility[card._id][5])
+            readyEffect(card,True)
+            return
       debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
       if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
          strike(card, Continuing = True)
@@ -606,7 +613,7 @@ def strike(card, x = 0, y = 0, Continuing = False):
    elif ((Unit_Damage and Tactics) or Tactics > 1) and targetUnit: # We inform the user why we didn't assign markers automatically.
       delayed_whisper(":::ATTENTION::: Due to multiple effects, no damage or focus counters have been auto assigned. Please use Alt+D and Alt+F to assign markers to targeted units manually")
    elif not targetUnit and (Unit_Damage or Tactics): # We give some informatory whispers to the players to help them perform strikes faster in the future
-      delayed_whisper(":::ATTENTION::: You had no units targeted with shift+click, so no counters were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
+      delayed_whisper(":::ATTENTION::: You had no units targeted with shift+click, so no combat markers were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
    if Unit_Damage: AnnounceText += ' {} Unit Damage{}'.format(Unit_Damage,Unit_DamageTXT)
    if Tactics: 
       if AnnounceText == '': AnnounceText += ' {} Tactics{}'.format(Tactics,TacticsTXT)
@@ -1071,8 +1078,8 @@ def rescue(card,x = 0, y = 0,silent = False):
    capturingObjective = removeCapturedCard(card) # We use a global variable in order for scripts which require it, to find out from which objective we rescued the card from.
    card.moveTo(card.owner.hand)
    autoscriptOtherPlayers('CardRescued',card) 
+   if not silent: notify("{} rescued a card from {}".format(me,capturingObjective))
    capturingObjective = None # We clear it at the end.
-   if not silent: notify("{} rescued a card from {}".format(me,obj))
    debugNotify("<<< rescue()")
    
 

@@ -3062,11 +3062,11 @@ Placement:Force User
 +++++
 
 .....
-Secret Guardian
+Secret Guardian ### We use this weird 'whileInPlay' trick because you cannot put markers on cards in your hand, and targeting is wiped when the card is moved by the previous script.
 -----
 ff4fb461-8060-457a-9c16-000000000402
 -----
-onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand$$Put1Secret Guardian-Targeted-atCharacter-fromHand||afterPhase:ReturnTarget-AutoTargeted-atCharacter-hasMarker{Secret Guardian}
+onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand||whileInPlay:Put1Secret Guardian-foreachCardPlayed-onTriggerCard-typeCharacter
 +++++
 
 .....
