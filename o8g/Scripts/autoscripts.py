@@ -429,7 +429,7 @@ def redirect(Autoscript, card, action, X = 0,targetC = None):
    if action == 'Quick': announceText = "{} uses {}'s ability to".format(targetPL,card) 
    elif card.highlight == DummyColor: announceText = "{}'s lingering effects:".format(card)
    else: announceText = "{} uses {} to".format(targetPL,card)
-   debugNotify(" targetC: {}. Notification Type = {}".format(targetC,'Quick'), 3) # Debug   
+   debugNotify(" targetC: {}. Notification Type = {}".format([c.name for c in targetC],'Quick'), 3) # Debug   
    if regexHooks['GainX'].search(Autoscript):
       gainTuple = GainX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X)
       if gainTuple == 'ABORT': return 'ABORT'
@@ -555,7 +555,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          targetCardlist += ' {},'.format(targetCard)
    foundKey = False # We use this to see if the marker used in the AutoAction is already defined.
    action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal|Transfer)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
-   debugNotify("action Regex = {}".format(action.group()),3)
+   debugNotify("action Regex = {}".format(action.groups()),3)
    if action.group(3) in mdict: token = mdict[action.group(3)]
    elif action.group(3) in resdict: token = resdict[action.group(3)]
    elif action.group(3) == "AnyTokenType": pass # If the removed token can be of any type, 
