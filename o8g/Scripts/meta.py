@@ -196,13 +196,14 @@ def resetAll(): # Clears all the global variables in order to start a new game.
 def placeCard(card): 
    mute()
    try:
-      if debugVerbosity >= 1: notify(">>> placeCard()") #Debug
+      debugNotify(">>> placeCard() for card: {}".format(card)) #Debug
       if Automations['Placement']:
+         debugNotify("We have placement automations",2) #Debug
          if card.Type == 'Unit': # For now we only place Units
             unitAmount = eval(getGlobalVariable('Existing Units'))
-            if debugVerbosity >= 2: notify("### my unitAmount is: {}.".format(unitAmount[me.name])) #Debug
+            debugNotify("my unitAmount is: {}.".format(unitAmount[me.name]),2) #Debug
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
-            if debugVerbosity >= 2: notify("### my freePositions is: {}.".format(freePositions)) #Debug
+            debugNotify(" my freePositions is: {}.".format(freePositions),2) #Debug
             if freePositions != []: # We use this variable to see if there were any discarded units and we use their positions first.
                positionC = freePositions.pop() # This returns the last position in the list of positions and deletes it from the list.
                if debugVerbosity >= 2: notify("### positionC is: {}.".format(positionC)) #Debug
@@ -241,6 +242,7 @@ def placeCard(card):
                   if host[0].Type == 'Objective': card.moveToTable(x + (playerside * xAxis * cwidth(card,0) / 2 * cardAttachementsNR), y)
                   else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
                   card.sendToBack()
+      else: debugNotify("No Placement Automations. Doing Nothing",2)
       if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
    except: notify("!!! ERROR !!! in placeCard()")
    
@@ -1087,9 +1089,18 @@ def TrialError(group, x=0, y=0): # Debugging
    if not playerside:  # If we've already run this command once, don't recreate the cards.
       chooseSide()
       #createStartingCards()
+   if confirm("Spawn Test Cards?"):
+      #spawnTestCards()
+      spawnSetCards()
+
+def spawnTestCards():
    testcards = ["ff4fb461-8060-457a-9c16-000000000397", # EoD  cards
                 "ff4fb461-8060-457a-9c16-000000000384",
                 "ff4fb461-8060-457a-9c16-000000000318"]
+   for idx in range(len(testcards)):
+      test = table.create(testcards[idx], (70 * idx) - 400, 0, 1, True)
+      
+def spawnSetCards():
    setCards = [ "ff4fb461-8060-457a-9c16-000000000355", # EoD Set
                 "ff4fb461-8060-457a-9c16-000000000356",
                 "ff4fb461-8060-457a-9c16-000000000357",
@@ -1223,12 +1234,9 @@ def TrialError(group, x=0, y=0): # Debugging
                 # "ff4fb461-8060-457a-9c16-000000000485",
                 "ff4fb461-8060-457a-9c16-000000000486"
                 ]
-   if confirm("Spawn Test Cards?"):
-      for idx in range(len(testcards)):
-         test = table.create(testcards[idx], (70 * idx) - 400, 0, 1, True)
-      for cID in setCards:
-         test = table.create(cID, 0, 0, 1, True)
-         test.moveTo(me.piles['Removed from Game'])
+   for cID in setCards:
+      test = table.create(cID, 0, 0, 1, True)
+      test.moveTo(me.piles['Removed from Game'])
 
 def flipcard(card,x,y):
    card.switchImage

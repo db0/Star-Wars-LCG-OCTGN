@@ -3010,6 +3010,7 @@ Undercover Operative
 -----
 ff4fb461-8060-457a-9c16-000000000394
 -----
+
 +++++
 
 .....
@@ -3017,7 +3018,7 @@ Smuggler's Run
 -----
 ff4fb461-8060-457a-9c16-000000000395
 -----
-whileInPlay:TakeoverTarget-Targeted-atEnhancement-targetOpponents-foreachObjectiveThwarted-isReact
+onPlay:TakeoverTarget-Targeted-atEnhancement-targetOpponents
 +++++
 
 .....

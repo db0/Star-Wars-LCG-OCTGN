@@ -505,6 +505,7 @@ def defaultAction(card, x = 0, y = 0):
       debugNotify("selectedAbility Tuple = {}".format(selectedAbility[card._id]),4)
       if selectedAbility[card._id][4]: preTargets = [Card(selectedAbility[card._id][4])] # The 5th value of the tuple is special target card's we'll be using for this run.
       else: preTargets = None
+      debugNotify("preTargets = {}".format(preTargets),3)
       if findMarker(card, "Effects Cancelled"): 
          notify("{}'s effects have been cancelled".format(card))
       else: 

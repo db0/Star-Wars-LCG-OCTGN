@@ -392,6 +392,7 @@ def markerEffects(Time = 'Start'):
 #------------------------------------------------------------------------------
 def executeAutoscripts(card,Autoscript,count = 0,action = 'PLAY',targetCards = None):
    debugNotify(">>> executeAutoscripts(){}".format(extraASDebug(Autoscript))) #Debug
+   debugNotify("card = {}, count = {}, action = {}, targetCards = {}".format(card,count,action,targetCards),1)
    global failedRequirement
    failedRequirement = False
    X = count # The X Starts as the "count" passed variable which sometimes may need to be passed.
@@ -976,20 +977,20 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          return 'ABORT'      
    if action.group(3): dest = action.group(3)
    else: dest = 'hand'
-   if debugVerbosity >= 2: notify("### targetCards(){}".format(targetCards)) #Debug   
+   debugNotify("targetCards(){}".format([c.name for c in targetCards]),2) #Debug   
    for targetCard in targetCards: 
       if (action.group(1) == 'Capture' or action.group(1) == 'BringToPlay' or  action.group(1) == 'Return') and targetCard.group == table: 
          targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
       else: targetCardlist += '{},'.format(targetCard)
    rnd(1,10) # Dela yto be able to grab the names
-   if debugVerbosity >= 3: notify("### Preparing targetCardlist")      
+   debugNotify("Preparing targetCardlist",2)      
    targetCardlist = targetCardlist.strip(',') # Re remove the trailing comma
    if action.group(1) == 'SendToBottom': # For SendToBottom, we need a different mthod, as we need to shuffle the cards.
       if action.group(2) == 'Multi': 
-         if debugVerbosity >= 3: notify("### Sending Multiple card to the bottom")   
+         debugNotify("Sending Multiple card to the bottom",3)   
          sendToBottom(targetCards)
       else: 
-         if debugVerbosity >= 3: notify("### Sending Single card to the bottom")   
+         debugNotify("### Sending Single card to the bottom",3)   
          sendToBottom([targetCards[0]])
    else:
       for targetCard in targetCards:
@@ -1007,9 +1008,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
                targetCard.moveTo(targetCard.owner.hand)
             extraTXT = " to their owner's hand"
          elif action.group(1) == 'BringToPlay': 
-            placeCard(card)
-            executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
-            autoscriptOtherPlayers('CardPlayed',card)            
+            placeCard(targetCard)
+            executePlayScripts(targetCard, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
+            autoscriptOtherPlayers('CardPlayed',targetCard)            
          elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
@@ -1626,7 +1627,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                requiredAllegiances.append(allegiance.group(1))
             if reversed: reversePlayerChk = False # We return things to normal now.
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
-            whisper(":::ERROR::: You need to target a valid card before using this action{}.".format(targetsText))
+            delayed_whisper(":::ERROR::: You need to target a valid card before using this action{}.".format(targetsText))
          elif len(foundTargets) >= 1 and re.search(r'-choose',Autoscript):
             if debugVerbosity >= 2: notify("### Going for a choice menu")# Debug
             choiceType = re.search(r'-choose([0-9]+)',Autoscript)
@@ -1737,8 +1738,9 @@ def checkSpecialRestrictions(Autoscript,card):
    validCard = True
    if re.search(r'Transfer[0-9]',Autoscript): # If we're using the Transfer core command, then we're going to have source and destination conditions which will mess checks. We need to remove them.
       debugNotify("We got Transfer core command",2)
-      newASregex = re.search(r'(Transfer-.*?)-source',2)
-      debugNotify('newASregex = {}'.format(newASregex.groups()),2)
+      newASregex = re.search(r'(Transfer.*?)-source',Autoscript)
+      if newASregex: debugNotify('newASregex = {}'.format(newASregex.groups()),2)
+      else: debugNotify("Script could not find newASregex. Will error",2)
       Autoscript = newASregex.group(1) # We keep only everything in the basic targetting
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: 
       debugNotify("Failing Because it's not current objective", 2)
