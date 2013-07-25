@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-afterCardRefreshing:Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-choose1-targetMine-duringMyTurn-isReact
+afterCardRefreshing:Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-choose1-targetMine-noTargetingError-duringMyTurn-isReact
 +++++
 
 .....
@@ -1788,7 +1788,7 @@ ff4fb461-8060-457a-9c16-000000000223
 -----
 
 +++++
-R0:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-osReact
+R0:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-isReact
 .....
 Battle of Hoth
 -----
@@ -2370,7 +2370,7 @@ Colonel Starck
 -----
 ff4fb461-8060-457a-9c16-000000000308
 -----
-ExtraIcon:UD:2-isAttacking-isDamagedObjective||ExtraIcon:BD:2-isAttacking-isDamagedObjective
+ExtraIcon:UD:2-ifOrigAttacking-isDamagedObjective||ExtraIcon:BD:2-ifOrigAttacking-isDamagedObjective
 +++++
 
 .....
@@ -2426,7 +2426,7 @@ MTV-7
 -----
 ff4fb461-8060-457a-9c16-000000000309
 -----
-ExtraIcon:BD:1-isAttacking-isDamagedObjective
+ExtraIcon:BD:1-ifOrigAttacking--isDamagedObjective
 +++++
 
 .....
@@ -2434,7 +2434,7 @@ MTV-7
 -----
 ff4fb461-8060-457a-9c16-000000000310
 -----
-ExtraIcon:BD:1-isAttacking-isDamagedObjective
+ExtraIcon:BD:1-ifOrigAttacking--isDamagedObjective
 +++++
 
 .....
@@ -2770,7 +2770,7 @@ Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000357
 -----
-ExtraIcon:BD:2-hasMarker{Damage}
+ExtraIcon:BD:2-ifOrigHasMarker{Damage}
 +++++
 
 .....
@@ -2778,7 +2778,7 @@ Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000358
 -----
-ExtraIcon:BD:2-hasMarker{Damage}
+ExtraIcon:BD:2-ifOrigHasMarker{Damage}
 +++++
 
 .....
@@ -2946,7 +2946,7 @@ Covert Sniper
 -----
 ff4fb461-8060-457a-9c16-000000000381
 -----
-afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited
+afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited-choose1
 +++++
 
 .....
@@ -3321,7 +3321,7 @@ The Shadow of Nar Shaddaa
 -----
 ff4fb461-8060-457a-9c16-000000000439
 -----
-R0:Put2Focus-isCost$$Put1Focus-DemiAutoTargeted-atUnit-isAttacking
+R0:Put2Focus-isCost$$Put1Focus-DemiAutoTargeted-atUnit-isAttacking-choose1
 +++++
 
 .....
@@ -3545,7 +3545,7 @@ Bantha
 -----
 ff4fb461-8060-457a-9c16-000000000476
 -----
-whileInPlay:Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-foreachCardPlayed-typeScavenger
+whileInPlay:Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-foreachCardPlayed-typeScavenger-isReact
 +++++
 
 .....
@@ -3553,7 +3553,7 @@ Tusken Raider
 -----
 ff4fb461-8060-457a-9c16-000000000477
 -----
-onStrike:ReturnMyself
+onStrike:ReturnMyself-isReact
 +++++
 
 .....
@@ -3561,7 +3561,7 @@ Tusken Raider
 -----
 ff4fb461-8060-457a-9c16-000000000478
 -----
-onStrike:ReturnMyself
+onStrike:ReturnMyself-isReact
 +++++
 
 .....
@@ -3577,7 +3577,7 @@ Gaffi Stick
 -----
 ff4fb461-8060-457a-9c16-000000000480
 -----
-Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetMine-isParticipating-isDistributedEffect
+Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetMine-isParticipating-isDistributedEffect-ignore1
 +++++
 
 .....
@@ -3601,7 +3601,7 @@ Trooper Sentry
 -----
 ff4fb461-8060-457a-9c16-000000000483
 -----
-onPlay:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-isReact
+onPlay:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-choose1-isReact
 +++++
 
 .....
@@ -3609,7 +3609,7 @@ Trooper Sentry
 -----
 ff4fb461-8060-457a-9c16-000000000484
 -----
-onPlay:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-isReact
+onPlay:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-choose1-isReact
 +++++
 
 .....

@@ -266,15 +266,16 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                                                                     # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
          if confirmText and not confirm(confirmText.group(1)): continue
          edgeDiffRegex = re.search(r'ifEdgeDiff(ge|le|eq)([0-9])', autoS) # If the card is expecting a specific Edge Difference, it should have been passed via the count above.
-         if edgeDiffRegex.group(1) == 'ge' and count < num(edgeDiffRegex.group(2)): 
-            debugNotify("Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
-            continue
-         if edgeDiffRegex.group(1) == 'le' and count > num(edgeDiffRegex.group(2)): 
-            debugNotify("Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
-            continue
-         if edgeDiffRegex.group(1) == 'eq' and count != num(edgeDiffRegex.group(2)): 
-            debugNotify("Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
-            continue
+         if edgeDiffRegex:
+            if edgeDiffRegex.group(1) == 'ge' and count < num(edgeDiffRegex.group(2)): 
+               debugNotify("Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
+               continue
+            if edgeDiffRegex.group(1) == 'le' and count > num(edgeDiffRegex.group(2)): 
+               debugNotify("Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
+               continue
+            if edgeDiffRegex.group(1) == 'eq' and count != num(edgeDiffRegex.group(2)): 
+               debugNotify("Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
+               continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
@@ -554,6 +555,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          targetCardlist += ' {},'.format(targetCard)
    foundKey = False # We use this to see if the marker used in the AutoAction is already defined.
    action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal|Transfer)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
+   debugNotify("action Regex = {}".format(action.group()),3)
    if action.group(3) in mdict: token = mdict[action.group(3)]
    elif action.group(3) in resdict: token = resdict[action.group(3)]
    elif action.group(3) == "AnyTokenType": pass # If the removed token can be of any type, 
@@ -577,7 +579,9 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          token = ("{}".format(action.group(3)),"00000000-0000-0000-0000-00000000000{}".format(rndGUID)) #This GUID is one of the builtin ones
    count = num(action.group(2))
    multiplier = per(Autoscript, card, n, targetCards, notification)
+   debugNotify("About to check type of module for {}".format(action.group(1)),3)
    if action.group(1) == 'Transfer':
+      debugNotify("In transfer module",2)
       if len(targetCards) != 2:
          delayed_whisper(":::ERROR::: You must target exactly 2 cards to use this ability.")
          return
@@ -609,6 +613,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       targetCard.markers[token] += modtokens
       notify("{} has moved one focus token from {} to {}".format(card,sourceCard,targetCard))
    else:
+      debugNotify("In normal tokens module",2)
       for targetCard in targetCards:
          if action.group(3) == "AnyTokenType": token = chooseAnyToken(targetCard,action.group(1)) # If we need to find which token to remove, we have to do it once we know which cards we're checking.
          if action.group(1) == 'Put':
@@ -645,8 +650,10 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
    if action.group(1) == 'Deal': countersTXT = '' # If we "deal damage" we do not want to be writing "deals 1 damage counters"
    else: countersTXT = 'counters'
+   debugNotify("About to set announceString",2)
    if action.group(1) == 'Transfer': announceString = "{} {} {} {} {} from {} to {}".format(announceText, action.group(1).lower(), total, token[0],countersTXT,sourceCard,targetCard)
    else: announceString = "{} {} {} {} {}{}".format(announceText, action.group(1).lower(), total, token[0],countersTXT,targetCardlist)
+   debugNotify("About to Announce",2)
    if notification and modtokens != 0 and not re.search(r'isSilent', Autoscript): notify(':> {}.'.format(announceString))
    if debugVerbosity >= 2: notify("### TokensX() String: {}".format(announceString)) #Debug
    if debugVerbosity >= 3: notify("<<< TokensX()")
@@ -856,7 +863,7 @@ def RequestInt(Autoscript, announceText, card, targetCards = None, notification 
 def SimplyAnnounce(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for drawing X Cards from the house deck to your hand.
    if debugVerbosity >= 1: notify(">>> SimplyAnnounce(){}".format(extraASDebug())) #Debug
    if targetCards is None: targetCards = []
-   action = re.search(r'\bSimplyAnnounce{([A-Za-z0-9&,\. ]+)}', Autoscript)
+   action = re.search(r'\bSimplyAnnounce{([A-Za-z0-9&,\.\' ]+)}', Autoscript)
    if debugVerbosity >= 2: #Debug
       if action: notify("!!! regex: {}".format(action.groups())) 
       else: notify("!!! regex failed :(") 
@@ -1862,6 +1869,18 @@ def checkOriginatorRestrictions(Autoscript,card):
          currentTarget = Card(num(EngagedObjective))
          if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller == card.controller: validCard = False
          elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: validCard = False
+   if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
+      debugNotify("Checking for Damaged Objective", 2)
+      EngagedObjective = getGlobalVariable('Engaged Objective')
+      if EngagedObjective == 'None': 
+         debugNotify("Failing Because we're looking for a damaged objective and there's no objective at all", 2)         
+         validCard = False
+      else:
+         currentTarget = Card(num(EngagedObjective))
+         if not currentTarget.markers[mdict['Damage']]:
+            try: debugNotify("Requires Damaged objective but {} Damage Markers found on {}".format(currentTarget.markers[mdict['Damage']],currentTarget),2)
+            except: debugNotify("Oops! I guess markers were null", 2)
+            validCard = False
    if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if re.search(r'ifOrigNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): validCard = False
    if re.search(r'ifOrighasEdge',Autoscript) and not gotEdge(card.controller): validCard = False
@@ -2001,6 +2020,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
    if targetCards is None: targetCards = []
    div = 1
    ignore = 0
+   max = 0 # A maximum of 0 means no limit
    per = re.search(r'\b(per|upto)(Target|Host|Every)?([A-Z][^-]*)-?', Autoscript) # We're searching for the word per, and grabbing all after that, until the first dash "-" as the variable.   
    if per: # If the  search was successful...
       multiplier = 0
@@ -2062,9 +2082,11 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
       maxS = re.search(r'-max([0-9]+)',Autoscript)
       if maxS: max = num(maxS.group(1))
    else: multiplier = 1
-   if debugVerbosity >= 2: notify("<<< per() with Multiplier: {}".format((multiplier - ignore) / div)) # Debug
    finalMultiplier = (multiplier - ignore) / div
-   if finalMultiplier > max: finalMultiplier == max
+   if max and finalMultiplier > max: 
+      debugNotify("Reducing Multiplier to Max",2)
+      finalMultiplier == max
+   if debugVerbosity >= 2: notify("<<< per() with Multiplier: {}".format(finalMultiplier)) # Debug
    return finalMultiplier
    
 def chooseAnyToken(card,action):
