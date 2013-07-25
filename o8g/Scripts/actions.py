@@ -509,26 +509,31 @@ def defaultAction(card, x = 0, y = 0):
       if findMarker(card, "Effects Cancelled"): 
          notify("{}'s effects have been cancelled".format(card))
       else: 
-         if card.Type == 'Event':
-            Autoscripts = CardsAS.get(card.model,'').split('||')
-            if len(Autoscripts) > 0:
-               for autoS in Autoscripts:
-                  if re.search(r'(?<!Auto)Targeted', autoS) and re.search(r'onPlay', autoS) and findTarget(autoS,card = card) == []: return # If the script needs a target but we don't have any, abort.
+         splitTargets = selectedAbility[card._id][0].split('$$')
+         for targetSeek in splitTargets:
+            if re.search(r'(?<!Auto)Targeted', targetSeek) and re.search(r'onPlay', targetSeek) and findTarget(targetSeek,card = card) == []: 
+               if card.Type == 'Event': bracketInfo = "(Cancelling will abort the effect and return this card back to your hand. Saying NO will allow you to target and double click this card to try again.)"
+               else: bracketInfo = "(Cancelling will dismiss this react trigger. Saying NO will allow you to target and double click this card to try again.)"
+               if confirm(":::ERROR::: Required Targets for this effect not found! You need to target with shift-click accordingly\
+                       \n\nWould you like to completely cancel this effect?\
+                         \n{}".format(bracketInfo)):
+                  clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
+                  if card.Type == 'Event': card.moveTo(card.owner.hand)
+                  notify("{} has aborted using {}".format(me,card))
+               else: return # If the script needs a target but we don't have any, abort.
          notify("{} resolves the effects of {}".format(me,card)) 
+         clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
          if re.search(r'LEAVING',selectedAbility[card._id][3]): 
             cardsLeavingPlay.append(card._id)
             debugNotify("updated cardsLeavingPlay = {}".format(cardsLeavingPlay),2)         
          if executeAutoscripts(card,selectedAbility[card._id][0],count = selectedAbility[card._id][5], action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': return
-      clearStoredEffects(card,True)
       debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
       if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
          strike(card, Continuing = True)
       if re.search(r'LEAVING',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': # If the action is LEAVING, it means we pause the card movement to give an opportunity to use the react.
          if re.search(r'-DISCARD',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': discard(card,Continuing = True)
-         elif re.search(r'-HAND',selectedAbility[card._id][3]): 
-            card.moveTo(card.owner.hand)
-            if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
-         elif re.search(r'-DECKBOTTOM',selectedAbility[card._id][3]): sendToBottom(Continuing = True)
+         elif re.search(r'-HAND',selectedAbility[card._id][3]): returnToHand(card,Continuing = True) 
+         elif re.search(r'-DECKBOTTOM',selectedAbility[card._id][3]): sendToBottom(Continuing = True) # This is not passed a specific card as it uses a card list, which we've stored in a global variable already
          elif re.search(r'-EXILE',selectedAbility[card._id][3]): exileCard(card, Continuing = True)
          elif re.search(r'-CAPTURE',selectedAbility[card._id][3]): capture(targetC = card, Continuing = True)
       if card.Type == 'Event': 
@@ -659,7 +664,7 @@ def cancelPaidAbility(card,x=0,y=0):
 def ignoreTrigger(card,x=0,y=0):
    mute()
    clearStoredEffects(card)
-   notify("{} chose not to activate {}'s ability".format(card))
+   notify("{} chose not to activate {}'s ability".format(me,card))
 
 def generate(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
@@ -1029,10 +1034,11 @@ def removeCapturedCard(card): # This function removes a captured card from the d
          rnd(1,10)
       setGlobalVariable('Captured Cards',str(capturedCards))
    except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
-   if debugVerbosity >= 3: notify("<<< removeCapturedCard()") #Debug
+   if debugVerbosity >= 3: notify("<<< removeCapturedCard() with return: {}".format(parentObjective)) #Debug
    return parentObjective
 
 def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
+   debugNotify(">>> rescueFromObjective()")
    try:
       count = 0
       capturedCards = eval(getGlobalVariable('Captured Cards')) # This is a dictionary holding how many and which cards are captured at each objective.
@@ -1045,32 +1051,42 @@ def rescueFromObjective(obj): # THis function returns all captured cards from an
             autoscriptOtherPlayers('CardRescued',rescuedC) # We check if any card on the table has a trigger out of rescued cards.
       return count
    except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
+   debugNotify("<<< rescueFromObjective()")
 
 def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game thinks the objective has captured
+   debugNotify(">>> clearCaptures()")
    capturedCards = eval(getGlobalVariable('Captured Cards')) # This is a dictionary holding how many and which cards are captured at each objective.
    for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
       if capturedCards[capturedC] == card._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
          removeCapturedCard(Card(capturedC)) # We remove the card from the dictionary
    whisper("All associated captured cards for this objective have been cleared")
+   debugNotify("<<< clearCaptures()")
    
-def rescue(card,x = 0, y = 0):
+def rescue(card,x = 0, y = 0,silent = False):
+   debugNotify(">>> rescue()")
+   if card.isFaceUp: 
+      notify(":::ERROR::: Target Card was not captured!")
+      return 'ABORT'
    global capturingObjective
    capturingObjective = removeCapturedCard(card) # We use a global variable in order for scripts which require it, to find out from which objective we rescued the card from.
    card.moveTo(card.owner.hand)
    autoscriptOtherPlayers('CardRescued',card) 
    capturingObjective = None # We clear it at the end.
-   notify("{} rescued a card from {}".format(me,obj))
+   if not silent: notify("{} rescued a card from {}".format(me,obj))
+   debugNotify("<<< rescue()")
    
 
 def rescueTargets(group,x = 0, y = 0):
+   debugNotify(">>> rescueTargets()")
    for card in table:
       if card.highlight == CapturedColor and card.targetedBy and card.targetedBy == me:
          obj = removeCapturedCard(card) 
          card.moveTo(card.owner.hand)
          notify("{} rescued a card from {}".format(me,obj))
+   debugNotify("<<< rescueTargets()")
 
 def exileCard(card, silent = False,Continuing = False):
-   if debugVerbosity >= 1: notify(">>> exileCard(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.
    global cardsLeavingPlay
    debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
@@ -1411,6 +1427,26 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
          randomizedArray = None
    debugNotify("<<< sendToBottom()") #Debug
 
+def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
+   debugNotify(">>> returnToHand()") #Debug
+   global cardsLeavingPlay
+   if card.group == table and card.highlight != EdgeColor and card.highlight != FateColor and card.highlight != CapturedColor:
+      if not Continuing and card._id not in cardsLeavingPlay:
+         execution = executePlayScripts(card, 'LEAVING-HAND')
+         autoscriptOtherPlayers('CardLeavingPlay',card)
+         if execution == 'POSTPONED': 
+            scriptPostponeNotice('Card return')
+            return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
+         rnd(1,10)
+   if not chkEffectTrigger(card,'Card Return'):
+      if card.group == table and card.highlight != CapturedColor: 
+         if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+         freeUnitPlacement(card)
+         card.moveTo(card.owner.hand)
+   if not silent: notify("{} returned {} to its owner's hand".format(me,card))
+   debugNotify("<<< returnToHand()") #Debug
+   
+   
 def drawCommand(group, silent = False):
    if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
    mute()

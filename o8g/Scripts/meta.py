@@ -845,11 +845,14 @@ def freeUnitPlacement(card): # A function which stores a unit's position when it
          setGlobalVariable('Existing Units',str(unitAmount))
       except: notify("!!! ERROR !!! Retrieving 'Existing Units' shared var")
 
-def chkEffectTrigger(card,actionType = 'Discard',silent = False):
+def chkEffectTrigger(card,actionType = 'Discard',silent = False): # Checks if a card has a currently waiting-to-trigger script, in order to avoid removing it from the table.
+   debugNotify(">>> chkEffectTrigger()")
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    if selectedAbility.has_key(card._id):
       if not silent: scriptPostponeNotice(actionType)
+      debugNotify("<<< chkEffectTrigger() with True")
       return True # If the unit now has the Ready Effect Highlight, it means we're pausing our attack to allow the player to decide to use the react or not. 
+   debugNotify("<<< chkEffectTrigger() with False")
    return False
 
 def scriptPostponeNotice(actionType = 'Discard'):

@@ -135,8 +135,9 @@ def executePlayScripts(card, action):
             ### Otherwise the automation is uninterruptible and we just go on with the scripting.
             executeAutoscripts(card,autoS,action = action)
             scriptEffect = 'COMPLETE'
-   if debugVerbosity >= 2: notify("#### About to go check if I'm to go into executeAttachmentScripts()") # Debug
+   debugNotify("#### About to go check if I'm to go into executeAttachmentScripts()",2) # Debug
    if not re.search(r'HOST-',action): executeAttachmentScripts(card, action) # if the automation we're doing now is not for an attachment, then we check the current card's attachments for more scripts
+   debugNotify("<<< executePlayScripts() with scriptEffect = {}".format(scriptEffect))
    return scriptEffect
 
 #------------------------------------------------------------------------------
@@ -268,13 +269,13 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          edgeDiffRegex = re.search(r'ifEdgeDiff(ge|le|eq)([0-9])', autoS) # If the card is expecting a specific Edge Difference, it should have been passed via the count above.
          if edgeDiffRegex:
             if edgeDiffRegex.group(1) == 'ge' and count < num(edgeDiffRegex.group(2)): 
-               debugNotify("Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
+               debugNotify("!!! Failing because Edge Difference ({}) less than {}".format(count,edgeDiffRegex.group(2)),2)
                continue
             if edgeDiffRegex.group(1) == 'le' and count > num(edgeDiffRegex.group(2)): 
-               debugNotify("Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
+               debugNotify("!!! Failing because Edge Difference ({}) more than {}".format(count,edgeDiffRegex.group(2)),2)
                continue
             if edgeDiffRegex.group(1) == 'eq' and count != num(edgeDiffRegex.group(2)): 
-               debugNotify("Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
+               debugNotify("!!! Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
                continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
@@ -294,7 +295,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
          if targetCardID: executeAutoscripts(card,autoS,count,action = 'Automatic',targetCards = [Card(targetCardID)])
-         else: executeAutoscripts(card,autoS,count,action = 'Automatic',None)
+         else: executeAutoscripts(card,autoS,count,action = 'Automatic')
    if debugVerbosity >= 3: notify("<<< autoscriptOtherPlayers()") # Debug
 
 #------------------------------------------------------------------------------
@@ -371,20 +372,24 @@ def markerEffects(Time = 'Start'):
                  or re.search(r'Force Stasis',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
-         if ((       Time == 'afterBalance' # These are "after-phase" effects
+         if  (       Time == 'afterBalance' # These are "after-phase" effects
                   or Time == 'afterRefresh'
                   or Time == 'afterDraw'
                   or Time == 'afterDeployment'
                   or Time == 'afterConflict'
-                  or Time == 'End')
-               and (re.search(r'Munitions Expert',marker[0])
-                or re.search(r'Echo Caverns',marker[0])
-                or re.search(r'Ion Damaged',marker[0])
-                or re.search(r'Unwavering Resolve',marker[0])
-                or re.search(r'Bring Em On',marker[0])
-                or re.search(r'Shelter from the Storm',marker[0]))):
-            TokensX('Remove999'+marker[0], marker[0] + ':', card)
-            notify("--> {} removes {} effect from {}".format(me,marker[0],card))
+                  or Time == 'End'):
+            if (     re.search(r'Munitions Expert',marker[0])
+                     or re.search(r'Echo Caverns',marker[0])
+                     or re.search(r'Ion Damaged',marker[0])
+                     or re.search(r'Unwavering Resolve',marker[0])
+                     or re.search(r'Bring Em On',marker[0])
+                     or re.search(r'Shelter from the Storm',marker[0])):
+               TokensX('Remove999'+marker[0], marker[0] + ':', card)
+               notify("--> {} removes {} effect from {}".format(me,marker[0],card))
+            if re.search(r'Secret Guardian',marker[0]): 
+               returnToHand(card,silent = True)
+               notify("--> {} returned Secret Guardian {} to their hand".format(me,card))
+               
 
    
    
@@ -411,7 +416,7 @@ def executeAutoscripts(card,Autoscript,count = 0,action = 'PLAY',targetCards = N
          if re.search(r'-ifHaventForce', passedScript) and haveForce(): 
             if debugVerbosity >= 2: notify("### Rejected -ifHaventForce script")
             continue         
-         if re.search(r'onlyOnce',passedScript) and oncePerTurn(card, silent = True) == 'ABORT': continue
+         if action != 'USE' and re.search(r'onlyOnce',passedScript) and oncePerTurn(card, silent = True) == 'ABORT': continue # We don't check during 'USE' because that already checks it on first trigger.
          X = redirect(passedScript, card, action, X,targetCards)
          if failedRequirement or X == 'ABORT': return 'ABORT' # If one of the Autoscripts was a cost that couldn't be paid, stop everything else.
 
@@ -587,7 +592,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       if len(targetCards) != 2:
          delayed_whisper(":::ERROR::: You must target exactly 2 cards to use this ability.")
          return
-      sourceRegex = re.search(r'-source(.*?)-Destination',Autoscript)
+      sourceRegex = re.search(r'-source(.*?)-destination',Autoscript)
       debugNotify("sourceRegex = {}".format(sourceRegex.groups()),2)
       sourceTargets = findTarget('Targeted-at{}'.format(sourceRegex.group(1)))
       if len(sourceTargets) == 0:
@@ -1001,13 +1006,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
          elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
          elif action.group(1) == 'Return': 
-            if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor: 
-               executePlayScripts(targetCard, 'LEAVING-HAND')
-               autoscriptOtherPlayers('CardLeavingPlay',targetCard)
-               rnd(1,10)
-            if not chkEffectTrigger(targetCard,'Card Return'):
-               freeUnitPlacement(targetCard)
-               targetCard.moveTo(targetCard.owner.hand)
+            returnToHand(targetCard, silent = True)
             extraTXT = " to their owner's hand"
          elif action.group(1) == 'BringToPlay': 
             placeCard(targetCard)
@@ -1020,22 +1019,18 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif action.group(1) == 'Takeover': 
             targetCard.setController(me)
             targetCard.moveToTable(0, 0 + yaxisMove(card))
-         elif action.group(1) == 'Rescue':
-            if targetCard.isFaceUp: 
-               notify(":::ERROR::: Target Card was not captured!")
-               return 'ABORT'
-            else: rescue(targetCard)
+         elif action.group(1) == 'Rescue': rescue(targetCard,silent = True)
          elif action.group(1) == 'Uncommit':
             if targetCard.Side == 'Light': commitColor = LightForceColor
             else: commitColor = DarkForceColor
             if targetCard.highlight == commitColor: targetCard.highlight = None
          else: return 'ABORT'
          if action.group(2) != 'Multi': break # If we're not doing a multi-targeting, abort after the first run.
-   if debugVerbosity >= 2: notify("### Finished Processing Modifications. About to announce")
+   debugNotify("Finished Processing Modifications. About to announce",2)
    if notification == 'Quick': announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist,extraTXT)
    else: announceString = "{} {} {}{}".format(announceText, action.group(1), targetCardlist, extraTXT)
    if notification and not re.search(r'isSilent', Autoscript): notify(':> {}.'.format(announceString))
-   if debugVerbosity >= 3: notify("<<< ModifyStatus()")
+   debugNotify("<<< ModifyStatus()")
    if re.search(r'isSilent', Autoscript): return announceText
    else: return announceString
 
@@ -1676,6 +1671,7 @@ def prepareRestrictions(Autoscript, seek = 'target'):
    if debugVerbosity >= 1: notify(">>> prepareRestrictions() {}. Seektype = {}".format(extraASDebug(Autoscript),seek)) #Debug
    validTargets = [] # a list that holds any type that a card must be, in order to be a valid target.
    targetGroups = []
+   Autoscript = scrubTransferTargets(Autoscript)
    if seek == 'type': whatTarget = re.search(r'\b(type)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "type" is used by autoscripting other players, and it's separated so that the same card can have two different triggers (e.g. see Darth Vader)
    elif seek == 'retrieve': whatTarget = re.search(r'\b(grab)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "retrieve" is used when checking what types of cards to retrieve from one's deck or discard pile
    elif seek == 'reduce': whatTarget = re.search(r'\b(affects)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "reduce" is used when checking for what types of cards to recuce the cost.
@@ -1738,58 +1734,66 @@ def checkSpecialRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify(">>> checkSpecialRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
-   if re.search(r'Transfer[0-9]',Autoscript): # If we're using the Transfer core command, then we're going to have source and destination conditions which will mess checks. We need to remove them.
-      debugNotify("We got Transfer core command",2)
-      newASregex = re.search(r'(Transfer.*?)-destination',Autoscript)
-      if newASregex: debugNotify('newASregex = {}'.format(newASregex.groups()),2)
-      else: debugNotify("Script could not find newASregex. Will error",2)
-      Autoscript = newASregex.group(1) # We keep only everything in the basic targetting
+   Autoscript = scrubTransferTargets(Autoscript)
    if re.search(r'isCurrentObjective',Autoscript) and card.highlight != DefendColor: 
-      debugNotify("Failing Because it's not current objective", 2)
+      debugNotify("!!! Failing because it's not current objective", 2)
       validCard = False
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: 
-      debugNotify("Failing Because it's not participating", 2)
+      debugNotify("!!! Failing because it's not participating", 2)
       validCard = False
    if re.search(r'ifAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
          if c != card and c.orientation == Rot90 and c.controller == card.controller: 
-            debugNotify("Failing Because it's not participating alone", 2)
+            debugNotify("!!! Failing because it's not participating alone", 2)
             validCard = False
-   if re.search(r'isCaptured',Autoscript) and card.highlight != CapturedColor: 
-      debugNotify("Was looking for a captured card but this ain't it", 2)
-      validCard = False
+   if re.search(r'isCaptured',Autoscript):
+      if card.highlight != CapturedColor: 
+         debugNotify("Was looking for a captured card but this ain't it", 2)
+         validCard = False
+      elif re.search(r'isCapturedCurrentObjective',Autoscript):
+         try:
+            capturedCards = eval(getGlobalVariable('Captured Cards'))
+            debugNotify("capturedCards = {}".format(capturedCards.get(card._id,None)))
+            currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
+            debugNotify("currentTarget = {}".format(currentTarget))
+            if capturedCards[card._id] != currentTarget._id:
+               debugNotify("Was looking for a captured card at the current objective but this isn't one", 2)
+               validCard = False           
+         except: 
+            debugNotify("!!! Failing because we crashed while looking for isCapturedCurrentObjective. Not in conflict?", 2)
+            validCard = False           
    if re.search(r'hasCaptures',Autoscript):
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       if card._id not in capturedCards.values():
          debugNotify("Was looking for card that has captured other cards but this doesn't", 2)
          validCard = False
    if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: 
-      debugNotify("Failing Because card is not Unpaid", 2)
+      debugNotify("!!! Failing because card is not Unpaid", 2)
       validCard = False
    if re.search(r'isReady',Autoscript) and card.highlight != UnpaidColor and card.highlight != ReadyEffectColor: 
-      debugNotify("Failing Because card is not Paid", 2)
+      debugNotify("!!! Failing because card is not Paid", 2)
       validCard = False
    if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): 
-      debugNotify("Failing Because unit is participating", 2)
+      debugNotify("!!! Failing because unit is participating", 2)
       validCard = False
    if re.search(r'isAttacking',Autoscript) or re.search(r'isDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')
       if EngagedObjective == 'None': 
-         debugNotify("Failing Because we're looking for at Attacker/Defender and there's no objective", 2)
+         debugNotify("!!! Failing because we're looking for at Attacker/Defender and there's no objective", 2)
          validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
          if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller: 
-            debugNotify("Failing Because unit it not attacking", 2)
+            debugNotify("!!! Failing because unit it not attacking", 2)
             validCard = False
          elif re.search(r'isDefending',Autoscript)  and currentTarget.controller != card.controller: 
-            debugNotify("Failing Because unit is not defending", 2)
+            debugNotify("!!! Failing because unit is not defending", 2)
             validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
       debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
       if EngagedObjective == 'None': 
-         debugNotify("Failing Because we're looking for a damaged objective and there's no objective at all", 2)         
+         debugNotify("!!! Failing because we're looking for a damaged objective and there's no objective at all", 2)         
          validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
@@ -1798,19 +1802,19 @@ def checkSpecialRestrictions(Autoscript,card):
             except: debugNotify("Oops! I guess markers were null", 2)
             validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: 
-      debugNotify("Failing Because card is not committed to the force", 2)
+      debugNotify("!!! Failing because card is not committed to the force", 2)
       validCard = False
    if re.search(r'isNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): 
-      debugNotify("Failing Because card is committed to the force", 2)
+      debugNotify("!!! Failing because card is committed to the force", 2)
       validCard = False
    if re.search(r'ifhasEdge',Autoscript) and not gotEdge(card.controller): 
-      debugNotify("Failing Because card's controller does not have the edge", 2)
+      debugNotify("!!! Failing because card's controller does not have the edge", 2)
       validCard = False
    if re.search(r'ifhasntEdge',Autoscript) and gotEdge(card.controller): 
-      debugNotify("Failing Because card's controller has the edge", 2)
+      debugNotify("!!! Failing because card's controller has the edge", 2)
       validCard = False
    if not chkPlayer(Autoscript, card.controller, False, True): 
-      debugNotify("Failing Because not the right controller", 2)
+      debugNotify("!!! Failing because not the right controller", 2)
       validCard = False
    markerName = re.search(r'-hasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
@@ -1818,12 +1822,12 @@ def checkSpecialRestrictions(Autoscript,card):
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerName.group(1)))# Debug
       if markerName.group(1) == 'AnyTokenType': #
          if not (card.markers[mdict['Focus']] or card.markers[mdict['Shield']] or card.markers[mdict['Damage']]): 
-            debugNotify("Failing Because card is missing all default markers", 2)
+            debugNotify("!!! Failing because card is missing all default markers", 2)
             validCard = False
       else: 
          marker = findMarker(card, markerName.group(1))
          if not marker: 
-            debugNotify("Failing Because it's missing marker", 2)
+            debugNotify("!!! Failing because it's missing marker", 2)
             validCard = False
    markerNeg = re.search(r'-hasntMarker{([\w ]+)}',Autoscript) # Checking if we need to not have specific markers on the card.
    if markerNeg: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
@@ -1831,7 +1835,7 @@ def checkSpecialRestrictions(Autoscript,card):
       if debugVerbosity >= 2: notify("### Marker Name: {}".format(markerNeg.group(1)))# Debug
       marker = findMarker(card, markerNeg.group(1))
       if marker: 
-         debugNotify("Failing Because it has marker", 2)
+         debugNotify("!!! Failing because it has marker", 2)
          validCard = False
    elif debugVerbosity >= 4: notify("### No negative marker restrictions.")
    # Checking if the target needs to have a property at a certiain value. 
@@ -1857,6 +1861,7 @@ def checkOriginatorRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify(">>> checkOriginatorRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
+   Autoscript = scrubTransferTargets(Autoscript)
    if re.search(r'ifOrigCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
    if re.search(r'ifOrigCaptures',Autoscript):
       capturedCards = eval(getGlobalVariable('Captured Cards'))
@@ -1877,7 +1882,7 @@ def checkOriginatorRestrictions(Autoscript,card):
       debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
       if EngagedObjective == 'None': 
-         debugNotify("Failing Because we're looking for a damaged objective and there's no objective at all", 2)         
+         debugNotify("!!! Failing because we're looking for a damaged objective and there's no objective at all", 2)         
          validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
@@ -1914,6 +1919,18 @@ def checkOriginatorRestrictions(Autoscript,card):
    if DialReq: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
    if debugVerbosity >= 1: notify("<<< checkOriginatorRestrictions() with return {}".format(validCard)) #Debug
    return validCard
+
+def scrubTransferTargets(Autoscript): # This functions clears the targeting modulators used by source and destination cards of the Transfer core command
+   debugNotify(">>> scrubTransferTargets() with Autoscript: {}".format(Autoscript))
+   if re.search(r'Transfer[0-9]',Autoscript): # If we're using the Transfer core command, then we're going to have source and destination conditions which will mess checks. We need to remove them.
+      debugNotify("We got Transfer core command",2)
+      newASregex = re.search(r'(Transfer.*?)-source',Autoscript) # We search until '-source' which is where the Transfer modulator's targeting regex starts
+      if newASregex: debugNotify('newASregex = {}'.format(newASregex.groups()),2)
+      else: debugNotify("Script could not find newASregex. Will error",2)
+      Autoscript = newASregex.group(1) # We keep only everything in the basic targetting
+   debugNotify("<<< scrubTransferTargets() with return {}".format(Autoscript))
+   return Autoscript
+
    
 def compareValue(comparison, value, requirement):
    debugNotify(">>> compareValue()")

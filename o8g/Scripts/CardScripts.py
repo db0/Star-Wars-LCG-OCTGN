@@ -274,7 +274,7 @@ Covering Fire
 -----
 ff4fb461-8060-457a-9c16-000000000007
 -----
-onPlay:DestroyTarget-Targeted-atUnit$$Put1Shield-AutoTargeted-atUnit-targetMine-isParticipating-hasntMarker{Shield}
+onPlay:SacrificeTarget-DemiAutoTargeted-atUnit-targetMine-choose1$$Put1Shield-AutoTargeted-atUnit-targetMine-isParticipating-hasntMarker{Shield}
 +++++
 
 .....
@@ -2786,7 +2786,7 @@ Let the Wookiee Win
 -----
 ff4fb461-8060-457a-9c16-000000000359
 -----
-onPlay:Put1Damage-Targeted-atUnit-targetMine&Deal1Damage-Targeted-atUnit_and_nonVehicle
+onPlay:Deal1Damage-DemiAutoTargeted-atUnit-targetMine-choose1$$Deal1Damage-DemiAutoTargeted-atUnit_and_nonVehicle-choose1
 +++++
 
 .....
@@ -2818,9 +2818,9 @@ Cloud City Operative
 -----
 ff4fb461-8060-457a-9c16-000000000363
 -----
-
+onPlay:Transfer1Focus-Targeted-atUnit-sourceUnit-hasMarker{Focus}-destinationUnit-hasProperty{Cost}le2-isReact
 +++++
-R0:Transfer1Focus-Targeted-atUnit-sourceUnit-hasMarker{Focus}-destinationUnit-hasProperty{Cost}le2
+
 .....
 Bothan Spy
 -----
@@ -2834,7 +2834,7 @@ Smuggling Compartment
 -----
 ff4fb461-8060-457a-9c16-000000000365
 -----
-
+Placement:Vehicle
 +++++
 R0:Draw1Card
 .....
@@ -2860,13 +2860,13 @@ ff4fb461-8060-457a-9c16-000000000368
 -----
 
 +++++
-R1:DisengageTarget-Targeted-atUnit-onlyOnce
+R1:DisengageTarget-DemiAutoTargeted-atUnit-isParticipating-choose1-onlyOnce
 .....
 Saboteur
 -----
 ff4fb461-8060-457a-9c16-000000000369
 -----
-onPlay:DestroyTarget-DemiAutoTargeted-atEnhancement-hasProperty{Cost}le2-choose1
+onPlay:DestroyTarget-Targeted-atEnhancement-hasProperty{Cost}le2-choose1-isReact
 +++++
 
 .....
@@ -2906,9 +2906,9 @@ Cloud City Operative
 -----
 ff4fb461-8060-457a-9c16-000000000375
 -----
-
+onPlay:Transfer1Focus-Targeted-atUnit-sourceUnit-hasMarker{Focus}-destinationUnit-hasProperty{Cost}le2-isReact
 +++++
-R0:Transfer1Focus-Targeted-atUnit-sourceUnit-hasMarker{Focus}-destinationUnit-hasProperty{Cost}le2
+
 .....
 Bamboozle
 -----
@@ -2930,7 +2930,7 @@ Escape from Ord Mantell
 -----
 ff4fb461-8060-457a-9c16-000000000379
 -----
-whileInPlay:Remove1Damage-AutoTargeted-atObjective-foreachCardPlayed-typeEvent-isReact
+whileInPlay:Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-choose1-foreachCardPlayed-typeEvent-isReact
 +++++
 
 .....
@@ -2938,7 +2938,7 @@ Mission Commander
 -----
 ff4fb461-8060-457a-9c16-000000000380
 -----
-onStrike:Put1Damage-isReact$$RescueTarget-Targeted-isCaptured
+onStrike:Put1Damage-isReact$$RescueTarget-Targeted-isCapturedCurrentObjective
 +++++
 
 .....
@@ -2946,7 +2946,7 @@ Covert Sniper
 -----
 ff4fb461-8060-457a-9c16-000000000381
 -----
-afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited-choose1
+afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited-choose1-isReact
 +++++
 
 .....
@@ -2962,7 +2962,7 @@ Bring 'Em On
 -----
 ff4fb461-8060-457a-9c16-000000000383
 -----
-onPlay:Put2Bring Em On:UD
+onPlay:Put2Bring Em On:UD-Targeted-atUnit-isParticipating
 +++++
 
 .....
@@ -3066,7 +3066,7 @@ Secret Guardian
 -----
 ff4fb461-8060-457a-9c16-000000000402
 -----
-onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand$$Put1Secret Guardian-Targeted-atCharacter||afterPhase:ReturnTarget-AutoTargeted-atCharacter-hasMarker{Secret Guardian}
+onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand$$Put1Secret Guardian-Targeted-atCharacter-fromHand||afterPhase:ReturnTarget-AutoTargeted-atCharacter-hasMarker{Secret Guardian}
 +++++
 
 .....

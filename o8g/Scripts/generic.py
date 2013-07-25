@@ -413,11 +413,12 @@ def multiChoice(title, options,card): # This displays a choice where the player 
 # Generic
 #---------------------------------------------------------------------------
 
-def debugNotify(msg = 'Debug Ping!', level = 1):
+def debugNotify(msg = 'Debug Ping!', level = 2):
    if not re.search(r'<<<',msg) and not re.search(r'>>>',msg):
       hashes = '#' 
       for iter in range(level): hashes += '#' # We add extra hashes at the start of debug messages equal to the level of the debug+1, to make them stand out more
       msg = hashes + ' ' +  msg
+   else: level = 1
    if debugVerbosity >= level: notify(msg)
 
 def Pass(group, x = 0, y = 0): # Player says pass. A very common action.
