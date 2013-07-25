@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.2.4.78"
+      version="2.2.4.82"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -82,6 +82,7 @@
 <!--		<cardaction menu="DebugTest" default="True" execute="flipcard" /> -->
 		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="True" shortcut="Ctrl+S" execute="defaultAction" />
 		<cardaction menu="Use card ability" default="False" shortcut="Ctrl+Q" execute="useAbility" />
+      <cardaction menu="Ignore Card Trigger" default="False" shortcut="Ctrl+Z" execute="ignoreTrigger" />
 		<cardaction menu="Commit to the Force" shortcut="Ctrl+F" execute="commit" />
 		<groupaction menu="Attack Target Objective" default="False" shortcut="Ctrl+A" execute="engageTarget" />
       <cardactions menu="Manual Card Actions">
@@ -95,11 +96,10 @@
          <cardaction menu="Clear of captured card variables" default="False" execute="clearCaptures" />
          <cardaction menu="Cancel Paid Ability" default="False" execute="cancelPaidAbility" />
          <cardaction menu="Flip Card Face Up" default="False" shortcut="Ctrl+Alt+F" execute="flipCard" />
-         <cardaction menu="Ignore Card Trigger" default="False" shortcut="Ctrl+Alt+I" execute="ignoreTrigger" />
       </cardactions>
 		<groupactions menu="Manual Targeted Actions">
          <groupaction menu="Capture Target" default="False" shortcut="Ctrl+C" execute="capture" />
-         <groupaction menu="Rescue Targets" default="False" shortcut="Ctrl+C" execute="rescueTargets" />
+         <groupaction menu="Rescue Targets" default="False" shortcut="Ctrl+R" execute="rescueTargets" />
 		</groupactions>
 		<groupaction menu="Resolve Force Struggle" default="False" shortcut="Ctrl+F6" execute="resolveForceStruggle" />
       <groupaction menu="Manually Grab The Edge" default="False" shortcut="Alt+E" execute="gainEdge" />
@@ -119,7 +119,7 @@
          <cardaction menu="Add Damage counter" default="False" shortcut="Alt+D" execute="addDamage" />
          <cardaction menu="Add Focus counter" default="False" shortcut="Alt+F" execute="addFocus" />
          <cardaction menu="Add Shield counter" default="False" shortcut="Alt+S" execute="addShield" />
-         <cardaction menu="Add Markers" default="False" shortcut="Alt+M" batchExecute="addMarker" />
+         <cardaction menu="Add Markers" default="False" shortcut="Alt+M" batchExecute="addCustomMarker" />
          <cardaction menu="Remove Damage counter" default="False" shortcut="Alt+Shift+D" execute="subDamage" />
          <cardaction menu="Remove Focus counter" default="False" shortcut="Alt+Shift+F" execute="subFocus" />
          <cardaction menu="Remove Shield counter" default="False" shortcut="Alt+Shift+S" execute="subShield" />

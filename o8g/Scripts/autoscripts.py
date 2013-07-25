@@ -26,7 +26,7 @@ TitleDone = 'Unset'
 
 def executePlayScripts(card, action):
    #action = action.upper() # Just in case we passed the wrong case
-   if debugVerbosity >= 1: notify(">>> executePlayScripts() with action: {}".format(action)) #Debug
+   debugNotify(">>> executePlayScripts() with action: {}".format(action)) #Debug
    global failedRequirement
    scriptEffect = 'INCOMPLETE'
    if not Automations['Play']: 
@@ -58,18 +58,18 @@ def executePlayScripts(card, action):
              re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
          elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
          elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
-      if debugVerbosity >= 2: notify ('Looking for multiple choice options') # Debug
+      debugNotify('Looking for multiple choice options') # Debug
       if action == 'PLAY': trigger = 'onPlay' # We figure out what can be the possible multiple choice trigger
       elif action == 'TRASH': trigger = 'onDiscard'
       elif action == 'CAPTURE': trigger = 'onCapture'
       else: trigger = 'N/A'
-      if debugVerbosity >= 2: notify ('trigger = {}'.format(trigger)) # Debug
+      debugNotify('trigger = {}'.format(trigger)) # Debug
       if trigger != 'N/A': # If there's a possibility of a multiple choice trigger, we do the check
          TriggersFound = [] # A List which will hold any valid abilities for this trigger
          for AutoS in Autoscripts:
             if re.search(r'{}:'.format(trigger),AutoS): # If the script has the appropriate trigger, we put it into the list.
                TriggersFound.append(AutoS)
-         if debugVerbosity >= 2: notify ('TriggersFound = {}'.format(TriggersFound)) # Debug
+         debugNotify('TriggersFound = {}'.format(TriggersFound)) # Debug
          if len(TriggersFound) > 1: # If we have more than one option for this trigger, we need to ask the player for which to use.
             if Automations['WinForms']: ChoiceTXT = "This card has multiple abilities that can trigger at this point.\nSelect the ones you would like to use."
             else: ChoiceTXT = "This card has multiple abilities that can trigger at this point.\nType the number of the one you would like to use."
@@ -81,16 +81,16 @@ def executePlayScripts(card, action):
             if abilChoice == 'ABORT' or abilChoice == None: return # If the player closed the window, or pressed Cancel, abort.
             TriggersFound.pop(abilChoice) # What we do now, is we remove the choice we made, from the list of possible choices. We remove it because then we will remove all the other options from the main list "Autoscripts"
             for unchosenOption in TriggersFound:
-               if debugVerbosity >= 4: notify (' Removing unused option: {}'.format(unchosenOption)) # Debug
+               debugNotify(' Removing unused option: {}'.format(unchosenOption)) # Debug
                Autoscripts.remove(unchosenOption)
-            if debugVerbosity >= 2: notify ('Final Autoscripts after choices: {}'.format(Autoscripts)) # Debug
-      if debugVerbosity >= 2: notify("#### List of autoscripts after scrubbing: {}".format(Autoscripts)) # Debug
+            debugNotify('Final Autoscripts after choices: {}'.format(Autoscripts)) # Debug
+      debugNotify("List of autoscripts after scrubbing: {}".format(Autoscripts)) # Debug
       if len(Autoscripts) == 0 and debugVerbosity >= 2: notify("### No autoscripts remaining.") # Debug
       for autoS in Autoscripts:
-         if debugVerbosity >= 2: notify("### First Processing: {}".format(autoS)) # Debug
+         debugNotify("First Processing: {}".format(autoS)) # Debug
          effectType = re.search(r'(on[A-Za-z]+|while[A-Za-z]+):', autoS)
          scriptHostCHK = re.search(r'(?<!-)onHost([A-Za-z]+)',effectType.group(1))
-         actionHostCHK = re.search(r'HOST-([A-Z]+)',action)
+         actionHostCHK = re.search(r'HOST-([A-Z-]+)',action)
          currObjID = getGlobalVariable('Engaged Objective')
          if currObjID != 'None':
             if re.search(r'-ifAttacker', autoS) and Card(num(currObjID)).owner != opponent: 
@@ -118,6 +118,14 @@ def executePlayScripts(card, action):
              (effectType.group(1) == 'onThwart' and action != 'THWART')):
             if debugVerbosity >= 2: notify("### Skipping autoS. Not triggered.\n#### EffectType: {}\n#### action = {}".format(effectType.group(1),action)) 
             continue 
+         markerModRegex = re.search(r'onMarker(Add|Sub)([A-Za-z]+)', effectType.group(1))
+         if markerModRegex:
+            debugNotify("got markerModRegex: {}".format(markerModRegex.groups()))
+            operation = markerModRegex.group(1)
+            markerType = markerModRegex.group(2)
+            if 'MARKER' + operation.upper + markerType.upper() != action: 
+               debugNotify("{} != {}".format('MARKER' + operation.upper + markerType.upper(), action))
+               continue
          if re.search(r'-onlyDuringEngagement', autoS) and getGlobalVariable('Engaged Objective') == 'None': 
             continue # If this is an optional ability only for engagements, then we abort
          if re.search(r'-isOptional', autoS):
@@ -631,8 +639,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       for targetCard in targetCards:
          if action.group(3) == "AnyTokenType": token = chooseAnyToken(targetCard,action.group(1)) # If we need to find which token to remove, we have to do it once we know which cards we're checking.
          if action.group(1) == 'Put':
-            if re.search(r'isCost', Autoscript) and targetCard.markers[token] and targetCard.markers[token] > 0:
-               whisper(":::ERROR::: This card already has a {} marker on it".format(token[0]))
+            if re.search(r'isCost', Autoscript) and targetCard.markers[token] and targetCard.markers[token] > 0 and not confirm(":::ERROR::: This card already has a {} marker on it. Proceed anyway?".format(token[0])):
                return 'ABORT'
             else: modtokens = count * multiplier
          elif action.group(1) == 'Deal': modtokens = count * multiplier
@@ -1543,11 +1550,11 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
       if fromHand == True or re.search(r'-fromHand',Autoscript): group = me.hand
       elif re.search(r'-fromTopDeckMine',Autoscript): # Quick job because I cannot be bollocksed.
          debugNotify("Returing my top deck card",2)
-         return me.piles['Command Deck'].top()
+         return [me.piles['Command Deck'].top()]
       elif re.search(r'-fromTopDeckOpponents',Autoscript): 
          debugNotify("Returing opponent top deck card",2)
          opponent = findOpponent()
-         return opponent.piles['Command Deck'].top()
+         return [opponent.piles['Command Deck'].top()]
       else: group = table
       foundTargets = []
       if re.search(r'Targeted', Autoscript):
@@ -2129,7 +2136,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
    finalMultiplier = (multiplier - ignore) / div
    if max and finalMultiplier > max: 
       debugNotify("Reducing Multiplier to Max",2)
-      finalMultiplier == max
+      finalMultiplier = max
    if debugVerbosity >= 2: notify("<<< per() with Multiplier: {}".format(finalMultiplier)) # Debug
    return finalMultiplier
    

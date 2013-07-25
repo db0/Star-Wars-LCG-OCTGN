@@ -245,6 +245,7 @@ def placeCard(card):
                   if host[0].Type == 'Objective': card.moveToTable(x + (playerside * xAxis * cwidth(card,0) / 2 * cardAttachementsNR), y)
                   else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
                   card.sendToBack()
+            else: card.moveToTable(0, 0 + yaxisMove(card))
       else: debugNotify("No Placement Automations. Doing Nothing",2)
       if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
    except: notify("!!! ERROR !!! in placeCard()")

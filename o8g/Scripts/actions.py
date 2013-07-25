@@ -823,11 +823,12 @@ def handDiscard(card):
    debugNotify("<<< handDiscard()") #Debug
       
 def discard(card, x = 0, y = 0, silent = False, Continuing = False):
-   if debugVerbosity >= 1: notify(">>> discard() card = {}".format(card)) #Debug
+   debugNotify(">>> discard() card = {}".format(card)) #Debug
    mute()
    global cardsLeavingPlay
    debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
    previousHighlight = card.highlight # We store the highlight before we move the card to the discard pile, to be able to check if it's an edge card to avoid triggering its autoscripts
+   debugNotify("previous Highlight = {}".format(previousHighlight),2)   
    if card.highlight == DummyColor: 
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{}'s resident effect ends".format(card))
@@ -839,7 +840,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             if execution == 'POSTPONED': 
                scriptPostponeNotice('Objective Thwart')
                return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
-         if debugVerbosity >= 2: notify("### About to score objective")
+         debugNotify(" About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
          currentObjectives.remove(card._id)
          rescuedCount = rescueFromObjective(card)
@@ -912,9 +913,10 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
             if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          if not silent: notify("{} discards {}".format(me,card))
-   if debugVerbosity >= 2: notify("### Checking if the card has attachments to discard as well.")      
-   if card.group != table: clearAttachLinks(card) # If a card effect did not prevent the card from leaving the table, then we clear all attachments
-   if debugVerbosity >= 1: notify("<<< discard()") #Debug
+   if previousHighlight != DummyColor:
+      debugNotify("Checking if the card has attachments to discard as well.")      
+      if card.group != table: clearAttachLinks(card) # If a card effect did not prevent the card from leaving the table, then we clear all attachments
+   debugNotify("<<< discard()") #Debug
    return 'OK'
 
 def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False, Continuing = False): # Tries to find a targeted card in the table or the oppomnent's hand to capture
@@ -998,6 +1000,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.orientation = Rot0
       targetC.highlight = CapturedColor
       targetC.target(False)
+      targetC.markers[mdict['Shield']] = 0
+      targetC.markers[mdict['Damage']] = 0
+      targetC.markers[mdict['Focus']] = 0
       debugNotify("Finished Capturing. Removing from cardsLeavingPlay var",2)
       if targetC._id in cardsLeavingPlay: cardsLeavingPlay.remove(targetC._id)
       debugNotify("About to reset shared variable",2)
@@ -1087,10 +1092,7 @@ def rescue(card,x = 0, y = 0,silent = False):
 def rescueTargets(group,x = 0, y = 0):
    debugNotify(">>> rescueTargets()")
    for card in table:
-      if card.highlight == CapturedColor and card.targetedBy and card.targetedBy == me:
-         obj = removeCapturedCard(card) 
-         card.moveTo(card.owner.hand)
-         notify("{} rescued a card from {}".format(me,obj))
+      if card.highlight == CapturedColor and card.targetedBy and card.targetedBy == me: rescue(card)
    debugNotify("<<< rescueTargets()")
 
 def exileCard(card, silent = False,Continuing = False):
@@ -1558,71 +1560,74 @@ def showatrandom(group = None, count = 1, targetPL = None, silent = False, cover
 # Tokens and Markers
 #---------------------------------------------------------------------------
 	
-def addFocus(card, x = 0, y = 0):
-   mute()
-   card.markers[mdict['Focus']] += 1
-   notify("{} adds a Focus token on {} (Total: {}).".format(me, card, card.markers[mdict['Focus']]))
+def addFocus(card, x = 0, y = 0, count = 1):
+   addMarker(card,'Focus',count)   
     
-def addDamage(card, x = 0, y = 0):
+def addDamage(card, x = 0, y = 0, count = 1):
+   addMarker(card,'Damage',count)    
+   
+def addShield(card, x = 0, y = 0, count = 1):
+   addMarker(card,'Shield',count)
+
+def addFocusTarget(group, x = 0, y = 0, count = 1):
    mute()
-   card.markers[mdict['Damage']] += 1    
-   notify("{} adds a Damage token on {} (Total: {}).".format(me, card, card.markers[mdict['Damage']]))
+   for card in table:
+      if card.targetedBy and card.targetedBy == me: addMarker(card,'Focus',count)
     
-def addShield(card, x = 0, y = 0):
-   mute()
-   if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type)): return
-   notify("{} adds a Shield token on {}.".format(me, card))
-   card.markers[mdict['Shield']] += 1        
-
-def addFocusTarget(group, x = 0, y = 0):
+def addDamageTarget(group, x = 0, y = 0, count = 1):
    mute()
    for card in table:
-      if card.targetedBy and card.targetedBy == me:
-         card.markers[mdict['Focus']] += 1
-         notify("{} adds a Focus token on {} (Total: {}).".format(me, card, card.markers[mdict['Focus']]))
+      if card.targetedBy and card.targetedBy == me: addMarker(card,'Damage',count)
     
-def addDamageTarget(group, x = 0, y = 0):
+def addShieldTarget(group, x = 0, y = 0, count = 1):
    mute()
    for card in table:
-      if card.targetedBy and card.targetedBy == me:
-         card.markers[mdict['Damage']] += 1    
-         notify("{} adds a Damage token on {} (Total: {}).".format(me, card, card.markers[mdict['Damage']]))
-    
-def addShieldTarget(group, x = 0, y = 0):
+      if card.targetedBy and card.targetedBy == me: addMarker(card,'Shield',count)
+
+def addMarker(card, tokenType,count = 1, silent = False):
    mute()
+   if tokenType == 'Shield':
+      if not silent and card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type)): return 'ABORT'
+   card.markers[mdict[tokenType]] += count	
+   if not silent: notify("{} adds a {} to {}.".format(me, tokenType, card))
+   if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
+      executePlayScripts(card, 'MARKERADD{}'.format(tokenType.upper()))
+      autoscriptOtherPlayers('{}MarkerAdded'.format(tokenType),card,count)
+      
+def subFocus(card, x = 0, y = 0, count = 1):
+   subMarker(card,'Focus',count)
+
+def subDamage(card, x = 0, y = 0, count = 1):
+   subMarker(card,'Damage',count)
+
+def subShield(card, x = 0, y = 0, count = 1):
+   subMarker(card,'Shield',count)
+
+def subFocusTarget(group, x = 0, y = 0, count = 1):
    for card in table:
-      if card.targetedBy and card.targetedBy == me:
-         if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("{} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.name)): return
-         card.markers[mdict['Shield']] += 1        
-         notify("{} adds a Shield token on {}.".format(me, card))
+      if card.targetedBy and card.targetedBy == me: subMarker(card,'Focus',count)
 
-def subFocus(card, x = 0, y = 0):
-   subToken(card, 'Focus')
-
-def subDamage(card, x = 0, y = 0):
-   subToken(card, 'Damage')
-
-def subShield(card, x = 0, y = 0):
-   subToken(card, 'Shield')
-
-def subFocusTarget(group, x = 0, y = 0):
+def subDamageTarget(group, x = 0, y = 0, count = 1):
    for card in table:
-      if card.targetedBy and card.targetedBy == me: subToken(card, 'Focus')
+      if card.targetedBy and card.targetedBy == me: subMarker(card,'Damage',count)
 
-def subDamageTarget(group, x = 0, y = 0):
+def subShieldTarget(group, x = 0, y = 0, count = 1):
    for card in table:
-      if card.targetedBy and card.targetedBy == me: subToken(card, 'Damage')
+      if card.targetedBy and card.targetedBy == me: subMarker(card,'Shield',count)
 
-def subShieldTarget(group, x = 0, y = 0):
-   for card in table:
-      if card.targetedBy and card.targetedBy == me: subToken(card, 'Shield')
-
-def subToken(card, tokenType):
+def subMarker(card, tokenType,count = 1):
    mute()
    notify("{} removes a {} from {}.".format(me, tokenType, card))
-   card.markers[mdict[tokenType]] -= 1	
+   card.markers[mdict[tokenType]] -= count	
+   if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
+      executePlayScripts(card, 'MARKERSUB{}'.format(tokenType.upper()))
+      autoscriptOtherPlayers('{}MarkerRemoved'.format(tokenType),card,count)
+   if tokenType == 'Damage' and not card.markers[mdict[tokenType]]:
+      executePlayScripts(card, 'CARDHEAL')
+      autoscriptOtherPlayers('CardHealed',card,count)
+   
     
-def addMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.
+def addCustomMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.
    if debugVerbosity >= 1: notify(">>> addMarker(){}".format(extraASDebug())) #Debug
    mute()
    marker, quantity = askMarker() # Ask the player how many of the same type they want.

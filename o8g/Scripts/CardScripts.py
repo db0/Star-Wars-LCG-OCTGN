@@ -3258,7 +3258,7 @@ Jabba's Pleasure Barge
 -----
 ff4fb461-8060-457a-9c16-000000000429
 -----
-afterDeployment:Remove1Focus-DemiAutoTargeted-atCharacter-targetMine-choose1-isCost-isReact$$Put1Focus
+afterDeployment:Remove1Focus-DemiAutoTargeted-atCharacter-hasMarker{Focus}-targetMine-choose1-isCost-isReact$$Put1Focus
 +++++
 
 .....
@@ -3322,9 +3322,9 @@ The Shadow of Nar Shaddaa
 -----
 ff4fb461-8060-457a-9c16-000000000439
 -----
-R0:Put2Focus-isCost$$Put1Focus-DemiAutoTargeted-atUnit-isAttacking-choose1
-+++++
 
++++++
+R0:Put2Focus-isCost$$Put1Focus-DemiAutoTargeted-atUnit-isAttacking-choose1
 .....
 Assassin Droid
 -----
@@ -3386,7 +3386,7 @@ Traitorous Wing Guard
 -----
 ff4fb461-8060-457a-9c16-000000000447
 -----
-ExtraIcon:UD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetMine
+ExtraIcon:BD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetMine
 +++++
 
 .....
@@ -3482,7 +3482,7 @@ Dark Memories
 -----
 ff4fb461-8060-457a-9c16-000000000466
 -----
-Placement:Character-targetOpponents
+Placement:Character-targetOpponents||onHostMarkerAddFocus:Deal1Damage-AutoTargeted-onHost-isReact
 +++++
 
 .....
@@ -3490,7 +3490,7 @@ Dark Memories
 -----
 ff4fb461-8060-457a-9c16-000000000467
 -----
-Placement:Character-targetOpponents
+Placement:Character-targetOpponents||onHostMarkerAddFocus:Deal1Damage-AutoTargeted-onHost-isReact
 +++++
 
 .....
@@ -3618,7 +3618,7 @@ Armed and Ready
 -----
 ff4fb461-8060-457a-9c16-000000000485
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:IncreaseUD:1-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
