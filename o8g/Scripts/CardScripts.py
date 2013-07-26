@@ -738,7 +738,7 @@ Heroic Sacrifice
 -----
 ff4fb461-8060-457a-9c16-000000000191
 -----
-onPlay:DestroyMulti-Targeted-atVehicle-hasProperty{Cost}le4
+onPlay:SacrificeTarget-Targeted-atVehicle-targetMine$$DestroyTarget-Targeted-atVehicle-hasProperty{Cost}le4-targetOpponents
 +++++
 
 .....
