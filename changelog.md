@@ -7,9 +7,9 @@ Changelog - Star Wars LCG OCTGN Game Definition
   While they are highlighted, your opponent also has the chance to play interrupts which will cancel their effects, such as "Over My Dead Body". 
   Cards which have normal actions, will highlight after your double clicked them and paid their cost, at which point your opponent has a chance to interrupt and afterward you must double click them again to release their effect.
   The highlight phase will also give you an opportunity to target the appropriate cards if you need to.
-  Reacts/Interrupts available for use will only remain active for one phase. As soon as someone pressed ctrl+Enter, all unused triggers will disappear.
+  Reacts/Interrupts available for use will only remain active for one phase. As soon as someone pressed [ctrl]+[Enter], all unused triggers will disappear.
   Forced Reacts/Interrupts will not disappear until you use them.
-  To signify you don't want to use a react, either ignore it until the phase changes, or use the built-in action "Ignore Card Trigger" ''Ctrl''+''Z'' on the card.
+  To signify you don't want to use a react, either ignore it until the phase changes, or use the built-in action "Ignore Card Trigger" [Ctrl]+[Z] on the card.
   Effects which are built-in to the cards, such as cost-reductions, shielding and other things which cannot be interrupted, will work automatically as before. You don't need to trigger them manually.
 * **Significant:** Scripted almost all Edge of Darkness cards
   * **Cards not scripted:**
@@ -39,8 +39,8 @@ Changelog - Star Wars LCG OCTGN Game Definition
   This will not affect innate effects which cannot be interrupted, such as Shielding or Cost Reductions. These will work automatically as usual. Forced effects will also always be highlighted to prevent illegal plays. In other words, HARDCORE mode only affects Reacts and Interrupts.
 * Lots of added automations for cards which didn't have them before, such as the General's Imperative
 * Added automation for cards which require you to target cards from your hand, such as Kuat Reinforcements or Jabba the Hut. To use those, just target the appropriate number of cards from your hand and "Use Ability" ''Ctrl''+''Q''
-* Changed shortcut for Activating a card's ability to ''Ctrl''+''Q''
-* Added shortcut for Ignoring a card's trigger to ''Ctrl''+''Z''
+* Changed shortcut for Activating a card's ability to [Ctrl]+[Q]
+* Added shortcut for Ignoring a card's trigger to [Ctrl]+[Z]
 
     
 
