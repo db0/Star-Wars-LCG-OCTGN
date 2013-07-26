@@ -141,7 +141,8 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage", objectiveList, type = 'radio', default = 0)
          if choice == 'ABORT': return
          chosenObj = Card(opponentObjectives[choice])
-         chosenObj.markers[mdict['Damage']] += 1
+         addMarker(chosenObj, 'Damage',1, True)
+         #chosenObj.markers[mdict['Damage']] += 1
          notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(chosenObj))      
 
 def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
@@ -369,7 +370,8 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          else: attacker = me
          if debugVerbosity >= 1: notify("Unopposed prolly Happens because debugVerbosity >= 1")
          else: notify(":> {} managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attacker,currentTarget,unopposedDamage))
-         currentTarget.markers[mdict['Damage']] += unopposedDamage
+         #currentTarget.markers[mdict['Damage']] += unopposedDamage
+         addMarker(currentTarget, 'Damage',unopposedDamage, True)
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    autoscriptOtherPlayers('FinishedEngagement',currentTarget)
    for card in table:

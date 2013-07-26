@@ -994,7 +994,7 @@ Lightsaber Deflection
 -----
 ff4fb461-8060-457a-9c16-000000000157
 -----
-onPlay:Remove1Damage-Targeted-atUnit_and_nonVehicle-targetMine-isCost$$Deal1Damage-Targeted-atUnit-targetOpponents
+onPlay:Transfer1Damage-Targeted-atUnit-sourceUnit_and_nonVehicle-targetMine-hasMarker{Damage}-destinationUnit
 +++++
 
 .....

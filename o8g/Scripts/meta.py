@@ -1105,10 +1105,10 @@ def TrialError(group, x=0, y=0): # Debugging
       spawnSetCards()
 
 def spawnTestCards():
-   testcards = [
-                "ff4fb461-8060-457a-9c16-000000000349", # EoD  cards
-                #"ff4fb461-8060-457a-9c16-000000000384",
-                #"ff4fb461-8060-457a-9c16-000000000318"
+   testcards = [  ### EoD  cards ###
+                "ff4fb461-8060-457a-9c16-000000000425",
+                #"ff4fb461-8060-457a-9c16-000000000433",
+                #"ff4fb461-8060-457a-9c16-000000000447"
                 ]
    for idx in range(len(testcards)):
       test = table.create(testcards[idx], (70 * idx) - 300, 0, 1, True)
