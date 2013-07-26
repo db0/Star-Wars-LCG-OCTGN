@@ -2770,7 +2770,7 @@ Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000357
 -----
-ExtraIcon:BD:2-ifOrigHasMarker{Damage}
+ExtraIcon:BD:1-ifOrigHasMarker{Damage}||ExtraIcon:UD:1-ifOrigHasMarker{Damage}
 +++++
 
 .....
@@ -2778,7 +2778,7 @@ Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000358
 -----
-ExtraIcon:BD:2-ifOrigHasMarker{Damage}
+ExtraIcon:BD:1-ifOrigHasMarker{Damage}||ExtraIcon:UD:1-ifOrigHasMarker{Damage}
 +++++
 
 .....
