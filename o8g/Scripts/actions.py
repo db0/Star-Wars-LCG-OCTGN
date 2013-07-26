@@ -599,7 +599,6 @@ def strike(card, x = 0, y = 0, Continuing = False):
       if debugVerbosity >= 2: notify("Focus Added") #Debug
       debugNotify("Executing Strike Scripts",2)      
       if executePlayScripts(card, 'STRIKE') == 'POSTPONED': 
-         scriptPostponeNotice('Strike')
          return # Strike effects almost universally happen after focus.
    autoscriptOtherPlayers('UnitStrike',card)
    if debugVerbosity >= 2: notify("PlayScripts done. Calculating Icons") #Debug
@@ -848,7 +847,6 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          if not Continuing and not cardsLeaving(card):
             execution = executePlayScripts(card, 'THWART')
             if execution == 'POSTPONED': 
-               scriptPostponeNotice('Objective Thwart')
                return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          debugNotify(" About to score objective")
          currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
@@ -876,7 +874,6 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          if not Continuing and not cardsLeaving(card):
             execution = executePlayScripts(card, 'THWART')
             if execution == 'POSTPONED': 
-               scriptPostponeNotice('Objective Thwart')
                return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
          # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
@@ -915,7 +912,6 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             execution = executePlayScripts(card, 'LEAVING-DISCARD') # Objective discard scripts are dealt with onThwart.
             autoscriptOtherPlayers('CardLeavingPlay',card)
             if execution == 'POSTPONED': 
-               scriptPostponeNotice('Discard')
                return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          freeUnitPlacement(card)
          debugNotify("About to discard card. Highlight is {}. Group is {}".format(card.highlight,card.group.name),2)
@@ -999,7 +995,6 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
             autoscriptOtherPlayers('CardLeavingPlay',targetC)
             if execution == 'POSTPONED': 
                capturingObjective = chosenObj
-               scriptPostponeNotice('Capture')
                return
             selectedAbility = eval(getGlobalVariable('Stored Effects'))
       freeUnitPlacement(targetC)
@@ -1119,7 +1114,6 @@ def exileCard(card, silent = False,Continuing = False):
             execution = executePlayScripts(targetCard, 'LEAVING-EXILE')
             autoscriptOtherPlayers('CardLeavingPlay',targetCard)
             if execution == 'POSTPONED': 
-               scriptPostponeNotice('Exile')
                return
       if card.highlight != CapturedColor or (card.highlight == CapturedColor and not Continuing):
          if card.group == table: clearAttachLinks(card)
@@ -1451,7 +1445,6 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
          execution = executePlayScripts(card, 'LEAVING-HAND')
          autoscriptOtherPlayers('CardLeavingPlay',card)
          if execution == 'POSTPONED': 
-            scriptPostponeNotice('Card return')
             return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          rnd(1,10)
    if not chkEffectTrigger(card,'Card Return'):

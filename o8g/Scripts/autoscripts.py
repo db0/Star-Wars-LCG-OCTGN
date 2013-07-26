@@ -147,7 +147,8 @@ def executePlayScripts(card, action):
                cardsLeaving(card,'append')
                if chkHardcore(card): scriptPostponeNotice() # On hardcore mode, we don't mention exactly why we stopped script execution
                else:
-                  destination = re.search(r'LEAVING-([A-Z]+)'.format(action))
+                  destination = re.search(r'LEAVING-([A-Z]+)',action)
+                  debugNotify("destination Regex = {}".format(destination.groups()))
                   scriptPostponeNotice(destination.group(1)) # We announce why the script is paused if we're not in hardcore mode.
             else: 
                if chkHardcore(card): scriptPostponeNotice()
