@@ -1646,7 +1646,7 @@ def clearEdgeMarker():
 def gainEdge(group, x = 0, y = 0):
    mute()
    clearEdgeMarker()
-   notify("{} gains the Egde.".format(me))
+   notify("{} gains the Edge.".format(me))
    Affiliation.markers[mdict['Edge']] = 1             
    
 def findCounterPrevention(count, counter, targetPL): # Find out if the player has any markers preventing them form gaining specific counters (Credits, Agenda Points etc)

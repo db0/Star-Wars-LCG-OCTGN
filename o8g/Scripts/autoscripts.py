@@ -186,7 +186,7 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
    failedRequirement = False # We set it to false when we start a new autoscript.
    if debugVerbosity >= 4: notify("+++ Not a tracing card. Checking highlight...")
    if card.highlight == EdgeColor or card.highlight == UnpaidColor:
-      whisper("You cannot use egde or unpaid card abilities. Aborting")
+      whisper("You cannot use edge or unpaid card abilities. Aborting")
       return
    if debugVerbosity >= 4: notify("+++ Not an inactive card. Checking Stored_Autoactions{}...")
    if not Automations['Play']:
