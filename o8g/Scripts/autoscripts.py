@@ -27,7 +27,7 @@ TitleDone = 'Unset'
 def executePlayScripts(card, action):
    #action = action.upper() # Just in case we passed the wrong case
    debugNotify(">>> executePlayScripts() with action: {}".format(action)) #Debug
-   global failedRequirement
+   global failedRequirement,cardsLeavingPlay
    scriptEffect = 'INCOMPLETE'
    if not Automations['Play']: 
       whisper(":::WARNING::: Your play automations have been deactivated. Aborting.")
@@ -129,6 +129,7 @@ def executePlayScripts(card, action):
                debugNotify("{} != {}".format('MARKER' + operation.upper + markerType.upper(), action))
                continue
          if re.search(r'-onlyDuringEngagement', autoS) and getGlobalVariable('Engaged Objective') == 'None': 
+            debugNotify("Aborting because this effect is only to be played during enganements and ther isn't one")
             continue # If this is an optional ability only for engagements, then we abort
          if not checkOriginatorRestrictions(autoS,card): continue
          if re.search(r'-isOptional', autoS):
@@ -142,6 +143,9 @@ def executePlayScripts(card, action):
             if re.search(r'-isForced', autoS): readyEffect(card,True)
             else: readyEffect(card)
             scriptEffect = 'POSTPONED'
+            if re.search(r'LEAVING',action): 
+               cardsLeavingPlay.append(card._id)
+               debugNotify("updated cardsLeavingPlay = {}".format(cardsLeavingPlay),2)         
          else:
             ### Otherwise the automation is uninterruptible and we just go on with the scripting.
             executeAutoscripts(card,autoS,action = action)
@@ -289,8 +293,12 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                debugNotify("!!! Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
                continue
          if not chkDummy(autoS, card): continue
-         if re.search(r'duringOpponentTurn', autoS) and me.isActivePlayer and len(players) > 1: continue
-         if re.search(r'duringMyTurn', autoS) and not me.isActivePlayer and len(players) > 1: continue
+         if re.search(r'duringOpponentTurn', autoS) and me.isActivePlayer and len(players) > 1: 
+            debugNotify("!!! Failing because ability is for opponent's turn and me.isActivePlayer is {}".format(me.isActivePlayer))      
+            continue
+         if re.search(r'duringMyTurn', autoS) and not me.isActivePlayer and len(players) > 1: 
+            debugNotify("!!! Failing because ability is for our turn only and me.isActivePlayer is {}".format(me.isActivePlayer))         
+            continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
          if not checkOriginatorRestrictions(autoS,card): continue
@@ -346,8 +354,12 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
          # An effect for 'afterPhase' triggers after each Phase or Turn End.
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
-         if re.search(r'duringOpponentTurn', autoS) and card.controller == me: continue # If we're the player changing the phase, it means it's still our turn
-         if re.search(r'duringMyTurn', autoS) and card.controller != me: continue
+         if re.search(r'duringOpponentTurn', autoS) and me.isActivePlayer and len(players) > 1: 
+            debugNotify("!!! Failing because ability is for opponent's turn and me.isActivePlayer is {}".format(me.isActivePlayer))            
+            continue # If we're the player changing the phase, it means it's still our turn
+         if re.search(r'duringMyTurn', autoS) and not me.isActivePlayer and len(players) > 1: 
+            debugNotify("!!! Failing because ability is our turn and me.isActivePlayer is {}".format(me.isActivePlayer))
+            continue
          if not chkDummy(autoS, card): continue
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
@@ -1901,7 +1913,7 @@ def checkOriginatorRestrictions(Autoscript,card):
    if re.search(r'ifOrighasntEdge',Autoscript) and gotEdge(card.controller): 
       if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing hasn't-edge fail because we're debugging")
       else: validCard = False
-   if not chkPlayer(Autoscript, card.controller, False, True): validCard = False
+   #if not chkPlayer(Autoscript, card.controller, False, False): validCard = False
    markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
@@ -1985,9 +1997,11 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
    if debugVerbosity >= 1: notify(">>> chkPlayer(). Controller is: {}".format(controller)) #Debug
    try:
       if targetChk: # If set to true, it means we're checking from the findTarget() function, which needs a different keyword in case we end up with two checks on a card's controller on the same script (e.g. Darth Vader)
+         debugNotify("Doing targetChk",3)
          byOpponent = re.search(r'targetOpponents', Autoscript)
          byMe = re.search(r'targetMine', Autoscript)
       else:
+         debugNotify("Doing normal chk",3)
          byOpponent = re.search(r'(byOpponent|forOpponent)', Autoscript)
          byMe = re.search(r'(byMe|forMe)', Autoscript)
       if manual or len(players) == 1: # If there's only one player, we always return true for debug purposes.

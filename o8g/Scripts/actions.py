@@ -82,10 +82,12 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          for card in table:
             if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
          #if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
+         debugNotify("Exiting Because we've finished our turn")
          return
       elif not me.isActivePlayer:
          #if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
-         if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
+         if not confirm("Your opponent has not finished their turn yet. Are you sure you want to jump to your turn?"): return
+         me.setActivePlayer() # new in OCTGN 3.0.5.47 
          me.setGlobalVariable('Phase','1')
          #setGlobalVariable('Active Player', me.name)
          phase = 1
@@ -917,7 +919,8 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
                return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          freeUnitPlacement(card)
          debugNotify("About to discard card. Highlight is {}. Group is {}".format(card.highlight,card.group.name),2)
-         if card.group == table and card.highlight != CapturedColor: 
+         if card.group == table and card.highlight != CapturedColor:
+            clearStoredEffects(card,True) # Making sure that the player didn't discard a card waiting for an effect.
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
             if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
          if not silent: notify("{} discards {}".format(me,card))

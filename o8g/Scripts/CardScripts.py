@@ -826,7 +826,7 @@ In You Must Go
 -----
 ff4fb461-8060-457a-9c16-000000000137
 -----
-whileInPlay:Reduce1CostPlay-affectsEnhancement-onlyOnce-byMe
+whileInPlay:Reduce1CostPlay-affectsEnhancement-onlyOnce-forMe
 +++++
 
 .....
@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-onLeaving:CaptureMyself-byMe$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-byMe-isReact
+onLeaving:CaptureMyself$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-isReact
 +++++
 
 .....
@@ -1082,7 +1082,7 @@ Orbital Bombardment
 -----
 ff4fb461-8060-457a-9c16-000000000074
 -----
-whileInPlay:IncreaseBD:1-byMe-typeUnit
+whileInPlay:IncreaseBD:1-forMe-typeUnit
 +++++
 
 .....
@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-typeTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-byMe-typeTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-forMe-typeTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-forMe-typeTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
@@ -1818,7 +1818,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000248
 -----
-whileInPlay:IncreaseBD:1-byMe-typeUnit-isAttacking-ifOrigParticipating
+whileInPlay:IncreaseBD:1-forMe-typeUnit-isAttacking-ifOrigParticipating
 +++++
 
 .....
@@ -1914,7 +1914,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000250
 -----
-onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe-isReact
+onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-isReact
 +++++
 
 .....
@@ -1922,7 +1922,7 @@ Probe Droid
 -----
 ff4fb461-8060-457a-9c16-000000000251
 -----
-onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-byMe-isReact
+onLeaving:Deal1Damage-DemiAutoTargeted-atObjective-choose1-targetOpponents-isReact
 +++++
 
 .....
@@ -2234,7 +2234,7 @@ Preparation for Battle
 -----
 ff4fb461-8060-457a-9c16-000000000277
 -----
-whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}-ifDialge8
+whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}-ifDialge8
 +++++
 
 .....
@@ -2642,7 +2642,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000352
 -----
-whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}
+whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2650,7 +2650,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000353
 -----
-whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}
+whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2666,7 +2666,7 @@ General Veers
 -----
 ff4fb461-8060-457a-9c16-000000000338
 -----
-whileInPlay:IncreaseUD:1-byMe-typeWalker_or_Trooper
+whileInPlay:IncreaseUD:1-forMe-typeWalker_or_Trooper
 +++++
 
 .....
@@ -3002,7 +3002,7 @@ Across the Anoat Sector
 -----
 ff4fb461-8060-457a-9c16-000000000391
 -----
-whileInPlay:IncreaseBD:1-byMe-typeSmugglers and Spies-isAttacking-isAlone
+whileInPlay:IncreaseBD:1-forMe-typeSmugglers and Spies-isAttacking-isAlone
 +++++
 
 .....
@@ -3122,7 +3122,7 @@ To Arms!
 -----
 ff4fb461-8060-457a-9c16-000000000409
 -----
-whileInPlay:Reduce2CostPlay-affectsEnhancement_and_Weapon-onlyOnce-byMe
+whileInPlay:Reduce2CostPlay-affectsEnhancement_and_Weapon-onlyOnce-forMe
 +++++
 
 .....
@@ -3130,7 +3130,7 @@ Sullustan Weapon Tech
 -----
 ff4fb461-8060-457a-9c16-000000000410
 -----
-whileInPlay:Draw1Card-foreachCardPlayed-typeEnhancement_and_Weapon-byMe-isReact
+whileInPlay:Draw1Card-foreachCardPlayed-typeEnhancement_and_Weapon-forMe-isReact
 +++++
 
 .....
@@ -3514,7 +3514,7 @@ Captain Needa
 -----
 ff4fb461-8060-457a-9c16-000000000470
 -----
-whileInPlay:Reduce2CostPlay-affectsCapital Ship-onlyOnce-byMe
+whileInPlay:Reduce2CostPlay-affectsCapital Ship-onlyOnce-forMe
 +++++
 
 .....
@@ -3618,7 +3618,7 @@ Armed and Ready
 -----
 ff4fb461-8060-457a-9c16-000000000485
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:IncreaseUD:1-byMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy||whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:IncreaseUD:1-forMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....

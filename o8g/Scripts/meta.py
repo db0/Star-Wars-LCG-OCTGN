@@ -788,18 +788,23 @@ def clrResourceMarkers(card):
 
 def clearStoredEffects(card, silent = False): # A function which clears a card's waiting-to-be-activated scripts
    debugNotify(">>> clearStoredEffects with card: {}".format(card))
+   global cardsLeavingPlay
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    forcedTrigger = False
    if selectedAbility.has_key(card._id):
       if re.search(r'-isForced',selectedAbility[card._id][0]):
          if not silent and not confirm("This units effect is forced which means you have to use it if possible. Are you sure you want to ignore it?"): return
          else: forcedTrigger = True
-   debugNotify("Clearing Hihlight",3)
-   if card.highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
+   debugNotify("Clearing Highlight",3)
+   if card.highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: 
+      if not selectedAbility.has_key(card._id): card.highlight = None
+      else: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
    debugNotify("Deleting selectedAbility tuple",3)
    if selectedAbility.has_key(card._id): del selectedAbility[card._id]
    debugNotify("Uploading selectedAbility tuple",3)
    setGlobalVariable('Stored Effects',str(selectedAbility))
+   debugNotify("Removing from cardsLeavingPlay[]")
+   if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
    if not silent: 
       if forcedTrigger: notify(":::WARNING::: {} has chosen to ignore the FORCED trigger of {}.".format(me,card))
       else: notify("{} chose not to activate {}'s ability".format(me,card))
@@ -807,15 +812,19 @@ def clearStoredEffects(card, silent = False): # A function which clears a card's
 
 def clearAllEffects(silent = False): # A function which clears all card's waiting-to-be-activated scripts. This is not looping clearStoredEffects() to avoid too many setGlobalVariable calls
    debugNotify(">>> clearAllEffects")
+   global cardsLeavingPlay
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
    for cID in selectedAbility:
       debugNotify("Clearing Effects for {}".format(Card(cID)),3)
       debugNotify("selectedAbility[cID] = {}".format(selectedAbility[cID]),3)
       if not re.search(r'-isForced',selectedAbility[cID][0]):
-         if Card(cID).highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
+         if Card(cID).highlight == ReadyEffectColor or Card(cID).highlight == UnpaidAbilityColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
+         debugNotify("Now Deleting card's dictionary entry",4)
          del selectedAbility[cID]
+         if cID in cardsLeavingPlay: cardsLeavingPlay.remove(cID)         
       else: 
          notify(":::WARNING::: {}'s FORCED Trigger is still remaining.".format(Card(cID)))
+   debugNotify("Clearing all highlights from cards not waiting for their abilities")
    for card in table:
       if card.highlight == ReadyEffectColor and not selectedAbility.has_key(card._id): card.highlight = None # If the card is still in the selectedAbility, it means it has a forced effect we don't want to clear.
    setGlobalVariable('Stored Effects',str(selectedAbility))
@@ -1107,7 +1116,7 @@ def TrialError(group, x=0, y=0): # Debugging
 def spawnTestCards():
    testcards = [  ### EoD  cards ###
                 "ff4fb461-8060-457a-9c16-000000000425",
-                #"ff4fb461-8060-457a-9c16-000000000433",
+                "ff4fb461-8060-457a-9c16-000000000341",
                 #"ff4fb461-8060-457a-9c16-000000000447"
                 ]
    for idx in range(len(testcards)):
