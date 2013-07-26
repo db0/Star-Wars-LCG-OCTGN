@@ -783,18 +783,22 @@ def clrResourceMarkers(card):
             card.markers[cMarkerKey] = 0
             break
 
-def clearStoredEffects(card, silent = False): # A function which clears a card's waiting-to-be-activated scripts
+def clearStoredEffects(card, silent = False,continuePath = True): # A function which clears a card's waiting-to-be-activated scripts
    debugNotify(">>> clearStoredEffects with card: {}".format(card))
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    forcedTrigger = False
    if selectedAbility.has_key(card._id):
+      debugNotify("Card's selectedAbility: {}".format(selectedAbility))
       if re.search(r'-isForced',selectedAbility[card._id][0]):
          if not silent and not confirm("This units effect is forced which means you have to use it if possible. Are you sure you want to ignore it?"): return
          else: forcedTrigger = True
+   else: debugNotify("Card has no selectedAbility entry")
    debugNotify("Clearing Highlight",3)
    if card.highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: 
       if not selectedAbility.has_key(card._id): card.highlight = None
       else: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
+   debugNotify("Sending card to its final destination if it has any")
+   if continuePath: continueOriginalEvent(card,selectedAbility)
    debugNotify("Deleting selectedAbility tuple",3)
    if selectedAbility.has_key(card._id): del selectedAbility[card._id]
    debugNotify("Uploading selectedAbility tuple",3)
@@ -813,6 +817,8 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
       debugNotify("selectedAbility[cID] = {}".format(selectedAbility[cID]),3)
       if not re.search(r'-isForced',selectedAbility[cID][0]):
          if Card(cID).highlight == ReadyEffectColor or Card(cID).highlight == UnpaidAbilityColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
+         debugNotify("Sending card to its final destination if it has any",3)
+         continueOriginalEvent(Card(cID),selectedAbility)
          debugNotify("Now Deleting card's dictionary entry",4)
          del selectedAbility[cID]
          cardsLeaving(Card(cID),'remove')
@@ -824,6 +830,22 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
    setGlobalVariable('Stored Effects',str(selectedAbility))
    if not silent: notify(":> All existing card effect triggers were ignored.".format(card))
    debugNotify("<<< clearAllEffects")
+
+def continueOriginalEvent(card,selectedAbility):
+   debugNotify(">>> continueOriginalEvent with card: {}".format(card))
+   if selectedAbility.has_key(card._id):
+      debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
+      if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
+         strike(card, Continuing = True)
+      if re.search(r'LEAVING',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': 
+         if re.search(r'-DISCARD',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': discard(card,Continuing = True)
+         elif re.search(r'-HAND',selectedAbility[card._id][3]): returnToHand(card,Continuing = True) 
+         elif re.search(r'-DECKBOTTOM',selectedAbility[card._id][3]): sendToBottom(Continuing = True) # This is not passed a specific card as it uses a card list, which we've stored in a global variable already
+         elif re.search(r'-EXILE',selectedAbility[card._id][3]): exileCard(card, Continuing = True)
+         elif re.search(r'-CAPTURE',selectedAbility[card._id][3]): capture(targetC = card, Continuing = True)
+   else: debugNotify("No selectedAbility entry")
+   debugNotify("<<< continueOriginalEvent with card: {} and selectedAbility {}".format(card,selectedAbility))  
+
    
 def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTargetCard,count = 0):
    debugNotify(">>> storeCardEffects()")
@@ -1141,9 +1163,9 @@ def TrialError(group, x=0, y=0): # Debugging
       spawnSetCards()
 
 def spawnTestCards():
-   testcards = [  ### EoD  cards ###
-                "ff4fb461-8060-457a-9c16-000000000425",
-                "ff4fb461-8060-457a-9c16-000000000341",
+   testcards = [  
+                "ff4fb461-8060-457a-9c16-000000000188",
+                #"ff4fb461-8060-457a-9c16-000000000341",
                 #"ff4fb461-8060-457a-9c16-000000000447"
                 ]
    for idx in range(len(testcards)):

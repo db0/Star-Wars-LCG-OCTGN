@@ -1,7 +1,12 @@
 =====Message of the Day======
 
-Card for Edge of Darkness have been added. No automations yet except for existing cards. Full automations will be coming soon.
+VERY IMPOATANT!
 
-Restart your OCTGN to get the latest update immediately and enjoy!
+Due to new card effects in Edge of Darkness, I've had to completely rework how automations function.
+
+Please visit the blog to get the information on how they will work from now on, to avoid confusion.
+
+Open a browser page to the game blog?
 =============================
-
+&&
+http://octgn.gamersjudgement.com/wordpress/swlcg/major-update-released/

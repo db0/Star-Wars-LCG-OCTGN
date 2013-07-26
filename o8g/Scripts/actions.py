@@ -525,13 +525,14 @@ def defaultAction(card, x = 0, y = 0):
                if confirm(":::ERROR::: Required Targets for this effect not found! You need to target with shift-click accordingly\
                        \n\nWould you like to completely cancel this effect?\
                          \n{}".format(bracketInfo)):
-                  clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
+                  clearStoredEffects(card,True,False) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
                   if card.Type == 'Event': card.moveTo(card.owner.hand)
                   notify("{} has aborted using {}".format(me,card))
                   return
                else: return # If the script needs a target but we don't have any, abort.
          notify("{} resolves the effects of {}".format(me,card)) 
-         clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
+         clearStoredEffects(card,True,False) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
+                                             # We don't remove it from play yet though, we do it after we've executed all its scripts
          if re.search(r'LEAVING',selectedAbility[card._id][3]): 
             cardsLeaving(card,'append')
          if executeAutoscripts(card,selectedAbility[card._id][0],count = selectedAbility[card._id][5], action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': 
@@ -542,14 +543,7 @@ def defaultAction(card, x = 0, y = 0):
             readyEffect(card,True)
             return
       debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
-      if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
-         strike(card, Continuing = True)
-      if re.search(r'LEAVING',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': # If the action is LEAVING, it means we pause the card movement to give an opportunity to use the react.
-         if re.search(r'-DISCARD',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': discard(card,Continuing = True)
-         elif re.search(r'-HAND',selectedAbility[card._id][3]): returnToHand(card,Continuing = True) 
-         elif re.search(r'-DECKBOTTOM',selectedAbility[card._id][3]): sendToBottom(Continuing = True) # This is not passed a specific card as it uses a card list, which we've stored in a global variable already
-         elif re.search(r'-EXILE',selectedAbility[card._id][3]): exileCard(card, Continuing = True)
-         elif re.search(r'-CAPTURE',selectedAbility[card._id][3]): capture(targetC = card, Continuing = True)
+      continueOriginalEvent(card,selectedAbility)
       if card.Type == 'Event': 
          autoscriptOtherPlayers('CardPlayed',card)
          if findMarker(card, "Destination:Command Deck"):
@@ -916,7 +910,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          freeUnitPlacement(card)
          debugNotify("About to discard card. Highlight is {}. Group is {}".format(card.highlight,card.group.name),2)
          if card.group == table and card.highlight != CapturedColor:
-            clearStoredEffects(card,True) # Making sure that the player didn't discard a card waiting for an effect.
+            if not Continuing: clearStoredEffects(card,True) # Making sure that the player didn't discard a card waiting for an effect. We only do it if we're not continuing an existing script, as then its's done there and it will cause an infinite loop in here.
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
             cardsLeaving(card,'remove')
          if not silent: notify("{} discards {}".format(me,card))
@@ -997,6 +991,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
                capturingObjective = chosenObj
                return
             selectedAbility = eval(getGlobalVariable('Stored Effects'))
+      if not Continuing: clearStoredEffects(targetC,True)            
       freeUnitPlacement(targetC)
       targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
       targetC.sendToBack()
@@ -1425,7 +1420,8 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
       debugNotify("scriptWaiting = True.",3)
       if not Continuing and not firstTime: #If we're not continuing and we didn't just execute the scripts for these cards, it means the player manually run the SendToBottom() function again, so they may be trying to force it.
          if confirm("You seem to have card scripts still waiting to trigger. Are you sure you want to continue and send all cards to the bottom?"):
-            for card in cards: clearStoredEffects(card,True)
+            for card in cards: 
+               if not Continuing: clearStoredEffects(card,True)
          else: return
       else: return # If we went to this function from the Default Action and we still have cards to trigger, then we just abort and wait until the player has had a chance to trigger all effects.
    debugNotify("About to send to bottom.",2)
@@ -1448,7 +1444,8 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
             return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          rnd(1,10)
    if not chkEffectTrigger(card,'Card Return'):
-      if card.group == table and card.highlight != CapturedColor: 
+      if card.group == table and card.highlight != CapturedColor:
+         if not Continuing: clearStoredEffects(card,True)
          cardsLeaving(card,'remove')
          freeUnitPlacement(card)
          card.moveTo(card.owner.hand)

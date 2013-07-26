@@ -39,6 +39,8 @@ Changelog - Star Wars LCG OCTGN Game Definition
   This will not affect innate effects which cannot be interrupted, such as Shielding or Cost Reductions. These will work automatically as usual. Forced effects will also always be highlighted to prevent illegal plays. In other words, HARDCORE mode only affects Reacts and Interrupts.
 * Lots of added automations for cards which didn't have them before, such as the General's Imperative
 * Added automation for cards which require you to target cards from your hand, such as Kuat Reinforcements or Jabba the Hut. To use those, just target the appropriate number of cards from your hand and "Use Ability" ''Ctrl''+''Q''
+* Changed shortcut for Activating a card's ability to ''Ctrl''+''Q''
+* Added shortcut for Ignoring a card's trigger to ''Ctrl''+''Z''
 
     
 
