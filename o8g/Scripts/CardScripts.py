@@ -2714,7 +2714,7 @@ Sabotage in the Snow
 -----
 ff4fb461-8060-457a-9c16-000000000349
 -----
-afterDeployment:Remove1Shield-DemiAutoTargeted-hasMarker{Shield}-targetOpponents-choose1-isCost-isReact$$Put1Shield-DemiAutoTargeted-atUnit_or_Objective-hasntMarker{Shield}-targetMine-choose1
+afterDeployment:Transfer1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-destinationAny-hasntMarker{Shield}-targetMine-isReact
 +++++
 
 .....

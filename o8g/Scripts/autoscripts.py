@@ -289,6 +289,8 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                debugNotify("!!! Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
                continue
          if not chkDummy(autoS, card): continue
+         if re.search(r'duringOpponentTurn', autoS) and me.isActivePlayer and len(players) > 1: continue
+         if re.search(r'duringMyTurn', autoS) and not me.isActivePlayer and len(players) > 1: continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
          if not checkOriginatorRestrictions(autoS,card): continue
@@ -338,12 +340,14 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          if not effect: continue
          debugNotify("Time Regex fits. Script triggers on: {}".format(effect.group(1)))
          if chkPlayer(effect.group(2), card.controller,False) == 0: continue # Check that the effect's origninator is valid. 
-         if effect.group(1) != Time and (effect.group(1) == 'afterPhase' and not re.search(r'after(Balance|Refresh|Draw|Deployment|Conflict|Force)',Time) and Time != 'End'):
+         if effect.group(1) != Time and not (effect.group(1) == 'afterPhase' and re.search(r'after(Balance|Refresh|Draw|Deployment|Conflict|Force)',Time)) and not (effect.group(1) == 'afterPhase' and Time == 'End'):
             debugNotify("Time didn't match!")
             continue 
          # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
          # An effect for 'afterPhase' triggers after each Phase or Turn End.
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
+         if re.search(r'duringOpponentTurn', autoS) and card.controller == me: continue # If we're the player changing the phase, it means it's still our turn
+         if re.search(r'duringMyTurn', autoS) and card.controller != me: continue
          if not chkDummy(autoS, card): continue
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
@@ -608,9 +612,13 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          return 'ABORT'
       completedSeek = False
       while not completedSeek:
-         sourceRegex = re.search(r'-source(.*?)-destination',Autoscript)
+         if re.search(r'-sourceAny',Autoscript): 
+            sourceRegex = re.search(r'-sourceAny-(.*?)-destination',Autoscript)
+            sourceTargets = findTarget('Targeted-{}'.format(sourceRegex.group(1)))
+         else:
+            sourceRegex = re.search(r'-source(.*?)-destination',Autoscript)
+            sourceTargets = findTarget('Targeted-at{}'.format(sourceRegex.group(1)))
          debugNotify("sourceRegex = {}".format(sourceRegex.groups()),2)
-         sourceTargets = findTarget('Targeted-at{}'.format(sourceRegex.group(1)))
          if len(sourceTargets) == 0:
             delayed_whisper(":::ERROR::: No valid source card targeted.")
             return 'ABORT'
@@ -619,13 +627,16 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
             choiceC = SingleChoice("Choose from which card to remove the token", targetChoices, type = 'button', default = 0)
             if choiceC == 'ABORT': return 'ABORT'
             if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
-            if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
             sourceCard = sourceTargets.pop(choiceC)
          else: sourceCard = sourceTargets[0]
          if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
-         destRegex = re.search(r'-destination(.*)',Autoscript)
+         if re.search(r'-destinationAny',Autoscript): 
+            destRegex = re.search(r'-destinationAny-(.*)',Autoscript)
+            destTargets = findTarget('Targeted-{}'.format(destRegex.group(1)))
+         else:
+            destRegex = re.search(r'-destination(.*)',Autoscript)
+            destTargets = findTarget('Targeted-at{}'.format(destRegex.group(1)))
          debugNotify("destRegex = {}".format(destRegex.groups()),2)
-         destTargets = findTarget('Targeted-at{}'.format(destRegex.group(1)))
          if sourceCard in destTargets: destTargets.remove(sourceCard) # If the source card is targeted and also a valid destination, we remove it from the choices list.
          if len(destTargets) == 0:
             if not confirm("Your choices have left you without a valid destination to transfer the token. Try again?"): return 'ABORT'
@@ -636,6 +647,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       if action.group(3) == "AnyTokenType": token = chooseAnyToken(sourceCard,action.group(1))
       if count == 999: modtokens = sourceCard.markers[token] # 999 means move all tokens from one card to the other.
       else: modtokens = count * multiplier
+      debugNotify("About to check if it's a basic token to remove")
       if token[0] == 'Damage' or token[0] == 'Shield' or token[0] == 'Focus':
          subMarker(sourceCard, token[0], abs(modtokens),True)
          addMarker(targetCard, token[0], modtokens,True)
@@ -674,6 +686,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
                debugNotify("Found no {} tokens to remove".format(token[0]),2)
                count = 0 # If we don't have any markers, we have obviously nothing to remove.
             modtokens = -count * multiplier
+         debugNotify("About to check if it's a basic token to remove")
          if token[0] == 'Damage' or token[0] == 'Shield' or token[0] == 'Focus':
             if modtokens < 0: subMarker(targetCard, token[0], abs(modtokens),True)
             else: addMarker(targetCard, token[0], modtokens,True)
@@ -1024,7 +1037,10 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          sendToBottom(targetCards)
       else: 
          debugNotify("### Sending Single card to the bottom",3)   
-         sendToBottom([targetCards[0]])
+         try: sendToBottom([targetCards[0]])
+         except: 
+            delayed_whisper(":::ERROR::: You have not targeted a valid card")
+            return 'ABORT'
    else:
       for targetCard in targetCards:
          if action.group(1) == 'Destroy' or action.group(1) == 'Sacrifice':
@@ -1166,7 +1182,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
    objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
    if card.name == 'A Journey to Dagobah' and action == 'THWART' and card.owner == me:
-      if not confirm("Do you want to use the optional interrupt of Journey To Dagobath?"): return
       if debugVerbosity >= 2: notify("### Journey to Dagobath Script")
       objList = []
       if debugVerbosity >= 2: notify("### Moving objectives to removed from game pile")
@@ -1308,7 +1323,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if debugVerbosity >= 2: notify("#### About to announce")
       notify("{} returns into play".format(Card(ForceUserList[choice])))
    elif card.name == 'Superlaser Engineer' and action == 'PLAY': 
-      if not confirm("Do you want to activate the optional ability of reaction of Superlaser Engineer?"): return
       cardList = []
       sendToBottomList = []
       iter = 0
@@ -1330,7 +1344,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       sendToBottom(sendToBottomList)
    elif card.name == 'Take Them Prisoner' and action == 'PLAY': 
       debugNotify("Enterring 'Take Them Prisoner' Automation",1)
-      if not confirm("Do you want to activate the optional ability of Take Them Prisoner?"): return
       turn = num(getGlobalVariable('Turn'))
       cardList = []
       cardNames = []
@@ -1485,19 +1498,18 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if cardView.group == me.ScriptingPile: cardView.moveTo(me.piles['Command Deck'])
          rnd(1,10)
    elif card.name == "Z-95 Headhunter" and action == 'STRIKE':
-      if confirm("You you want to use Z-95 Headhunter's interrupt?"):
-         opponent = findOpponent()
-         shownCards = showatrandom(targetPL = opponent, silent = True)
-         if len(shownCards) == 0:
-            notify("{} has no cards in their hand".format(opponent))
-            return
-         notify("{} discovers {} in an surprise strike!".format(card,shownCards[0]))
-         rnd(1,10)
-         if fetchProperty(shownCards[0], 'Type') == 'Unit': 
-            capture(targetC = shownCards[0], silent = True)
-            notify("{} has captured a unit.".format(card))
-         else: shownCards[0].moveTo(shownCards[0].owner.hand)
-         rnd(1,10)
+      opponent = findOpponent()
+      shownCards = showatrandom(targetPL = opponent, silent = True)
+      if len(shownCards) == 0:
+         notify("{} has no cards in their hand".format(opponent))
+         return
+      notify("{} discovers {} in an surprise strike!".format(card,shownCards[0]))
+      rnd(1,10)
+      if fetchProperty(shownCards[0], 'Type') == 'Unit': 
+         capture(targetC = shownCards[0], silent = True)
+         notify("{} has captured a unit.".format(card))
+      else: shownCards[0].moveTo(shownCards[0].owner.hand)
+      rnd(1,10)
    elif card.name == "Last Defense of Hoth" and action == 'USE':
       if oncePerTurn(card, silent = True, act = 'manual') == 'ABORT': return
       if confirm("Do you want to use Last Defence of Hoth's special ability?"):
@@ -1976,8 +1988,8 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          byOpponent = re.search(r'targetOpponents', Autoscript)
          byMe = re.search(r'targetMine', Autoscript)
       else:
-         byOpponent = re.search(r'(byOpponent|duringOpponentTurn|forOpponent)', Autoscript)
-         byMe = re.search(r'(byMe|duringMyTurn|forMe)', Autoscript)
+         byOpponent = re.search(r'(byOpponent|forOpponent)', Autoscript)
+         byMe = re.search(r'(byMe|forMe)', Autoscript)
       if manual or len(players) == 1: # If there's only one player, we always return true for debug purposes.
          if debugVerbosity >= 2: notify("### Succeeded at Manual/Debug")
          validPlayer = 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.
@@ -1994,7 +2006,7 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          if debugVerbosity >= 2: notify("### Failed all checks") # Debug
          validPlayer =  0 # If all the above fail, it means that we're not supposed to be triggering, so we'll return 0 whic
       if not reversePlayerChk: 
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with validPlayer") # Debug
+         if debugVerbosity >= 3: notify("<<< chkPlayer() with validPlayer: {}".format(validPlayer)) # Debug
          return validPlayer
       else: # In case reversePlayerChk is set to true, we want to return the opposite result. This means that if a scripts expect the one running the effect to be the player, we'll return 1 only if the one running the effect is the opponent. See Decoy at Dantoine for a reason
          if debugVerbosity >= 3: notify("<<< chkPlayer() reversed!") # Debug      

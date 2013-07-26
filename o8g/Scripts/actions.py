@@ -1625,10 +1625,10 @@ def subShieldTarget(group, x = 0, y = 0, count = 1):
    for card in table:
       if card.targetedBy and card.targetedBy == me: subMarker(card,'Shield',count)
 
-def subMarker(card, tokenType,count = 1):
+def subMarker(card, tokenType,count = 1,silent = False):
    debugNotify(">>> subMarker() with tokenType = {}".format(tokenType))
    mute()
-   notify("{} removes {} {} from {}.".format(me, count, tokenType, card))
+   if not silent: notify("{} removes {} {} from {}.".format(me, count, tokenType, card))
    card.markers[mdict[tokenType]] -= count	
    if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
       executePlayScripts(card, 'MARKERSUB{}'.format(tokenType.upper()))

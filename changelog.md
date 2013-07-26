@@ -1,13 +1,21 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
-### 2.2.5.x
+### 2.3.0.x
 
+* **Very Significant:** Completely reworked the way automations work functionally. Reacts and Interrupts no longer trigger automatically during phase changes or specific triggers, rather, cards which have a relevant react/interrupt will now simply highlight themselves at the appropriate moment, much like events, at which point you can simply double-click on them to signify you're using their effect.
+  While they are highlighted, your opponent also has the chance to play interrupts which will cancel their effects, such as "Over My Dead Body". 
+  Cards which have normal actions, will highlight after your double clicked them and paid their cost, at which point your opponent has a chance to interrupt and afterward you must double click them again to release their effect.
+  The highlight phase will also give you an opportunity to target the appropriate cards if you need to.
+  Reacts/Interrupts available for use will only remain active for one phase. As soon as someone pressed ctrl+Enter, all unused triggers will disappear.
+  Forced Reacts/Interrupts will not disappear until you use them.
+  To signify you don't want to use a react, either ignore it until the phase changes, or use the built-in action "Ignore Card Trigger" ''Ctrl''+''Z'' on the card.
+  Effects which are built-in to the cards, such as cost-reductions, shielding and other things which cannot be interrupted, will work automatically as before. You don't need to trigger them manually.
+* **Significant:** Scripted almost all Edge of Darkness cards
   * **Cards not scripted:**
     * Wookie Life Debt (Just drag the damage tokens afterwards manually)
     * Chewbacca
     * Blockade Runner
-    * Cloud City Operative (Just Manually Drag the token)
     * Bothan Spy
     * Cloud City Wing Guard/Chewbaca Bowcaster strike "outside of combat" (Just use the manual "Strike" ability in the card's context menu.)
     * Sleuth Scout
@@ -18,7 +26,6 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Spice Visions
     * Bib Fortuna
     * Krayt Dragon (Just don't play any enhancements on it)
-    * Dark Memories
   * **Cards with tricky scripting:**
     * Smuggling Compartment - Just double click the enhancement to draw a card and notify why)
     * Millennium Falcon - Target the unit in your hand and then use the Falcon's ability
@@ -26,6 +33,13 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Tractor Beam (Does not check the printed costs)
     * Bossk (Drawing the cards is not automated)
     * Trandoshan Hunter (Just Target the non-participating Wookie)
+* Added **HARDCORE** mode. Unleash from the Game Menu. Hardcore mode is built with the people who want a close experience to the real tabletop, without sacrificing all automations. 
+  During HARDCORE mode, your cards will not highlight when their trigger is reached and will not announce it on the chat either. You will need to double click on a card during the appropriate time window at which point it will highlight and announce that your are attempting to use it, to give your opponent a chance to play interrupts.
+  HARDCORE mode only affects your cards. If your opponent is not using it, then their own triggers will be automatically highlighted as usual.
+  This will not affect innate effects which cannot be interrupted, such as Shielding or Cost Reductions. These will work automatically as usual. Forced effects will also always be highlighted to prevent illegal plays. In other words, HARDCORE mode only affects Reacts and Interrupts.
+* Lots of added automations for cards which didn't have them before, such as the General's Imperative
+* Added automation for cards which require you to target cards from your hand, such as Kuat Reinforcements or Jabba the Hut. To use those, just target the appropriate number of cards from your hand and "Use Ability" ''Ctrl''+''Q''
+
     
 
 
@@ -49,15 +63,12 @@ Changelog - Star Wars LCG OCTGN Game Definition
 
 * **Significant:** Scripted almost all Assault on Echo Base cards
   * **Cards not scripted:**
-    * Col Serra (Only the Edge(1) is scripted)
+    * Col Serra (Only the Edge(1) and Damage Protection is scripted)
     * Confronting the Terror
     * Corrupt Official
     * Echo Control Center
     * Knowledge and Defense
   * **Cards with tricky scripting:**
-    * The General's Imperative - Your reserve won't be reduced when this objective is damaged. You'll need to modify it manually
-    * Sabotage in the Snow - It won't autofire. You'll need to double click it at the appropriate time. Target the cards for quicker results.
-    * Turbolaser Battery - Won't autofire. Double click on it to use it.
     * A Stinging Insult - Will engage only unfocused units
 * Fixed the placement of Edge Cards and Dummy cards to not force zoom out.
 * Double clicking an objective at the start of the game will now select it to put at the bottom of the deck.

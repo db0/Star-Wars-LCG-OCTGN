@@ -790,11 +790,12 @@ def clearStoredEffects(card, silent = False): # A function which clears a card's
    debugNotify(">>> clearStoredEffects with card: {}".format(card))
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    forcedTrigger = False
-   if re.search(r'-isForced',selectedAbility[card._id][0]):
-      if not silent and not confirm("This units effect is forced which means you have to use it if possible. Are you sure you want to ignore it?"): return
-      else: forcedTrigger = True
+   if selectedAbility.has_key(card._id):
+      if re.search(r'-isForced',selectedAbility[card._id][0]):
+         if not silent and not confirm("This units effect is forced which means you have to use it if possible. Are you sure you want to ignore it?"): return
+         else: forcedTrigger = True
    debugNotify("Clearing Hihlight",3)
-   if card.highlight == ReadyEffectColor: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
+   if card.highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
    debugNotify("Deleting selectedAbility tuple",3)
    if selectedAbility.has_key(card._id): del selectedAbility[card._id]
    debugNotify("Uploading selectedAbility tuple",3)
@@ -811,7 +812,7 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
       debugNotify("Clearing Effects for {}".format(Card(cID)),3)
       debugNotify("selectedAbility[cID] = {}".format(selectedAbility[cID]),3)
       if not re.search(r'-isForced',selectedAbility[cID][0]):
-         if Card(cID).highlight == ReadyEffectColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
+         if Card(cID).highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
          del selectedAbility[cID]
       else: 
          notify(":::WARNING::: {}'s FORCED Trigger is still remaining.".format(Card(cID)))
@@ -1017,7 +1018,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
    ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")
-   if (len(players) > 1 or debugVerbosity == 0) and me.name != 'dbzer0':
+   if (len(players) > 1 or debugVerbosity == 0) and me.name != 'dbzer0' and me.name != 'db0':
       try: (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/o8g/Scripts/CardScripts.py',5000)
       except: 
          if debugVerbosity >= 0: notify("Timeout Error when trying to download scripts")
@@ -1105,12 +1106,12 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [
-                "ff4fb461-8060-457a-9c16-000000000337", # EoD  cards
+                "ff4fb461-8060-457a-9c16-000000000349", # EoD  cards
                 #"ff4fb461-8060-457a-9c16-000000000384",
                 #"ff4fb461-8060-457a-9c16-000000000318"
                 ]
    for idx in range(len(testcards)):
-      test = table.create(testcards[idx], (70 * idx) - 400, 0, 1, True)
+      test = table.create(testcards[idx], (70 * idx) - 300, 0, 1, True)
       
 def spawnSetCards():
    setCards = [ ### EoD Set ###
@@ -1173,79 +1174,79 @@ def spawnSetCards():
                 # "ff4fb461-8060-457a-9c16-000000000411",
                 # "ff4fb461-8060-457a-9c16-000000000412",
                 # "ff4fb461-8060-457a-9c16-000000000413",
-                "ff4fb461-8060-457a-9c16-000000000414",
-                "ff4fb461-8060-457a-9c16-000000000415",
-                "ff4fb461-8060-457a-9c16-000000000416",
-                "ff4fb461-8060-457a-9c16-000000000417",
-                "ff4fb461-8060-457a-9c16-000000000418",
-                "ff4fb461-8060-457a-9c16-000000000419",
-                "ff4fb461-8060-457a-9c16-000000000420",
-                "ff4fb461-8060-457a-9c16-000000000421",
-                "ff4fb461-8060-457a-9c16-000000000422",
-                "ff4fb461-8060-457a-9c16-000000000423",
-                "ff4fb461-8060-457a-9c16-000000000424",
-                "ff4fb461-8060-457a-9c16-000000000425",
-                "ff4fb461-8060-457a-9c16-000000000426",
-                "ff4fb461-8060-457a-9c16-000000000427",
-                "ff4fb461-8060-457a-9c16-000000000428",
-                "ff4fb461-8060-457a-9c16-000000000429",
-                "ff4fb461-8060-457a-9c16-000000000430",
-                "ff4fb461-8060-457a-9c16-000000000431",
-                "ff4fb461-8060-457a-9c16-000000000432",
-                "ff4fb461-8060-457a-9c16-000000000433",
-                "ff4fb461-8060-457a-9c16-000000000434",
-                "ff4fb461-8060-457a-9c16-000000000435",
-                "ff4fb461-8060-457a-9c16-000000000436",
-                "ff4fb461-8060-457a-9c16-000000000437",
-                "ff4fb461-8060-457a-9c16-000000000438",
-                "ff4fb461-8060-457a-9c16-000000000439",
-                "ff4fb461-8060-457a-9c16-000000000440",
-                "ff4fb461-8060-457a-9c16-000000000441",
-                "ff4fb461-8060-457a-9c16-000000000442",
-                "ff4fb461-8060-457a-9c16-000000000443",
-                "ff4fb461-8060-457a-9c16-000000000444",
-                "ff4fb461-8060-457a-9c16-000000000445",
-                "ff4fb461-8060-457a-9c16-000000000446",
-                "ff4fb461-8060-457a-9c16-000000000447",
-                "ff4fb461-8060-457a-9c16-000000000448",
-                "ff4fb461-8060-457a-9c16-000000000449",
-                "ff4fb461-8060-457a-9c16-000000000450",
-                "ff4fb461-8060-457a-9c16-000000000451",
-                "ff4fb461-8060-457a-9c16-000000000452",
-                "ff4fb461-8060-457a-9c16-000000000453",
-                "ff4fb461-8060-457a-9c16-000000000454",
-                "ff4fb461-8060-457a-9c16-000000000455",
-                "ff4fb461-8060-457a-9c16-000000000456",
-                "ff4fb461-8060-457a-9c16-000000000457",
-                "ff4fb461-8060-457a-9c16-000000000458",
-                "ff4fb461-8060-457a-9c16-000000000459",
-                "ff4fb461-8060-457a-9c16-000000000460",
-                "ff4fb461-8060-457a-9c16-000000000461",
-                "ff4fb461-8060-457a-9c16-000000000462",
-                "ff4fb461-8060-457a-9c16-000000000463",
-                "ff4fb461-8060-457a-9c16-000000000464",
-                "ff4fb461-8060-457a-9c16-000000000465",
-                "ff4fb461-8060-457a-9c16-000000000466",
-                "ff4fb461-8060-457a-9c16-000000000467",
-                "ff4fb461-8060-457a-9c16-000000000468",
-                "ff4fb461-8060-457a-9c16-000000000469",
-                "ff4fb461-8060-457a-9c16-000000000470",
-                "ff4fb461-8060-457a-9c16-000000000471",
-                "ff4fb461-8060-457a-9c16-000000000472",
-                "ff4fb461-8060-457a-9c16-000000000473",
-                "ff4fb461-8060-457a-9c16-000000000474",
-                "ff4fb461-8060-457a-9c16-000000000475",
-                "ff4fb461-8060-457a-9c16-000000000476",
-                "ff4fb461-8060-457a-9c16-000000000477",
-                "ff4fb461-8060-457a-9c16-000000000478",
-                "ff4fb461-8060-457a-9c16-000000000479",
-                "ff4fb461-8060-457a-9c16-000000000480",
-                "ff4fb461-8060-457a-9c16-000000000481",
-                "ff4fb461-8060-457a-9c16-000000000482",
-                "ff4fb461-8060-457a-9c16-000000000483",
-                "ff4fb461-8060-457a-9c16-000000000484",
-                "ff4fb461-8060-457a-9c16-000000000485",
-                "ff4fb461-8060-457a-9c16-000000000486"
+                # "ff4fb461-8060-457a-9c16-000000000414",
+                # "ff4fb461-8060-457a-9c16-000000000415",
+                # "ff4fb461-8060-457a-9c16-000000000416",
+                # "ff4fb461-8060-457a-9c16-000000000417",
+                # "ff4fb461-8060-457a-9c16-000000000418",
+                # "ff4fb461-8060-457a-9c16-000000000419",
+                # "ff4fb461-8060-457a-9c16-000000000420",
+                # "ff4fb461-8060-457a-9c16-000000000421",
+                # "ff4fb461-8060-457a-9c16-000000000422",
+                # "ff4fb461-8060-457a-9c16-000000000423",
+                # "ff4fb461-8060-457a-9c16-000000000424",
+                # "ff4fb461-8060-457a-9c16-000000000425",
+                # "ff4fb461-8060-457a-9c16-000000000426",
+                # "ff4fb461-8060-457a-9c16-000000000427",
+                # "ff4fb461-8060-457a-9c16-000000000428",
+                # "ff4fb461-8060-457a-9c16-000000000429",
+                # "ff4fb461-8060-457a-9c16-000000000430",
+                # "ff4fb461-8060-457a-9c16-000000000431",
+                # "ff4fb461-8060-457a-9c16-000000000432",
+                # "ff4fb461-8060-457a-9c16-000000000433",
+                # "ff4fb461-8060-457a-9c16-000000000434",
+                # "ff4fb461-8060-457a-9c16-000000000435",
+                # "ff4fb461-8060-457a-9c16-000000000436",
+                # "ff4fb461-8060-457a-9c16-000000000437",
+                # "ff4fb461-8060-457a-9c16-000000000438",
+                # "ff4fb461-8060-457a-9c16-000000000439",
+                # "ff4fb461-8060-457a-9c16-000000000440",
+                # "ff4fb461-8060-457a-9c16-000000000441",
+                # "ff4fb461-8060-457a-9c16-000000000442",
+                # "ff4fb461-8060-457a-9c16-000000000443",
+                # "ff4fb461-8060-457a-9c16-000000000444",
+                # "ff4fb461-8060-457a-9c16-000000000445",
+                # "ff4fb461-8060-457a-9c16-000000000446",
+                # "ff4fb461-8060-457a-9c16-000000000447",
+                # "ff4fb461-8060-457a-9c16-000000000448",
+                # "ff4fb461-8060-457a-9c16-000000000449",
+                # "ff4fb461-8060-457a-9c16-000000000450",
+                # "ff4fb461-8060-457a-9c16-000000000451",
+                # "ff4fb461-8060-457a-9c16-000000000452",
+                # "ff4fb461-8060-457a-9c16-000000000453",
+                # "ff4fb461-8060-457a-9c16-000000000454",
+                # "ff4fb461-8060-457a-9c16-000000000455",
+                # "ff4fb461-8060-457a-9c16-000000000456",
+                # "ff4fb461-8060-457a-9c16-000000000457",
+                # "ff4fb461-8060-457a-9c16-000000000458",
+                # "ff4fb461-8060-457a-9c16-000000000459",
+                # "ff4fb461-8060-457a-9c16-000000000460",
+                # "ff4fb461-8060-457a-9c16-000000000461",
+                # "ff4fb461-8060-457a-9c16-000000000462",
+                # "ff4fb461-8060-457a-9c16-000000000463",
+                # "ff4fb461-8060-457a-9c16-000000000464",
+                # "ff4fb461-8060-457a-9c16-000000000465",
+                # "ff4fb461-8060-457a-9c16-000000000466",
+                # "ff4fb461-8060-457a-9c16-000000000467",
+                # "ff4fb461-8060-457a-9c16-000000000468",
+                # "ff4fb461-8060-457a-9c16-000000000469",
+                # "ff4fb461-8060-457a-9c16-000000000470",
+                # "ff4fb461-8060-457a-9c16-000000000471",
+                # "ff4fb461-8060-457a-9c16-000000000472",
+                # "ff4fb461-8060-457a-9c16-000000000473",
+                # "ff4fb461-8060-457a-9c16-000000000474",
+                # "ff4fb461-8060-457a-9c16-000000000475",
+                # "ff4fb461-8060-457a-9c16-000000000476",
+                # "ff4fb461-8060-457a-9c16-000000000477",
+                # "ff4fb461-8060-457a-9c16-000000000478",
+                # "ff4fb461-8060-457a-9c16-000000000479",
+                # "ff4fb461-8060-457a-9c16-000000000480",
+                # "ff4fb461-8060-457a-9c16-000000000481",
+                # "ff4fb461-8060-457a-9c16-000000000482",
+                # "ff4fb461-8060-457a-9c16-000000000483",
+                # "ff4fb461-8060-457a-9c16-000000000484",
+                # "ff4fb461-8060-457a-9c16-000000000485",
+                # "ff4fb461-8060-457a-9c16-000000000486"
                 ]
    for cID in setCards:
       test = table.create(cID, 0, 0, 1, True)
