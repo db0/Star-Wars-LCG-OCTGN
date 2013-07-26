@@ -38,7 +38,6 @@ ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards 
 limitedPlayed = False # A Variable which records if the player has played a limited card this turn
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
 capturingObjective = None # A global variable which holds which objective just captured a card.
-cardsLeavingPlay = [] # A list holding cards that are about to leave play. It is used so that a card with a "Leaving Play" effect does not trigger other leaving play effects (e.g. Leia Organa)
 
 warnImminentEffects = "An effect is ready to trigger but has not been done automatically in order to allow your opponent to react.\
                      \nOnce your opponent had the chance to play any interrupts, double click on the green-highlighted card to finalize it and resolve any effects (remember to target any relevant cards if required).\
@@ -56,10 +55,11 @@ def showCurrentPhase(): # Just say a nice notification about which phase you're 
 def nextPhase(group = table, x = 0, y = 0, setTo = None):  
 # Function to take you to the next phase. 
    global firstTurn
-   if debugVerbosity >= 1: notify(">>> nextPhase(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> nextPhase()") #Debug
    mute()
    clearAllEffects(True) # First we clear all non-used triggered effects.
    if getGlobalVariable('Engaged Objective') != 'None':
+      debugNotify("We got engaged objective")
       phase = num(getGlobalVariable('Engagement Phase'))
       if setTo: phase = setTo
       else: phase += 1
@@ -70,9 +70,10 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          if phase == 1: delayed_whisper(":::NOTE::: You can now start selecting engagement participants by double-clicking on them")
          elif phase == 5: finishEngagement() # If it's the reward unopposed phase, we simply end the engagement immediately after
    else:
+      debugNotify("Normal Phase change")
       phase = num(me.getGlobalVariable('Phase'))
-      if getGlobalVariable('Engaged Objective') != 'None': finishEngagement()
       if phase == 6: 
+         debugNotify("We'at turn End")
          if not forceStruggleDone and Automations['Start/End-of-Turn/Phase']: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
          me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
          #setGlobalVariable('Active Player', opponent.name)
@@ -85,6 +86,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          debugNotify("Exiting Because we've finished our turn")
          return
       elif not me.isActivePlayer:
+         debugNotify("Not currently the active player")
          #if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
          if not confirm("Your opponent has not finished their turn yet. Are you sure you want to jump to your turn?"): return
          me.setActivePlayer() # new in OCTGN 3.0.5.47 
@@ -92,7 +94,9 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          #setGlobalVariable('Active Player', me.name)
          phase = 1
       else: 
-         phase += 1
+         debugNotify("Normal Phase change")
+         if phase == -1: phase = 1 # This is for the first phase of the LS player.
+         else: phase += 1
          me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
       if phase == 1: goToBalance()
       elif phase == 2: goToRefresh()
@@ -480,7 +484,6 @@ def gameSetup(group, x = 0, y = 0):
 def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
-   global cardsLeavingPlay
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    if card.highlight == FateColor: 
       #whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
@@ -530,8 +533,7 @@ def defaultAction(card, x = 0, y = 0):
          notify("{} resolves the effects of {}".format(me,card)) 
          clearStoredEffects(card,True) # Now that we won't cancel anymore, we clear the card's resident effect now, whatever happens, so that it can remove itself from play.
          if re.search(r'LEAVING',selectedAbility[card._id][3]): 
-            cardsLeavingPlay.append(card._id)
-            debugNotify("updated cardsLeavingPlay = {}".format(cardsLeavingPlay),2)         
+            cardsLeaving(card,'append')
          if executeAutoscripts(card,selectedAbility[card._id][0],count = selectedAbility[card._id][5], action = selectedAbility[card._id][3],targetCards = preTargets) == 'ABORT': 
             # If we have an abort, we need to restore the card to its triggered mode so that the player may change targets and try again. 
             # Since we've already cleared the card to avoid it's "in-a-trigger" state from affecting effects which remove it from play, we need to re-store it now.
@@ -835,8 +837,6 @@ def handDiscard(card):
 def discard(card, x = 0, y = 0, silent = False, Continuing = False):
    debugNotify(">>> discard() card = {}".format(card)) #Debug
    mute()
-   global cardsLeavingPlay
-   debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
    previousHighlight = card.highlight # We store the highlight before we move the card to the discard pile, to be able to check if it's an edge card to avoid triggering its autoscripts
    debugNotify("previous Highlight = {}".format(previousHighlight),2)   
    if card.highlight == DummyColor: 
@@ -845,7 +845,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
    elif card.Type == "Objective":
       if card.controller == me:
          if not Continuing and not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
-         if not Continuing and card._id not in cardsLeavingPlay:
+         if not Continuing and not cardsLeaving(card):
             execution = executePlayScripts(card, 'THWART')
             if execution == 'POSTPONED': 
                scriptPostponeNotice('Objective Thwart')
@@ -873,7 +873,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
       else:
          if not Continuing and not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
-         if not Continuing and card._id not in cardsLeavingPlay:
+         if not Continuing and not cardsLeaving(card):
             execution = executePlayScripts(card, 'THWART')
             if execution == 'POSTPONED': 
                scriptPostponeNotice('Objective Thwart')
@@ -897,7 +897,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
                notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
-      if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+      cardsLeaving(card,'remove')
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
@@ -910,7 +910,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
       card.moveTo(card.owner.piles['Discard Pile'])   
    else:
       if previousHighlight != FateColor and previousHighlight != EdgeColor and previousHighlight != UnpaidColor and previousHighlight != CapturedColor:
-         if not Continuing and card._id not in cardsLeavingPlay:
+         if not Continuing and not cardsLeaving(card):
             debugNotify("Executing Discard leaving play scripts. Highlight was {}".format(previousHighlight),2)
             execution = executePlayScripts(card, 'LEAVING-DISCARD') # Objective discard scripts are dealt with onThwart.
             autoscriptOtherPlayers('CardLeavingPlay',card)
@@ -922,7 +922,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          if card.group == table and card.highlight != CapturedColor:
             clearStoredEffects(card,True) # Making sure that the player didn't discard a card waiting for an effect.
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
-            if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+            cardsLeaving(card,'remove')
          if not silent: notify("{} discards {}".format(me,card))
    if previousHighlight != DummyColor:
       debugNotify("Checking if the card has attachments to discard as well.")      
@@ -931,10 +931,9 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
    return 'OK'
 
 def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False, Continuing = False): # Tries to find a targeted card in the table or the oppomnent's hand to capture
-   global capturingObjective, cardsLeavingPlay
+   global capturingObjective
    if Continuing: chosenObj = capturingObjective
    debugNotify(">>> capture(){}".format(extraASDebug())) #Debug
-   debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
    if debugVerbosity >= 2 and chosenObj: notify("### chosenObj = {}".format(chosenObj)) #Debug
    if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
    mute()
@@ -994,7 +993,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if targetC.controller != me: xAxis = 1
       else: xAxis = -1
       if captureGroup == 'Table' and targetC.highlight != EdgeColor and targetC.highlight != FateColor: # If the card was on the table, we also trigger "removed from play" effects
-         if not Continuing and targetC._id not in cardsLeavingPlay:
+         if not Continuing and not cardsLeaving(targetC):
             debugNotify("Executing Capture Leaving Play Scripts. Highlight was {}".format(targetC.highlight),2)
             execution = executePlayScripts(targetC, 'LEAVING-CAPTURED')
             autoscriptOtherPlayers('CardLeavingPlay',targetC)
@@ -1015,7 +1014,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.markers[mdict['Damage']] = 0
       targetC.markers[mdict['Focus']] = 0
       debugNotify("Finished Capturing. Removing from cardsLeavingPlay var",2)
-      if targetC._id in cardsLeavingPlay: cardsLeavingPlay.remove(targetC._id)
+      cardsLeaving(targetC,'remove')
       debugNotify("About to reset shared variable",2)
       setGlobalVariable('Captured Cards',str(capturedCards))
       debugNotify("About to initiate autoscripts",2)
@@ -1109,15 +1108,13 @@ def rescueTargets(group,x = 0, y = 0):
 def exileCard(card, silent = False,Continuing = False):
    debugNotify(">>> exileCard(){}".format(extraASDebug())) #Debug
    # Puts the removed card in the player's removed form game pile.
-   global cardsLeavingPlay
-   debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
    mute()
    if card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
    else:
       if targetCard.group == table and targetCard.highlight != EdgeColor and targetCard.highlight != FateColor and card.highlight != CapturedColor:
-         if not Continuing and card._id not in cardsLeavingPlay:
+         if not Continuing and not cardsLeaving(card):
             debugNotify("Executing Exile Leaving Play Scripts",2)
             execution = executePlayScripts(targetCard, 'LEAVING-EXILE')
             autoscriptOtherPlayers('CardLeavingPlay',targetCard)
@@ -1128,7 +1125,7 @@ def exileCard(card, silent = False,Continuing = False):
          if card.group == table: clearAttachLinks(card)
          freeUnitPlacement(card)
          card.moveTo(me.piles['Removed from Game'])
-         if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+         cardsLeaving(card,'remove')
    if not silent: notify("{} removed {} from play{}.".format(me,card))
    executePlayScripts(card, 'DISCARD')
  
@@ -1393,8 +1390,7 @@ def randomDiscard(group):
 
 def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
    debugNotify(">>> sendToBottom()") #Debug
-   global randomizedArray,cardsLeavingPlay
-   debugNotify("cardsLeavingPlay = {}".format(cardsLeavingPlay),2)
+   global randomizedArray
    scriptWaiting = False
    firstTime = False
    if Continuing: 
@@ -1419,7 +1415,7 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
          if not silent: notify("{} sends {} to the bottom of their respective decks in random order.".format(me,[card.name for card in sorted(cards)])) # We sort the list so that the players cannot see the true random order in the announcement
    debugNotify("Executing card scripts one by one",2)
    for card in cards: 
-      if not scriptWaiting and not Continuing and card._id not in cardsLeavingPlay and card.group == table and card.highlight != EdgeColor and card.highlight != FateColor and card.highlight != CapturedColor: 
+      if not scriptWaiting and not Continuing and not cardsLeaving(card) and card.group == table and card.highlight != EdgeColor and card.highlight != FateColor and card.highlight != CapturedColor: 
          debugNotify("Executing SendToBottom Leaving Play Scripts",2)
          if executePlayScripts(card, 'LEAVING-DECKBOTTOM') == 'POSTPONED': firstTime = True
          autoscriptOtherPlayers('CardLeavingPlay',card)
@@ -1444,15 +1440,14 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
          if card.group == table: clearAttachLinks(card)
          freeUnitPlacement(card)
          card.moveToBottom(card.owner.piles['Command Deck'])
-         if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+         cardsLeaving(card,'remove')
          randomizedArray = None
    debugNotify("<<< sendToBottom()") #Debug
 
 def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
    debugNotify(">>> returnToHand()") #Debug
-   global cardsLeavingPlay
    if card.group == table and card.highlight != EdgeColor and card.highlight != FateColor and card.highlight != CapturedColor:
-      if not Continuing and card._id not in cardsLeavingPlay:
+      if not Continuing and not cardsLeaving(card):
          execution = executePlayScripts(card, 'LEAVING-HAND')
          autoscriptOtherPlayers('CardLeavingPlay',card)
          if execution == 'POSTPONED': 
@@ -1461,7 +1456,7 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
          rnd(1,10)
    if not chkEffectTrigger(card,'Card Return'):
       if card.group == table and card.highlight != CapturedColor: 
-         if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+         cardsLeaving(card,'remove')
          freeUnitPlacement(card)
          card.moveTo(card.owner.hand)
    if not silent: notify("{} returned {} to its owner's hand".format(me,card))

@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.2.4.108"
+      version="2.2.4.113"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -42,6 +42,7 @@
      <globalvariable name="Host Cards" value="{}" />      
      <globalvariable name="Turn" value="0" />      
      <globalvariable name="Stored Effects" value="{}" />      
+     <globalvariable name="Cards Leaving Play" value="[]" />      
    </globalvariables>
 	<card back="Card/back.png" front="Card/front.jpg" width="63" height="88" cornerRadius="2">
 		<property name="Block" type="String" hidden="False" ignoreText="False" textKind="Free" />

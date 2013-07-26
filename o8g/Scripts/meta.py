@@ -763,10 +763,7 @@ def checkDeckLegality():
 def readyEffect(card,forced = False):
 # This function prepares an event for being activated and puts the initial warning out if necessary.
    if debugVerbosity >= 1: notify(">>> readyEffect()") #Debug
-   if card.owner == me: hardcoreMode = Automations['HARDCORE']
-   else: 
-      oppAutomations = eval(card.owner.getGlobalVariable('Switches'))
-      hardcoreMode = oppAutomations['HARDCORE']
+   hardcoreMode = chkHardcore(card)
    if not hardcoreMode or forced or card.Type == 'Event':
       card.highlight = ReadyEffectColor
       notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
@@ -788,7 +785,6 @@ def clrResourceMarkers(card):
 
 def clearStoredEffects(card, silent = False): # A function which clears a card's waiting-to-be-activated scripts
    debugNotify(">>> clearStoredEffects with card: {}".format(card))
-   global cardsLeavingPlay
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    forcedTrigger = False
    if selectedAbility.has_key(card._id):
@@ -803,8 +799,7 @@ def clearStoredEffects(card, silent = False): # A function which clears a card's
    if selectedAbility.has_key(card._id): del selectedAbility[card._id]
    debugNotify("Uploading selectedAbility tuple",3)
    setGlobalVariable('Stored Effects',str(selectedAbility))
-   debugNotify("Removing from cardsLeavingPlay[]")
-   if card._id in cardsLeavingPlay: cardsLeavingPlay.remove(card._id)
+   cardsLeaving(card,'remove')
    if not silent: 
       if forcedTrigger: notify(":::WARNING::: {} has chosen to ignore the FORCED trigger of {}.".format(me,card))
       else: notify("{} chose not to activate {}'s ability".format(me,card))
@@ -812,7 +807,6 @@ def clearStoredEffects(card, silent = False): # A function which clears a card's
 
 def clearAllEffects(silent = False): # A function which clears all card's waiting-to-be-activated scripts. This is not looping clearStoredEffects() to avoid too many setGlobalVariable calls
    debugNotify(">>> clearAllEffects")
-   global cardsLeavingPlay
    selectedAbility = eval(getGlobalVariable('Stored Effects'))   
    for cID in selectedAbility:
       debugNotify("Clearing Effects for {}".format(Card(cID)),3)
@@ -821,7 +815,7 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
          if Card(cID).highlight == ReadyEffectColor or Card(cID).highlight == UnpaidAbilityColor: Card(cID).highlight = selectedAbility[cID][2] # We do not clear Forced Triggers so that they're not forgotten.
          debugNotify("Now Deleting card's dictionary entry",4)
          del selectedAbility[cID]
-         if cID in cardsLeavingPlay: cardsLeavingPlay.remove(cID)         
+         cardsLeaving(Card(cID),'remove')
       else: 
          notify(":::WARNING::: {}'s FORCED Trigger is still remaining.".format(Card(cID)))
    debugNotify("Clearing all highlights from cards not waiting for their abilities")
@@ -869,8 +863,41 @@ def chkEffectTrigger(card,actionType = 'Discard',silent = False): # Checks if a 
    debugNotify("<<< chkEffectTrigger() with False")
    return False
 
-def scriptPostponeNotice(actionType = 'Discard'):
-   delayed_whisper(":::INFO::: {} Paused while card's React in progress. Use or ignore the react trigger to continue".format(actionType))
+def scriptPostponeNotice(actionType = None):
+   if actionType: delayed_whisper(":::INFO::: {} PAUSED while card's React in progress. Use or ignore the react trigger to continue.".format(actionType.capitalize()))
+   else: delayed_whisper(":::INFO::: Script execution PAUSED to allow other players to react.")
+   
+def chkHardcore(card):
+   debugNotify(">>> chkHardcore() for {}".format(card)) #Returns True if the controller of a card has hardcore mode enabled.
+   if card.owner == me: hardcoreMode = Automations['HARDCORE']
+   else: 
+      oppAutomations = eval(card.owner.getGlobalVariable('Switches'))
+      hardcoreMode = oppAutomations['HARDCORE']
+   debugNotify("<<< chkHardcore() with return {}".format(hardcoreMode))
+   return hardcoreMode
+
+def cardsLeaving(card,action = 'chk'):
+   debugNotify(">>> modCardsLeaving() for {} with action {}".format(card,action)) #Returns True if the controller of a card has hardcore mode enabled.
+   cardsLeavingPlay = eval(getGlobalVariable('Cards Leaving Play'))
+   if action == 'remove':
+      if card._id in cardsLeavingPlay: 
+         debugNotify("Removing from cardsLeavingPlay")
+         cardsLeavingPlay.remove(card._id)
+         setGlobalVariable('Cards Leaving Play',str(cardsLeavingPlay))
+      else: debugNotify("Card ID was not in cardsLeavingPlay")
+      cardLeaving = False
+   elif action == 'append': 
+      if card._id not in cardsLeavingPlay: 
+         debugNotify("Adding to cardsLeavingPlay")
+         cardsLeavingPlay.append(card._id)
+         setGlobalVariable('Cards Leaving Play',str(cardsLeavingPlay))
+      else: debugNotify("Card ID already in cardsLeavingPlay")
+      cardLeaving = True
+   else: # If no action is specified,then we just check if the card is in the array.
+      if card._id in cardsLeavingPlay: cardLeaving = True
+      else: cardLeaving = False      
+   debugNotify("<<< modCardsLeaving with cardLeaving = {}".format(cardLeaving))
+   return cardLeaving
    
 #------------------------------------------------------------------------------
 # Switches

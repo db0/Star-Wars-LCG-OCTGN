@@ -27,7 +27,7 @@ TitleDone = 'Unset'
 def executePlayScripts(card, action):
    #action = action.upper() # Just in case we passed the wrong case
    debugNotify(">>> executePlayScripts() with action: {}".format(action)) #Debug
-   global failedRequirement,cardsLeavingPlay
+   global failedRequirement
    scriptEffect = 'INCOMPLETE'
    if not Automations['Play']: 
       whisper(":::WARNING::: Your play automations have been deactivated. Aborting.")
@@ -143,9 +143,15 @@ def executePlayScripts(card, action):
             if re.search(r'-isForced', autoS): readyEffect(card,True)
             else: readyEffect(card)
             scriptEffect = 'POSTPONED'
-            if re.search(r'LEAVING',action): 
-               cardsLeavingPlay.append(card._id)
-               debugNotify("updated cardsLeavingPlay = {}".format(cardsLeavingPlay),2)         
+            if re.search(r'LEAVING',action):
+               cardsLeaving(card,'append')
+               if chkHardcore(card): scriptPostponeNotice() # On hardcore mode, we don't mention exactly why we stopped script execution
+               else:
+                  destination = re.search(r'LEAVING-([A-Z]+)'.format(action))
+                  scriptPostponeNotice(destination.group(1)) # We announce why the script is paused if we're not in hardcore mode.
+            else: 
+               if chkHardcore(card): scriptPostponeNotice()
+               else: scriptPostponeNotice(action)
          else:
             ### Otherwise the automation is uninterruptible and we just go on with the scripting.
             executeAutoscripts(card,autoS,action = action)
@@ -293,12 +299,6 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                debugNotify("!!! Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
                continue
          if not chkDummy(autoS, card): continue
-         if re.search(r'duringOpponentTurn', autoS) and me.isActivePlayer and len(players) > 1: 
-            debugNotify("!!! Failing because ability is for opponent's turn and me.isActivePlayer is {}".format(me.isActivePlayer))      
-            continue
-         if re.search(r'duringMyTurn', autoS) and not me.isActivePlayer and len(players) > 1: 
-            debugNotify("!!! Failing because ability is for our turn only and me.isActivePlayer is {}".format(me.isActivePlayer))         
-            continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          elif debugVerbosity >= 2: notify("### Not Looking for specific type or type specified found.")
          if not checkOriginatorRestrictions(autoS,card): continue
@@ -354,12 +354,6 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          # If the effect trigger we're checking (e.g. start-of-run) does not match the period trigger we're in (e.g. end-of-turn)
          # An effect for 'afterPhase' triggers after each Phase or Turn End.
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
-         if re.search(r'duringOpponentTurn', autoS) and me.isActivePlayer and len(players) > 1: 
-            debugNotify("!!! Failing because ability is for opponent's turn and me.isActivePlayer is {}".format(me.isActivePlayer))            
-            continue # If we're the player changing the phase, it means it's still our turn
-         if re.search(r'duringMyTurn', autoS) and not me.isActivePlayer and len(players) > 1: 
-            debugNotify("!!! Failing because ability is our turn and me.isActivePlayer is {}".format(me.isActivePlayer))
-            continue
          if not chkDummy(autoS, card): continue
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
@@ -1994,8 +1988,10 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
 # Function returns 1 if the card is not only for rivals, or if it is for rivals and the card being activated it not ours.
 # This is then multiplied by the multiplier, which means that if the card activated only works for Rival's cards, our cards will have a 0 gain.
 # This will probably make no sense when I read it in 10 years...
-   if debugVerbosity >= 1: notify(">>> chkPlayer(). Controller is: {}".format(controller)) #Debug
+   debugNotify(">>> chkPlayer(). Controller is: {}".format(controller)) #Debug
+   debugNotify("Autoscript = {}".format(Autoscript),3)
    try:
+      validPlayer = 1 # We always succeed unless a check fails
       if targetChk: # If set to true, it means we're checking from the findTarget() function, which needs a different keyword in case we end up with two checks on a card's controller on the same script (e.g. Darth Vader)
          debugNotify("Doing targetChk",3)
          byOpponent = re.search(r'targetOpponents', Autoscript)
@@ -2004,26 +2000,27 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
          debugNotify("Doing normal chk",3)
          byOpponent = re.search(r'(byOpponent|forOpponent)', Autoscript)
          byMe = re.search(r'(byMe|forMe)', Autoscript)
-      if manual or len(players) == 1: # If there's only one player, we always return true for debug purposes.
-         if debugVerbosity >= 2: notify("### Succeeded at Manual/Debug")
-         validPlayer = 1 #manual means that the clicks was called by a player double clicking on the card. In which case we always do it.
-      elif not byOpponent and not byMe: 
-         if debugVerbosity >= 2: notify("### Succeeded at Neutral")   
-         validPlayer = 1 # If the card has no restrictions on being us or a rival.
-      elif byOpponent and controller != me: 
-         if debugVerbosity >= 2: notify("### Succeeded at byOpponent")   
-         validPlayer =  1 # If the card needs to be played by a rival.
-      elif byMe and controller == me: 
-         if debugVerbosity >= 2: notify("### Succeeded at byMe")   
-         validPlayer =  1 # If the card needs to be played by us.
-      else: 
-         if debugVerbosity >= 2: notify("### Failed all checks") # Debug
-         validPlayer =  0 # If all the above fail, it means that we're not supposed to be triggering, so we'll return 0 whic
+      if re.search(r'duringOpponentTurn', Autoscript) and controller.isActivePlayer: 
+         debugNotify("!!! Failing because ability is for {} opponent's turn and {}.isActivePlayer is {}".format(controller,controller,controller.isActivePlayer))            
+         validPlayer = 0 # If the card can only fire furing its controller's opponent's turn
+      elif re.search(r'duringMyTurn', Autoscript) and not controller.isActivePlayer: 
+         debugNotify("!!! Failing because ability is for {}'s turn and {}.isActivePlayer is {}".format(controller,controller,controller.isActivePlayer))            
+         validPlayer = 0 # If the card can only fire furing its controller's turn
+      elif byOpponent and controller == me: 
+         debugNotify("!!! Failing because ability is byOpponent and controller is {}".format(controller))
+         validPlayer =  0 # If the card needs to be played by a rival.
+      elif byMe and controller != me: 
+         debugNotify("!!! Failing because ability is for byMe and controller is {}".format(controller))
+         validPlayer =  0 # If the card needs to be played by us.
+      else: debugNotify("!!! Succeeding by Default") # Debug
+      if manual or len(players) == 1: 
+         debugNotify("!!! Force Succeeding for Manual/Debug")         
+         validPlayer = 1 # On a manual or debug run we always succeed
       if not reversePlayerChk: 
-         if debugVerbosity >= 3: notify("<<< chkPlayer() with validPlayer: {}".format(validPlayer)) # Debug
+         debugNotify("<<< chkPlayer() with validPlayer: {}".format(validPlayer)) # Debug
          return validPlayer
       else: # In case reversePlayerChk is set to true, we want to return the opposite result. This means that if a scripts expect the one running the effect to be the player, we'll return 1 only if the one running the effect is the opponent. See Decoy at Dantoine for a reason
-         if debugVerbosity >= 3: notify("<<< chkPlayer() reversed!") # Debug      
+         debugNotify("<<< chkPlayer() reversed!") # Debug      
          if validPlayer == 0 or len(players) == 1 or manual or (not byOpponent and not byMe): return 1 # For debug purposes, I want it to be true when there's  only one player in the match
          else: return 0
    except: 
