@@ -163,7 +163,7 @@
 			<groupaction menu="Random Discard" default="False" execute="handRandomDiscard" />
          <groupaction menu="Show a Card at Random" default="False" execute="showatrandom"/>
          <cardaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectCard" />
-         <cardaction menu="Discard/Remove 4th Obejctive" default="False" shortcut="del" execute="handDiscard" />           
+         <cardaction menu="Discard/Remove 4th Objective" default="False" shortcut="del" execute="handDiscard" />           
          <cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		</hand>
 		<group name="Command Deck" visibility="none" ordered="False" width="63" height="88" icon="Groups/library.png" collapsed="False">
