@@ -546,7 +546,7 @@ Fall of the Jedi
 -----
 ff4fb461-8060-457a-9c16-000000000102
 -----
-afterRefresh:SendToBottomTarget-Targeted-fromHand-isReact
+afterRefresh:SendToBottomTarget-Targeted-fromHand-duringMyTurn-isReact
 +++++
 
 .....
@@ -2714,7 +2714,7 @@ Sabotage in the Snow
 -----
 ff4fb461-8060-457a-9c16-000000000349
 -----
-afterDeployment:Transfer1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-destinationAny-hasntMarker{Shield}-targetMine-isReact
+afterDeployment:Transfer1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-destinationAny-hasntMarker{Shield}-targetMine-duringMyTurn-isReact
 +++++
 
 .....
@@ -3226,7 +3226,7 @@ Bounty
 -----
 ff4fb461-8060-457a-9c16-000000000425
 -----
-Placement:Unit-targetOpponents||whileInPlay:SacrificeMyself-foreachAttackerEdgeWin-ifOrigDefending-ifEdgeDiffge3||whileInPlay:SacrificeMyself-foreachDefenderEdgeWin-ifOrigAttacking-ifEdgeDiffge3||afterCardRefreshing:CaptureHost
+Placement:Unit-targetOpponents||whileInPlay:SacrificeMyself-foreachAttackerEdgeWin-ifOrigDefending-ifEdgeDiffge3||whileInPlay:SacrificeMyself-foreachDefenderEdgeWin-ifOrigAttacking-ifEdgeDiffge3||afterCardRefreshing:CaptureHost-duringMyTurn
 +++++
 
 .....
@@ -3258,7 +3258,7 @@ Jabba's Pleasure Barge
 -----
 ff4fb461-8060-457a-9c16-000000000429
 -----
-afterDeployment:Remove1Focus-DemiAutoTargeted-atCharacter-hasMarker{Focus}-targetMine-choose1-isCost-isReact$$Put1Focus
+afterDeployment:Remove1Focus-DemiAutoTargeted-atCharacter-hasMarker{Focus}-targetMine-choose1-isCost-duringMyTurn-isReact$$Put1Focus
 +++++
 
 .....
