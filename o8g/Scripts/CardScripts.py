@@ -1122,7 +1122,7 @@ Rancor
 -----
 ff4fb461-8060-457a-9c16-000000000111
 -----
-afterCardRefreshing:CustomScript-isReact-isForced
+afterCardRefreshing:CustomScript-isReact-isForced-duringOpponentTurn
 +++++
 
 .....
