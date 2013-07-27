@@ -2766,6 +2766,14 @@ Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shie
 +++++
 
 .....
+Chewbacca
+-----
+ff4fb461-8060-457a-9c16-000000000356
+-----
+onDamage:SimplyAnnounce{deals twice that much damage to a target participating enemy unit}-onlyDuringEngagement-isReact
++++++
+
+.....
 Wookiee Warrior
 -----
 ff4fb461-8060-457a-9c16-000000000357
