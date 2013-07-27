@@ -1122,7 +1122,7 @@ Rancor
 -----
 ff4fb461-8060-457a-9c16-000000000111
 -----
-afterCardRefreshing:CustomScript-isReact-isForced-duringOpponentTurn
+afterCardRefreshing:CustomScript-isReact-isForced-duringMyTurn
 +++++
 
 .....
@@ -1578,7 +1578,7 @@ Tribal Support
 -----
 ff4fb461-8060-457a-9c16-000000000204
 -----
-afterCardRefreshing:Discard1Card-Targeted-fromHand-isCost-isReact$$Retrieve1Card-fromDiscard-grabEwok
+afterCardRefreshing:Discard1Card-Targeted-fromHand-duringMyTurn-isCost-isReact$$Retrieve1Card-fromDiscard-grabEwok
 +++++
 
 .....
@@ -2754,7 +2754,7 @@ WED-15-1016
 -----
 ff4fb461-8060-457a-9c16-000000000332
 -----
-afterCardRefreshing:Remove1AnyTokenType-AutoTargeted-atObjective_and_Hoth-hasMarker{AnyTokenType}-choose1
+afterCardRefreshing:Remove1AnyTokenType-AutoTargeted-atObjective_and_Hoth-hasMarker{AnyTokenType}-choose1-duringMyTurn
 +++++
 
 .....
@@ -2946,7 +2946,7 @@ Covert Sniper
 -----
 ff4fb461-8060-457a-9c16-000000000381
 -----
-afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited-choose1-isReact
+afterCardRefreshing:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-isCommited-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -3274,7 +3274,7 @@ The Tatooine Crash
 -----
 ff4fb461-8060-457a-9c16-000000000433
 -----
-afterCardRefreshing:CaptureTarget-AutoTargeted-fromTopDeckOpponents-isReact
+afterCardRefreshing:CaptureTarget-AutoTargeted-fromTopDeckOpponents-duringMyTurn-isReact
 +++++
 
 .....
@@ -3370,7 +3370,7 @@ Carbonite Transport
 -----
 ff4fb461-8060-457a-9c16-000000000445
 -----
-afterCardRefreshing:CaptureTarget-Targeted-isCaptured-isReact
+afterCardRefreshing:CaptureTarget-Targeted-isCaptured-duringMyTurn-isReact
 +++++
 
 .....
@@ -3418,7 +3418,7 @@ Bounty
 -----
 ff4fb461-8060-457a-9c16-000000000455
 -----
-Placement:Unit-targetOpponents||whileInPlay:SacrificeMyself-foreachAttackerEdgeWin-ifOrigDefending-ifEdgeDiffge3||whileInPlay:SacrificeMyself-foreachDefenderEdgeWin-ifOrigAttacking-ifEdgeDiffge3||afterCardRefreshing:CaptureHost
+Placement:Unit-targetOpponents||whileInPlay:SacrificeMyself-foreachAttackerEdgeWin-ifOrigDefending-ifEdgeDiffge3||whileInPlay:SacrificeMyself-foreachDefenderEdgeWin-ifOrigAttacking-ifEdgeDiffge3||afterCardRefreshing:CaptureHost-duringMyTurn
 +++++
 
 .....
@@ -3586,7 +3586,7 @@ Asteroid Pursuit
 -----
 ff4fb461-8060-457a-9c16-000000000481
 -----
-afterCardRefreshing:Deal1Damage-isReact-isForced
+afterCardRefreshing:Deal1Damage-duringMyTurn-isReact-isForced
 +++++
 
 .....
