@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.3.x
+
+* Card played as edge should not reduce costs or provide extra combat icons anymore.
+
 ### 2.3.2.x
 
 * Consolidated Automation switches and added switch to disable them all together.

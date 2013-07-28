@@ -369,6 +369,7 @@ def calculateCombatIcons(card = None, CIString = None):
          for autoS in Autoscripts:
             if not chkDummy(autoS, c): continue
             if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
+            if c.highlight == EdgeColor: continue # cards played as edge don't use their effects.
             if not checkOriginatorRestrictions(autoS,c): continue
             if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
                increaseRegex = re.search(r'(Increase|Decrease)(UD|BD|Tactics):([0-9])',autoS)
@@ -497,7 +498,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
    if not gatheredCardList: # A global variable that stores if we've scanned the tables for cards which reduce costs, so that we don't have to do it again.
       global costModifiers
       del costModifiers[:]
-      RC_cardList = sortPriority([c for c in table if c.isFaceUp])
+      RC_cardList = sortPriority([c for c in table if c.isFaceUp and c.highlight != EdgeColor])
       reductionRegex = re.compile(r'(Reduce|Increase)([0-9#X]+)Cost({}|All)-affects([A-Z][A-Za-z ]+)(-not[A-Za-z_& ]+)?'.format(type)) # Doing this now, to reduce load.
       for c in RC_cardList: # Then check if there's other cards in the table that reduce its costs.
          Autoscripts = CardsAS.get(c.model,'').split('||')
