@@ -70,7 +70,7 @@ class OKWindow(Form): # This is a WinForm which creates a simple window, with so
    def __init__(self,InfoTXT):
       self.StartPosition = FormStartPosition.CenterScreen
       (STRwidth, STRheight) = calcStringLabelSize(InfoTXT)
-      FORMheight = 130 + STRheight
+      FORMheight = 160 + STRheight
       FORMwidth = 100 + STRwidth
       self.Text = 'Information'
       self.Height = FORMheight
