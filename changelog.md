@@ -43,7 +43,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
     * Tractor Beam (Does not check the printed costs)
     * Bossk (Drawing the cards is not automated)
     * Trandoshan Hunter (Just Target the non-participating Wookie)
-* Added **HARDCORE** mode. Unleash from the Game Menu. Hardcore mode is built with the people who want a close experience to the real tabletop, without sacrificing all automations. 
+* Added **HARDCORE** mode. Unleash it from the Game Menu. Hardcore mode is built with the people who want a close experience to the real tabletop, without sacrificing all automations. 
   During HARDCORE mode, your cards will not highlight when their trigger is reached and will not announce it on the chat either. You will need to double click on a card during the appropriate time window at which point it will highlight and announce that your are attempting to use it, to give your opponent a chance to play interrupts.
   HARDCORE mode only affects your cards. If your opponent is not using it, then their own triggers will be automatically highlighted as usual.
   This will not affect innate effects which cannot be interrupted, such as Shielding or Cost Reductions. These will work automatically as usual. Forced effects will also always be highlighted to prevent illegal plays. In other words, HARDCORE mode only affects Reacts and Interrupts.

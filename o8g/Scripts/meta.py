@@ -19,9 +19,7 @@ import re, time
 
 Automations = {'Play'    : True, # If True, game will automatically trigger card effects when playing or double-clicking on cards. Requires specific preparation in the sets.
                'HARDCORE'               : False, # If True, game will not anymore display highlights and announcements on card waiting to trigger.
-               'Phase'                  : True, # If True, game will automatically trigger effects happening at the start of the player's phase, from cards they control.                
                'Triggers'               : True, # If True, game will search the table for triggers based on player's actions, such as installing a card, or discarding one.
-               'Reacts'                 : True, # If True, game will search the table for triggers based on player's actions, such as installing a card, or discarding one.
                'WinForms'               : True, # If True, game will use the custom Windows Forms for displaying multiple-choice menus and information pop-ups
                'Placement'              : True, # If True, game will try to auto-place cards on the table after you paid for them.
                'Start/End-of-Turn/Phase': True, # If True, game will automatically trigger effects happening at the start of the player's turn, from cards they control.                
@@ -327,80 +325,83 @@ def calculateCombatIcons(card = None, CIString = None):
    if EEBD and gotEdge(): Blast_Damage += num(EEBD.group(1))
    if T: Tactics += num(T.group(1))
    if EET and gotEdge(): Tactics += num(EET.group(1))
-   if card: # We only check markers if we're checking a host's Combat Icons.
-      if debugVerbosity >= 2: notify("### Checking Markers") #Debug
-      for marker in card.markers:
-         if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
-         if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
-         if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
-         if re.search(r':EE-UD',marker[0]) and gotEdge(): Unit_Damage += card.markers[marker]
-         if re.search(r':EE-BD',marker[0]) and gotEdge(): Blast_Damage += card.markers[marker]
-         if re.search(r':EE-Tactics',marker[0]) and gotEdge(): Tactics += card.markers[marker]
-         if re.search(r':minusUD',marker[0]): Unit_Damage -= card.markers[marker]
-         if re.search(r':minusBD',marker[0]): Blast_Damage -= card.markers[marker]
-         if re.search(r':minusTactics',marker[0]): Tactics -= card.markers[marker]
-         if re.search(r':minusEE-UD',marker[0]) and gotEdge(): Unit_Damage -= card.markers[marker]
-         if re.search(r':minusEE-BD',marker[0]) and gotEdge(): Blast_Damage -= card.markers[marker]
-         if re.search(r':minusEE-Tactics',marker[0]) and gotEdge(): Tactics -= card.markers[marker]
-      Autoscripts = CardsAS.get(card.model,'').split('||')   
-      if len(Autoscripts) > 0:
-         for autoS in Autoscripts:
-            extraRegex = re.search(r'ExtraIcon:(UD|BD|Tactics|EE-UD|EE-BD|EE-T):([0-9])',autoS)
-            if extraRegex:
-               if debugVerbosity >= 2: notify("### extraRegex = {}".format(extraRegex.groups())) #Debug
-               if not chkSuperiority(autoS, card): continue
-               if not checkOriginatorRestrictions(autoS,card): continue
-               if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
-               if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
-               targetCards = findTarget(autoS,card = card)
-               multiplier = per(autoS, card, 0, targetCards)               
-               if extraRegex.group(1) == 'UD': Unit_Damage += num(extraRegex.group(2)) * multiplier
-               if extraRegex.group(1) == 'BD': Blast_Damage += num(extraRegex.group(2)) * multiplier
-               if extraRegex.group(1) == 'Tactics': Tactics += num(extraRegex.group(2)) * multiplier
-               if extraRegex.group(1) == 'EE-UD' and gotEdge(): Unit_Damage += num(extraRegex.group(2)) * multiplier
-               if extraRegex.group(1) == 'EE-BD' and gotEdge(): Blast_Damage += num(extraRegex.group(2)) * multiplier
-               if extraRegex.group(1) == 'EE-T' and gotEdge(): Tactics += num(extraRegex.group(2)) * multiplier
-            else:
-               if debugVerbosity >= 2: notify("### No extra combat icons found in {}".format(card))
-   if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
-   for c in table:
-      Autoscripts = CardsAS.get(c.model,'').split('||')      
-      for autoS in Autoscripts:
-         if not chkDummy(autoS, c): continue
-         if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
-         if not checkOriginatorRestrictions(autoS,c): continue
-         if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
-            increaseRegex = re.search(r'(Increase|Decrease)(UD|BD|Tactics):([0-9])',autoS)
-            if increaseRegex:
-               if debugVerbosity >= 2: notify("### increaseRegex = {}".format(increaseRegex.groups())) #Debug
-               if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,'type')) and checkSpecialRestrictions(autoS,card): # We check that the current card is a valid one for the constant ability.
-                  if increaseRegex.group(1) == 'Increase': 
-                     if increaseRegex.group(2) == 'UD': Unit_Damage += num(increaseRegex.group(3))
-                     if increaseRegex.group(2) == 'BD': Blast_Damage += num(increaseRegex.group(3))
-                     if increaseRegex.group(2) == 'Tactics': Tactics += num(increaseRegex.group(3))
-                  else: 
-                     if increaseRegex.group(2) == 'UD': Unit_Damage -= num(increaseRegex.group(3))
-                     if increaseRegex.group(2) == 'BD': Blast_Damage -= num(increaseRegex.group(3))
-                     if increaseRegex.group(2) == 'Tactics': Tactics -= num(increaseRegex.group(3))
-            else:
-               if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
-            if c.model == "ff4fb461-8060-457a-9c16-000000000386": # Lobot's ability is pretty unique.
-               LobotBlocked = True
-   if card: # We only check attachments if we're checking a host's Combat Icons.
-      if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
-      hostCards = eval(getGlobalVariable('Host Cards'))
-      for attachment in hostCards:
-         if hostCards[attachment] == card._id:
-            if debugVerbosity >= 2: notify("### Found Attachment: {}".format(Card(attachment))) #Debug
-            AS = CardsAS.get(Card(attachment).model,'')
-            if AS == '': continue
-            Autoscripts = AS.split('||')
+   if not Automations['Triggers']: # If trigger automations have been disabled, we don't check for extra damage icons.
+      whisper("Trigger automations disabled. Calculating only basic icons")
+   else:
+      if card: # We only check markers if we're checking a host's Combat Icons.
+         if debugVerbosity >= 2: notify("### Checking Markers") #Debug
+         for marker in card.markers:
+            if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
+            if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
+            if re.search(r':Tactics',marker[0]): Tactics += card.markers[marker]
+            if re.search(r':EE-UD',marker[0]) and gotEdge(): Unit_Damage += card.markers[marker]
+            if re.search(r':EE-BD',marker[0]) and gotEdge(): Blast_Damage += card.markers[marker]
+            if re.search(r':EE-Tactics',marker[0]) and gotEdge(): Tactics += card.markers[marker]
+            if re.search(r':minusUD',marker[0]): Unit_Damage -= card.markers[marker]
+            if re.search(r':minusBD',marker[0]): Blast_Damage -= card.markers[marker]
+            if re.search(r':minusTactics',marker[0]): Tactics -= card.markers[marker]
+            if re.search(r':minusEE-UD',marker[0]) and gotEdge(): Unit_Damage -= card.markers[marker]
+            if re.search(r':minusEE-BD',marker[0]) and gotEdge(): Blast_Damage -= card.markers[marker]
+            if re.search(r':minusEE-Tactics',marker[0]) and gotEdge(): Tactics -= card.markers[marker]
+         Autoscripts = CardsAS.get(card.model,'').split('||')   
+         if len(Autoscripts) > 0:
             for autoS in Autoscripts:
-               if re.search(r'BonusIcons:',autoS):
-                  UD, BD, T = calculateCombatIcons(CIString = autoS) # Recursion FTW!
-                  Unit_Damage += UD
-                  Blast_Damage += BD
-                  Tactics += T
+               extraRegex = re.search(r'ExtraIcon:(UD|BD|Tactics|EE-UD|EE-BD|EE-T):([0-9])',autoS)
+               if extraRegex:
+                  if debugVerbosity >= 2: notify("### extraRegex = {}".format(extraRegex.groups())) #Debug
+                  if not chkSuperiority(autoS, card): continue
+                  if not checkOriginatorRestrictions(autoS,card): continue
+                  if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
+                  if re.search(r'-ifHaventForce', autoS) and haveForce(): continue         
+                  targetCards = findTarget(autoS,card = card)
+                  multiplier = per(autoS, card, 0, targetCards)               
+                  if extraRegex.group(1) == 'UD': Unit_Damage += num(extraRegex.group(2)) * multiplier
+                  if extraRegex.group(1) == 'BD': Blast_Damage += num(extraRegex.group(2)) * multiplier
+                  if extraRegex.group(1) == 'Tactics': Tactics += num(extraRegex.group(2)) * multiplier
+                  if extraRegex.group(1) == 'EE-UD' and gotEdge(): Unit_Damage += num(extraRegex.group(2)) * multiplier
+                  if extraRegex.group(1) == 'EE-BD' and gotEdge(): Blast_Damage += num(extraRegex.group(2)) * multiplier
+                  if extraRegex.group(1) == 'EE-T' and gotEdge(): Tactics += num(extraRegex.group(2)) * multiplier
+               else:
+                  if debugVerbosity >= 2: notify("### No extra combat icons found in {}".format(card))
+      if debugVerbosity >= 2: notify("### Checking Constant Effects on table") #Debug
+      for c in table:
+         Autoscripts = CardsAS.get(c.model,'').split('||')      
+         for autoS in Autoscripts:
+            if not chkDummy(autoS, c): continue
+            if re.search(r'excludeDummy', autoS) and c.highlight == DummyColor: continue
+            if not checkOriginatorRestrictions(autoS,c): continue
+            if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
+               increaseRegex = re.search(r'(Increase|Decrease)(UD|BD|Tactics):([0-9])',autoS)
+               if increaseRegex:
+                  if debugVerbosity >= 2: notify("### increaseRegex = {}".format(increaseRegex.groups())) #Debug
+                  if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,'type')) and checkSpecialRestrictions(autoS,card): # We check that the current card is a valid one for the constant ability.
+                     if increaseRegex.group(1) == 'Increase': 
+                        if increaseRegex.group(2) == 'UD': Unit_Damage += num(increaseRegex.group(3))
+                        if increaseRegex.group(2) == 'BD': Blast_Damage += num(increaseRegex.group(3))
+                        if increaseRegex.group(2) == 'Tactics': Tactics += num(increaseRegex.group(3))
+                     else: 
+                        if increaseRegex.group(2) == 'UD': Unit_Damage -= num(increaseRegex.group(3))
+                        if increaseRegex.group(2) == 'BD': Blast_Damage -= num(increaseRegex.group(3))
+                        if increaseRegex.group(2) == 'Tactics': Tactics -= num(increaseRegex.group(3))
+               else:
+                  if debugVerbosity >= 2: notify("### No constant ability for combat icons found in {}".format(c))
+               if c.model == "ff4fb461-8060-457a-9c16-000000000386": # Lobot's ability is pretty unique.
+                  LobotBlocked = True
+      if card: # We only check attachments if we're checking a host's Combat Icons.
+         if debugVerbosity >= 2: notify("### Checking Attachments") #Debug
+         hostCards = eval(getGlobalVariable('Host Cards'))
+         for attachment in hostCards:
+            if hostCards[attachment] == card._id:
+               if debugVerbosity >= 2: notify("### Found Attachment: {}".format(Card(attachment))) #Debug
+               AS = CardsAS.get(Card(attachment).model,'')
+               if AS == '': continue
+               Autoscripts = AS.split('||')
+               for autoS in Autoscripts:
+                  if re.search(r'BonusIcons:',autoS):
+                     UD, BD, T = calculateCombatIcons(CIString = autoS) # Recursion FTW!
+                     Unit_Damage += UD
+                     Blast_Damage += BD
+                     Tactics += T
    if debugVerbosity >= 3: notify("<<< calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
    if Unit_Damage < 0: Unit_Damage = 0 # We cannot have a negative combat icon.
    if Blast_Damage < 0: Blast_Damage = 0
@@ -944,10 +945,6 @@ def switchPlayAutomation(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchPlayAutomation(){}".format(extraASDebug())) #Debug
    switchAutomation('Play')
    
-def switchPhaseAutomation(group,x=0,y=0):
-   if debugVerbosity >= 1: notify(">>> switchPhaseAutomation(){}".format(extraASDebug())) #Debug
-   switchAutomation('Phase')
-
 def switchTriggersAutomation(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchTriggersAutomation(){}".format(extraASDebug())) #Debug
    switchAutomation('Triggers')
@@ -966,6 +963,13 @@ def switchWinForms(group,x=0,y=0):
 
 def switchPlacement(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchPlacement(){}".format(extraASDebug())) #Debug
+   switchAutomation('Placement')
+   
+def switchAll(group,x=0,y=0):
+   if debugVerbosity >= 1: notify(">>> switchAll(){}".format(extraASDebug())) #Debug
+   switchAutomation('Play')
+   switchAutomation('Triggers')
+   switchAutomation('Start/End-of-Turn/Phase')
    switchAutomation('Placement')
    
 def switchHardcore(group,x=0,y=0):

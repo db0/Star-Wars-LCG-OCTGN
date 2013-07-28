@@ -72,11 +72,11 @@
          <groupaction menu="Switch Unicode ON/OFF" default="False" execute="switchUniCode" />
          <groupaction menu="HARDCORE Mode ON/OFF" default="False" execute="switchHardcore" />  
          <groupaction menu="Switch Play Automation ON/OFF" default="False" execute="switchPlayAutomation" />  
-         <groupaction menu="Switch Phase Automation ON/OFF" default="False" execute="switchPhaseAutomation" />  
          <groupaction menu="Switch Automatic Triggers ON/OFF" default="False" execute="switchTriggersAutomation" />  
          <groupaction menu="Switch Start/End-of-Turn/Phase Automation ON/OFF" default="False" execute="switchStartEndAutomation" />  
-         <groupaction menu="Switch Custom Forms ON/OFF" default="False" execute="switchWinForms" />  
          <groupaction menu="Switch Automatic Placement ON/OFF" default="False" execute="switchPlacement" />  
+         <groupaction menu="Switch All Automations ON/OFF" default="False" execute="switchAll" />  
+         <groupaction menu="Switch Custom Forms ON/OFF" default="False" execute="switchWinForms" />  
          <groupaction menu="Re-Download all card automations" default="False" execute="fetchCardScripts" />
          <groupaction menu="Debug" default="False" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
       </groupactions>
@@ -154,7 +154,7 @@
       <globalvariable name="currentObjectives" value="[]" /> 
       <globalvariable name="gameVersion" value="" /> 
       <globalvariable name="freePositions" value="[]" /> 
-      <globalvariable name="Switches" value="{'Reacts': True, 'Placement': True, 'Triggers': True, 'WinForms': True, 'Phase': True, 'HARDCORE': False, 'Play': True, 'Start/End-of-Turn/Phase': True}" /> 
+      <globalvariable name="Switches" value="{'Placement': True, 'Triggers': True, 'WinForms': True, 'HARDCORE': False, 'Play': True, 'Start/End-of-Turn/Phase': True}" /> 
 		<hand name="Hand" visibility="me" ordered="False" width="63" height="88" icon="Groups/hand.png">
 			<cardaction menu="Play Card" default="True" execute="play" />
 			<cardaction menu="Place as Edge Card" default="False" shortcut="Ctrl+E" execute="playEdge" />

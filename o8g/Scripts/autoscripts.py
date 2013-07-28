@@ -328,8 +328,8 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
    mute()
    global TitleDone
    if debugVerbosity >= 1: notify(">>> atTimedEffects() at time: {}".format(Time)) #Debug
-   if not Automations['Start/End-of-Turn/Phase']: 
-      whisper(":::WARNING::: Your phase automations have been deactivated. Aborting.")
+   if not Automations['Triggers']: 
+      delayed_whisper(":::WARNING::: Your trigger automations have been deactivated.")
       return
    TitleDone = False
    X = 0
