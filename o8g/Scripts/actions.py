@@ -248,7 +248,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
    opponentCommitedCards  = [c for c in table if c.controller == opponent and c.highlight == commitOpponent]
    for card in opponentCommitedCards:
       try: 
-         if card.markers[mdict['Focus']] == 0: opponentStruggleTotal += num(card.Force)
+         if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): opponentStruggleTotal += num(card.Force)
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
    if debugVerbosity >= 2: notify("### About to check for bonus force cards") #Debug
    for c in table:
