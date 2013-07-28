@@ -3226,7 +3226,7 @@ Greedo
 -----
 ff4fb461-8060-457a-9c16-000000000422
 -----
-whileInPlay:Deal1Damage-foreachAttackerEdgeWin-ifOrigDefending-isReact-isForced||whileInPlay:Deal1Damage-foreachDefenderEdgeWin-ifOrigAttacking-isReact-isForced
+whileInPlay:Deal1Damage-foreachAttackerEdgeWin-ifOrigDefending-ifOrigParticipating-isReact-isForced||whileInPlay:Deal1Damage-foreachDefenderEdgeWin-ifOrigAttacking-ifOrigParticipating-isReact-isForced
 +++++
 
 .....
