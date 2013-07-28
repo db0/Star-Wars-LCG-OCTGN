@@ -30,7 +30,7 @@ def executePlayScripts(card, action):
    global failedRequirement
    scriptEffect = 'INCOMPLETE'
    if not Automations['Play']: 
-      whisper(":::WARNING::: Your play automations have been deactivated. Aborting.")
+      #whisper(":::WARNING::: Your play automations have been deactivated.")
       return
    if not card.isFaceUp: return
    if CardsAS.get(card.model,'') != '': # Commented in order to allow scripts in attacked cards to trigger
@@ -92,16 +92,6 @@ def executePlayScripts(card, action):
          scriptHostCHK = re.search(r'(?<!-)onHost([A-Za-z]+)',effectType.group(1))
          actionHostCHK = re.search(r'HOST-([A-Z-]+)',action)
          currObjID = getGlobalVariable('Engaged Objective')
-         if currObjID != 'None':
-            if re.search(r'-ifAttacker', autoS) and Card(num(currObjID)).owner != opponent: 
-               if debugVerbosity >= 2: notify("### Rejected onAttack script for defender")
-               continue
-            if re.search(r'-ifDefender', autoS) and Card(num(currObjID)).owner != me: 
-               if debugVerbosity >= 2: notify("### Rejected onDefense script for attacker")
-               continue
-         elif re.search(r'-ifAttacker', autoS) or re.search(r'-ifDefender', autoS): 
-            if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
-            continue # If we're looking for attakcer or defender and we're not in an enagement, return.
          if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
          if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
@@ -267,23 +257,6 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                                                        # If we had let it as it was, it would simply check if Renegade Squadron Mobilization is controlled by the opponent, thus triggering the script each time our opponent's action discarded a unit, even if the unit was ours.
             if chkPlayer(autoS, origin_card.controller,False) == 0: continue
          elif chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
-         currObjID = getGlobalVariable('Engaged Objective')
-         if currObjID != 'None':
-            if re.search(r'-ifAttacker', autoS) and Card(num(currObjID)).controller == card.controller: 
-               if debugVerbosity >= 2: notify("### Rejected onAttack script for defender")
-               continue
-            if re.search(r'-ifDefender', autoS) and Card(num(currObjID)).controller != card.controller: 
-               if debugVerbosity >= 2: notify("### Rejected onDefense script for attacker")
-               continue
-         elif re.search(r'-ifAttacker', autoS) or re.search(r'-ifDefender', autoS): 
-            if debugVerbosity >= 2: notify("### Rejected onAttack/Defense script outside of engagement")
-            continue # If we're looking for attakcer or defender and we're not in an enagement, return.
-         if re.search(r'-ifEngagementTarget', autoS): # If we have this modulator, then this script is only meant to fire if the card checked it the currently engaged objective 
-            if re.search(r'-ifEngagementTargetHost', autoS): # This submodulator fires only if the card being checked for scripts is currently hosted on the engaged objective.
-               hostCards = eval(getGlobalVariable('Host Cards')) 
-               if Card(num(currObjID)) != Card(hostCards[card._id]): continue
-            elif Card(num(currObjID)) != card: continue
-         if re.search(r'-ifParticipating', autoS) and card.orientation != Rot90: continue
          if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
                                                                     # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
@@ -329,7 +302,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
    global TitleDone
    if debugVerbosity >= 1: notify(">>> atTimedEffects() at time: {}".format(Time)) #Debug
    if not Automations['Triggers']: 
-      delayed_whisper(":::WARNING::: Your trigger automations have been deactivated.")
+      if Time == 'Start': delayed_whisper(":::WARNING::: Your trigger automations have been deactivated.")
       return
    TitleDone = False
    X = 0
@@ -1746,7 +1719,7 @@ def checkSpecialRestrictions(Autoscript,card):
             validCard = False
    if re.search(r'isCaptured',Autoscript):
       if card.highlight != CapturedColor: 
-         debugNotify("Was looking for a captured card but this ain't it", 2)
+         debugNotify("!!! Failing because we werelooking for a captured card but this ain't it", 2)
          validCard = False
       elif re.search(r'isCapturedCurrentObjective',Autoscript):
          try:
@@ -1755,15 +1728,18 @@ def checkSpecialRestrictions(Autoscript,card):
             currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
             debugNotify("currentTarget = {}".format(currentTarget))
             if capturedCards[card._id] != currentTarget._id:
-               debugNotify("Was looking for a captured card at the current objective but this isn't one", 2)
+               debugNotify("!!! Failing because we were looking for a captured card at the current objective but this isn't one", 2)
                validCard = False           
          except: 
             debugNotify("!!! Failing because we crashed while looking for isCapturedCurrentObjective. Not in conflict?", 2)
             validCard = False           
+   if not re.search(r'isCaptured',Autoscript) and card.highlight == CapturedColor:
+         debugNotify("Failing because the current target is captured but we're not targeting captured card explicitly.", 2)
+         validCard = False      
    if re.search(r'hasCaptures',Autoscript):
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       if card._id not in capturedCards.values():
-         debugNotify("Was looking for card that has captured other cards but this doesn't", 2)
+         debugNotify("!!! Failing because we were looking for card that has captured other cards but this doesn't", 2)
          validCard = False
    if re.search(r'isUnpaid',Autoscript) and card.highlight != UnpaidColor: 
       debugNotify("!!! Failing because card is not Unpaid", 2)
@@ -1868,7 +1844,16 @@ def checkOriginatorRestrictions(Autoscript,card):
    if debugVerbosity >= 1: notify("### Card: {}".format(card)) #Debug
    validCard = True
    Autoscript = scrubTransferTargets(Autoscript)
-   if re.search(r'ifOrigCurrentObjective',Autoscript) and card.highlight != DefendColor: validCard = False
+   if re.search(r'ifOrigCurrentObjective',Autoscript):
+      if re.search(r'-ifOrigCurrentObjectiveHost', Autoscript): # This submodulator fires only if the card being checked for scripts is currently hosted on the engaged objective.
+         hostCards = eval(getGlobalVariable('Host Cards')) 
+         currObjID = getGlobalVariable('Engaged Objective')
+         if currObjID == 'None' or Card(num(currObjID)) != Card(hostCards[card._id]): 
+            debugNotify("!!! Failing because originator card's host is not the current objective", 2)
+            validCard = False
+      elif card.highlight != DefendColor:
+         debugNotify("!!! Failing because originator is not the current objective", 2)
+         validCard = False
    if re.search(r'ifOrigCaptures',Autoscript):
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       if card._id not in capturedCards.values(): validCard = False
@@ -1974,12 +1959,20 @@ def makeChoiceListfromCardList(cardList,includeText = False):
       stats = ''
       if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
       if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
-      if T.Type == 'Unit': combatIcons = "Printed Icons: " + parseCombatIcons(T.properties['Combat Icons'])
+      if T.Type == 'Unit': combatIcons = "\nPrinted Icons: " + parseCombatIcons(T.properties['Combat Icons'])
       else: combatIcons = ''
       if includeText: cText = '\n' + fetchProperty(T, 'Text')
       else: cText = ''
+      hostCards = eval(getGlobalVariable('Host Cards'))
+      attachmentsList = [Card(cID).name for cID in hostCards if hostCards[cID] == T._id]
+      if len(attachmentsList) >= 1: cAttachments = '\nAttachments:' + str(attachmentsList)
+      else: cAttachments = ''
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      capturedNr = len([cID for cID in capturedCards if capturedCards[cID] == T._id])
+      if capturedNr >= 1: cCaptures = '\nCaptures:' + str(capturedNr)
+      else: cCaptures = ''
       if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
-      choiceTXT = "{}\n{}\n{}{}\n{}\nBlock: {}{}".format(T.name,T.Type,markers,stats,combatIcons,T.Block,cText)
+      choiceTXT = "{}\n{}\n{}{}{}{}{}\nBlock: {}{}".format(T.name,T.Type,markers,stats,combatIcons,cAttachments,cCaptures,T.Block,cText)
       targetChoices.append(choiceTXT)
    return targetChoices
    if debugVerbosity >= 3: notify("<<< makeChoiceListfromCardList()")

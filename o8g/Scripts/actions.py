@@ -137,14 +137,8 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    else:
       if haveForce():
          opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
-         objectiveList = []
-         for objectve_ID in opponentObjectives:
-            objective = Card(objectve_ID)
-            if objective.markers[mdict['Damage']] and objective.markers[mdict['Damage']] >= 1: 
-               extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
-            else: extraTXT = ''
-            objectiveList.append(objective.name + extraTXT)
-         choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage", objectiveList, type = 'radio', default = 0)
+         objectiveList = [Card(objective_ID) for objective_ID in opponentObjectives]
+         choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage.", makeChoiceListfromCardList(objectiveList), default = 0)
          if choice == 'ABORT': return
          chosenObj = Card(opponentObjectives[choice])
          addMarker(chosenObj, 'Damage',1, True)
@@ -955,14 +949,8 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if not chosenObj or chosenObj.owner != captor:
          if debugVerbosity >= 2: notify("Don't have preset objective. Seeking...")
          myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
-         objectiveList = []
-         for objectve_ID in myObjectives:
-            objective = Card(objectve_ID)
-            if objective.markers[mdict['Damage']] and objective.markers[mdict['Damage']] >= 1: 
-               extraTXT = " ({} Damage)".format(objective.markers[mdict['Damage']])
-            else: extraTXT = ''
-            objectiveList.append(objective.name + extraTXT)
-         choice = SingleChoice("Choose in to which objective to capture the card.", objectiveList, type = 'radio', default = 0)
+         objectiveList = [Card(objective_ID) for objective_ID in myObjectives]
+         choice = SingleChoice("Choose in to which objective to capture the card.", makeChoiceListfromCardList(objectiveList), default = 0)
          if choice == 'ABORT': return
          chosenObj = Card(myObjectives[choice])
       if debugVerbosity >= 2: notify("About to Announce")

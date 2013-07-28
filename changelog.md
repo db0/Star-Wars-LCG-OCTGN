@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.2.x
+
+* Consolidated Automation switches and added switch to disable them all together.
+* During Multiple Choice Targeting windows, cards will now mention how many captures and attachments they have.
+* Tie Advanced and Wookie Navigator should now work more robustly. 
+
 ### 2.3.1.x
 
 * Fixed Wraiths not participating when focused and opponent calculates the force struggle.

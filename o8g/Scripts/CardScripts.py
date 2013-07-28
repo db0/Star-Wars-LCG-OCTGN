@@ -762,7 +762,7 @@ Hit and Run
 -----
 ff4fb461-8060-457a-9c16-000000000210
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachAttackerEdgeWin-ifAttacker-onlyOnce-isReact
+whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachAttackerEdgeWin-ifOrigAttacking-onlyOnce-isReact
 +++++
 
 .....
@@ -770,7 +770,7 @@ Home One
 -----
 ff4fb461-8060-457a-9c16-000000000181
 -----
-onStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifAttacker-isReact
+onStrike:Deal1Damage-AutoTargeted-atObjective-isNotParticipating-targetOpponents-ifOrigAttacking-isReact
 +++++
 
 .....
@@ -1394,7 +1394,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000062
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -1402,7 +1402,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000091
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -1410,7 +1410,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000131
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -1418,7 +1418,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000154
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -1426,7 +1426,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000185
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -1434,7 +1434,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000215
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -1530,7 +1530,7 @@ TIE Advanced
 -----
 ff4fb461-8060-457a-9c16-000000000128
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atObjective-isParticipating-foreachUnopposedEngagement-ifAttacker-ifParticipating-isReact
+whileInPlay:Deal1Damage-foreachUnopposedEngagement-onTriggerCard-ifOrigAttacking-ifOrigParticipating-isReact
 +++++
 
 .....
@@ -1538,7 +1538,7 @@ TIE Attack Squadron
 -----
 ff4fb461-8060-457a-9c16-000000000041
 -----
-whileInPlay:Put1TIE Attack Squadron:UD-foreachResolveFate-byMe-onlyOnce-ifParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
+whileInPlay:Put1TIE Attack Squadron:UD-foreachResolveFate-byMe-onlyOnce-ifOrigParticipating||afterEngagement:Remove999TIE Attack Squadron:UD-isSilent$$Remove999Activation-isSilent
 +++++
 
 .....
@@ -1706,7 +1706,7 @@ Wookiee Navigator
 -----
 ff4fb461-8060-457a-9c16-000000000193
 -----
-whileInPlay:AttackTarget-AutoTargeted-atObjective-isParticipating-ifAttacker-ifParticipating-foreachFinishedEngagement-isReact
+whileInPlay:AttackTarget-ifOrigAttacking-ifOrigParticipating-foreachFinishedEngagement-onTriggerCard-isReact
 +++++
 
 .....
@@ -1986,7 +1986,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000240
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -2282,7 +2282,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000270
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -2762,7 +2762,7 @@ Yoda's Protection
 -----
 ff4fb461-8060-457a-9c16-000000000322
 -----
-Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-foreachEngagedObjective-ifEngagementTargetHost-isReact
+Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-foreachEngagedObjective-ifOrigCurrentObjectiveHost-isReact
 +++++
 
 .....
@@ -2890,7 +2890,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000372
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -3410,7 +3410,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000450
 -----
-onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifAttacker
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....

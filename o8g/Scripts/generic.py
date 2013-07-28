@@ -252,7 +252,7 @@ class SingleChoiceWindow(Form):
          self.TopMost = True
          self.timer_tries += 1
 
-def SingleChoice(title, options, type = 'radio', default = 0, cancelButton = True):
+def SingleChoice(title, options, type = 'button', default = 0, cancelButton = True):
    if debugVerbosity >= 1: notify(">>> SingleChoice()".format(title))
    if Automations['WinForms']:
       Application.EnableVisualStyles()
