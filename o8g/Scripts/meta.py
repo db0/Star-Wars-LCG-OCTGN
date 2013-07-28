@@ -515,8 +515,10 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                if not checkOriginatorRestrictions(autoS,c): continue  
                if not chkSuperiority(autoS, c): continue
                if reductionSearch.group(1) == 'Reduce': 
+                  debugNotify("Adding card to cost Reducers list")
                   costReducers.append((c,reductionSearch,autoS)) # We put the costReducers in a different list, as we want it to be checked after all the increasers are checked
                else:
+                  debugNotify("Adding card to cost Modifiers list")
                   costModifiers.append((c,reductionSearch,autoS)) # Cost increasing cards go into the main list we'll check in a bit, as we need to check them first. 
                                                                   # In each entry we store a tuple of the card object and the search result for its cost modifying abilities, so that we don't regex again later. 
       if len(costReducers): costModifiers.extend(costReducers)
@@ -1164,8 +1166,8 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000188",
-                #"ff4fb461-8060-457a-9c16-000000000341",
+                "ff4fb461-8060-457a-9c16-000000000469",
+                "ff4fb461-8060-457a-9c16-000000000128",
                 #"ff4fb461-8060-457a-9c16-000000000447"
                 ]
    for idx in range(len(testcards)):

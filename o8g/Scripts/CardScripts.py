@@ -3514,7 +3514,7 @@ Imperial Blockade
 -----
 ff4fb461-8060-457a-9c16-000000000469
 -----
-whileInPlay:Increase1CostPlay-affectsUnits-byOpponent-ifOrigHasntMarker{Damage}-onlyOnce
+whileInPlay:Increase1CostPlay-affectsUnit-byOpponent-ifOrigHasntMarker{Damage}-onlyOnce
 +++++
 
 .....
