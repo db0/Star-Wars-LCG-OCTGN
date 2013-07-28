@@ -1,6 +1,16 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.1.x
+
+* Fixed Wraiths not participating when focused and opponent calculates the force struggle.
+* Made info window higher
+* Fixed Imperial Blockade not increasing costs.
+* Made Chewie have a react window, but his ability still doesn't put the damage, just announces it.
+* Fixed Various Wrong timings on "After Refresh" triggers.
+* Fixed Wookie Warriors added icons.
+* Fixed Various Typos
+
 ### 2.3.0.x
 
 * **Very Significant:** Completely reworked the way automations work functionally. Reacts and Interrupts no longer trigger automatically during phase changes or specific triggers, rather, cards which have a relevant react/interrupt will now simply highlight themselves at the appropriate moment, much like events, at which point you can simply double-click on them to signify you're using their effect.
