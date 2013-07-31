@@ -453,6 +453,8 @@ def gameSetup(group, x = 0, y = 0):
       if not checkDeckLegality() and not confirm("We have found an illegal construction in your deck. Bypass?"): return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
+      table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", (playerside * 320) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
+      table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", (playerside * 320) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait Button
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
                                                # We also create it if there's only one player for debug purposes
          try:                                             
@@ -479,7 +481,11 @@ def defaultAction(card, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
-   if card.highlight == FateColor: 
+   if card.Type == 'Button': # The Special button cards.
+      if card.name == 'Wait!': BUTTON_Wait()
+      else: BUTTON_OK()
+      return
+   elif card.highlight == FateColor: 
       #whisper(":::ATTENTION::: No fate card automation yet I'm afraid :-(\nPlease do things manually for now.")
       notify("{} resolves the ability of fate card {}".format(me,card))
       executePlayScripts(card, 'RESOLVEFATE')
@@ -1658,10 +1664,12 @@ def findCounterPrevention(count, counter, targetPL): # Find out if the player ha
    if debugVerbosity >= 3: notify("<<< findCounterPrevention() by returning: {}".format(preventionFound))
    return preventionFound   
  
-#---------------------------------------------------------------------------
-# Announcements
-#--------------------------------------------------------------------------- 
+#------------------------------------------------------------------------------
+# Button functions
+#------------------------------------------------------------------------------
 
-def declarePass(group, x=0, y=0):
-   notify("{} Passes".format(me))
+def BUTTON_OK(group = None,x=0,y=0):
+   notify("--- {} has no further reactions.".format(me))
 
+def BUTTON_Wait(group = None,x=0,y=0):  
+   notify("--- Wait! {} wants to react.".format(me))

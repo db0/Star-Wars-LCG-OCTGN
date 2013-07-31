@@ -170,5 +170,41 @@
 			<property name="AutoScript" value="" />
 			<property name="AutoAction" value="" />
 		</card>
+		<card id="eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc" name="OK">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Button" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
+		<card id="92df7072-0613-4e76-9fb0-e1b2b6d46473" name="Wait!">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Button" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
    </cards>
 </set>

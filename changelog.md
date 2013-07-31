@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.4.x
+
+* Added a Pause and a Wait button to allow some quick communication
+
 ### 2.3.3.x
 
 * Card played as edge should not reduce costs or provide extra combat icons anymore.
