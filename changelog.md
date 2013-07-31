@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.5.x
+
+* Added a little surprise :)
+
 ### 2.3.4.x
 
 * Added a Pause and a Wait button to allow some quick communication
