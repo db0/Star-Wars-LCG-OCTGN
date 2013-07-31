@@ -2025,6 +2025,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
+         <alternate name="Imperial Navy" type="FullBleed" />
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000036" name="Imperial Officer">
          <property name="Cost" value="2" />
@@ -2245,6 +2246,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
+         <alternate name="Jedi" type="FullBleed" />
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000147" name="Jedi in Hiding">
          <property name="Cost" value="2" />
@@ -2825,6 +2827,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
+         <alternate name="Rebel Alliance" type="FullBleed" />
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000005" name="Rebel Assault">
          <property name="Cost" value="2" />
@@ -3125,6 +3128,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
+         <alternate name="Scum and Villainy" type="FullBleed" />
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000211" name="Secret Informant">
          <property name="Cost" value="3" />
@@ -3225,6 +3229,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
+         <alternate name="Sith" type="FullBleed" />
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000025" name="Sith Library">
          <property name="Cost" value="1" />
@@ -3305,6 +3310,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
+         <alternate name="Smugglers and Spies" type="FullBleed" />
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000133" name="Stolen Plans">
          <property name="Cost" value="1" />
