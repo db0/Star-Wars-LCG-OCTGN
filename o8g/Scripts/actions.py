@@ -506,8 +506,8 @@ def defaultAction(card, x = 0, y = 0):
          if Affiliation.name == 'Sith': notify("{} has embraced their rage!".format(me))
          if Affiliation.name == 'Imperial Navy': notify("{}'s weapons are at full power!".format(me))
          if Affiliation.name == 'Scum and Villainy': notify("There's a price on your head and {} aims to collect.".format(me))
-         if Affiliation.name == 'Jedi': notify("{} is one with the force...".format(me))
-         if Affiliation.name == 'Rebel Alliance': notify("{} is accelerating to attacks speed".format(me))
+         if Affiliation.name == 'Jedi': notify("{} has become one with the force...".format(me))
+         if Affiliation.name == 'Rebel Alliance': notify("{} is accelerating to attack speed".format(me))
          if Affiliation.name == 'Smugglers and Spies': notify("{} is going in against all odds.".format(me))
       if Side == 'Dark': 
          me.setGlobalVariable('Phase','0') # We now allow the dark side to start
@@ -1673,7 +1673,7 @@ def findCounterPrevention(count, counter, targetPL): # Find out if the player ha
    return preventionFound   
  
 #------------------------------------------------------------------------------
-# Button functions
+# Button and Announcement functions
 #------------------------------------------------------------------------------
 
 def BUTTON_OK(group = None,x=0,y=0):
@@ -1681,3 +1681,6 @@ def BUTTON_OK(group = None,x=0,y=0):
 
 def BUTTON_Wait(group = None,x=0,y=0):  
    notify("--- Wait! {} wants to react.".format(me))
+
+def declarePass(group, x=0, y=0):
+   notify("--- {} Passes".format(me))    
