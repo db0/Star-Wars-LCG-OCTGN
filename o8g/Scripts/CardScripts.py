@@ -3586,7 +3586,7 @@ Gaffi Stick
 -----
 ff4fb461-8060-457a-9c16-000000000480
 -----
-Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetMine-isParticipating-isDistributedEffect-ignore1
+Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetMine-isParticipating-isDistributedEffect-ignore1-ifOrigParticipatingHost
 +++++
 
 .....

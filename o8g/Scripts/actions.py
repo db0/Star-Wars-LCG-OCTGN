@@ -1641,9 +1641,13 @@ def addCustomMarker(cards, x = 0, y = 0): # A simple function to manually add an
       notify("{} adds {} {} counter to {}.".format(me, quantity, marker[0], card))
 
 def clearEdgeMarker():
+   debugNotify(">>> clearEdgeMarker()") #Debug
    for card in table:
-      if card.Type == 'Affiliation' and card.markers[mdict['Edge']] and card.markers[mdict['Edge']] == 1:
+      debugNotify("Checking {} which has {} edge markers".format(card,card.markers[mdict['Edge']]),4)
+      if card.Type == 'Affiliation' and card.markers[mdict['Edge']]:
+         debugNotify("Clearing Edge from {}".format(card))
          card.markers[mdict['Edge']] = 0
+   debugNotify("<<< clearEdgeMarker()") #Debug
          
 def gainEdge(group, x = 0, y = 0):
    mute()

@@ -1857,7 +1857,18 @@ def checkOriginatorRestrictions(Autoscript,card):
    if re.search(r'ifOrigCaptures',Autoscript):
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       if card._id not in capturedCards.values(): validCard = False
-   if re.search(r'ifOrigParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
+   if re.search(r'ifOrigParticipating',Autoscript):
+      if re.search(r'-ifOrigParticipatingHost', Autoscript): # This submodulator fires only if the card being checked for scripts is currently hosted on a participating card.
+         hostCards = eval(getGlobalVariable('Host Cards'))        
+         try: # We use a try because if the card being checked has bot been attached (say because some monkey moved it manually to the table), the script will crash
+            origHost = Card(hostCards[card._id])
+            if origHost.orientation != Rot90 and origHost.highlight != DefendColor: 
+               debugNotify("!!! Failing because originator card's host is not participating", 2)
+               validCard = False
+         except:
+               debugNotify("!!! Failing crash when checking if originator card's host is participating", 2)
+               validCard = False
+      elif card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
    if re.search(r'ifOrigAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
          if c != card and c.orientation == Rot90 and c.controller == card.controller: validCard = False

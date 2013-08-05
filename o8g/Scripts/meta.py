@@ -664,6 +664,7 @@ def calcBonusEdge(card): # This function calculated how much Edge bonus a card i
             continue # If the script doesn't provide edge bonus, ignore it
          if card.orientation != Rot90 and not re.search(r'-isDistributedEffect',autoS): continue  # If the card isn't participating or the script isn't providing a distributed benefit, ignore it
          if not chkSuperiority(autoS, card): continue # If the script requires superiority but we don't have it, ignore it
+         if not checkOriginatorRestrictions(autoS,card): continue # If the script's originator has some restrictions we can't pass, we abort.
          # If the card does not provide an edge bonus, or is not participating, then we ignore it.
          # -isDistributedEffect is a hacky modulator I've added to signify that it's not the card itself that provides the Edge, but other card on the table (e.g. see Hoth Operations)                                                                                                
          if debugVerbosity >= 3: notify("### Found edgeRegex. Checking Values")
@@ -1171,9 +1172,9 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000277",
-                "ff4fb461-8060-457a-9c16-000000000357",
-                "ff4fb461-8060-457a-9c16-000000000322",
+                "ff4fb461-8060-457a-9c16-000000000480",
+                "ff4fb461-8060-457a-9c16-000000000373",
+                "ff4fb461-8060-457a-9c16-000000000445",
                 #"ff4fb461-8060-457a-9c16-000000000193"
                 ]
    for idx in range(len(testcards)):
