@@ -1,6 +1,16 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.7.x
+
+* Fixed Gaffi Stick firing outside of engagement
+* Fixed Asteroid Sanctuary
+* Fixed Carbonite Transport
+
+### 2.3.6.x
+
+Fixed Alternate Affiliations not having resources and not clearing Edge
+
 ### 2.3.5.x
 
 * Added a little surprise :)
