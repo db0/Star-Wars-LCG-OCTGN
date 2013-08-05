@@ -2015,7 +2015,7 @@
          <property name="Damage Capacity" value="0" />
          <property name="Resources" value="1" />
          <property name="Edge Priority" value="" />
-         <property name="Text" value="Phase Sequence:BalanceRefreshDrawDeploymentConflictForce&#xD;&#xA;Starting Reserve: 6" />
+         <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
          <property name="Flavor" value="" />
          <property name="Side" value="Dark" />
          <property name="Affiliation" value="Imperial Navy" />
@@ -2025,7 +2025,26 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Imperial Navy" type="FullBleed" />
+         <alternate name="Imperial Navy" type="FullBleed">
+            <property name="Cost" value="0" />
+            <property name="Type" value="Affiliation" />	
+            <property name="Force" value="0" />	
+            <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+            <property name="Traits" value="" />
+            <property name="Damage Capacity" value="0" />
+            <property name="Resources" value="1" />
+            <property name="Edge Priority" value="" />
+            <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
+            <property name="Flavor" value="" />
+            <property name="Side" value="Dark" />
+            <property name="Affiliation" value="Imperial Navy" />
+            <property name="Block" value="" />
+            <property name="Block Number" value="" />
+            <property name="Number" value="" />
+            <property name="Instructions" value="" />
+            <property name="AutoScript" value="" />
+            <property name="AutoAction" value="" />
+         </alternate>
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000036" name="Imperial Officer">
          <property name="Cost" value="2" />
@@ -2236,7 +2255,7 @@
          <property name="Damage Capacity" value="0" />
          <property name="Resources" value="1" />
          <property name="Edge Priority" value="" />
-         <property name="Text" value="Phase Sequence:BalanceRefreshDrawDeploymentConflictForce&#xD;&#xA;Starting Reserve: 6" />
+         <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
          <property name="Flavor" value="" />
          <property name="Side" value="Light" />
          <property name="Affiliation" value="Jedi" />
@@ -2246,7 +2265,26 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Jedi" type="FullBleed" />
+         <alternate name="Jedi" type="FullBleed">
+            <property name="Cost" value="0" />
+            <property name="Type" value="Affiliation" />	
+            <property name="Force" value="0" />	
+            <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+            <property name="Traits" value="" />
+            <property name="Damage Capacity" value="0" />
+            <property name="Resources" value="1" />
+            <property name="Edge Priority" value="" />
+            <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
+            <property name="Flavor" value="" />
+            <property name="Side" value="Light" />
+            <property name="Affiliation" value="Jedi" />
+            <property name="Block" value="" />
+            <property name="Block Number" value="" />
+            <property name="Number" value="0172" />
+            <property name="Instructions" value="" />
+            <property name="AutoScript" value="" />
+            <property name="AutoAction" value="" />
+         </alternate>
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000147" name="Jedi in Hiding">
          <property name="Cost" value="2" />
@@ -2817,7 +2855,7 @@
          <property name="Damage Capacity" value="0" />
          <property name="Resources" value="1" />
          <property name="Edge Priority" value="" />
-         <property name="Text" value="Phase Sequence:BalanceRefreshDrawDeploymentConflictForce&#xD;&#xA;Starting Reserve: 6" />
+         <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
          <property name="Flavor" value="" />
          <property name="Side" value="Light" />
          <property name="Affiliation" value="Rebel Alliance" />
@@ -2827,7 +2865,26 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Rebel Alliance" type="FullBleed" />
+         <alternate name="Rebel Alliance" type="FullBleed" >
+            <property name="Cost" value="0" />
+            <property name="Type" value="Affiliation" />	
+            <property name="Force" value="0" />	
+            <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+            <property name="Traits" value="" />
+            <property name="Damage Capacity" value="0" />
+            <property name="Resources" value="1" />
+            <property name="Edge Priority" value="" />
+            <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
+            <property name="Flavor" value="" />
+            <property name="Side" value="Light" />
+            <property name="Affiliation" value="Rebel Alliance" />
+            <property name="Block" value="" />
+            <property name="Block Number" value="" />
+            <property name="Number" value="0173" />
+            <property name="Instructions" value="" />
+            <property name="AutoScript" value="" />
+            <property name="AutoAction" value="" />
+         </alternate>
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000005" name="Rebel Assault">
          <property name="Cost" value="2" />
@@ -3118,7 +3175,7 @@
          <property name="Damage Capacity" value="0" />
          <property name="Resources" value="1" />
          <property name="Edge Priority" value="" />
-         <property name="Text" value="Phase Sequence:BalanceRefreshDrawDeploymentConflictForce&#xD;&#xA;Starting Reserve: 6" />
+         <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
          <property name="Flavor" value="" />
          <property name="Side" value="Dark" />
          <property name="Affiliation" value="Scum and Villainy" />
@@ -3128,7 +3185,26 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Scum and Villainy" type="FullBleed" />
+         <alternate name="Scum and Villainy" type="FullBleed">
+            <property name="Cost" value="0" />
+            <property name="Type" value="Affiliation" />	
+            <property name="Force" value="0" />	
+            <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+            <property name="Traits" value="" />
+            <property name="Damage Capacity" value="0" />
+            <property name="Resources" value="1" />
+            <property name="Edge Priority" value="" />
+            <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
+            <property name="Flavor" value="" />
+            <property name="Side" value="Dark" />
+            <property name="Affiliation" value="Scum and Villainy" />
+            <property name="Block" value="" />
+            <property name="Block Number" value="" />
+            <property name="Number" value="0177" />
+            <property name="Instructions" value="" />
+            <property name="AutoScript" value="" />
+            <property name="AutoAction" value="" />
+         </alternate>
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000211" name="Secret Informant">
          <property name="Cost" value="3" />
@@ -3219,7 +3295,7 @@
          <property name="Damage Capacity" value="0" />
          <property name="Resources" value="1" />
          <property name="Edge Priority" value="" />
-         <property name="Text" value="Phase Sequence:BalanceRefreshDrawDeploymentConflictForce&#xD;&#xA;Starting Reserve: 6" />
+         <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
          <property name="Flavor" value="" />
          <property name="Side" value="Dark" />
          <property name="Affiliation" value="Sith" />
@@ -3229,7 +3305,26 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Sith" type="FullBleed" />
+         <alternate name="Sith" type="FullBleed">
+            <property name="Cost" value="0" />
+            <property name="Type" value="Affiliation" />	
+            <property name="Force" value="0" />	
+            <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+            <property name="Traits" value="" />
+            <property name="Damage Capacity" value="0" />
+            <property name="Resources" value="1" />
+            <property name="Edge Priority" value="" />
+            <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
+            <property name="Flavor" value="" />
+            <property name="Side" value="Dark" />
+            <property name="Affiliation" value="Sith" />
+            <property name="Block" value="" />
+            <property name="Block Number" value="" />
+            <property name="Number" value="" />
+            <property name="Instructions" value="" />
+            <property name="AutoScript" value="" />
+            <property name="AutoAction" value="" />
+         </alternate>
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000025" name="Sith Library">
          <property name="Cost" value="1" />
@@ -3300,7 +3395,7 @@
          <property name="Damage Capacity" value="0" />
          <property name="Resources" value="1" />
          <property name="Edge Priority" value="" />
-         <property name="Text" value="Phase Sequence:BalanceRefreshDrawDeploymentConflictForce&#xD;&#xA;Starting Reserve: 6" />
+         <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
          <property name="Flavor" value="" />
          <property name="Side" value="Light" />
          <property name="Affiliation" value="Smugglers and Spies" />
@@ -3310,7 +3405,26 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Smugglers and Spies" type="FullBleed" />
+         <alternate name="Smugglers and Spies" type="FullBleed">
+            <property name="Cost" value="0" />
+            <property name="Type" value="Affiliation" />	
+            <property name="Force" value="0" />	
+            <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+            <property name="Traits" value="" />
+            <property name="Damage Capacity" value="0" />
+            <property name="Resources" value="1" />
+            <property name="Edge Priority" value="" />
+            <property name="Text" value="Phase Sequence:Balance | Refresh | Draw | Deployment | Conflict | Force&#xD;&#xA;Starting Reserve: 6" />
+            <property name="Flavor" value="" />
+            <property name="Side" value="Light" />
+            <property name="Affiliation" value="Smugglers and Spies" />
+            <property name="Block" value="" />
+            <property name="Block Number" value="" />
+            <property name="Number" value="0174" />
+            <property name="Instructions" value="" />
+            <property name="AutoScript" value="" />
+            <property name="AutoAction" value="" />
+         </alternate>
       </card>
       <card id="ff4fb461-8060-457a-9c16-000000000133" name="Stolen Plans">
          <property name="Cost" value="1" />
