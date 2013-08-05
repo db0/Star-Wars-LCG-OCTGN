@@ -2898,7 +2898,7 @@ Asteroid Sanctuary
 -----
 ff4fb461-8060-457a-9c16-000000000373
 -----
-whileInPlay:Draw1Card-foreachAttackerEdgeWin-ifOrigAttacking-isReact||whileInPlay:Draw1Card-foreachDefenderEdgeWin-ifOrigDefending-isReact
+whileInPlay:Draw1Card-foreachEdgeWin-ifOrigEdgeWinner-isReact
 +++++
 
 .....

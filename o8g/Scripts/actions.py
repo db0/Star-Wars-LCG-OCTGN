@@ -1005,6 +1005,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       targetC.markers[mdict['Shield']] = 0
       targetC.markers[mdict['Damage']] = 0
       targetC.markers[mdict['Focus']] = 0
+      targetC.setController(chosenObj.owner)
       debugNotify("Finished Capturing. Removing from cardsLeavingPlay var",2)
       cardsLeaving(targetC,'remove')
       debugNotify("About to reset shared variable",2)

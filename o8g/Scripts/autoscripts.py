@@ -1747,6 +1747,11 @@ def checkSpecialRestrictions(Autoscript,card):
    if re.search(r'isReady',Autoscript) and card.highlight != UnpaidColor and card.highlight != ReadyEffectColor: 
       debugNotify("!!! Failing because card is not Paid", 2)
       validCard = False
+   if re.search(r'isEdgeWinner',Autoscript):
+      plAffiliation = getSpecial('Affiliation',card.controller)
+      if not plAffiliation.markers[mdict['Edge']]:
+         debugNotify("!!! Failing because card's controller is not the edge winner")
+         validCard = False
    if re.search(r'isNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): 
       debugNotify("!!! Failing because unit is participating", 2)
       validCard = False
@@ -1873,6 +1878,11 @@ def checkOriginatorRestrictions(Autoscript,card):
       for c in table:
          if c != card and c.orientation == Rot90 and c.controller == card.controller: validCard = False
    if re.search(r'ifOrigNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
+   if re.search(r'ifOrigEdgeWinner',Autoscript):
+      plAffiliation = getSpecial('Affiliation',card.controller)
+      if not plAffiliation.markers[mdict['Edge']]:
+         debugNotify("!!! Failing because originator's controller is not the edge winner")
+         validCard = False
    if re.search(r'ifOrigAttacking',Autoscript) or re.search(r'ifOrigDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')
       if EngagedObjective == 'None': validCard = False
