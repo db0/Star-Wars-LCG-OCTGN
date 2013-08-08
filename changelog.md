@@ -6,6 +6,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * Fixed Moorsh Moraine and Raise the Stakes unopposed bonus stacking
 * Fixed Greedo and Jawa Scavengers not triggering sometimes.
 * Changed the Button art to make more sense thematically :)
+* Darth Vader (Sith) will now choose any targeted cards if they exist.
 
 ### 2.3.7.x
 

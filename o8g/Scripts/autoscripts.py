@@ -58,6 +58,7 @@ def executePlayScripts(card, action):
              re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
          elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
          elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
+         elif re.search(r'notHARDCOREenough', autoS) and chkHardcore(card): Autoscripts.remove(autoS) # the notHARDCOREenough is used for scripts which we don't want firing in hardcore mode, even if they're not reacts.
       debugNotify('Looking for multiple choice options') # Debug
       if action == 'PLAY': trigger = 'onPlay' # We figure out what can be the possible multiple choice trigger
       elif action == 'TRASH': trigger = 'onDiscard'

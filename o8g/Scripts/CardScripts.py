@@ -82,7 +82,7 @@ Aft Armor Plating
 -----
 ff4fb461-8060-457a-9c16-000000000061
 -----
-Placement:Vehicle_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+Placement:Vehicle_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -234,7 +234,7 @@ Corellian Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000163
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -250,7 +250,7 @@ Coruscant Defense Fleet
 -----
 ff4fb461-8060-457a-9c16-000000000023
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 R0:Remove1Damage-DemiAutoTargeted-atCoruscant-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
@@ -642,7 +642,7 @@ Guardian of Peace
 -----
 ff4fb461-8060-457a-9c16-000000000158
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 R0:Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
@@ -650,7 +650,7 @@ Guardian of Peace
 -----
 ff4fb461-8060-457a-9c16-000000000159
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 R0:Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage
 .....
@@ -866,7 +866,7 @@ ISB Interrogators
 -----
 ff4fb461-8060-457a-9c16-000000000125
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -1354,7 +1354,7 @@ Superlaser Engineer
 -----
 ff4fb461-8060-457a-9c16-000000000030
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}||onPlay:CustomScript-isReact
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||onPlay:CustomScript-isReact
 +++++
 
 .....
@@ -2074,7 +2074,7 @@ AAC-1 Speeder Tank
 -----
 ff4fb461-8060-457a-9c16-000000000279
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2082,7 +2082,7 @@ AAC-1 Speeder Tank
 -----
 ff4fb461-8060-457a-9c16-000000000280
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2106,7 +2106,7 @@ Death Squadron Star Destroyer
 -----
 ff4fb461-8060-457a-9c16-000000000284
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2114,7 +2114,7 @@ Death Squadron Star Destroyer
 -----
 ff4fb461-8060-457a-9c16-000000000285
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2498,7 +2498,7 @@ Soresu Training
 -----
 ff4fb461-8060-457a-9c16-000000000292
 -----
-Placement:Force User_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+Placement:Force User_and_Unit||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2586,7 +2586,7 @@ Blizzard Force AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000339
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2594,7 +2594,7 @@ Blizzard Force AT-ST
 -----
 ff4fb461-8060-457a-9c16-000000000340
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -2722,7 +2722,7 @@ Snowtrooper Vanguard
 -----
 ff4fb461-8060-457a-9c16-000000000351
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -3178,7 +3178,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000416
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce-failSilently||afterEngagement:Pass-onlyOnce-failSilently
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough-onlyOnce-failSilently||afterEngagement:Pass-onlyOnce-failSilently
 +++++
 
 .....
@@ -3186,7 +3186,7 @@ Massassi Temple Lookout
 -----
 ff4fb461-8060-457a-9c16-000000000417
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-onlyOnce-failSilently||afterEngagement:Pass-onlyOnce-failSilently
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough-onlyOnce-failSilently||afterEngagement:Pass-onlyOnce-failSilently
 +++++
 
 .....
@@ -3306,7 +3306,7 @@ Sandcrawler
 -----
 ff4fb461-8060-457a-9c16-000000000436
 -----
-onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}||onLeaving:Put1Focus-AutoTargeted-atCharacter_or_Droid-isReact-isForced
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||onLeaving:Put1Focus-AutoTargeted-atCharacter_or_Droid-isReact-isForced
 +++++
 
 .....
