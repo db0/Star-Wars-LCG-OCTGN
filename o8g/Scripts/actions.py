@@ -355,15 +355,16 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          Autoscripts = CardsAS.get(c.model,'').split('||')
          for autoS in Autoscripts:
             debugNotify("autoS: {}".format(autoS),4) #Debug
-            bonusUnopposed = re.search(r'Unopposed([0-9])Bonus',autoS)
-            if bonusUnopposed and chkPlayer(autoS, c.controller, False) and checkOriginatorRestrictions(autoS,c):
-               debugNotify("Found unopposed Bonus: {}".format(bonusUnopposed.group(1)),4) #Debug
+            raiseUnopposed = re.search(r'Unopposed([0-9])Raise',autoS)
+            if raiseUnopposed and chkPlayer(autoS, c.controller, False) and checkOriginatorRestrictions(autoS,c):
+               debugNotify("Found unopposed Raise: {}".format(raiseUnopposed.group(1)),4) #Debug
                targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
                multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
-               if debugVerbosity >= 2: notify("### Found card with Bonus Unopposed") #Debug
-               uBonus = (num(bonusUnopposed.group(1)) * multiplier)
-               if uBonus: notify("-- {}: +{} unopposed damage".format(c,uBonus))
-               unopposedDamage += uBonus
+               if debugVerbosity >= 2: notify("### Found card which raises unopposed bonus") #Debug
+               uBonus = (num(raiseUnopposed.group(1)) * multiplier)
+               if uBonus > unopposedDamage:
+                  if uBonus: notify("-- {} raises Unopposed damage to {}".format(c,uBonus))
+                  unopposedDamage = uBonus
       if not cancel:
          if debugVerbosity >= 2: notify("### Unopposed Damage not cancelled")
          if currentTarget.controller == me: attacker = opponent

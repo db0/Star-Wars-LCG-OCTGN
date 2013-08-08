@@ -1172,9 +1172,9 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000434",
+                "ff4fb461-8060-457a-9c16-000000000311",
                 "ff4fb461-8060-457a-9c16-000000000422",
-                "ff4fb461-8060-457a-9c16-000000000445",
+                "ff4fb461-8060-457a-9c16-000000000361",
                 #"ff4fb461-8060-457a-9c16-000000000193"
                 ]
    for idx in range(len(testcards)):
