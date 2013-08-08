@@ -346,7 +346,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000103
 -----
-whileInPlay:Deal1Damage-foreachCardPlayed-byMe-typeEvent_and_Sith-AutoTargeted-atUnit-choose1-targetOpponents-onlyOnce-isReact
+whileInPlay:Deal1Damage-foreachCardPlayed-byMe-typeEvent_and_Sith-DemiAutoTargeted-atUnit-choose1-targetOpponents-onlyOnce-isReact
 +++++
 
 .....
@@ -834,7 +834,7 @@ Interrogation
 -----
 ff4fb461-8060-457a-9c16-000000000121
 -----
-
+onPlay:SimplyAnnounce{look at opponent's hand and discard 1 card}
 +++++
 
 .....
@@ -3226,7 +3226,7 @@ Greedo
 -----
 ff4fb461-8060-457a-9c16-000000000422
 -----
-whileInPlay:Deal1Damage-foreachAttackerEdgeWin-ifOrigDefending-ifOrigParticipating-isReact-isForced||whileInPlay:Deal1Damage-foreachDefenderEdgeWin-ifOrigAttacking-ifOrigParticipating-isReact-isForced
+whileInPlay:Deal1Damage-foreachEdgeWin-ifOrigEdgeLoser-isReact-isForced
 +++++
 
 .....
@@ -3290,7 +3290,7 @@ Jawa Scavenger
 -----
 ff4fb461-8060-457a-9c16-000000000434
 -----
-whileInPlay:ReturnMyself-foreachAttackerEdgeWin-ifOrigDefending-isReact-isForced||whileInPlay:ReturnMyself-foreachDefenderEdgeWin-ifOrigAttacking-isReact-isForced
+whileInPlay:ReturnMyself-foreachEdgeWin-ifOrigEdgeLoser-isReact-isForced
 +++++
 
 .....
@@ -3298,7 +3298,7 @@ Jawa Scavenger
 -----
 ff4fb461-8060-457a-9c16-000000000435
 -----
-whileInPlay:ReturnMyself-foreachAttackerEdgeWin-ifOrigDefending-isReact-isForced||whileInPlay:ReturnMyself-foreachDefenderEdgeWin-ifOrigAttacking-isReact-isForced
+whileInPlay:ReturnMyself-foreachEdgeWin-ifOrigEdgeLoser-isReact-isForced
 +++++
 
 .....

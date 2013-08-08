@@ -1883,6 +1883,11 @@ def checkOriginatorRestrictions(Autoscript,card):
       if not plAffiliation.markers[mdict['Edge']]:
          debugNotify("!!! Failing because originator's controller is not the edge winner")
          validCard = False
+   if re.search(r'ifOrigEdgeLoser',Autoscript):
+      plAffiliation = getSpecial('Affiliation',card.controller)
+      if plAffiliation.markers[mdict['Edge']]:
+         debugNotify("!!! Failing because originator's controller the edge winner")
+         validCard = False
    if re.search(r'ifOrigAttacking',Autoscript) or re.search(r'ifOrigDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')
       if EngagedObjective == 'None': validCard = False
