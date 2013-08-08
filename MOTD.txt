@@ -1,12 +1,12 @@
 =====Message of the Day======
 
-VERY IMPOATANT!
+There's now a new and updated use tutorial for SW LCG on OCTGN. 
 
-Due to new card effects in Edge of Darkness, I've had to completely rework how automations function.
+This will teach you the basics of using the plugin and also show you some tricks you might not have known.
 
-Please visit the blog to get the information on how they will work from now on, to avoid confusion.
+If you're new to this game on OCTGN we suggest you take a look, and forward it to any people who might benefit as well.
 
-Open a browser page to the game blog?
+Open a browser page to the tutorial video?
 =============================
 &&
-http://octgn.gamersjudgement.com/wordpress/swlcg/major-update-released/
+http://octgn.gamersjudgement.com/wordpress/swlcg/star-wars-the-card-game-octgn-use-tutorial/

@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.8.x
+
+* Fixed Moorsh Moraine and Raise the Stakes unopposed bonus stacking
+* Fixed Greedo and Jawa Scavengers not triggering sometimes.
+* Changed the Button art to make more sense thematically :)
+
 ### 2.3.7.x
 
 * Fixed Gaffi Stick firing outside of engagement
