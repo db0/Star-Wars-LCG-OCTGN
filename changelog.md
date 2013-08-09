@@ -9,6 +9,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * Darth Vader (Sith) will now choose any targeted cards if they exist.
 * Fixed Bounty not triggering on Refresh
 * Fixed Preparation for Battle always triggering if Dial is above 8
+* Fixed Self-Preservation giving LS extra force for each committed DS unit, when the DS calculated the force struggle. Regression Bugs might have been introduced with this fix though, lemme know if you see anything weird.
 
 ### 2.3.7.x
 
