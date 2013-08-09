@@ -543,6 +543,7 @@ def fetchHost(card):
    hostID = hostCards.get(card._id,None)
    if hostID: host = Card(hostID) 
    debugNotify("<<< fetchHost() with return {}".format(host)) #Debug
+   return host
       
 #---------------------------------------------------------------------------
 # Card Placement functions

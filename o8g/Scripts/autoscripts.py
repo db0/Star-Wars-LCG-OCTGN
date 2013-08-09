@@ -1828,17 +1828,18 @@ def checkSpecialRestrictions(Autoscript,card):
    elif debugVerbosity >= 4: notify("### No negative marker restrictions.")
    # Checking if the target needs to have a property at a certiain value. 
    propertyReq = re.search(r'-hasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
-   if propertyReq: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3)))
+   if propertyReq and validCard: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3))) 
+   # Since we're placing the value straight into validCard, we don't want to check at all is validCard is already false
    # Checking if the target needs to have a markers at a particular value.
    MarkerReq = re.search(r'-ifMarkers{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript)
-   if MarkerReq: 
+   if MarkerReq and validCard: 
       if debugVerbosity >= 4: notify("Found marker comparison req. regex groups: {}".format(MarkerReq.groups()))
       markerSeek = findMarker(card, MarkerReq.group(1))
       if markerSeek:
          validCard = compareValue(MarkerReq.group(2), card.markers[markerSeek], num(MarkerReq.group(3)))
    # Checking if the DS Dial needs to be at a specific value
    DialReq = re.search(r'-ifDial(eq|le|ge|gt|lt)([0-9]+)',Autoscript)
-   if DialReq: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
+   if DialReq and validCard: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
    if debugVerbosity >= 1: notify("<<< checkSpecialRestrictions() with return {}".format(validCard)) #Debug
    return validCard
 
@@ -1936,13 +1937,13 @@ def checkOriginatorRestrictions(Autoscript,card):
    elif debugVerbosity >= 4: notify("### No negative marker restrictions.")
    # Checking if the originator needs to have a property at a certiain value. 
    propertyReq = re.search(r'-ifOrigHasProperty{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript) 
-   if propertyReq: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3)))
+   if propertyReq and validCard: validCard = compareValue(propertyReq.group(2), num(card.properties[propertyReq.group(1)]), num(propertyReq.group(3))) # We don't want to check if validCard is already False
    # Checking if the target needs to have a markers at a particular value.
    MarkerReq = re.search(r'-ifOrigmarkers{([\w ]+)}(eq|le|ge|gt|lt)([0-9])',Autoscript)
-   if MarkerReq: validCard = compareValue(MarkerReq.group(2), card.markers.get(findMarker(card, MarkerReq.group(1)),0), num(MarkerReq.group(3)))
+   if MarkerReq and validCard: validCard = compareValue(MarkerReq.group(2), card.markers.get(findMarker(card, MarkerReq.group(1)),0), num(MarkerReq.group(3)))
    # Checking if the DS Dial needs to be at a specific value
    DialReq = re.search(r'-ifDial(eq|le|ge|gt|lt)([0-9]+)',Autoscript)
-   if DialReq: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
+   if DialReq and validCard: validCard = compareValue(DialReq.group(1), me.counters['Death Star Dial'].value, num(DialReq.group(2)))
    if debugVerbosity >= 1: notify("<<< checkOriginatorRestrictions() with return {}".format(validCard)) #Debug
    return validCard
 
