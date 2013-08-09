@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.3.8.0"
+      version="2.3.8.11"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -69,8 +69,8 @@
       <groupactions menu="Game...">
          <groupaction menu="Set up" default="False" shortcut="Ctrl+Shift+S" execute="gameSetup" />
          <groupaction menu="Concede" default="False" shortcut="Ctrl+Shift+C" execute="concede" />
-         <groupaction menu="Switch Unicode ON/OFF" default="False" execute="switchUniCode" />
          <groupaction menu="HARDCORE Mode ON/OFF" default="False" execute="switchHardcore" />  
+         <groupaction menu="Switch Unit Placement to Left/Center" default="False" execute="switchUnitLocation" />  
          <groupaction menu="Switch Play Automation ON/OFF" default="False" execute="switchPlayAutomation" />  
          <groupaction menu="Switch Automatic Triggers ON/OFF" default="False" execute="switchTriggersAutomation" />  
          <groupaction menu="Switch Start/End-of-Turn/Phase Automation ON/OFF" default="False" execute="switchStartEndAutomation" />  

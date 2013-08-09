@@ -178,9 +178,6 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    setGlobalVariable('Stored Effects',str(selectedAbility))
    if len(players) > 1: debugVerbosity = -1 # Reset means normal game.
    elif debugVerbosity != -1 and confirm("Reset Debug Verbosity?"): debugVerbosity = -1 
-   unitAmount = eval(getGlobalVariable('Existing Units')) # We clear the variable that holds how many units we have in tha game
-   unitAmount[me.name] = 0  # This variable is used for unit placement
-   setGlobalVariable('Existing Units',str(unitAmount))
    capturedCards = eval(getGlobalVariable('Captured Cards')) # This variable is for captured cards.
    capturedCards.clear()
    setGlobalVariable('Captured Cards',str(capturedCards))
@@ -193,7 +190,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    me.setGlobalVariable('freePositions',str([]))
    me.setGlobalVariable('currentObjectives', '[]')
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
-
+   
 def placeCard(card): 
    mute()
    try:
@@ -201,8 +198,8 @@ def placeCard(card):
       if Automations['Placement']:
          debugNotify("We have placement automations",2) #Debug
          if card.Type == 'Unit': # For now we only place Units
-            unitAmount = eval(getGlobalVariable('Existing Units'))
-            debugNotify("my unitAmount is: {}.".format(unitAmount[me.name]),2) #Debug
+            unitAmount = len([c for c in table if c.Type == 'Unit' and c.controller == me and c.highlight != UnpaidColor and c.highlight != EdgeColor and c.highlight != DummyColor]) - 1 # we reduce by 1, because it will always count the unit we're currently putting in the game
+            debugNotify("my unitAmount is: {}.".format(unitAmount)) #Debug
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
             debugNotify(" my freePositions is: {}.".format(freePositions),2) #Debug
             if freePositions != []: # We use this variable to see if there were any discarded units and we use their positions first.
@@ -211,17 +208,18 @@ def placeCard(card):
                card.moveToTable(positionC[0],positionC[1])
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
-               try: len(unitAmount) # Debug
-               except: notify("!!! ERROR !!! in getting unitAmount")
-               loopsNR = unitAmount[me.name] / 6
-               loopback = 6 * loopsNR
-               if unitAmount[me.name] == 0: xoffset = -25
-               else: xoffset = (-playerside * (1 - (2 * (unitAmount[me.name] % 2))) * (((unitAmount[me.name] - loopback) + 1) / 2) * cheight(card)) - 25 # The -20 is an offset to help center the table.
-               if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
-               yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR + 1) * playerside)
+               loopsNR = unitAmount / 7
+               loopback = 7 * loopsNR
+               if getSetting('Unit Placement', 'Center') == 'Center': # If the unit placement is the default center orientation, then we start placing units from the center outwards
+                  if unitAmount == 0: xoffset = (playerside * 20) - 25
+                  else: xoffset = (-playerside * (1 - (2 * (unitAmount % 2))) * (((unitAmount - loopback) + 1) / 2) * cheight(card,0)) + (playerside * 20) - 25 # The -25 is an offset to help center the table.
+                  if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
+                  yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)
+               else:                  
+                  xoffset = (playerside * (-325 + cheight(card,0))) + (playerside * cheight(card,0) * (unitAmount - loopback)) - 25
+                  if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
+                  yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)                  
                card.moveToTable(xoffset,yoffset)
-            unitAmount[me.name] += 1
-            setGlobalVariable('Existing Units',str(unitAmount)) # We update the amount of units we have
          if card.Type == 'Enhancement':
             hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
             if hostType:
@@ -827,6 +825,10 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
          debugNotify("Now Deleting card's dictionary entry",4)
          del selectedAbility[cID]
          cardsLeaving(Card(cID),'remove')
+      elif Card(cID).group != table:
+         debugNotify("Card was not in table. Assuming player monkeyed around and clearing",3)
+         del selectedAbility[cID]
+         cardsLeaving(Card(cID),'remove')         
       else: 
          notify(":::WARNING::: {}'s FORCED Trigger is still remaining.".format(Card(cID)))
    debugNotify("Clearing all highlights from cards not waiting for their abilities")
@@ -874,12 +876,7 @@ def freeUnitPlacement(card): # A function which stores a unit's position when it
          freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
          freePositions.append(card.position)
          me.setGlobalVariable('freePositions',str(freePositions))
-      try:
-         unitAmount = eval(getGlobalVariable('Existing Units'))
-         unitAmount[card.owner.name] -= 1
-         setGlobalVariable('Existing Units',str(unitAmount))
-      except: notify("!!! ERROR !!! Retrieving 'Existing Units' shared var")
-
+         
 def chkEffectTrigger(card,actionType = 'Discard',silent = False): # Checks if a card has a currently waiting-to-trigger script, in order to avoid removing it from the table.
    debugNotify(">>> chkEffectTrigger()")
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
@@ -977,6 +974,16 @@ def switchAll(group,x=0,y=0):
 def switchHardcore(group,x=0,y=0):
    if debugVerbosity >= 1: notify(">>> switchHardcore(){}".format(extraASDebug())) #Debug
    switchAutomation('HARDCORE')
+   
+def switchUnitLocation(group,x=0,y=0):
+   debugNotify(">>> switchUnitLocation(){}".format(extraASDebug())) #Debug
+   unitPlacement = getSetting('Unit Placement', 'Center')
+   if unitPlacement == 'Center':
+      setSetting('Unit Placement', 'Left')
+      whisper("Your default unit placement has now been left-aligned")
+   else:
+      setSetting('Unit Placement', 'Center')
+      whisper("Your default unit placement has now been centered")
    
 def switchUniCode(group,x=0,y=0,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchUniCode(){}".format(extraASDebug())) #Debug
