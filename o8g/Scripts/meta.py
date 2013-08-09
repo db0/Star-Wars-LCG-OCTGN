@@ -1175,7 +1175,7 @@ def spawnTestCards():
                 "ff4fb461-8060-457a-9c16-000000000425",
                 "ff4fb461-8060-457a-9c16-000000000422",
                 "ff4fb461-8060-457a-9c16-000000000277",
-                #"ff4fb461-8060-457a-9c16-000000000193"
+                "ff4fb461-8060-457a-9c16-000000000289"
                 ]
    for idx in range(len(testcards)):
       test = table.create(testcards[idx], (70 * idx) - 300, 0, 1, True)

@@ -252,7 +252,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          debugNotify("autoS: {}".format(autoS),4) #Debug
          bonusForce = re.search(r'Force([0-9])Bonus',autoS)
          if bonusForce:
-            targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
+            targetCards = findTarget(autoS,card = c) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
             multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
             if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
             fBonus = (num(bonusForce.group(1)) * multiplier)
@@ -358,7 +358,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
             raiseUnopposed = re.search(r'Unopposed([0-9])Raise',autoS)
             if raiseUnopposed and chkPlayer(autoS, c.controller, False) and checkOriginatorRestrictions(autoS,c):
                debugNotify("Found unopposed Raise: {}".format(raiseUnopposed.group(1)),4) #Debug
-               targetCards = findTarget(autoS) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
+               targetCards = findTarget(autoS, card = c) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
                multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
                if debugVerbosity >= 2: notify("### Found card which raises unopposed bonus") #Debug
                uBonus = (num(raiseUnopposed.group(1)) * multiplier)

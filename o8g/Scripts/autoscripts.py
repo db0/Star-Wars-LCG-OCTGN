@@ -1503,7 +1503,9 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
 #------------------------------------------------------------------------------
        
 def findTarget(Autoscript, fromHand = False, card = None): # Function for finding the target of an autoscript
-   if debugVerbosity >= 1: notify(">>> findTarget(){}".format(extraASDebug(Autoscript))) #Debug
+   debugNotify(">>> findTarget(){}".format(extraASDebug(Autoscript))) #Debug
+   debugNotify("fromHand = {}. card = {}".format(fromHand,card)) #Debug
+   global reversePlayerChk
    try:
       if fromHand == True or re.search(r'-fromHand',Autoscript): group = me.hand
       elif re.search(r'-fromTopDeckMine',Autoscript): # Quick job because I cannot be bollocksed.
@@ -1526,7 +1528,12 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
             # * The player who controls this card is supposed to be me or the enemy.
                if debugVerbosity >= 2: notify("### Checking {}".format(targetLookup))
+               if card:
+                  if card.controller != me: # If we have provided the originator card to findTarget, and the card is not our, we assume that we need to treat the script as being run by our opponent
+                     debugNotify("Reversing player check")
+                     reversePlayerChk = True
                if not checkSpecialRestrictions(Autoscript,targetLookup): continue
+               reversePlayerChk = False # We return things to normal now.
                if re.search(r'-onHost',Autoscript):   
                   if debugVerbosity >= 2: notify("### Looking for Host")
                   if not card: continue # If this targeting script targets only a host and we have not passed what the attachment is, we cannot find the host, so we abort.
@@ -1585,16 +1592,14 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                if len(mergedList) > 0: targetsText += "not {}".format(mergedList)
                if targetsText.endswith(' and '): targetsText = targetsText[:-len(' and ')]
             if debugVerbosity >= 2: notify("### About to chkPlayer()")# Debug
-            reversed = False
             if card:
                if card.controller != me: # If we have provided the originator card to findTarget, and the card is not our, we assume that we need to treat the script as being run by our opponent
-                  global reversePlayerChk
+                  debugNotify("Reversing player check")
                   reversePlayerChk = True
-                  reversed = True
             if not chkPlayer(Autoscript, targetLookup.controller, False, True): 
                allegiance = re.search(r'target(Opponents|Mine)', Autoscript)
                requiredAllegiances.append(allegiance.group(1))
-            if reversed: reversePlayerChk = False # We return things to normal now.
+            reversePlayerChk = False # We return things to normal now.
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
             delayed_whisper(":::ERROR::: You need to target a valid card before using this action{}.".format(targetsText))
          elif len(foundTargets) >= 1 and re.search(r'-choose',Autoscript):

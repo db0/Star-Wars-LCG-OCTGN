@@ -7,6 +7,8 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * Fixed Greedo and Jawa Scavengers not triggering sometimes.
 * Changed the Button art to make more sense thematically :)
 * Darth Vader (Sith) will now choose any targeted cards if they exist.
+* Fixed Bounty not triggering on Refresh
+* Fixed Preparation for Battle always triggering if Dial is above 8
 
 ### 2.3.7.x
 
