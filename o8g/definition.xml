@@ -120,7 +120,7 @@
 			<groupaction menu="Jump to Force Phase." default="False" shortcut="F6" execute="goToForce" />
 			<groupaction menu="Finish an Engagement." default="False" shortcut="F10" execute="finishEngagement" />
       </groupactions>
-      <cardactions menu="Tokens...">
+      <cardactions menu="Markers...">
          <cardaction menu="Add Damage counter" default="False" shortcut="Alt+D" execute="addDamage" />
          <cardaction menu="Add Focus counter" default="False" shortcut="Alt+F" execute="addFocus" />
          <cardaction menu="Add Shield counter" default="False" shortcut="Alt+S" execute="addShield" />
@@ -129,7 +129,7 @@
          <cardaction menu="Remove Focus counter" default="False" shortcut="Alt+Shift+F" execute="subFocus" />
          <cardaction menu="Remove Shield counter" default="False" shortcut="Alt+Shift+S" execute="subShield" />
       </cardactions>
-      <groupactions menu="Tokens (Targeted)...">
+      <groupactions menu="Markers (Targeted)...">
          <cardaction menu="Damage" default="False" shortcut="Alt+D" execute="addDamageTarget" />
          <cardaction menu="Focus" default="False" shortcut="Alt+F" execute="addFocusTarget" />
          <cardaction menu="Shield" default="False" shortcut="Alt+S" execute="addShieldTarget" />
