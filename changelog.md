@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.9.x
+
+* Implemented new placement defaults and the ability to be placing your units in a left-aligned formation. This setting will be retained between sessions.
+* If people drag units outside the table, the unit placeent won't start zooming out of the table in an attempt to find free space.
+* Forced effects of cards which have been manually dragged out of the table will be silenced at next phase change now.
+
 ### 2.3.8.x
 
 * Fixed Moorsh Moraine and Raise the Stakes unopposed bonus stacking
