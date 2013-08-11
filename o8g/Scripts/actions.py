@@ -1152,6 +1152,7 @@ def inspectTargetCard(group, x = 0, y = 0): # This function shows the player the
       if card.targetedBy and card.targetedBy == me: inspectCard(card)
 
 def concede(group,x=0,y=0):
+   reportGame('Conceded')
    notify("=== {} Concedes the Game ===".format(me))
       
 def rulings(card, x = 0, y = 0):

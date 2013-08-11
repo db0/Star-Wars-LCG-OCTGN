@@ -1127,7 +1127,7 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
    debugNotify("gameStats = {}".format(gameStats), 4) #Debug
    PLAYER = me.name # Seeting some variables for readability in the URL
    AFFILIATION = Affiliation.Affiliation
-   if result == 'DeckDefeat' or result == 'DialDefeat' or result == 'ObjectiveDefeat' or result == 'SpecialDefeat': WIN = 0
+   if result == 'DeckDefeat' or result == 'DialDefeat' or result == 'ObjectiveDefeat' or result == 'SpecialDefeat' or result == 'Conceded': WIN = 0
    else: WIN = 1
    DIAL = me.counters['Death Star Dial'].value
    if DIAL > 12: DIAL = 12
@@ -1179,6 +1179,9 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
       E_WIN = 1
    elif result == 'DeckDefeat':
       E_RESULT = 'DeckVictory'
+      E_WIN = 1  
+   elif result == 'Conceded':
+      E_RESULT = 'ConcedeVictory'
       E_WIN = 1  
    else: 
       E_RESULT = 'Unknown'
