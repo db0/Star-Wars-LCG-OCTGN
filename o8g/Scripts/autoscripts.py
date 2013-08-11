@@ -1074,8 +1074,12 @@ def GameX(Autoscript, announceText, card, targetCards = None, notification = Non
       if Side == 'Light': player = me
       else: player == opponent
    else: player == me
-   if action.group(1) == 'Lose': announceString = "=== {} loses the game! ===".format(player)
-   else: announceString = "=== {} wins the game! ===".format(player)
+   if action.group(1) == 'Lose': 
+      announceString = "=== {} loses the game! ===".format(player)
+      reportGame('SpecialDefeat')
+   else: 
+      announceString = "=== {} wins the game! ===".format(player)
+      reportGame('SpecialVictory')
    notify(announceString)
    if debugVerbosity >= 3: notify("<<< GameX()")
    return announceString

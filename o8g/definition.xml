@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.3.9.0"
+      version="2.3.9.15"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -30,8 +30,6 @@
       <document name="Unofficial Action Window Reference" icon="Documents/Manual.png" src="Documents/UnofficialActionWindowReferenceCard_v1.0.htm" />
    </documents>    
    <globalvariables> 
-     <globalvariable name="gameEnded" value="False" /> 
-     <globalvariable name="gameGUID" value="None" /> 
      <globalvariable name="destroyedObjectives" value="[]" />      
      <globalvariable name="Balance of the Force" value="" /> 
      <globalvariable name="Engaged Objective" value="None" />      
@@ -43,6 +41,10 @@
      <globalvariable name="Turn" value="0" />      
      <globalvariable name="Stored Effects" value="{}" />      
      <globalvariable name="Cards Leaving Play" value="[]" />      
+     <globalvariable name="gameEnded" value="False" /> 
+     <globalvariable name="gameGUID" value="None" /> 
+     <globalvariable name="League" value="" />
+     <globalvariable name="Game Stats" value="{}" /> 
    </globalvariables>
 	<card back="Card/back.png" front="Card/front.jpg" width="63" height="88" cornerRadius="2">
 		<property name="Block" type="String" hidden="False" ignoreText="False" textKind="Free" />
@@ -157,6 +159,7 @@
       <globalvariable name="specialCards" value="{}" /> 
       <globalvariable name="currentObjectives" value="[]" /> 
       <globalvariable name="gameVersion" value="" /> 
+      <globalvariable name="Pods" value="" /> 
       <globalvariable name="freePositions" value="[]" /> 
       <globalvariable name="Switches" value="{'Placement': True, 'Triggers': True, 'WinForms': True, 'HARDCORE': False, 'Play': True, 'Start/End-of-Turn/Phase': True}" /> 
 		<hand name="Hand" visibility="me" ordered="False" width="63" height="88" icon="Groups/hand.png">

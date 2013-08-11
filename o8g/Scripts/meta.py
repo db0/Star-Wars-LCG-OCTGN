@@ -153,7 +153,8 @@ def modifyDial(value):
    for player in players: player.counters['Death Star Dial'].value += value
    if me.counters['Death Star Dial'].value >= 12:
       notify("===::: The Dark Side wins the Game! :::====")
-      notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")      
+      reportGame('DialVictory')
+      #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")      
 
 def resetAll(): # Clears all the global variables in order to start a new game.
    global unpaidCard, edgeCount, edgeRevealed, firstTurn, debugVerbosity
@@ -189,6 +190,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    setGlobalVariable('Turn','0')
    me.setGlobalVariable('freePositions',str([]))
    me.setGlobalVariable('currentObjectives', '[]')
+   resetGameStats()
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
    
 def placeCard(card): 
@@ -243,6 +245,7 @@ def placeCard(card):
                   card.sendToBack()
             else: card.moveToTable(0, 0 + yaxisMove(card))
       else: debugNotify("No Placement Automations. Doing Nothing",2)
+      if card.Type == 'Unit': incrStat('units',me.name) # We store that the player has played a unit
       if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
    except: notify("!!! ERROR !!! in placeCard()")
    
@@ -719,10 +722,12 @@ def checkDeckLegality():
    objectiveBlocks = []
    commandBlocks = []
    limitedBlocksFound = []
+   podList = []
    for card in me.ScriptingPile: 
       #if ok == False: continue # If we've already found illegal cards, no sense in checking anymore. Will activate this after checking
       if card.Type == 'Objective': 
          objectiveBlocks.append((card.name,card.Block)) # We store a tuple of objective name and objective block
+         podList.append(num(card.Block)) # We also store the objective's block in an extra list which we later use for stats
       else:
          commandBlocks.append((card.name,card.Block,card.properties['Block Number'])) # We store a tuple of the card name, objective block and number in that block
       if card.Side != Side: 
@@ -761,6 +766,8 @@ def checkDeckLegality():
    if ok: notify(" -> Deck of {} is OK!".format(me))
    else: notify(" -> Deck of {} is Illegal!".format(me))
    if debugVerbosity >= 3: notify("<<< checkDeckLegality() with return: {}".format(ok)) #Debug
+   debugNotify("pods = {}".format(str(podList).replace(" ", "")))
+   me.setGlobalVariable('Pods',str(podList).replace(" ", ""))
    return ok
    
 def readyEffect(card,forced = False):
@@ -1050,20 +1057,22 @@ def versionCheck():
       
 def MOTD():
    if debugVerbosity >= 1: notify(">>> MOTD()") #Debug
-   if me.name == 'db0' or me.name == 'dbzer0': return # I don't need to see those
-   try: (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt',3000)
-   except: MOTDcode = MOTDurl = None
-   try: (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt',3000)
-   except: DYKcode = DYKurl = None
-   if (MOTDcode != 200 or not MOTDurl) or (DYKcode !=200 or not DYKurl):
-      whisper(":::WARNING::: Cannot fetch MOTD or DYK info at the moment.")
+   (MOTDurl, MOTDcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/MOTD.txt',3000)
+   if MOTDcode != 200 or not MOTDurl:
+      whisper(":::WARNING::: Cannot fetch MOTD info at the moment.")
       return
-   DYKlist = DYKurl.split('||')
-   DYKrnd = rnd(0,len(DYKlist)-1)
-   while MOTDdisplay(MOTDurl,DYKlist[DYKrnd]) == 'MORE': 
-      MOTDurl = '' # We don't want to spam the MOTD for the further notifications
-      DYKrnd += 1
-      if DYKrnd == len(DYKlist): DYKrnd = 0
+   if getSetting('MOTD', 'UNSET') != MOTDurl: # If we've already shown the player the MOTD already, we don't do it again.
+      setSetting('MOTD', MOTDurl) # We store the current MOTD so that we can check next time if it's the same.
+      (DYKurl, DYKcode) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/DidYouKnow.txt',3000)
+      if DYKcode !=200 or not DYKurl:
+         whisper(":::WARNING::: Cannot fetch DYK info at the moment.")
+         return
+      DYKlist = DYKurl.split('||')
+      DYKrnd = rnd(0,len(DYKlist)-1)
+      while MOTDdisplay(MOTDurl,DYKlist[DYKrnd]) == 'MORE': 
+         MOTDurl = '' # We don't want to spam the MOTD for the further notifications
+         DYKrnd += 1
+         if DYKrnd == len(DYKlist): DYKrnd = 0
    if debugVerbosity >= 3: notify("<<< MOTD()") #Debug
    
 def MOTDdisplay(MOTD,DYK):
@@ -1086,8 +1095,182 @@ def MOTDdisplay(MOTD,DYK):
               \n\nWould you like to see the next tip?".format(MOTD,DYK)): return 'MORE'
    return 'STOP'
 
+def initGame(): # A function which prepares the game for online submition
+   debugNotify(">>> initGame()") #Debug
+   if getGlobalVariable('gameGUID') != 'None': return #If we've already grabbed a GUID, then just use that.
+   (gameInit, initCode) = webRead('http://84.205.248.92/slaghund/init.slag',3000)
+   if initCode != 200:
+      #whisper("Cannot grab GameGUID at the moment!") # Maybe no need to inform players yet.
+      return
+   debugNotify("{}".format(gameInit), 2) #Debug
+   GUIDregex = re.search(r'([0-9a-f-]{36}).*?',gameInit)
+   if GUIDregex: setGlobalVariable('gameGUID',GUIDregex.group(1))
+   else: setGlobalVariable('gameGUID','None') #If for some reason the page does not return a propert GUID, we won't record this game.
+   setGlobalVariable('gameEnded','False')
+   debugNotify("<<< initGame()", 3) #Debug
+   
+def reportGame(result = 'DialVictory'): # This submits the game results online.
+   delayed_whisper("Please wait. Submitting Game Stats...")     
+   debugNotify(">>> reportGame()") #Debug
+   GUID = getGlobalVariable('gameGUID')
+   if GUID == 'None' and debugVerbosity < 0: return # If we don't have a GUID, we can't submit. But if we're debugging, we go through.
+   gameEnded = getGlobalVariable('gameEnded')
+   if gameEnded == 'True':
+     if not confirm("Your game already seems to have finished once before. Do you want to change the results to '{}' for {}?".format(result,me.name)): return
+   GNAME = currentGameName()
+   LEAGUE = getGlobalVariable('League')
+   TURNS = turnNumber()
+   VERSION = gameVersion
+   RESULT = result
+   gameStats = eval(getGlobalVariable('Game Stats'))
+   debugNotify("Retrieved gameStats ") #Debug
+   debugNotify("gameStats = {}".format(gameStats), 4) #Debug
+   PLAYER = me.name # Seeting some variables for readability in the URL
+   AFFILIATION = Affiliation.Affiliation
+   if result == 'DeckDefeat' or result == 'DialDefeat' or result == 'ObjectiveDefeat' or result == 'SpecialDefeat': WIN = 0
+   else: WIN = 1
+   DIAL = me.counters['Death Star Dial'].value
+   if DIAL > 12: DIAL = 12
+   OBJECTIVES = me.counters['Objectives Destroyed'].value
+   PODS = me.getGlobalVariable('Pods')
+   UNITS = gameStats[me.name]['units'] # How many units the player brought into play
+   RESOURCES = gameStats[me.name]['resources'] # How many Resources that player generated
+   ATTACKS = gameStats[me.name]['attacks'] # How many objectives that player engaged
+   EDGEVICTORIES = gameStats[me.name]['edgev'] # How many edge battles the player won
+   FORCEVICTORIES = gameStats[me.name]['forcev'] # How many force struggles the player won
+   FORCETURNS = gameStats[me.name]['forceturns'] # How many balance phases the player started with the force.
+   debugNotify("About to report player results online.", 2) #Debug
+   if (TURNS < 1 or len(players) == 1) and debugVerbosity < 1:
+      notify(":::ATTENTION:::Game stats submit aborted due to number of players ( less than 2 ) or turns played (less than 1)")
+      return # You can never win before the first turn is finished and we don't want to submit stats when there's only one player.
+   reportURL = 'http://84.205.248.92/swlcg/game.slag?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,PLAYER,RESULT,WIN,AFFILIATION,PODS,DIAL,OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,UNITS,RESOURCES,ATTACKS,EDGEVICTORIES,FORCEVICTORIES,FORCETURNS)
+   if debugVerbosity < 1: # We only submit stats if we're not in debug mode
+      (reportTXT, reportCode) = webRead(reportURL,10000)
+   else: 
+      if confirm('Report URL: {}\n\nSubmit?'.format(reportURL)):
+         (reportTXT, reportCode) = webRead(reportURL,10000)
+         notify('Report URL: {}'.format(reportURL))
+   try:
+      if reportTXT != "Updating result...Ok!" and debugVerbosity >=0: whisper("Failed to submit match results") 
+   except: pass
+   # The victorious player also reports for their enemy
+   enemyPL = ofwhom('-ofOpponent')
+   ENEMY = enemyPL.name
+   enemyAff = getSpecial('Affiliation',enemyPL)
+   E_AFFILIATION = enemyAff.Affiliation
+   debugNotify("Enemy Affiliation: {}".format(E_AFFILIATION), 2) #Debug
+   if result == 'DialVictory': 
+      E_RESULT = 'DialDefeat'
+      E_WIN = 0
+   elif result == 'DialDefeat': 
+      E_RESULT = 'DealVictory'
+      E_WIN = 1
+   elif result == 'ObjectiveVictory': 
+      E_RESULT = 'ObjectiveDefeat'
+      E_WIN = 0
+   elif result == 'ObjectiveDefeat': 
+      E_RESULT = 'ObjectiveVictory'
+      E_WIN = 1
+   elif result == 'SpecialVictory': 
+      E_RESULT = 'SpecialDefeat'
+      E_WIN = 0
+   elif result == 'SpecialDefeat': 
+      E_RESULT = 'SpecialVictory'
+      E_WIN = 1
+   elif result == 'DeckDefeat':
+      E_RESULT = 'DeckVictory'
+      E_WIN = 1  
+   else: 
+      E_RESULT = 'Unknown'
+      E_WIN = 0
+   E_DIAL = enemyPL.counters['Death Star Dial'].value
+   if E_DIAL > 12: E_DIAL = 12
+   E_OBJECTIVES = enemyPL.counters['Objectives Destroyed'].value
+   E_PODS = enemyPL.getGlobalVariable('Pods')
+   E_UNITS = gameStats[enemyPL.name]['units'] # How many units the player brought into play
+   E_RESOURCES = gameStats[enemyPL.name]['resources'] # How many Resources that player generated
+   E_ATTACKS = gameStats[enemyPL.name]['attacks'] # How many objectives that player engaged
+   E_EDGEVICTORIES = gameStats[enemyPL.name]['edgev'] # How many edge battles the player won
+   E_FORCEVICTORIES = gameStats[enemyPL.name]['forcev'] # How many force struggles the player won
+   E_FORCETURNS = gameStats[enemyPL.name]['forceturns'] # How many balance phases the player started with the force.
+   debugNotify("About to report enemy results online.", 2) #Debug
+   E_reportURL = 'http://84.205.248.92/swlcg/game.slag?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,ENEMY,E_RESULT,E_WIN,E_AFFILIATION,E_PODS,E_DIAL,E_OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,E_UNITS,E_RESOURCES,E_ATTACKS,E_EDGEVICTORIES,E_FORCEVICTORIES,E_FORCETURNS)
+   if debugVerbosity < 1: # We only submit stats if we're not debugging
+      (EreportTXT, EreportCode) = webRead(E_reportURL,10000)
+   setGlobalVariable('gameEnded','True')
+   notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
+   debugNotify("<<< reportGame()", 3) #Debug
+
+def setleague(group = table, x=0,y=0, manual = True):
+   debugNotify(">>> setleague()") #Debug
+   mute()
+   league = getGlobalVariable('League')
+   origLeague = league
+   debugNotify("global var = {}".format(league))
+   if league == '': # If there is no league set, we attempt to find out the league name from the game name
+      for leagueTag in knownLeagues:
+         if re.search(r'{}'.format(leagueTag),currentGameName()): league = leagueTag
+   debugNotify("League after automatic check: {}".format(league))
+   if manual:
+      if not confirm("Do you want to set this match to count for an active league\n(Pressing 'No' will unset this match from all leagues)"): league = ''
+      else:
+         choice = SingleChoice('Please Select One the Active Leagues', [knownLeagues[leagueTag] for leagueTag in knownLeagues])
+         if choice != None: league = [leagueTag for leagueTag in knownLeagues][choice]
+   debugNotify("League after manual check: {}".format(league))
+   debugNotify("Comparing with origLeague: {}".format(origLeague))
+   if origLeague != league:
+      if manual: 
+         if league ==  '': notify("{} sets this match as casual".format(me))
+         else: notify("{} sets this match to count for the {}".format(me,knownLeagues[league]))
+      elif league != '': notify(":::LEAGUE::: This match will be recorded for the the {}. (press Ctrl+Alt+L to unset)".format(knownLeagues[league]))
+   elif manual: 
+         if league == '': delayed_whisper("Game is already casual.")
+         else: delayed_whisper("Game already counts for the {}".format(me,knownLeagues[league]))
+   setGlobalVariable('League',league)
+   debugNotify(">>> setleague() with league: {}".format(league)) #Debug
+   
+   
+def incrStat(stat,playerName):
+   # This command increments one of the player's game stats by one. The available stats are:
+   # 'units'         : How many units the player brought into play
+   # 'resources'     : How many Resources that player generated
+   # 'attacks'       : How many objectives that player engaged
+   # 'edgev'         : How many edge battles the player won
+   # 'forcev'        : How many force struggles the player won
+   # 'forceturns'    : How many balance phases the player started with the force.
+   # These are then stored into a global variable which is a nested dictionary. First dictionary contains a dictionaty for each player's name with their individual stats.
+   debugNotify(">>> incrStat() - {} for {}".format(stat,playerName)) #Debug
+   try: # Just in case. We don't want to break the whole game.
+      gameStats = eval(getGlobalVariable('Game Stats'))
+      debugNotify("gameStats = {}".format(gameStats), 4) #Debug
+      if not gameStats[playerName][stat]: gameStats[playerName][stat] = 1 # If we haven't put a value in this dictionary key for some reason yet, then set it to 1 now.
+      else: gameStats[playerName][stat] += 1
+      setGlobalVariable('Game Stats', str(gameStats))
+   except: notify(":::ERROR::: When trying to increment game stats")
+   debugNotify("<<< incrStat()") #Debug
+   
+def resetGameStats():
+   debugNotify(">>> resetGameStats()") #Debug
+   gameStats = eval(getGlobalVariable('Game Stats'))
+   if gameStats == '': 
+      debugNotify("Gamestats NULL")
+      gameStats = {}
+   debugNotify("gameStats = {}".format(gameStats), 4) #Debug
+   for player in players:
+      debugNotify("Resetting for {}".format(player))
+      gameStats[player.name] = {}
+      gameStats[player.name]['units'] = 0      
+      gameStats[player.name]['resources'] = 0      
+      gameStats[player.name]['attacks'] = 0      
+      gameStats[player.name]['edgev'] = 0      
+      gameStats[player.name]['forcev'] = 0      
+      gameStats[player.name]['forceturns'] = 0      
+   setGlobalVariable('Game Stats', str(gameStats))
+   debugNotify("<<< resetGameStats()") #Debug
+   
+   
 def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all scripts for all cards stored, based on a web URL or the local version if that doesn't exist.
-   if debugVerbosity >= 1: notify(">>> fetchCardScripts()") #Debug
+   debugNotify(">>> fetchCardScripts()") #Debug
    ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")

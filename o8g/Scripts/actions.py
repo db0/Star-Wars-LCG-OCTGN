@@ -131,6 +131,7 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
       if haveForce():
          modifyDial(2)
          notify(":> The Force is with the Dark Side! The Death Star dial advances by 2")
+         incrStat('forceturns',me.name) # We store that the opponent has won a force struggle
       else:
          modifyDial(1)
          notify(":> The Death Star dial advances by 1")
@@ -144,7 +145,8 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          addMarker(chosenObj, 'Damage',1, True)
          #chosenObj.markers[mdict['Damage']] += 1
          notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(chosenObj))      
-
+         incrStat('forceturns',me.name) # We store that the opponent has won a force struggle
+         
 def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterBalance')   
@@ -273,6 +275,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
       autoscriptOtherPlayers('ForceStruggleWon',BotD)
+      incrStat('forcev',me.name) # We store that the player has won a force struggle
    elif myStruggleTotal - opponentStruggleTotal < 0: 
       if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
       if (Side == 'Light' and BotD.alternate == '') or (Side == 'Dark' and BotD.alternate == 'DarkSide'):
@@ -286,6 +289,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
       autoscriptOtherPlayers('ForceStruggleLost',BotD)
+      incrStat('forcev',opponent.name) # We store that the opponent has won a force struggle
    else: # If the current force totals are tied, we just announce that.
       if debugVerbosity >= 2: notify("Force struggle is tied") #Debug
       if BotD.alternate == 'DarkSide': BotDside = 'Dark'
@@ -317,6 +321,7 @@ def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = Fal
    if not silent: notify("{} forces have engaged {}'s {}".format(me,targetObjective.controller, targetObjective))
    rnd(1,10)
    autoscriptOtherPlayers('EngagedObjective',targetObjective)
+   incrStat('attacks',me.name) # We store that the player has attacked an objective
    if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
    
 def finishEngagement(group = table, x=0, y=0, automated = False):
@@ -476,6 +481,7 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 3: notify("### Reshuffling Deck")
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
+      initGame()
       debugNotify(str(Automations),4)
 
 def defaultAction(card, x = 0, y = 0):
@@ -711,7 +717,6 @@ def generate(card, x = 0, y = 0):
    else: count = 1
    try: unpaidC.markers[resdict['Resource:{}'.format(card.Affiliation)]] += count
    except: unpaidC.markers[resdict['Resource:Neutral']] += count
-   #card.markers[mdict['Focus']] += count
    addMarker(card, 'Focus',count, True)
    notify("{} exhausts {} to produce {} {} Resources.".format(me, card, count,card.Affiliation))
    executePlayScripts(card, 'GENERATE')
@@ -719,6 +724,7 @@ def generate(card, x = 0, y = 0):
    resResult = checkPaidResources(unpaidC)
    if resResult == 'OK': purchaseCard(unpaidC, manual = False)
    elif resResult == 'USEOK': readyEffect(unpaidC)
+   incrStat('resources',me.name) # We store that the player has played a unit
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
 def findUnpaidCard():
@@ -864,9 +870,10 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
          else: 
             notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
-            if me.counters['Objectives Destroyed'].value >= 3: 
+            if opponent.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
-               notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
+               reportGame('ObjectiveDefeat')
+               #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
          global reversePlayerChk
          reversePlayerChk = True
          autoscriptOtherPlayers('ObjectiveThwarted',card)
@@ -892,9 +899,10 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: 
             notify("{} thwarts {}{}.".format(me,card,extraTXT))
-            if opponent.counters['Objectives Destroyed'].value >= 3: 
+            if me.counters['Objectives Destroyed'].value >= 3: 
                notify("===::: The Light Side wins the Game! :::====")
-               notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
+               reportGame('ObjectiveVictory')
+               #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
       cardsLeaving(card,'remove')
@@ -1281,6 +1289,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
             if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
+            incrStat('edgev',me.name) # We store that the player has won an edge battle
          elif not forceCalc: delayed_whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          winnerDifference = opponentEdgeTotal - myEdgeTotal
@@ -1293,6 +1302,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
             if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
+            incrStat('edgev',opponent.name) # We store that the player has won an edge battle
          elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
@@ -1301,13 +1311,16 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
          unopposed = True
          for card in table:
             if card.orientation == Rot90 and card.controller == currentTarget.controller: unopposed = False
-         if unopposed: 
+         if unopposed:
+            if currentTarget.controller == me: attacker = opponent
+            else: attacker = me
             if debugVerbosity >= 2: notify("### Unopposed Attacker") #Debug
             if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                Affiliation.markers[mdict['Edge']] = 1
-               notify("The engagement of {} is unopposed, so {} automatically gains edge as the attacker.".format(currentTarget,me))
+               notify("The engagement of {} is unopposed, so {} automatically gains edge as the attacker.".format(currentTarget,attacker))
                autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, 0)
+               incrStat('edgev',attacker.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
          else:
             if debugVerbosity >= 2: notify("### Defender's Advantage") #Debug
@@ -1316,6 +1329,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                defenderAffiliation.markers[mdict['Edge']] = 1
                notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.controller))
                autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, 0)
+               incrStat('edgev',currentTarget.controller.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
@@ -1460,7 +1474,9 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
 def drawCommand(group, silent = False):
    if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
    mute()
-   if len(group) == 0: return
+   if len(group) == 0: 
+      notify(":::ATTENTION::: {} cannot draw another card. {} loses the game!".format(me,me))
+      reportGame('DeckDefeat')   
    card = group.top()
    card.moveTo(me.hand)
    if not silent: notify("{} Draws a command card.".format(me))
@@ -1491,8 +1507,9 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    if count == None: count = askInteger("Draw how many cards?", 5)
    if count == None: return 0
    if count > SSize : 
-      count = SSize
-      delayed_whisper("You do not have enough cards in your deck to complete this action. Will draw as many as possible")
+      notify(":::ATTENTION::: {} cannot draw {} cards. {} loses the game!".format(me,count,me))
+      reportGame('DeckDefeat')
+      return 0
    for c in group.top(count): 
       c.moveTo(destination)
    if not silent: notify("{} draws {} cards.".format(me, count))
