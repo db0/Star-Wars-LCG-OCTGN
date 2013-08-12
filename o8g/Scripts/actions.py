@@ -39,9 +39,6 @@ limitedPlayed = False # A Variable which records if the player has played a limi
 reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
 capturingObjective = None # A global variable which holds which objective just captured a card.
 
-warnImminentEffects = "An effect is ready to trigger but has not been done automatically in order to allow your opponent to react.\
-                     \nOnce your opponent had the chance to play any interrupts, double click on the green-highlighted card to finalize it and resolve any effects (remember to target any relevant cards if required).\
-                   \n\n(This message will not appear again)" # Warning about playing events. Only displayed once.
 #---------------------------------------------------------------------------
 # Phases
 #---------------------------------------------------------------------------
@@ -482,6 +479,11 @@ def gameSetup(group, x = 0, y = 0):
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
       initGame()
+      hardcoreMode = getSetting('HARDCORE', False) #We check what the stored value for HARDCORE more is, so that we can restore it if true
+      if hardcoreMode: 
+         Automations['HARDCORE'] = True
+         notify ("--> {} trusts their feelings. HARDCORE mode activated!".format(me))
+         me.setGlobalVariable('Switches',str(Automations))
       debugNotify(str(Automations),4)
 
 def defaultAction(card, x = 0, y = 0):

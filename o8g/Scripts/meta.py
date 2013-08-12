@@ -779,10 +779,12 @@ def readyEffect(card,forced = False):
       notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
    else: debugNotify("Hardcore mode enabled. Not Highlighting")
    clrResourceMarkers(card)
-   global warnImminentEffects
-   if (not hardcoreMode or card.type == 'Event' or forced) and card.owner == me and warnImminentEffects:
+   warnImminentEffects = getSetting('warnEffect', "An effect is ready to trigger but has not been done automatically in order to allow your opponent to react.\
+                                                 \nOnce your opponent had the chance to play any interrupts, double click on the green-highlighted card to finalize it and resolve any effects (remember to target any relevant cards if required).\
+                                               \n\n(This message will not appear again)") # Warning about playing events. Only displayed once.
+   if (not hardcoreMode or card.type == 'Event' or forced) and card.owner == me and warnImminentEffects != 'Done':
       information(warnImminentEffects)
-      warnImminentEffects = None
+      setSetting('warnEffect', 'Done')
    if debugVerbosity >= 3: notify("<<< readyEffect()") #Debug         
    
 def clrResourceMarkers(card):
@@ -938,11 +940,15 @@ def switchAutomation(type,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchAutomation(){}".format(extraASDebug())) #Debug
    global Automations
    if (Automations[type] and command == 'Off') or (not Automations[type] and command == 'Announce'):
-      if type == 'HARDCORE': notify ("--> The force is not strong within {}. HARDCORE mode deactivated.".format(me))
+      if type == 'HARDCORE': 
+         notify ("--> The force is not strong within {}. HARDCORE mode deactivated.".format(me))
+         setSetting('HARDCORE', False) # We store the HARDCORE value so that the player doesn't have to set it each time
       else: notify ("--> {}'s {} automations are OFF.".format(me,type))
       if command != 'Announce': Automations[type] = False
    else:
-      if type == 'HARDCORE': notify ("--> {} trusts their feelings. HARDCORE mode activated!".format(me))
+      if type == 'HARDCORE': 
+         notify ("--> {} trusts their feelings. HARDCORE mode activated!".format(me))
+         setSetting('HARDCORE', True) # We store the HARDCORE value so that the player doesn't have to set it each time
       else: notify ("--> {}'s {} automations are ON.".format(me,type))
       if command != 'Announce': Automations[type] = True
    me.setGlobalVariable('Switches',str(Automations))
@@ -1096,6 +1102,7 @@ def MOTDdisplay(MOTD,DYK):
    return 'STOP'
 
 def initGame(): # A function which prepares the game for online submition
+   return # Not live yet
    debugNotify(">>> initGame()") #Debug
    if getGlobalVariable('gameGUID') != 'None': return #If we've already grabbed a GUID, then just use that.
    (gameInit, initCode) = webRead('http://84.205.248.92/slaghund/init.slag',3000)
@@ -1110,6 +1117,7 @@ def initGame(): # A function which prepares the game for online submition
    debugNotify("<<< initGame()", 3) #Debug
    
 def reportGame(result = 'DialVictory'): # This submits the game results online.
+   return # Not live yet
    delayed_whisper("Please wait. Submitting Game Stats...")     
    debugNotify(">>> reportGame()") #Debug
    GUID = getGlobalVariable('gameGUID')
