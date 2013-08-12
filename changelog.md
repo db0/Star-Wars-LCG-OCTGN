@@ -1,6 +1,14 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.10.x
+
+* HARDCORE mode setting will now be retained between sessions.
+* The information window about triggers will only appear once per player.
+* Each new MOTD will appear once per player.
+* Prepared for Stat Submission but not activated yet as missing the web form.
+* Added hotkey images to the definition.
+
 ### 2.3.9.x
 
 * Implemented new placement defaults and the ability to be placing your units in a left-aligned formation. This setting will be retained between sessions.
