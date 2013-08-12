@@ -7,7 +7,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * The information window about triggers will only appear once per player.
 * Each new MOTD will appear once per player.
 * Prepared for Stat Submission but not activated yet as missing the web form.
-* Added hotkey images to the definition.
+* Added keyborad shortcuts reference card to the documents menu.
 
 ### 2.3.9.x
 
