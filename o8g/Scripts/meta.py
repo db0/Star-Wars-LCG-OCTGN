@@ -157,7 +157,7 @@ def modifyDial(value):
       #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")      
 
 def resetAll(): # Clears all the global variables in order to start a new game.
-   global unpaidCard, edgeCount, edgeRevealed, firstTurn, debugVerbosity
+   global unpaidCard, edgeRevealed, firstTurn, debugVerbosity
    global Side, Affiliation, opponent, limitedPlayed
    if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
    mute()
@@ -165,7 +165,6 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    Affiliation = None
    unpaidCard = None 
    opponent = None
-   edgeCount = 0 
    edgeRevealed = False
    firstTurn = True
    limitedPlayed = False
@@ -795,6 +794,59 @@ def clrResourceMarkers(card):
             card.markers[cMarkerKey] = 0
             break
 
+def clearAttachLinks(card):
+# This function takes care to discard any attachments of a card that left play (discarded or captured)
+# It also clear the card from the host dictionary, if it was itself attached to another card
+   debugNotify(">>> clearAttachLinks()") #Debug
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
+   if cardAttachementsNR >= 1:
+      hostCardSnapshot = dict(hostCards)
+      for attachment in hostCardSnapshot:
+         if hostCardSnapshot[attachment] == card._id:
+            if Card(attachment) in table: discard(Card(attachment))
+            del hostCards[attachment]
+   debugNotify("### Checking if the card is attached to unlink.")      
+   if hostCards.has_key(card._id): del hostCards[card._id] # If the card was an attachment, delete the link
+   setGlobalVariable('Host Cards',str(hostCards))
+   debugNotify("<<< clearAttachLinks()") #Debug
+   
+def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
+   if debugVerbosity >= 1: notify(">>> removeCapturedCard()") #Debug
+   parentObjective = None
+   try: 
+      mute()
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      if capturedCards.has_key(card._id):
+         if debugVerbosity >= 2: notify("{} was in the capturedCards dict.".format(card))
+         parentObjective = Card(capturedCards[card._id])
+         del capturedCards[card._id]
+         if debugVerbosity >= 3: notify("Double Checking if entry exists: {}".format(capturedCards.get(card._id,'DELETED')))
+      card.highlight = None
+      if debugVerbosity >= 4: 
+         notify("Captured Cards: {}".format([Card(id).name for id in capturedCards]))
+         rnd(1,10)
+      setGlobalVariable('Captured Cards',str(capturedCards))
+   except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
+   if debugVerbosity >= 3: notify("<<< removeCapturedCard() with return: {}".format(parentObjective)) #Debug
+   return parentObjective
+
+def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
+   debugNotify(">>> rescueFromObjective()")
+   try:
+      count = 0
+      capturedCards = eval(getGlobalVariable('Captured Cards')) # This is a dictionary holding how many and which cards are captured at each objective.
+      for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
+         if capturedCards[capturedC] == obj._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
+            count += 1 # We count how many captured cards we found
+            rescuedC = Card(capturedC) # We generate the card object by the card's unique ID
+            removeCapturedCard(rescuedC) # We remove the card from the dictionary
+            rescuedC.moveTo(rescuedC.owner.hand) # We return the card to its owner's hand
+            autoscriptOtherPlayers('CardRescued',rescuedC) # We check if any card on the table has a trigger out of rescued cards.
+      return count
+   except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
+   debugNotify("<<< rescueFromObjective()")
+            
 def clearStoredEffects(card, silent = False,continuePath = True): # A function which clears a card's waiting-to-be-activated scripts
    debugNotify(">>> clearStoredEffects with card: {}".format(card))
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
@@ -881,7 +933,7 @@ def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTarget
    
 def freeUnitPlacement(card): # A function which stores a unit's position when it leaves play, so that it can be re-used by a different unit
    if Automations['Placement'] and card.Type == 'Unit':
-      if card.owner == me and card.highlight != DummyColor and card.highlight != UnpaidColor and card.highlight != CapturedColor:
+      if card.owner == me and card.highlight != DummyColor and card.highlight != UnpaidColor and card.highlight != CapturedColor and card.highlight != EdgeColor:
          freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
          freePositions.append(card.position)
          me.setGlobalVariable('freePositions',str(freePositions))
@@ -1373,8 +1425,8 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000425",
-                "ff4fb461-8060-457a-9c16-000000000422",
+                "ff4fb461-8060-457a-9c16-000000000265",
+                "ff4fb461-8060-457a-9c16-000000000283",
                 "ff4fb461-8060-457a-9c16-000000000277",
                 "ff4fb461-8060-457a-9c16-000000000289"
                 ]

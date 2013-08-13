@@ -18,7 +18,6 @@ import re
 
 failedRequirement = True #A Global boolean that we set in case an Autoscript cost cannot be paid, so that we know to abort the rest of the script.
 #selectedAbility = {} # Used to track which ability of multiple the player is trying to pay.
-Dummywarn = True
 TitleDone = 'Unset'
 #------------------------------------------------------------------------------
 # Play/Score/Rez/Trash trigger
@@ -253,11 +252,12 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
                                                                             # So if our instance's trigger is currently "UnitCardCapturedFromTable" then the trigger word "CardCaptured" is contained within and will match.
             debugNotify("Couldn't lookup the trigger: {} in autoscript. Ignoring".format(lookup),2)
             continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
-         if re.search(r'-chkOriginController', autoS): # If we have the -chkOriginController modulator, our scripts need to check the controller of the card that triggered the script, rather than the card has the script 
-                                                       # See for example Renegade Squadron Mobilization, where we need to check that the controller of the card leaving play is the opponent.
-                                                       # If we had let it as it was, it would simply check if Renegade Squadron Mobilization is controlled by the opponent, thus triggering the script each time our opponent's action discarded a unit, even if the unit was ours.
-            if chkPlayer(autoS, origin_card.controller,False) == 0: continue
-         elif chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         if re.search(r'-byOpposingOriginController', autoS) and chkPlayer('byOpponent', origin_card.controller,False, player = card.controller) == 0: continue
+         # If we have the -byOpposingOriginController modulator, our scripts need to compare the controller of the card that triggered the script with the controller of the card that has the script.
+         # See for example Renegade Squadron Mobilization, where we need to check that the controller of the card leaving play is the opponent of the player that controls Renegade Squadron Mobilization
+         # If we had let it as it was, it would simply check if Renegade Squadron Mobilization is controlled by the opponent, thus triggering the script each time our opponent's action discarded a unit, even if the unit was ours.
+         if re.search(r'-byFriendlyOriginController', autoS) and chkPlayer('byMe', origin_card.controller,False, player = card.controller) == 0: continue
+         if chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
          if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
                                                                     # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
@@ -359,7 +359,7 @@ def markerEffects(Time = 'Start'):
          if (Time == 'afterEngagement'
                and (re.search(r'Death from Above',marker[0])
                  or re.search(r'Vaders TIE Advance',marker[0])
-                 or re.search(r'Yoda enhancements',marker[0])
+                 or re.search(r'Enhancement Bonus',marker[0])
                  or re.search(r'Cocky',marker[0])
                  or re.search(r'Heavy Fire',marker[0])
                  or re.search(r'Ewok Scouted',marker[0]))):
@@ -905,7 +905,7 @@ def SimplyAnnounce(Autoscript, announceText, card, targetCards = None, notificat
 def CreateDummy(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # Core Command for creating dummy cards.
    if debugVerbosity >= 1: notify(">>> CreateDummy(){}".format(extraASDebug(Autoscript))) #Debug
    if targetCards is None: targetCards = []
-   global Dummywarn
+   Dummywarn = getSetting('Dummywarn',True)
    dummyCard = None
    action = re.search(r'\bCreateDummy[A-Za-z0-9_ -]*(-with)(?!onOpponent|-doNotDiscard|-nonUnique)([A-Za-z0-9_ -]*)', Autoscript)
    # We only want this regex to be true if the dummycard is going to have tokens put on it automatically.
@@ -923,17 +923,17 @@ def CreateDummy(Autoscript, announceText, card, targetCards = None, notification
                        \nFor this reason we've created a dummy card on the table and marked it with a special highlight so that you know that it's just a token.\
                      \n\nYou opponent can activate any abilities meant for them on the Dummy card. If this card has one, they can activate it by double clicking on the dummy. Very often, this will often remove the dummy since its effect will disappear.\
                      \n\nOnce the   dummy card is on the table, please right-click on it and select 'Pass control to {}'\
-                     \n\nDo you want to see this warning again?".format(targetPL)): Dummywarn = False      
+                     \n\nDo you want to see this warning again?".format(targetPL)): setSetting('Dummywarn',False)
       elif Dummywarn:
          information("This card is now supposed to go to your discard pile, but its lingering effects will only work automatically while a copy is in play.\
                        \nFor this reason we've created a dummy card on the table and marked it with a special highlight so that you know that it's just a token.\
                      \n\n(This message will not appear again.)")
-         Dummywarn = False
+         setSetting('Dummywarn',False)
       elif re.search(r'onOpponent', Autoscript): 
          if debugVerbosity >= 2: notify('### about to pop information') # debug
          information('The dummy card just created is meant for your opponent. Please right-click on it and select "Pass control to {}"'.format(targetPL))
       if debugVerbosity >= 2: notify('### Finished warnings. About to announce.') # debug
-      dummyCard = table.create(card.model, playerside * 300, 150 * playerside, 1) # This will create a fake card like the one we just created.
+      dummyCard = table.create(card.model, playerside * 360, yaxisMove(card) + (20 * playerside * len([c for c in table if c.controller == targetPL and c.highlight == DummyColor])), 1) # This will create a fake card like the one we just created.
       dummyCard.highlight = DummyColor
    if debugVerbosity >= 2: notify('### About to move to discard pile if needed') # debug
    if not re.search(r'doNotDiscard',Autoscript): card.moveTo(card.owner.piles['Discard Pile'])
@@ -1036,7 +1036,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             placeCard(targetCard)
             executePlayScripts(targetCard, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
             autoscriptOtherPlayers('CardPlayed',targetCard)            
-         elif action.group(1) == 'Capture': capture(targetC = targetCard, silent = True)
+         elif action.group(1) == 'Capture': 
+            if re.search("-captureOnMyself", Autoscript): capture(targetC = targetCard, silent = True, chosenObj = card)
+            else: capture(targetC = targetCard, silent = True)
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
          elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
@@ -1314,12 +1316,13 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for c in deck.top(5):
          c.moveToTable((cwidth(c) * 2) - (iter * cwidth(c)),0)
          cardList.append(c._id)
-         c.highlight = '#FF2222'
+         c.highlight = DummyColor
          iter += 1
       rnd(1,10)
       revealedCards = ''
       for cid in cardList: revealedCards += '{}, '.format(Card(cid))
-      notify("{} activates the ability of their Superlaser Engineer and reveals the top 5 cards of their deck: {}".format(me,revealedCards))      
+      notify("{} activates the ability of their Superlaser Engineer and reveals the top 5 cards of their deck: {}".format(me,revealedCards))
+      rnd(1,10)      
       for cid in cardList:
          if (Card(cid).Type == 'Event' or Card(cid).Type == 'Enhancement') and Card(cid).Affiliation == 'Imperial Navy' and num(Card(cid).Cost) >= 3:
             notify(":> {} moves {} to their hand".format(me,Card(cid)))
@@ -1376,8 +1379,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for card in table:
          if card.highlight == EdgeColor or card.highlight == FateColor:
             card.moveTo(card.owner.piles['Discard Pile'])
-      global edgeCount
-      edgeCount = 0            
       notify(":> {} discards all edge cards and restarts the edge battle".format(card))
    elif card.name == "Vader's TIE Advanced" and action == 'STRIKE':
       delayed_whisper("-- Calculating Vader's TIE Advanced Combat Icons. Please wait...")
@@ -1397,14 +1398,14 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       else: 
          notify("{} discards {} and Vader's TIE Advanced strike is not boosted".format(me,disCard,parseCombatIcons(disCard.properties['Combat Icons'])))
    elif (card.name == "Yoda" or card.name == "Rogue Three") and action == 'STRIKE':
-      delayed_whisper("-- Calculating Yoda's Combat Icons. Please wait...")
-      TokensX('Remove999Yoda enhancements:UD-isSilent', '', card)
-      TokensX('Remove999Yoda enhancements:BD-isSilent', '', card)
+      delayed_whisper("-- Calculating Extra Combat Icons from enhancements. Please wait...")
+      TokensX('Remove999Enhancement Bonus:UD-isSilent', '', card)
+      TokensX('Remove999Enhancement Bonus:BD-isSilent', '', card)
       hostCards = eval(getGlobalVariable('Host Cards'))
       cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
       if cardAttachementsNR and gotEdge():
-         TokensX('Put{}Yoda enhancements:UD-isSilent'.format(cardAttachementsNR), '', card)
-         TokensX('Put{}Yoda enhancements:BD-isSilent'.format(cardAttachementsNR), '', card)
+         TokensX('Put{}Enhancement Bonus:UD-isSilent'.format(cardAttachementsNR), '', card)
+         TokensX('Put{}Enhancement Bonus:BD-isSilent'.format(cardAttachementsNR), '', card)
    elif card.name == "Secret Informant" and action == 'USE':
       if card.orientation != Rot90:
          whisper(":::ERROR::: Secret Informant must be participating in the engagement to use her ability")
@@ -2015,7 +2016,7 @@ def makeChoiceListfromCardList(cardList,includeText = False):
    if debugVerbosity >= 3: notify("<<< makeChoiceListfromCardList()")
 
    
-def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for figuring out if an autoscript is supposed to target an opponent's cards or ours.
+def chkPlayer(Autoscript, controller, manual, targetChk = False, player = me): # Function for figuring out if an autoscript is supposed to target an opponent's cards or ours.
 # Function returns 1 if the card is not only for rivals, or if it is for rivals and the card being activated it not ours.
 # This is then multiplied by the multiplier, which means that if the card activated only works for Rival's cards, our cards will have a 0 gain.
 # This will probably make no sense when I read it in 10 years...
@@ -2037,10 +2038,10 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False): # Function for
       elif re.search(r'duringMyTurn', Autoscript) and not controller.isActivePlayer: 
          debugNotify("!!! Failing because ability is for {}'s turn and {}.isActivePlayer is {}".format(controller,controller,controller.isActivePlayer))            
          validPlayer = 0 # If the card can only fire furing its controller's turn
-      elif byOpponent and controller == me: 
+      elif byOpponent and controller == player: 
          debugNotify("!!! Failing because ability is byOpponent and controller is {}".format(controller))
          validPlayer =  0 # If the card needs to be played by a rival.
-      elif byMe and controller != me: 
+      elif byMe and controller != player: 
          debugNotify("!!! Failing because ability is for byMe and controller is {}".format(controller))
          validPlayer =  0 # If the card needs to be played by us.
       else: debugNotify("!!! Succeeding by Default") # Debug

@@ -29,7 +29,6 @@ Affiliation = None
 opponent = None # A variable holding the player object of our opponent.
 SetupPhase = False
 unpaidCard = None # A variable that holds the card object of a card that has not been paid yet, for ease of find.
-edgeCount = 0 # How many edge cards the player has played per engagement.
 edgeRevealed = False # Remembers if the player has revealed their edge cards yet or not.
 firstTurn = True # A variable to allow the engine to skip some phases on the first turn.
 handRefillDone = False # A variable which tracks if the player has refilled their hand during the draw phase. Allows the game to go faster.
@@ -912,8 +911,6 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
       whisper("This isn't the card you're looking for...")
       return 'ABORT'
    elif card.highlight == EdgeColor:
-      global edgeCount
-      edgeCount = 0
       card.moveTo(card.owner.piles['Discard Pile'])
    elif card.highlight == CapturedColor and not Continuing: # If we're continuing a script and the card is now captured, it means its own effect made it so, so we leave it where it is (e.g. Leia Organa)
       removeCapturedCard(card)
@@ -1026,59 +1023,6 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       autoscriptOtherPlayers('{}CardCapturedFrom{}'.format(targetCType,captureGroup),targetC) # We send also the card type. Some capture hooks only trigger of a specific kind of captured card (e.g. bespin exchange)
       capturingObjective = None # We clear it at the end.
    debugNotify("<<< capture()") #Debug
-
-def clearAttachLinks(card):
-# This function takes care to discard any attachments of a card that left play (discarded or captured)
-# It also clear the card from the host dictionary, if it was itself attached to another card
-   if debugVerbosity >= 1: notify(">>> clearAttachLinks()") #Debug
-   hostCards = eval(getGlobalVariable('Host Cards'))
-   cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == card._id])
-   if cardAttachementsNR >= 1:
-      hostCardSnapshot = dict(hostCards)
-      for attachment in hostCardSnapshot:
-         if hostCardSnapshot[attachment] == card._id:
-            if Card(attachment) in table: discard(Card(attachment))
-            del hostCards[attachment]
-   if debugVerbosity >= 2: notify("### Checking if the card is attached to unlink.")      
-   if hostCards.has_key(card._id): del hostCards[card._id] # If the card was an attachment, delete the link
-   setGlobalVariable('Host Cards',str(hostCards))
-   if debugVerbosity >= 3: notify("<<< clearAttachLinks()") #Debug
-   
-def removeCapturedCard(card): # This function removes a captured card from the dictionary which records which cards are captured at which objective.
-   if debugVerbosity >= 1: notify(">>> removeCapturedCard()") #Debug
-   parentObjective = None
-   try: 
-      mute()
-      capturedCards = eval(getGlobalVariable('Captured Cards'))
-      if capturedCards.has_key(card._id):
-         if debugVerbosity >= 2: notify("{} was in the capturedCards dict.".format(card))
-         parentObjective = Card(capturedCards[card._id])
-         del capturedCards[card._id]
-         if debugVerbosity >= 3: notify("Double Checking if entry exists: {}".format(capturedCards.get(card._id,'DELETED')))
-      card.highlight = None
-      if debugVerbosity >= 4: 
-         notify("Captured Cards: {}".format([Card(id).name for id in capturedCards]))
-         rnd(1,10)
-      setGlobalVariable('Captured Cards',str(capturedCards))
-   except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
-   if debugVerbosity >= 3: notify("<<< removeCapturedCard() with return: {}".format(parentObjective)) #Debug
-   return parentObjective
-
-def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
-   debugNotify(">>> rescueFromObjective()")
-   try:
-      count = 0
-      capturedCards = eval(getGlobalVariable('Captured Cards')) # This is a dictionary holding how many and which cards are captured at each objective.
-      for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
-         if capturedCards[capturedC] == obj._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
-            count += 1 # We count how many captured cards we found
-            rescuedC = Card(capturedC) # We generate the card object by the card's unique ID
-            removeCapturedCard(rescuedC) # We remove the card from the dictionary
-            rescuedC.moveTo(rescuedC.owner.hand) # We return the card to its owner's hand
-            autoscriptOtherPlayers('CardRescued',rescuedC) # We check if any card on the table has a trigger out of rescued cards.
-      return count
-   except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
-   debugNotify("<<< rescueFromObjective()")
 
 def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game thinks the objective has captured
    debugNotify(">>> clearCaptures()")
@@ -1227,13 +1171,11 @@ def playEdge(card, silent = False):
       whisper(":::ERROR::: You have to be in an engagement to play edge cards. ABORTING!")
       return 'ABORT'
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
-   global edgeCount
+   edgeCount = len([c for c in table if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == me])
    mute()
    card.moveToTable(playerside * 300, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    card.highlight = EdgeColor
    card.peek()
-   edgeCount += 1
-   if edgeCount > 7: edgeCount = 0 # Just in case.
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    edgeRevealed[card.owner.name] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
@@ -1468,6 +1410,7 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
       if card.group == table and card.highlight != CapturedColor:
          if not Continuing: clearStoredEffects(card,True)
          cardsLeaving(card,'remove')
+         if card.group == table: clearAttachLinks(card)
          freeUnitPlacement(card)
          card.moveTo(card.owner.hand)
    if not silent: notify("{} returned {} to its owner's hand".format(me,card))

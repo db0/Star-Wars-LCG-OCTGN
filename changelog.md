@@ -1,6 +1,23 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.11.x
+
+* Returning Units to hand will now discard their enhancements.
+* Jabba's Orders should have an simplyAnnounce react.
+* Greedo will only trigger when participating now.
+* Deploy the Fleet will now get damaged when used.
+* Deploy the Fleet can now spawn more than 1 reduction effect.
+* Dummy Cards (resident effects) will now spawn further up and stack for visibility.
+* Dummy Cards (resident effects) will now inform about their purpose once per player.
+* Leia will now clear player's focus tokens rather than opponent's.
+* Leia will now properly clear all focus tokens.
+* Fleeing the empire will now autoselect targeted cards.
+* Renegade Squadron Mobilization will now trigger correctly only at opponent's units leaving the table.
+* Edge Card placements will now reset properly.
+* Tatooine Crash will capture automatically at itself, without asking.
+* Changed Yoda's and Rogue Three's icons to be more generically named
+
 ### 2.3.10.x
 
 * HARDCORE mode setting will now be retained between sessions.

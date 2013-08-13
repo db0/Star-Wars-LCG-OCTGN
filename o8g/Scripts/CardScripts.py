@@ -562,7 +562,7 @@ Fleeing the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000132
 -----
-afterCardRefreshing:Put1Shield-AutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
+afterCardRefreshing:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
 +++++
 
 .....
@@ -986,7 +986,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000001
 -----
-onLeaving:CaptureMyself$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-isReact
+onLeaving:Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}-isReact$$Remove999Focus-AutoTargeted-targetMine-hasMarker{Focus}$$CaptureMyself
 +++++
 
 .....
@@ -1156,7 +1156,7 @@ ff4fb461-8060-457a-9c16-000000000199
 -----
 whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
 +++++
-R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
+R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent-nonUnique
 .....
 Rebel Sympathizer
 -----
@@ -1164,7 +1164,7 @@ ff4fb461-8060-457a-9c16-000000000200
 -----
 whileInPlay:IgnoreAffiliationMatch-onlyforDummy||Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-onlyforDummy-isSilent
 +++++
-R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent
+R0:DestroyMyself-isSilent$$SimplyAnnounce{reduce the cost of the next card they play this phase by 1 and ignore its resource match requirement}$$CreateDummy-isSilent-nonUnique
 .....
 Rebel Trooper
 -----
@@ -1586,7 +1586,7 @@ Trooper Assault
 -----
 ff4fb461-8060-457a-9c16-000000000056
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-forMe-typeTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-forMe-typeTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy-nonUnique||whileInPlay:IncreaseBD:1-forMe-typeTrooper-isAttacking-onlyforDummy||whileInPlay:IncreaseUD:1-forMe-typeTrooper-isAttacking-onlyforDummy||afterEngagement:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2034,7 +2034,7 @@ Weapon Mastery
 -----
 ff4fb461-8060-457a-9c16-000000000226
 -----
-onPlay:RequestInt-Msg{How many enhancements does the target unit have?}$$Put1Weapon Mastery:UD-perX-Targeted-atCharacter$$CreateDummy-isSilent||afterConflict:Remove999Weapon Mastery:UD-AutoTargeted-hasMarker{Weapon Mastery:UD}-isSilent-onlyforDummy$$DestroyMyself-onlyforDummy-isSilent
+onPlay:RequestInt-Msg{How many enhancements does the target unit have?}$$Put1Weapon Mastery:UD-perX-Targeted-atCharacter$$CreateDummy-nonUnique-isSilent||afterConflict:Remove999Weapon Mastery:UD-AutoTargeted-hasMarker{Weapon Mastery:UD}-isSilent-onlyforDummy$$DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2090,7 +2090,7 @@ Admiral's Orders
 -----
 ff4fb461-8060-457a-9c16-000000000288
 -----
-onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-isSilent||whileInPlay:Reduce2CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
+onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-nonUnique-isSilent||whileInPlay:Reduce2CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2124,7 +2124,7 @@ ff4fb461-8060-457a-9c16-000000000283
 -----
 whileInPlay:Reduce1CostPlay-affectsCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
-R0:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 1}$$CreateDummy-isSilent-doNotDiscard
+R0:SimplyAnnounce{damage it in order to reduce the cost of the next capital ship they play this phase by 1}$$CreateDummy-nonUnique-isSilent-doNotDiscard$$Deal1Damage-isSilent
 .....
 Echo Base
 -----
@@ -2202,7 +2202,7 @@ Jabba's Orders
 -----
 ff4fb461-8060-457a-9c16-000000000271
 -----
-
+onPlay:SimplyAnnounce{look at opponent's hand}-isReact
 +++++
 
 .....
@@ -2250,7 +2250,7 @@ Renegade Squadron Mobilization
 -----
 ff4fb461-8060-457a-9c16-000000000265
 -----
-whileInPlay:Draw1Card-foreachCardLeavingPlay-typeUnit-forOpponent-chkOriginController-isReact
+whileInPlay:Draw1Card-foreachCardLeavingPlay-typeUnit-byOpposingOriginController-isReact
 +++++
 
 .....
@@ -3226,7 +3226,7 @@ Greedo
 -----
 ff4fb461-8060-457a-9c16-000000000422
 -----
-whileInPlay:Deal1Damage-foreachEdgeWin-ifOrigEdgeLoser-isReact-isForced
+whileInPlay:Deal1Damage-foreachEdgeWin-ifOrigEdgeLoser-ifOrigParticipating-isReact-isForced
 +++++
 
 .....
@@ -3282,7 +3282,7 @@ The Tatooine Crash
 -----
 ff4fb461-8060-457a-9c16-000000000433
 -----
-afterCardRefreshing:CaptureTarget-AutoTargeted-fromTopDeckOpponents-duringMyTurn-isReact
+afterCardRefreshing:CaptureTarget-AutoTargeted-fromTopDeckOpponents-captureOnMyself-duringMyTurn-isReact
 +++++
 
 .....
@@ -3626,7 +3626,7 @@ Armed and Ready
 -----
 ff4fb461-8060-457a-9c16-000000000485
 -----
-onPlay:CreateDummy||whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:IncreaseUD:1-forMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
+onPlay:CreateDummy-nonUnique||whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}-onlyforDummy||whileInPlay:IncreaseUD:1-forMe-typeUnit-hasMarker{Shield}-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 .....
