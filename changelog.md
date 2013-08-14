@@ -4,7 +4,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 ### 2.3.11.x
 
 * Returning Units to hand will now discard their enhancements.
-* Jabba's Orders should have an simplyAnnounce react.
+* Jabba's Orders now has a proper react trigger that simply announces its effect. You need to the rest manually
 * Greedo will only trigger when participating now.
 * Deploy the Fleet will now get damaged when used.
 * Deploy the Fleet can now spawn more than 1 reduction effect.
