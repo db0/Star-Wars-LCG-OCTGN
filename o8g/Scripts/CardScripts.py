@@ -2834,7 +2834,7 @@ Bothan Spy
 -----
 ff4fb461-8060-457a-9c16-000000000364
 -----
-
+SimplyAnnounce{look at opponent's hand}-isReact
 +++++
 
 .....
