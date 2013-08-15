@@ -607,6 +607,7 @@ def strike(card, x = 0, y = 0, Continuing = False):
       #if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
       if card.highlight == LightForceColor or card.highlight == DarkForceColor: addMarker(card, 'Focus',1, True)
       if debugVerbosity >= 2: notify("Focus Added") #Debug
+      playStrikeSound(card)
       debugNotify("Executing Strike Scripts",2)      
       if executePlayScripts(card, 'STRIKE') == 'POSTPONED': 
          return # Strike effects almost universally happen after focus.
@@ -670,6 +671,7 @@ def participate(card, x = 0, y = 0, silent = False):
       if not silent: notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
+   playParticipateSound(card)
    executePlayScripts(card, 'PARTICIPATION')
    autoscriptOtherPlayers('UnitParticipates',card)
    clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
@@ -929,6 +931,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             if not Continuing: clearStoredEffects(card,True) # Making sure that the player didn't discard a card waiting for an effect. We only do it if we're not continuing an existing script, as then its's done there and it will cause an infinite loop in here.
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
             cardsLeaving(card,'remove')
+            playDestroySound(card)
          if not silent: notify("{} discards {}".format(me,card))
    if previousHighlight != DummyColor:
       debugNotify("Checking if the card has attachments to discard as well.")      

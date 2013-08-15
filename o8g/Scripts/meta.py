@@ -221,6 +221,7 @@ def placeCard(card):
                   if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
                   yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)                  
                card.moveToTable(xoffset,yoffset)
+            playPlaySound(card)
          if card.Type == 'Enhancement':
             hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
             if hostType:
@@ -1590,3 +1591,6 @@ def ShowPosC(card, x=0,y=0):
       notify(">>> ShowPosC(){}".format(extraASDebug())) #Debug
       x,y = card.position
       notify('card x={}, y={}'.format(x,y))
+      
+def soundTest(group,x,y):
+   return

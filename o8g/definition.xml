@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.3.11.0"
+      version="2.3.11.10"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -21,8 +21,47 @@
       <script src="Scripts/autoscripts.py" />
       <script src="Scripts/generic.py" />
       <script src="Scripts/meta.py" />
+      <script src="Scripts/sounds.py" />
       <script src="Scripts/CardScripts.py" />
 	</scripts> 
+   <sounds>
+      <sound name="destroy_droid1" src="Sounds/destroy_droid1.wav"/>
+      <sound name="participate_capital_ship1" src="Sounds/participate_capital_ship1.wav"/>
+      <sound name="participate_character1" src="Sounds/participate_character1.wav"/>
+      <sound name="participate_character2" src="Sounds/participate_character2.wav"/>
+      <sound name="participate_creature1" src="Sounds/participate_creature1.wav"/>
+      <sound name="participate_creature2" src="Sounds/participate_creature2.wav"/>
+      <sound name="participate_droid1" src="Sounds/participate_droid1.wav"/>
+      <sound name="participate_fighter_DS1" src="Sounds/participate_fighter_DS1.wav"/>
+      <sound name="participate_fighter_LS1" src="Sounds/participate_fighter_LS1.wav"/>
+      <sound name="participate_force_user1" src="Sounds/participate_force_user1.wav"/>
+      <sound name="participate_vehicle1" src="Sounds/participate_vehicle1.wav"/>
+      <sound name="strike_capital_ship1" src="Sounds/strike_capital_ship1.wav"/>
+      <sound name="strike_character1" src="Sounds/strike_character1.wav"/>
+      <sound name="strike_character2" src="Sounds/strike_character2.wav"/>
+      <sound name="strike_character3" src="Sounds/strike_character3.wav"/>
+      <sound name="strike_character4" src="Sounds/strike_character4.wav"/>
+      <sound name="strike_droid1" src="Sounds/strike_droid1.wav"/>
+      <sound name="strike_droid2" src="Sounds/strike_droid2.wav"/>
+      <sound name="strike_droid3" src="Sounds/strike_droid3.wav"/>
+      <sound name="strike_fighter_DS1" src="Sounds/strike_fighter_DS1.wav"/>
+      <sound name="strike_fighter_LS1" src="Sounds/strike_fighter_LS1.wav"/>
+      <sound name="strike_force_user1" src="Sounds/strike_force_user1.wav"/>
+      <sound name="strike_force_user2" src="Sounds/strike_force_user2.wav"/>
+      <sound name="strike_trooper1" src="Sounds/strike_trooper1.wav"/>
+      <sound name="strike_vehicle1" src="Sounds/strike_vehicle1.wav"/>
+      <sound name="strike_vehicle2" src="Sounds/strike_vehicle2.wav"/>
+      <sound name="strike_vehicle3" src="Sounds/strike_vehicle3.wav"/>
+      <sound name="strike_wookie1" src="Sounds/strike_wookie1.wav"/>
+      <sound name="strike_creature1" src="Sounds/strike_creature1.wav"/>
+      <sound name="play_Greedo" src="Sounds/Specific/play_Greedo.wav"/>
+      <sound name="play_Jabba" src="Sounds/Specific/play_Jabba.wav"/>
+      <sound name="play_Jawa" src="Sounds/Specific/play_Jawa.wav"/>
+      <sound name="play_R2D2" src="Sounds/Specific/play_R2D2.wav"/>
+      <sound name="play_Vader" src="Sounds/Specific/play_Vader.wav"/>
+      <sound name="play_Yoda" src="Sounds/Specific/play_Yoda.wav"/>
+      <sound name="play_force_choke" src="Sounds/Specific/play_force_choke.wav"/>
+   </sounds>
    <proxygen definitionsrc="Proxy/proxydef.xml">
    </proxygen>   
    <documents>
@@ -84,6 +123,7 @@
          <groupaction menu="Debug" default="False" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
       </groupactions>
 <!--		<cardaction menu="DebugTest" default="True" execute="flipcard" /> -->
+<!--		<groupaction menu="SoundTest" Shortcut="Ctrl+S"  execute="soundTest" /> -->
 		<cardaction menu="Smart Action (Strike/Generate/Participate...)" default="True" shortcut="Ctrl+S" execute="defaultAction" />
 		<cardaction menu="Use card ability" default="False" shortcut="Ctrl+Q" execute="useAbility" />
       <cardaction menu="Ignore Card Trigger" default="False" shortcut="Ctrl+Z" execute="ignoreTrigger" />
@@ -152,7 +192,7 @@
       <groupaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectTargetCard" />
 		<cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		<cardaction menu="Discard Card/Thwart Objective" default="False" shortcut="Del" execute="discard" />
-      <cardaction menu="Show Card Position" default="False" shortcut="Ctrl+Shift+X" execute="ShowPosC" />
+      <!-- <cardaction menu="Show Card Position" default="False" shortcut="Ctrl+Shift+X" execute="ShowPosC" /> -->
 	</table>
 	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
       <globalvariable name="Side" value="" /> 
