@@ -455,8 +455,10 @@ def gameSetup(group, x = 0, y = 0):
       if not checkDeckLegality() and not confirm("We have found an illegal construction in your deck. Bypass?"): return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
-      table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", (playerside * 340) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
-      table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", (playerside * 340) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait Button
+      if getSetting('Buttons', True):
+         table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", (playerside * 340) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
+         table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", (playerside * 340) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+         table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", (playerside * 340) - 25, (playerside * 100) + yaxisMove(Affiliation), 1, True) # The Actions? Button
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
                                                # We also create it if there's only one player for debug purposes
          try:                                             
@@ -491,6 +493,7 @@ def defaultAction(card, x = 0, y = 0):
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    if card.Type == 'Button': # The Special button cards.
       if card.name == 'Wait!': BUTTON_Wait()
+      elif card.name == 'Actions?': BUTTON_Actions()
       else: BUTTON_OK()
       return
    elif card.highlight == FateColor: 
@@ -1658,6 +1661,9 @@ def BUTTON_OK(group = None,x=0,y=0):
 
 def BUTTON_Wait(group = None,x=0,y=0):  
    notify("--- Wait! {} wants to react.".format(me))
+
+def BUTTON_Actions(group = None,x=0,y=0):  
+   notify("--- {} is waiting for opposing actions.".format(me))
 
 def declarePass(group, x=0, y=0):
    notify("--- {} Passes".format(me))    

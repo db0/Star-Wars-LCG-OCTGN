@@ -1,6 +1,15 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.3.13.x
+
+* Added third button to be used to notify your opponent that you're giving them an opportunity to play actions
+* Added an option in the Game menu to permanently disable the buttons
+
+### 2.3.12.x
+
+* Sounds how now been activated. About 100 different sound effects included!
+
 ### 2.3.11.x
 
 * Returning Units to hand will now discard their enhancements.

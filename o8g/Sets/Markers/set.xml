@@ -206,5 +206,23 @@
 			<property name="AutoScript" value="" />
 			<property name="AutoAction" value="" />
 		</card>
+		<card id="ef1f6e91-4d7f-4a10-963c-832953f985b8" name="Actions?">
+			<property name="Number" value="" />
+			<property name="Block" value="" />
+			<property name="Block Number" value="" />
+			<property name="Cost" value="" />
+			<property name="Edge Priority" value="" />
+			<property name="Force" value="" />
+			<property name="Side" value="" />
+			<property name="Affiliation" value="" />
+			<property name="Type" value="Button" />
+			<property name="Combat Icons" value="" />
+			<property name="Traits" value="" />
+			<property name="Text" value="" />
+			<property name="Damage Capacity" value="" />
+			<property name="Resources" value="" />
+			<property name="AutoScript" value="" />
+			<property name="AutoAction" value="" />
+		</card>
    </cards>
 </set>

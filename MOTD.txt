@@ -1,12 +1,10 @@
 =====Message of the Day======
 
-There's now a new and updated use tutorial for SW LCG on OCTGN. 
+The game now includes sound effects for various actions in the game, mainly playing cards, participating in engagements and striking
 
-This will teach you the basics of using the plugin and also show you some tricks you might not have known.
+This feature is only available for OCTGN subscribers however.
 
-If you're new to this game on OCTGN we suggest you take a look, and forward it to any people who might benefit as well.
+If you are one but cannot hear any sounds, then you may need to uninstall and reinstall SW to he the update properly installed.
 
-Open a browser page to the tutorial video?
+If it still doesn't work, please let me know.
 =============================
-&&
-http://octgn.gamersjudgement.com/wordpress/swlcg/star-wars-the-card-game-octgn-use-tutorial/

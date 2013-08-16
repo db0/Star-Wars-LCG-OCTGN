@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.3.11.22"
+      version="2.3.13.0"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -183,6 +183,7 @@
          <groupaction menu="HARDCORE Mode ON/OFF" default="False" execute="switchHardcore" />  
          <groupaction menu="Switch Unit Placement to Left/Center" default="False" execute="switchUnitLocation" />  
          <groupaction menu="Switch Sounds ON/OFF (Subscribers only)" default="False" execute="switchSounds" />  
+         <groupaction menu="Disable/Enable Buttons" default="False" execute="switchButtons" />  
          <groupaction menu="Switch Play Automation ON/OFF" default="False" execute="switchPlayAutomation" />  
          <groupaction menu="Switch Automatic Triggers ON/OFF" default="False" execute="switchTriggersAutomation" />  
          <groupaction menu="Switch Start/End-of-Turn/Phase Automation ON/OFF" default="False" execute="switchStartEndAutomation" />  
@@ -221,6 +222,7 @@
       <groupactions menu="Announcements">
          <groupaction menu="OK" default="False" execute="BUTTON_OK"  shortcut="Ctrl+1"/>
          <groupaction menu="Wait!" default="False" execute="BUTTON_Wait" shortcut="Ctrl+2"/>
+         <groupaction menu="Actions?" default="False" execute="BUTTON_Actions" shortcut="Ctrl+3"/>
          <groupaction menu="Pass." default="False" execute="declarePass" shortcut="Ctrl+Space"/>
       </groupactions>
 		<groupaction menu="Move to Next phase." default="False" shortcut="Ctrl+Enter" execute="nextPhase" />

@@ -1060,6 +1060,21 @@ def switchSounds(group,x=0,y=0):
       setSetting('Sounds', True)
       whisper("Sound effects have been switched on")
    
+def switchButtons(group,x=0,y=0):
+   debugNotify(">>> switchSounds(){}".format(extraASDebug())) #Debug
+   mute()
+   if getSetting('Buttons', True):
+      setSetting('Buttons', False)
+      for c in table:
+         if c.Type == 'Button' and c.owner == me: c.moveTo(me.piles['Removed from Game'])
+      whisper("Buttons have been disabled")
+   else:
+      setSetting('Buttons', True)
+      table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", (playerside * 340) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
+      table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", (playerside * 340) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+      table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", (playerside * 340) - 25, (playerside * 100) + yaxisMove(Affiliation), 1, True) # The Actions? Button      
+      whisper("Buttons have been re-enabled.")
+   
 def switchUniCode(group,x=0,y=0,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchUniCode(){}".format(extraASDebug())) #Debug
    global UniCode

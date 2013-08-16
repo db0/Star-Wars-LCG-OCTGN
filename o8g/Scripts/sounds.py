@@ -61,7 +61,7 @@ def playDestroySound(card):
       elif re.search(r'Character',card.Traits): playSound('destroy_character{}'.format(rnd(1,4)))
 
 def playThwartSound(): 
-   debugNotify(">>> playThwartSound  with card: {}".format(card))
+   debugNotify(">>> playThwartSound")
    if not getSetting('Sounds', True): return
    playSound('thwart_objective{}'.format(rnd(1,4)))
    
