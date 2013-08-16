@@ -799,6 +799,7 @@ def purchaseCard(card, x=0, y=0, manual = True):
       unpaidCard = None
       if checkPaid == 'OK': notify("{} has paid for {}".format(me,card)) 
       else: notify(":::ATTENTION::: {} has played {} by skipping its full cost".format(me,card))
+      playEventSound(card)
       executePlayScripts(card, 'PLAY') 
       if card.Type != 'Event': autoscriptOtherPlayers('CardPlayed',card) # We script for playing events only after their events have finished resolving in the default action.
    if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
@@ -1161,7 +1162,9 @@ def play(card):
       notify("{} attempts to play {}{}.".format(me, card,extraTXT))
       # if num(card.Cost) == 0 and card.Type == 'Event': readyEffect(card)
    else: 
-      if card.Type == 'Event': executePlayScripts(card, 'PLAY') # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
+      if card.Type == 'Event':
+         playEventSound(card)
+         executePlayScripts(card, 'PLAY') # We do not trigger events automatically, in order to give the opponent a chance to play counter cards
       else:
          placeCard(card)
          notify("{} plays {}{}.".format(me, card,extraTXT))

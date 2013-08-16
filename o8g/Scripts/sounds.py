@@ -44,11 +44,25 @@ def playStrikeSound(card):
 def playDestroySound(card):
    if re.search(r'Droid',card.Traits): playSound('destroy_droid1')
    
-def playPlaySound(card):
-   debugNotify(">>> playPlaySound  with card: {}".format(card))
+def playUnitSound(card):
+   debugNotify(">>> playUnitSound  with card: {}".format(card))
    if re.search(r'Greedo',card.name): playSound('play_Greedo')
    if re.search(r'Jabba the Hutt',card.name): playSound('play_Jabba')
    if re.search(r'Jawa',card.name): playSound('play_Jawa')
    if re.search(r'R2D2',card.name): playSound('play_R2D2')
    if re.search(r'Vader',card.name): playSound('play_Vader')
    if re.search(r'Yoda',card.name): playSound('play_Yoda')
+
+def playEventSound(card):
+   debugNotify(">>> playEventSound  with card: {}".format(card))
+   if re.search(r'Force',card.Traits) and card.Type == 'Event':
+      if card.name == 'Force Choke': playSound('play_force_choke')
+      elif card.Name == 'Force Lightning': playSound('play_force_lightning')
+      elif re.search(r'Control',card.Traits) and re.search(r'Sense',card.Traits) and re.search(r'Alter',card.Traits): playSound('play_force_control_alter_sense')   
+      elif re.search(r'Control',card.Traits) and re.search(r'Alter',card.Traits): playSound('play_force_control_alter')   
+      elif re.search(r'Control',card.Traits) and re.search(r'Sense',card.Traits): playSound('play_force_control_sense')   
+      elif re.search(r'Alter',card.Traits) and re.search(r'Sense',card.Traits): playSound('play_force_sense_alter')   
+      elif re.search(r'Alter',card.Traits): playSound('play_force_alter')   
+      elif re.search(r'Control',card.Traits): playSound('play_force_control')   
+      elif re.search(r'Sense',card.Traits): playSound('play_force_sense')   
+   

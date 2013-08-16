@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.3.11.10"
+      version="2.3.11.14"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -25,42 +25,55 @@
       <script src="Scripts/CardScripts.py" />
 	</scripts> 
    <sounds>
-      <sound name="destroy_droid1" src="Sounds/destroy_droid1.wav"/>
-      <sound name="participate_capital_ship1" src="Sounds/participate_capital_ship1.wav"/>
-      <sound name="participate_character1" src="Sounds/participate_character1.wav"/>
-      <sound name="participate_character2" src="Sounds/participate_character2.wav"/>
-      <sound name="participate_creature1" src="Sounds/participate_creature1.wav"/>
-      <sound name="participate_creature2" src="Sounds/participate_creature2.wav"/>
-      <sound name="participate_droid1" src="Sounds/participate_droid1.wav"/>
-      <sound name="participate_fighter_DS1" src="Sounds/participate_fighter_DS1.wav"/>
-      <sound name="participate_fighter_LS1" src="Sounds/participate_fighter_LS1.wav"/>
-      <sound name="participate_force_user1" src="Sounds/participate_force_user1.wav"/>
-      <sound name="participate_vehicle1" src="Sounds/participate_vehicle1.wav"/>
-      <sound name="strike_capital_ship1" src="Sounds/strike_capital_ship1.wav"/>
-      <sound name="strike_character1" src="Sounds/strike_character1.wav"/>
-      <sound name="strike_character2" src="Sounds/strike_character2.wav"/>
-      <sound name="strike_character3" src="Sounds/strike_character3.wav"/>
-      <sound name="strike_character4" src="Sounds/strike_character4.wav"/>
-      <sound name="strike_droid1" src="Sounds/strike_droid1.wav"/>
-      <sound name="strike_droid2" src="Sounds/strike_droid2.wav"/>
-      <sound name="strike_droid3" src="Sounds/strike_droid3.wav"/>
-      <sound name="strike_fighter_DS1" src="Sounds/strike_fighter_DS1.wav"/>
-      <sound name="strike_fighter_LS1" src="Sounds/strike_fighter_LS1.wav"/>
-      <sound name="strike_force_user1" src="Sounds/strike_force_user1.wav"/>
-      <sound name="strike_force_user2" src="Sounds/strike_force_user2.wav"/>
-      <sound name="strike_trooper1" src="Sounds/strike_trooper1.wav"/>
-      <sound name="strike_vehicle1" src="Sounds/strike_vehicle1.wav"/>
-      <sound name="strike_vehicle2" src="Sounds/strike_vehicle2.wav"/>
-      <sound name="strike_vehicle3" src="Sounds/strike_vehicle3.wav"/>
-      <sound name="strike_wookie1" src="Sounds/strike_wookie1.wav"/>
-      <sound name="strike_creature1" src="Sounds/strike_creature1.wav"/>
-      <sound name="play_Greedo" src="Sounds/Specific/play_Greedo.wav"/>
-      <sound name="play_Jabba" src="Sounds/Specific/play_Jabba.wav"/>
-      <sound name="play_Jawa" src="Sounds/Specific/play_Jawa.wav"/>
-      <sound name="play_R2D2" src="Sounds/Specific/play_R2D2.wav"/>
-      <sound name="play_Vader" src="Sounds/Specific/play_Vader.wav"/>
-      <sound name="play_Yoda" src="Sounds/Specific/play_Yoda.wav"/>
-      <sound name="play_force_choke" src="Sounds/Specific/play_force_choke.wav"/>
+      <!-- Destroy Sounds -->
+      <sound name="destroy_droid1" src="Sounds/destroy_droid1.mp3"/>
+      <!-- Participate Sounds -->
+      <sound name="participate_capital_ship1" src="Sounds/participate_capital_ship1.mp3"/>
+      <sound name="participate_character1" src="Sounds/participate_character1.mp3"/>
+      <sound name="participate_character2" src="Sounds/participate_character2.mp3"/>
+      <sound name="participate_creature1" src="Sounds/participate_creature1.mp3"/>
+      <sound name="participate_creature2" src="Sounds/participate_creature2.mp3"/>
+      <sound name="participate_droid1" src="Sounds/participate_droid1.mp3"/>
+      <sound name="participate_fighter_DS1" src="Sounds/participate_fighter_DS1.mp3"/>
+      <sound name="participate_fighter_LS1" src="Sounds/participate_fighter_LS1.mp3"/>
+      <sound name="participate_force_user1" src="Sounds/participate_force_user1.mp3"/>
+      <sound name="participate_vehicle1" src="Sounds/participate_vehicle1.mp3"/>
+      <!-- Strike Sounds -->
+      <sound name="strike_capital_ship1" src="Sounds/strike_capital_ship1.mp3"/>
+      <sound name="strike_character1" src="Sounds/strike_character1.mp3"/>
+      <sound name="strike_character2" src="Sounds/strike_character2.mp3"/>
+      <sound name="strike_character3" src="Sounds/strike_character3.mp3"/>
+      <sound name="strike_character4" src="Sounds/strike_character4.mp3"/>
+      <sound name="strike_droid1" src="Sounds/strike_droid1.mp3"/>
+      <sound name="strike_droid2" src="Sounds/strike_droid2.mp3"/>
+      <sound name="strike_droid3" src="Sounds/strike_droid3.mp3"/>
+      <sound name="strike_fighter_DS1" src="Sounds/strike_fighter_DS1.mp3"/>
+      <sound name="strike_fighter_LS1" src="Sounds/strike_fighter_LS1.mp3"/>
+      <sound name="strike_force_user1" src="Sounds/strike_force_user1.mp3"/>
+      <sound name="strike_force_user2" src="Sounds/strike_force_user2.mp3"/>
+      <sound name="strike_trooper1" src="Sounds/strike_trooper1.mp3"/>
+      <sound name="strike_vehicle1" src="Sounds/strike_vehicle1.mp3"/>
+      <sound name="strike_vehicle2" src="Sounds/strike_vehicle2.mp3"/>
+      <sound name="strike_vehicle3" src="Sounds/strike_vehicle3.mp3"/>
+      <sound name="strike_wookie1" src="Sounds/strike_wookie1.mp3"/>
+      <sound name="strike_creature1" src="Sounds/strike_creature1.mp3"/>
+      <!-- Play Unit Sounds -->
+      <sound name="play_Greedo" src="Sounds/Specific/play_Greedo.mp3"/>
+      <sound name="play_Jabba" src="Sounds/Specific/play_Jabba.mp3"/>
+      <sound name="play_Jawa" src="Sounds/Specific/play_Jawa.mp3"/>
+      <sound name="play_R2D2" src="Sounds/Specific/play_R2D2.mp3"/>
+      <sound name="play_Vader" src="Sounds/Specific/play_Vader.mp3"/>
+      <sound name="play_Yoda" src="Sounds/Specific/play_Yoda.mp3"/>
+      <!-- Play Force Event Sounds -->
+      <sound name="play_force_choke" src="Sounds/Specific/play_force_choke.mp3"/>
+      <sound name="play_force_lightning" src="Sounds/Specific/play_force_lightning.mp3"/>
+      <sound name="play_force_control_alter_sense" src="Sounds/play_force_control_alter_sense.mp3"/>
+      <sound name="play_force_control_alter" src="Sounds/play_force_control_alter.mp3"/>
+      <sound name="play_force_control_sense" src="Sounds/play_force_control_sense.mp3"/>
+      <sound name="play_force_sense_alter" src="Sounds/play_force_sense_alter.mp3"/>
+      <sound name="play_force_alter" src="Sounds/play_force_alter.mp3"/>
+      <sound name="play_force_control" src="Sounds/play_force_control.mp3"/>
+      <sound name="play_force_sense" src="Sounds/play_force_sense.mp3"/>
    </sounds>
    <proxygen definitionsrc="Proxy/proxydef.xml">
    </proxygen>   
@@ -113,6 +126,7 @@
          <groupaction menu="Concede" default="False" shortcut="Ctrl+Shift+C" execute="concede" />
          <groupaction menu="HARDCORE Mode ON/OFF" default="False" execute="switchHardcore" />  
          <groupaction menu="Switch Unit Placement to Left/Center" default="False" execute="switchUnitLocation" />  
+         <groupaction menu="Switch Sounds ON/OFF (Subscribers only)" default="False" execute="switchSounds" />  
          <groupaction menu="Switch Play Automation ON/OFF" default="False" execute="switchPlayAutomation" />  
          <groupaction menu="Switch Automatic Triggers ON/OFF" default="False" execute="switchTriggersAutomation" />  
          <groupaction menu="Switch Start/End-of-Turn/Phase Automation ON/OFF" default="False" execute="switchStartEndAutomation" />  
