@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.3.11.14"
+      version="2.3.11.21"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -27,36 +27,85 @@
    <sounds>
       <!-- Destroy Sounds -->
       <sound name="destroy_droid1" src="Sounds/destroy_droid1.mp3"/>
+      <sound name="destroy_droid2" src="Sounds/destroy_droid2.mp3"/>
+      <sound name="destroy_vehicle1" src="Sounds/destroy_vehicle1.mp3"/>
+      <sound name="destroy_vehicle2" src="Sounds/destroy_vehicle2.mp3"/>
+      <sound name="destroy_character1" src="Sounds/destroy_character1.mp3"/>
+      <sound name="destroy_character2" src="Sounds/destroy_character2.mp3"/>
+      <sound name="destroy_character3" src="Sounds/destroy_character3.mp3"/>
+      <sound name="destroy_character4" src="Sounds/destroy_character4.mp3"/>
+      <!-- Thwart Sounds -->
+      <sound name="thwart_objective1" src="Sounds/thwart_objective1.mp3"/>      
+      <sound name="thwart_objective2" src="Sounds/thwart_objective2.mp3"/>      
+      <sound name="thwart_objective3" src="Sounds/thwart_objective3.mp3"/>      
+      <sound name="thwart_objective4" src="Sounds/thwart_objective4.mp3"/>      
       <!-- Participate Sounds -->
+      <sound name="participate_c3p0" src="Sounds/Specific/participate_c3p0.mp3"/>
+      <sound name="participate_Han_Solo" src="Sounds/Specific/participate_Han_Solo.mp3"/>
+      <sound name="participate_Luke" src="Sounds/Specific/participate_Luke.mp3"/>
+      <sound name="participate_Vader" src="Sounds/Specific/participate_Vader.mp3"/>
       <sound name="participate_capital_ship1" src="Sounds/participate_capital_ship1.mp3"/>
       <sound name="participate_character1" src="Sounds/participate_character1.mp3"/>
       <sound name="participate_character2" src="Sounds/participate_character2.mp3"/>
+      <sound name="participate_character3" src="Sounds/participate_character3.mp3"/>
       <sound name="participate_creature1" src="Sounds/participate_creature1.mp3"/>
       <sound name="participate_creature2" src="Sounds/participate_creature2.mp3"/>
       <sound name="participate_droid1" src="Sounds/participate_droid1.mp3"/>
+      <sound name="participate_droid2" src="Sounds/participate_droid2.mp3"/>
+      <sound name="participate_droid3" src="Sounds/participate_droid3.mp3"/>
       <sound name="participate_fighter_DS1" src="Sounds/participate_fighter_DS1.mp3"/>
+      <sound name="participate_fighter_DS2" src="Sounds/participate_fighter_DS2.mp3"/>
+      <sound name="participate_fighter_DS3" src="Sounds/participate_fighter_DS3.mp3"/>
+      <sound name="participate_fighter_DS4" src="Sounds/participate_fighter_DS4.mp3"/>
       <sound name="participate_fighter_LS1" src="Sounds/participate_fighter_LS1.mp3"/>
+      <sound name="participate_fighter_LS2" src="Sounds/participate_fighter_LS2.mp3"/>
+      <sound name="participate_fighter_LS3" src="Sounds/participate_fighter_LS3.mp3"/>
+      <sound name="participate_fighter_LS4" src="Sounds/participate_fighter_LS4.mp3"/>
       <sound name="participate_force_user1" src="Sounds/participate_force_user1.mp3"/>
+      <sound name="participate_force_user2" src="Sounds/participate_force_user2.mp3"/>
+      <sound name="participate_force_user3" src="Sounds/participate_force_user3.mp3"/>
+      <sound name="participate_transport1" src="Sounds/participate_transport1.mp3"/>
+      <sound name="participate_transport2" src="Sounds/participate_transport2.mp3"/>
+      <sound name="participate_transport3" src="Sounds/participate_transport3.mp3"/>
+      <sound name="participate_trooper1" src="Sounds/participate_trooper1.mp3"/>
+      <sound name="participate_trooper2" src="Sounds/participate_trooper2.mp3"/>
+      <sound name="participate_trooper3" src="Sounds/participate_trooper3.mp3"/>
+      <sound name="participate_trooper4" src="Sounds/participate_trooper4.mp3"/>
       <sound name="participate_vehicle1" src="Sounds/participate_vehicle1.mp3"/>
+      <sound name="participate_vehicle2" src="Sounds/participate_vehicle2.mp3"/>
+      <sound name="participate_vehicle3" src="Sounds/participate_vehicle3.mp3"/>
+      <sound name="participate_vehicle4" src="Sounds/participate_vehicle4.mp3"/>
       <!-- Strike Sounds -->
+      <sound name="strike_r2d2" src="Sounds/Specific/strike_r2d2.mp3"/>
+      <sound name="strike_c3p0" src="Sounds/Specific/strike_c3p0.mp3"/>
       <sound name="strike_capital_ship1" src="Sounds/strike_capital_ship1.mp3"/>
       <sound name="strike_character1" src="Sounds/strike_character1.mp3"/>
       <sound name="strike_character2" src="Sounds/strike_character2.mp3"/>
       <sound name="strike_character3" src="Sounds/strike_character3.mp3"/>
       <sound name="strike_character4" src="Sounds/strike_character4.mp3"/>
+      <sound name="strike_creature1" src="Sounds/strike_creature1.mp3"/>
       <sound name="strike_droid1" src="Sounds/strike_droid1.mp3"/>
       <sound name="strike_droid2" src="Sounds/strike_droid2.mp3"/>
       <sound name="strike_droid3" src="Sounds/strike_droid3.mp3"/>
+      <sound name="strike_droid4" src="Sounds/strike_droid4.mp3"/>
       <sound name="strike_fighter_DS1" src="Sounds/strike_fighter_DS1.mp3"/>
       <sound name="strike_fighter_LS1" src="Sounds/strike_fighter_LS1.mp3"/>
+      <sound name="strike_fighter_LS2" src="Sounds/strike_fighter_LS2.mp3"/>
       <sound name="strike_force_user1" src="Sounds/strike_force_user1.mp3"/>
       <sound name="strike_force_user2" src="Sounds/strike_force_user2.mp3"/>
+      <sound name="strike_force_user3" src="Sounds/strike_force_user3.mp3"/>
+      <sound name="strike_force_user4" src="Sounds/strike_force_user4.mp3"/>
       <sound name="strike_trooper1" src="Sounds/strike_trooper1.mp3"/>
+      <sound name="strike_trooper2" src="Sounds/strike_trooper2.mp3"/>
       <sound name="strike_vehicle1" src="Sounds/strike_vehicle1.mp3"/>
       <sound name="strike_vehicle2" src="Sounds/strike_vehicle2.mp3"/>
       <sound name="strike_vehicle3" src="Sounds/strike_vehicle3.mp3"/>
-      <sound name="strike_wookie1" src="Sounds/strike_wookie1.mp3"/>
-      <sound name="strike_creature1" src="Sounds/strike_creature1.mp3"/>
+      <sound name="strike_vehicle4" src="Sounds/strike_vehicle4.mp3"/>
+      <sound name="strike_wookiee1" src="Sounds/strike_wookiee1.mp3"/>
+      <sound name="strike_wookiee2" src="Sounds/strike_wookiee2.mp3"/>
+      <sound name="strike_wookiee3" src="Sounds/strike_wookiee3.mp3"/>
+      <!-- Shield Sounds -->
+      <sound name="script_shield1" src="Sounds/script_shield1.mp3"/>
       <!-- Play Unit Sounds -->
       <sound name="play_Greedo" src="Sounds/Specific/play_Greedo.mp3"/>
       <sound name="play_Jabba" src="Sounds/Specific/play_Jabba.mp3"/>
@@ -64,6 +113,13 @@
       <sound name="play_R2D2" src="Sounds/Specific/play_R2D2.mp3"/>
       <sound name="play_Vader" src="Sounds/Specific/play_Vader.mp3"/>
       <sound name="play_Yoda" src="Sounds/Specific/play_Yoda.mp3"/>
+      <sound name="play_Luke" src="Sounds/Specific/play_Luke.mp3"/>
+      <sound name="play_Obi_Wan" src="Sounds/Specific/play_Obi_Wan.mp3"/>
+      <sound name="play_Leia" src="Sounds/Specific/play_Leia.mp3"/>
+      <sound name="play_Palpatine" src="Sounds/Specific/play_Palpatine.mp3"/>
+      <sound name="play_Han_Solo" src="Sounds/Specific/play_Han_Solo.mp3"/>
+      <sound name="play_c3p0" src="Sounds/Specific/play_c3p0.mp3"/>
+      <sound name="play_falcon" src="Sounds/Specific/play_falcon.mp3"/>
       <!-- Play Force Event Sounds -->
       <sound name="play_force_choke" src="Sounds/Specific/play_force_choke.mp3"/>
       <sound name="play_force_lightning" src="Sounds/Specific/play_force_lightning.mp3"/>

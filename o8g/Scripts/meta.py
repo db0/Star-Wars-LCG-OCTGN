@@ -1051,6 +1051,15 @@ def switchUnitLocation(group,x=0,y=0):
       setSetting('Unit Placement', 'Center')
       whisper("Your default unit placement has now been centered")
    
+def switchSounds(group,x=0,y=0):
+   debugNotify(">>> switchSounds(){}".format(extraASDebug())) #Debug
+   if getSetting('Sounds', True):
+      setSetting('Sounds', False)
+      whisper("Sound effects have been switched off")
+   else:
+      setSetting('Sounds', True)
+      whisper("Sound effects have been switched on")
+   
 def switchUniCode(group,x=0,y=0,command = 'Off'):
    if debugVerbosity >= 1: notify(">>> switchUniCode(){}".format(extraASDebug())) #Debug
    global UniCode

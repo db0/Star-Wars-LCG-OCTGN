@@ -882,6 +882,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          reversePlayerChk = True
          autoscriptOtherPlayers('ObjectiveThwarted',card)
          reversePlayerChk = False
+         playThwartSound()
          card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
       else:
          if not Continuing and not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
@@ -908,6 +909,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
                reportGame('ObjectiveVictory')
                #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
          autoscriptOtherPlayers('ObjectiveThwarted',card)
+         playThwartSound()
          card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
       cardsLeaving(card,'remove')
    elif card.Type == "Affiliation" or card.Type == "BotD": 
