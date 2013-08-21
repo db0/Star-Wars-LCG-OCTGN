@@ -330,6 +330,7 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
          # An effect for 'afterPhase' triggers after each Phase or Turn End.
          if debugVerbosity >= 2 and effect: notify("!!! effects: {}".format(effect.groups()))
          if not chkDummy(autoS, card): continue
+         if not checkOriginatorRestrictions(autoS,card): continue
          if re.search(r'isOptional', effect.group(2)):
             if debugVerbosity >= 2: notify("### Checking Optional Effect")
             extraCountersTXT = '' 
@@ -1988,10 +1989,10 @@ def checkOriginatorRestrictions(Autoscript,card):
       myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller == card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
       opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller != card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
       debugNotify("Finished counting units. myUnits = {}.  opUnits = {}".format(myUnits,opUnits))
-      if re.search(r'ifOrigHasMore',Autoscript) and myUnits < opUnits: 
+      if re.search(r'ifOrigHasMore',Autoscript) and myUnits <= opUnits: 
          debugNotify("Failing because we have less {} than the opponent".format(reqRestrictions))
          validCard = False
-      elif re.search(r'ifOrigHasLess',Autoscript) and myUnits > opUnits: 
+      elif re.search(r'ifOrigHasLess',Autoscript) and myUnits >= opUnits: 
          if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing ifOrigHasLess fail because we're debugging")
          else:
             debugNotify("Failing because we have more {} than the opponent".format(reqRestrictions))

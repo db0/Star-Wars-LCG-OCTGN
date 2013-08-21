@@ -36,7 +36,8 @@ def chkTwoSided():
       me.setGlobalVariable('Switches',str(Automations))
 
 def loadDeck(player,groups):   
-   if setupSide(): checkDeckLegality()
+   if player == me:
+      if setupSide(): checkDeckLegality()
    
 def setupSide():
    global Side, Affiliation
@@ -129,7 +130,7 @@ def parseNewCounters(player,counter,oldValue):
    debugNotify(">>> parseNewCounters() for player {} with counter {}. Old Value = {}".format(player,counter.name,oldValue))
    if counter.name == 'Death Star Dial':
       for player in players: 
-         if player.counters['Death Star Dial'].value != counter: player.counters['Death Star Dial'].value = counter
+         if player.counters['Death Star Dial'].value != counter.value: player.counters['Death Star Dial'].value = counter.value
    debugNotify("<<< parseNewCounters()")
 
 def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove):
