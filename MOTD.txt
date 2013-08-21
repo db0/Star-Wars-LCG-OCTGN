@@ -1,10 +1,10 @@
 =====Message of the Day======
 
-The game now includes sound effects for various actions in the game, mainly playing cards, participating in engagements and striking
+The Battle of Hoth is now available and fully scripted. 
 
-This feature is only available for OCTGN subscribers however.
+Restart OCTGN to receive the latest goods!
 
-If you are one but cannot hear any sounds, then you may need to uninstall and reinstall SW to he the update properly installed.
-
-If it still doesn't work, please let me know.
+Would you like to visit the game site to download the card images?
 =============================
+&&
+http://octgn.gamersjudgement.com/wordpress/swlcg/sets/
