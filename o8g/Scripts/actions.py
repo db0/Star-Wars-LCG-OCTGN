@@ -398,7 +398,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
 def gameSetup(group, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
    mute()
-   global SetupPhase, Side, Affiliation, opponent
+   global SetupPhase, opponent
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
@@ -423,31 +423,15 @@ def gameSetup(group, x = 0, y = 0):
       SetupPhase = False
    else: # This choice is only for a new game.
       if debugVerbosity >= 3: notify("### Executing First Setup Phase")
-      if Side and Affiliation and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
+      if not Affiliation:
+         information("::: ERROR::: No Affiliation card found! Please load a deck which contains an Affiliation card.")
+         return
+      else:
+         if Affiliation.group == table and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
       if debugVerbosity >= 3: notify("### Setting SetupPhase Variable")
       SetupPhase = True
-      if not table.isTwoSided() and not confirm(":::WARNING::: This game is designed to be played on a two-sided table. Things will be extremely uncomfortable otherwise!! Please start a new game and makde sure the  the appropriate button is checked. Are you sure you want to continue?"): return
-      if debugVerbosity >= 3: notify("### Choosing Side")
-      chooseSide()
-      if debugVerbosity >= 3: notify("### Checking Deck")
       if len(deck) == 0:
          whisper ("Please load a deck first!")
-         return
-      if debugVerbosity >= 3: notify("### Reseting Variables")
-      if debugVerbosity >= 3: notify("### Placing Identity")
-      for card in me.hand:
-         if card.Type != 'Affiliation': 
-            whisper(":::Warning::: You are not supposed to have any non-Affiliation cards in your hand when you start the game")
-            if card.Type == 'Objective': card.moveToBottom(objectives)
-            else: card.moveToBottom(deck)
-            continue
-         else: 
-            Side = card.Side
-            storeSpecial(card)
-            me.setGlobalVariable('Side', Side)
-            Affiliation = card
-      if not Side: 
-         confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
          return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
@@ -476,11 +460,6 @@ def gameSetup(group, x = 0, y = 0):
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
       initGame()
-      hardcoreMode = getSetting('HARDCORE', False) #We check what the stored value for HARDCORE more is, so that we can restore it if true
-      if hardcoreMode: 
-         Automations['HARDCORE'] = True
-         notify ("--> {} trusts their feelings. HARDCORE mode activated!".format(me))
-         me.setGlobalVariable('Switches',str(Automations))
       debugNotify(str(Automations),4)
 
 def defaultAction(card, x = 0, y = 0):

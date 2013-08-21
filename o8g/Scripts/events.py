@@ -28,8 +28,35 @@ def chkTwoSided():
    if not table.isTwoSided(): information(":::WARNING::: This game is designed to be played on a two-sided table. Things will be extremely uncomfortable otherwise!! Please start a new game and make sure  the appropriate button is checked")
    versionCheck()
    fetchCardScripts() # We only download the scripts at the very first setup of each play session.
+   chooseSide()
+   hardcoreMode = getSetting('HARDCORE', False) #We check what the stored value for HARDCORE more is, so that we can restore it if true
+   if hardcoreMode: 
+      Automations['HARDCORE'] = True
+      notify ("--> {} trusts their feelings. HARDCORE mode activated!".format(me))
+      me.setGlobalVariable('Switches',str(Automations))
 
-def checkDeck(player,groups):
+def loadDeck(player,groups):   
+   if setupSide(): checkDeckLegality()
+   
+def setupSide():
+   global Side, Affiliation
+   for card in me.hand:
+      if card.Type != 'Affiliation': 
+         whisper(":::Warning::: You are not supposed to have any non-Affiliation cards in your hand when you start the game")
+         if card.Type == 'Objective': card.moveToBottom(objectives)
+         else: card.moveToBottom(deck)
+         continue
+      else: 
+         Side = card.Side
+         storeSpecial(card)
+         me.setGlobalVariable('Side', Side)
+         Affiliation = card
+   if not Side: 
+      confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
+      return False
+   return True
+   
+def checkDeckLegality():
    if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
    mute()
    notify ("--> Checking deck of {} ...".format(me))
@@ -100,10 +127,12 @@ def checkDeck(player,groups):
 def parseNewCounters(player,counter,oldValue):
    mute()
    debugNotify(">>> parseNewCounters() for player {} with counter {}. Old Value = {}".format(player,counter.name,oldValue))
-   if counter.name == 'Tags' and player == me: chkTags()
+   if counter.name == 'Death Star Dial':
+      for player in players: 
+         if player.counters['Death Star Dial'].value != counter: player.counters['Death Star Dial'].value = counter
    debugNotify("<<< parseNewCounters()")
 
-def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y):
+def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove):
    mute()
    global scriptedPlay 
    #debugNotify("scriptedPlay = {}".format(scriptedPlay))
