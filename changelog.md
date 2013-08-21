@@ -4,6 +4,10 @@ Changelog - Star Wars LCG OCTGN Game Definition
 ### 2.4.0.x
 
 * **The Battle of Hoth** has been added fully scripted!
+* Now Deck Checking Happens on Deck load
+* Now fresh script grabbing happens on game start
+* Death Star Dial will be adjusted for both players when one does it manually.
+* Game will clear card attachments when someone manually moves a card away from the table.
 
 ### 2.3.13.x
 
