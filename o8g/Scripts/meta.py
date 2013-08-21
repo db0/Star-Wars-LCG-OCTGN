@@ -400,10 +400,15 @@ def calculateCombatIcons(card = None, CIString = None):
                Autoscripts = AS.split('||')
                for autoS in Autoscripts:
                   if re.search(r'BonusIcons:',autoS):
+                     if not checkOriginatorRestrictions(autoS,Card(attachment)): continue
                      UD, BD, T = calculateCombatIcons(CIString = autoS) # Recursion FTW!
                      Unit_Damage += UD
                      Blast_Damage += BD
                      Tactics += T
+                     if re.search(r'Double',autoS):
+                        Unit_Damage *= 2
+                        Blast_Damage *= 2
+                        Tactics *= 2
    if debugVerbosity >= 3: notify("<<< calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
    if Unit_Damage < 0: Unit_Damage = 0 # We cannot have a negative combat icon.
    if Blast_Damage < 0: Blast_Damage = 0
@@ -703,73 +708,6 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
    if debugVerbosity >= 3: notify("<<< hasDamageProtection()") #Debug
    return protected
      
-def checkDeckLegality():
-   if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
-   mute()
-   notify ("--> Checking deck of {} ...".format(me))
-   ok = True
-   commandDeck = me.piles['Command Deck']
-   objectiveDeck = me.piles['Objective Deck']
-   if debugVerbosity >= 4: notify("### About to compare deck sizes.") #Debug
-   if len(objectiveDeck) != len(commandDeck) / 5: 
-      ok = False
-      notify(":::ERROR::: {}'s decks do not sync (Nr. of objective cards ({}) =/= Nr. of command cards ({}) / 5.".format(me,len(objectiveDeck),len(commandDeck)))
-   if debugVerbosity >= 4: notify("### About to move cards into scripting pile") #Debug
-   for card in objectiveDeck: card.moveTo(me.ScriptingPile)
-   for card in commandDeck: card.moveTo(me.ScriptingPile)
-   rnd(1,10)
-   if debugVerbosity >= 4: notify("### About to check each card in the decks") #Debug
-   objectiveBlocks = []
-   commandBlocks = []
-   limitedBlocksFound = []
-   podList = []
-   for card in me.ScriptingPile: 
-      #if ok == False: continue # If we've already found illegal cards, no sense in checking anymore. Will activate this after checking
-      if card.Type == 'Objective': 
-         objectiveBlocks.append((card.name,card.Block)) # We store a tuple of objective name and objective block
-         podList.append(num(card.Block)) # We also store the objective's block in an extra list which we later use for stats
-      else:
-         commandBlocks.append((card.name,card.Block,card.properties['Block Number'])) # We store a tuple of the card name, objective block and number in that block
-      if card.Side != Side: 
-         notify(":::ERROR::: Opposing card found in {}'s deck: {}".format(me,card))
-         ok = False
-      if re.search(r'Limit 1 per objective deck',card.Text):
-         if card.Block in limitedBlocksFound: 
-            notify(":::ERROR::: Duplicate Limited Objective found in {}'s deck: {}".format(me,card))
-            ok = False
-         else: limitedBlocksFound.append(card.Block)
-      limitedAffiliation = re.search(r'([A-Za-z ]+) affiliation only\.',card.Text)
-      if limitedAffiliation:
-         if debugVerbosity >= 2: notify("#### Limited Affiliation ({}) card found: {}".format(limitedAffiliation.group(1),card))
-         if limitedAffiliation.group(1) != Affiliation.Affiliation:
-            notify(":::ERROR::: Restricted Affiliation Objective found in {}'s deck: {}".format(me,card))
-            ok = False
-   for objective in objectiveBlocks:
-      if debugVerbosity >= 4: notify("#### Checking Objective Block {} ({})".format(objective[1],objective[0]))
-      blocks = []
-      commandBlocksSnapshot = list(commandBlocks)
-      for command in commandBlocksSnapshot:
-         if command[1] == objective[1] and command[2] not in blocks:
-            if debugVerbosity >= 4: notify("#### Block {} Command {} found".format(command[1],command[2]))
-            blocks.append(command[2])
-            commandBlocks.remove(command)
-      if len(blocks) < 5: 
-         notify(":::ERROR::: Objective Block {} ({}) not complete. (only {} out of 5 found: {})".format(objective[1],objective[0],len(blocks),blocks))
-         ok = False
-   if len(commandBlocks): # If there's still cards in this list, it means it wasn't matched with an objective block, so it's an orphan
-      notify(":::ERROR::: Orphan command cards found in {}'s deck: {}".format(me,[command[0] for command in commandBlocks]))
-      ok = False
-   rnd(1,10)      
-   for card in me.ScriptingPile: 
-      if card.Type == 'Objective': card.moveTo(objectiveDeck)
-      else: card.moveTo(commandDeck)
-   if ok: notify(" -> Deck of {} is OK!".format(me))
-   else: notify(" -> Deck of {} is Illegal!".format(me))
-   if debugVerbosity >= 3: notify("<<< checkDeckLegality() with return: {}".format(ok)) #Debug
-   debugNotify("pods = {}".format(str(podList).replace(" ", "")))
-   me.setGlobalVariable('Pods',str(podList).replace(" ", ""))
-   return ok
-   
 def readyEffect(card,forced = False):
 # This function prepares an event for being activated and puts the initial warning out if necessary.
    if debugVerbosity >= 1: notify(">>> readyEffect()") #Debug
@@ -848,7 +786,7 @@ def rescueFromObjective(obj): # THis function returns all captured cards from an
    except: notify("!!!ERROR!!! in rescueFromObjective()") # Debug
    debugNotify("<<< rescueFromObjective()")
             
-def clearStoredEffects(card, silent = False,continuePath = True): # A function which clears a card's waiting-to-be-activated scripts
+def clearStoredEffects(card, silent = False,continuePath = True, ignoredEffect = False): # A function which clears a card's waiting-to-be-activated scripts
    debugNotify(">>> clearStoredEffects with card: {}".format(card))
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    forcedTrigger = False
@@ -862,8 +800,8 @@ def clearStoredEffects(card, silent = False,continuePath = True): # A function w
    if card.highlight == ReadyEffectColor or card.highlight == UnpaidAbilityColor: 
       if not selectedAbility.has_key(card._id): card.highlight = None
       else: card.highlight = selectedAbility[card._id][2]  # We don't want to change highlight if it was changed already by another effect.
-   debugNotify("Sending card to its final destination if it has any")
-   if continuePath: continueOriginalEvent(card,selectedAbility)
+   debugNotify("Checking Continuing Path")
+   if continuePath: continueOriginalEvent(card,selectedAbility, ignoredEffect)
    debugNotify("Deleting selectedAbility tuple",3)
    if selectedAbility.has_key(card._id): del selectedAbility[card._id]
    debugNotify("Uploading selectedAbility tuple",3)
@@ -900,12 +838,15 @@ def clearAllEffects(silent = False): # A function which clears all card's waitin
    if not silent: notify(":> All existing card effect triggers were ignored.".format(card))
    debugNotify("<<< clearAllEffects")
 
-def continueOriginalEvent(card,selectedAbility):
+def continueOriginalEvent(card,selectedAbility,ignoredEffect = False):
    debugNotify(">>> continueOriginalEvent with card: {}".format(card))
+   debugNotify("ignoredEffect: {}".format(ignoredEffect))
    if selectedAbility.has_key(card._id):
       debugNotify("selectedAbility action = {}".format(selectedAbility[card._id][3]),2)
-      if selectedAbility[card._id][3] == 'STRIKE': # If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.
-         strike(card, Continuing = True)
+      if selectedAbility[card._id][3] == 'STRIKE': 
+         if not ignoredEffect and re.search(r'isStrikeAlternative',selectedAbility[card._id][0]): 
+            notify(":> {} has opted to use {}'s react instead of resolving its combat icons".format(me,card))
+         else: strike(card, Continuing = True)# If the action is a strike, it means we interrupted a strike for this effect, in which case we want to continue with the strike effects now.         
       if re.search(r'LEAVING',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': 
          if re.search(r'-DISCARD',selectedAbility[card._id][3]) or selectedAbility[card._id][3] == 'THWART': discard(card,Continuing = True)
          elif re.search(r'-HAND',selectedAbility[card._id][3]): returnToHand(card,Continuing = True) 
@@ -1450,10 +1391,16 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000265",
-                "ff4fb461-8060-457a-9c16-000000000283",
-                "ff4fb461-8060-457a-9c16-000000000277",
-                "ff4fb461-8060-457a-9c16-000000000289"
+                "ff4fb461-8060-457a-9c16-000000000487",
+                "ff4fb461-8060-457a-9c16-000000000512",
+                "ff4fb461-8060-457a-9c16-000000000509",
+                "ff4fb461-8060-457a-9c16-000000000491",
+                "ff4fb461-8060-457a-9c16-000000000489",
+                "ff4fb461-8060-457a-9c16-000000000488",
+                "ff4fb461-8060-457a-9c16-000000000515",
+                "ff4fb461-8060-457a-9c16-000000000493",
+                "ff4fb461-8060-457a-9c16-000000000505",
+                "ff4fb461-8060-457a-9c16-000000000496"
                 ]
    for idx in range(len(testcards)):
       test = table.create(testcards[idx], (70 * idx) - 300, 0, 1, True)

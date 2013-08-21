@@ -401,8 +401,6 @@ def gameSetup(group, x = 0, y = 0):
    global SetupPhase, Side, Affiliation, opponent
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
-   if not startupMsg: fetchCardScripts() # We only download the scripts at the very first setup of each play session.
-   versionCheck()
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
       if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
       if not ofwhom('ofOpponent') and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
@@ -436,7 +434,6 @@ def gameSetup(group, x = 0, y = 0):
          whisper ("Please load a deck first!")
          return
       if debugVerbosity >= 3: notify("### Reseting Variables")
-      resetAll()
       if debugVerbosity >= 3: notify("### Placing Identity")
       for card in me.hand:
          if card.Type != 'Affiliation': 
@@ -452,7 +449,6 @@ def gameSetup(group, x = 0, y = 0):
       if not Side: 
          confirm("You need to have your Affiliation card in your hand when you try to setup the game. If you have it in your deck, please look for it and put it in your hand before running this function again")
          return
-      if not checkDeckLegality() and not confirm("We have found an illegal construction in your deck. Bypass?"): return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
       if getSetting('Buttons', True):
@@ -690,13 +686,13 @@ def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from partic
 def cancelPaidAbility(card,x=0,y=0):
 # This function clears a card's paid ability in case the player tried to use it but realized they couldn't.
    mute()
-   clearStoredEffects(card, True)
+   clearStoredEffects(card, True, ignoredEffect = True)
    clrResourceMarkers(card)
    notify("{} has canceled {}'s ability".format(me,card))
 
 def ignoreTrigger(card,x=0,y=0):
    mute()
-   clearStoredEffects(card,silent = True)
+   clearStoredEffects(card,silent = True,ignoredEffect = True)
    notify("{} chose not to activate {}'s ability".format(me,card))
 
 def generate(card, x = 0, y = 0):

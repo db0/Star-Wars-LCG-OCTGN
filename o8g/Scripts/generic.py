@@ -138,7 +138,7 @@ def information(Message):
    
 class SingleChoiceWindow(Form):
  
-   def __init__(self, BoxTitle, BoxOptions, type, defaultOption, cancelButton):
+   def __init__(self, BoxTitle, BoxOptions, type, defaultOption, cancelButton, cancelName = 'Cancel'):
       self.Text = "Select an Option"
       self.index = 0
       self.confirmValue = None
@@ -217,7 +217,7 @@ class SingleChoiceWindow(Form):
       
       if cancelButton:
          cancelButton = Button() # We add a bytton to Cancel the selection
-         cancelButton.Text = "Cancel"
+         cancelButton.Text = cancelName
          cancelButton.Width = 100
          cancelButton.Dock = DockStyle.Bottom
          #button.Anchor = AnchorStyles.Bottom
@@ -252,11 +252,11 @@ class SingleChoiceWindow(Form):
          self.TopMost = True
          self.timer_tries += 1
 
-def SingleChoice(title, options, type = 'button', default = 0, cancelButton = True):
+def SingleChoice(title, options, type = 'button', default = 0, cancelButton = True, cancelName = 'Cancel'):
    if debugVerbosity >= 1: notify(">>> SingleChoice()".format(title))
    if Automations['WinForms']:
       Application.EnableVisualStyles()
-      form = SingleChoiceWindow(title, options, type, default, cancelButton)
+      form = SingleChoiceWindow(title, options, type, default, cancelButton, cancelName = cancelName)
       form.BringToFront()
       form.ShowDialog()
       if form.getIndex() != 'ABORT': choice = num(form.getIndex())
@@ -432,6 +432,23 @@ def num (s):
    except ValueError:
       return 0
 
+def numOrder(num):
+    """Return the ordinal for each place in a zero-indexed list.
+
+    list[0] (the first item) returns '1st', list[1] return '2nd', etc.
+    """
+    def int_to_ordinal(i):
+        """Return the ordinal for an integer."""
+        # if i is a teen (e.g. 14, 113, 2517), append 'th'
+        if 10 <= i % 100 < 20:
+            return str(i) + 'th'
+        # elseif i ends in 1, 2 or 3 append 'st', 'nd' or 'rd'
+        # otherwise append 'th'
+        else:
+            return  str(i) + {1 : 'st', 2 : 'nd', 3 : 'rd'}.get(i % 10, "th")
+
+    return int_to_ordinal(num + 1)
+      
 def delayed_whisper(text): # Because whispers for some reason execute before notifys
    rnd(1,10)
    whisper(text)

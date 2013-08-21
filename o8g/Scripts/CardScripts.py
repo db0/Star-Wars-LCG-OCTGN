@@ -562,7 +562,7 @@ Fleeing the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000132
 -----
-afterCardRefreshing:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
+afterRefresh:Put1Shield-DemiAutoTargeted-atUnit_or_Objective-targetMine-choose1-hasntMarker{Shield}-duringMyTurn-isReact
 +++++
 
 .....
@@ -570,7 +570,7 @@ Fleet Command Center
 -----
 ff4fb461-8060-457a-9c16-000000000190
 -----
-afterCardRefreshing:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
+afterRefresh:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -3635,6 +3635,214 @@ Protection
 ff4fb461-8060-457a-9c16-000000000486
 -----
 onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
++++++
+
+.....
+501st Trooper
+-----
+ff4fb461-8060-457a-9c16-000000000506
+-----
+ExtraIcon:BD:1-ifOrigAttacking-hasObjectiveTrait-typeHoth
++++++
+
+.....
+501st Trooper
+-----
+ff4fb461-8060-457a-9c16-000000000507
+-----
+ExtraIcon:BD:1-ifOrigAttacking-hasObjectiveTrait-typeHoth
++++++
+
+.....
+Aggressive Assault
+-----
+ff4fb461-8060-457a-9c16-000000000516
+-----
+onPlay:Deal1Damage-AutoTargeted-atObjective-targetOpponents
++++++
+
+.....
+AT-AT
+-----
+ff4fb461-8060-457a-9c16-000000000512
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||onStrike:DestroyTarget-Targeted-atEnhancement-isStrikeAlternative-isReact
++++++
+
+.....
+AT-AT
+-----
+ff4fb461-8060-457a-9c16-000000000513
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||onStrike:DestroyTarget-Targeted-atEnhancement-isStrikeAlternative-isReact
++++++
+
+.....
+AT-AT Assault Formation
+-----
+ff4fb461-8060-457a-9c16-000000000514
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||onStrike:Deal1Damage-AutoTargeted-atObjective_and_Hoth-targetOpponents-isReact
++++++
+
+.....
+Attack Pattern Delta
+-----
+ff4fb461-8060-457a-9c16-000000000487
+-----
+   
++++++
+R0:Retrieve1Card-grabVehicle-hasProperty{Cost}le2-toTable-onTop1Cards-tellPlayer-isReact-onlyOnce
+.....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000492
+-----
+
++++++
+
+.....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000504
+-----
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
++++++
+
+.....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000510
+-----
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
++++++
+
+.....
+Coordinated Strike
+-----
+ff4fb461-8060-457a-9c16-000000000503
+-----
+onPlay:SimplyAnnounce{immediately strike again with another ready participating unit they control}
++++++
+
+.....
+E-Web Heavy Repeating Blaster
+-----
+ff4fb461-8060-457a-9c16-000000000509
+-----
+
++++++
+R0:Put1Focus-isCost-isSilent$$Put1EWeb Heavy Repeating Blaster:BD-Targeted-atTrooper-isSilent
+.....
+Hold-out Blaster
+-----
+ff4fb461-8060-457a-9c16-000000000496
+-----
+Placement:Smugglers and Spies_and_Character||BonusIcons:Double-ifOrigHasLess-typeUnit
++++++
+
+.....
+Hoth Rearguard
+-----
+ff4fb461-8060-457a-9c16-000000000500
+-----
+
++++++
+R0:Remove1Damage-DemiAutoTargeted-atHoth-hasMarker{Damage}-choose1-isCost$$Put1Damage
+.....
+Hoth Rearguard
+-----
+ff4fb461-8060-457a-9c16-000000000501
+-----
+
++++++
+R0:Remove1Damage-DemiAutoTargeted-atHoth-hasMarker{Damage}-choose1-isCost$$Put1Damage
+.....
+Hoth Rearguard
+-----
+ff4fb461-8060-457a-9c16-000000000502
+-----
+
++++++
+
+.....
+Narrow Escape
+-----
+ff4fb461-8060-457a-9c16-000000000497
+-----
+onPlay:SimplyAnnounce{choose a new target for the effect}
++++++
+
+.....
+Orbital Resupply Station
+-----
+ff4fb461-8060-457a-9c16-000000000515
+-----
+whileInPlay:Reduce1CostPlay-affectsUnit_and_Vehicle_and_Imperial Navy-hasProperty{Cost}ge4-forMe
++++++
+
+.....
+Rogue Leader
+-----
+ff4fb461-8060-457a-9c16-000000000488
+-----
+ExtraIcon:Tactics:1-perEveryRogueTwo-AutoTargeted-atRogue Two-targetMine
++++++
+
+.....
+Rogue Two
+-----
+ff4fb461-8060-457a-9c16-000000000489
+-----
+ExtraIcon:EE-BD:1-perEverySpeeder-AutoTargeted-atSpeeder-isAttacking
++++++
+
+.....
+Shadow Operative
+-----
+ff4fb461-8060-457a-9c16-000000000494
+-----
+
++++++
+R0:ReturnMyself
+.....
+Shadow Operative
+-----
+ff4fb461-8060-457a-9c16-000000000495
+-----
+
++++++
+R0:ReturnMyself
+.....
+Snowspeeder Launch Bay
+-----
+ff4fb461-8060-457a-9c16-000000000491
+-----
+whileInPlay:Deal1Damage-Targeted-atVehicle-targetOpponents-foreachUnitStrike-typeSpeeder-isReact$$Put1Focus-Targeted-atVehicle_and_Walker-targetOpponents
++++++
+
+.....
+Tactical Retreat
+-----
+ff4fb461-8060-457a-9c16-000000000498
+-----
+onPlay:ReturnMulti-Targeted-atUnit-targetMine
++++++
+
+.....
+Undercover Dealings
+-----
+ff4fb461-8060-457a-9c16-000000000493
+-----
+afterCardRefreshing:Draw999Cards-ifOrigHasLess-typeUnit
++++++
+
+.....
+Vader's Fist
+-----
+ff4fb461-8060-457a-9c16-000000000505
+-----
+onPlay:Lose1Reserves-onOpponent||onDamage:Gain1Reserves-onOpponent||onHeal:Lose1Reserves-onOpponent||onThwart:Gain1Reserves-onOpponent-ifOrigHasntMarker{Damage}
 +++++
 
 .....

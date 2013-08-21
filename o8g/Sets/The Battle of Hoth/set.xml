@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="The Battle of Hoth" 
+     id="a8f76f31-55b0-4c14-9b64-4e141ab1c486"
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
+     version="2.0.0.0">
+<cards>
+	<card id="ff4fb461-8060-457a-9c16-000000000508" name="501st Legion">
+		<property name="Cost" value="4" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:4, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Character-Trooper" />
+		<property name="Damage Capacity" value="4" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Sith" />
+		<property name="Block" value="62" />
+		<property name="Block Number" value="4" />
+		<property name="Number" value="293" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000506" name="501st Trooper">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+		<property name="Traits" value="Character-Trooper" />
+		<property name="Damage Capacity" value="2" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="This unit gains [Blast Damage] while it is attacking a Hoth objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Sith" />
+		<property name="Block" value="62" />
+		<property name="Block Number" value="2" />
+		<property name="Number" value="292" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000507" name="501st Trooper">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+		<property name="Traits" value="Character-Trooper" />
+		<property name="Damage Capacity" value="2" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="This unit gains [Blast Damage] while it is attacking a Hoth objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Sith" />
+		<property name="Block" value="62" />
+		<property name="Block Number" value="3" />
+		<property name="Number" value="292" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000516" name="Aggressive Assault">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Event" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Play only if you control at least 1 Hoth objective.&#xD;&#xA;&#xD;&#xA;Action: Deal 1 damage to each enemy objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="63" />
+		<property name="Block Number" value="6" />
+		<property name="Number" value="299" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000512" name="AT-AT">
+		<property name="Cost" value="4" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:2, EE-T:0" />
+		<property name="Traits" value="Vehicle-Walker" />
+		<property name="Damage Capacity" value="3" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Shielding. (When this unit enters an engagement, place 1 shield on any unit or objective in the engagement.)&#xD;&#xA;&#xD;&#xA;Reaction: After this unit is focused to strike, instead of resolving its combat icons, discard a target non-limited enhancement from play." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Imperial Navy" />
+		<property name="Block" value="63" />
+		<property name="Block Number" value="2" />
+		<property name="Number" value="296" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000513" name="AT-AT">
+		<property name="Cost" value="4" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:2, EE-T:0" />
+		<property name="Traits" value="Vehicle-Walker" />
+		<property name="Damage Capacity" value="3" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Shielding. (When this unit enters an engagement, place 1 shield on any unit or objective in the engagement.)&#xD;&#xA;&#xD;&#xA;Reaction: After this unit is focused to strike, instead of resolving its combat icons, discard a target non-limited enhancement from play." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Imperial Navy" />
+		<property name="Block" value="63" />
+		<property name="Block Number" value="3" />
+		<property name="Number" value="296" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000514" name="AT-AT Assault Formation">
+		<property name="Cost" value="6" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:1, BD:3, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Vehicle-Walker" />
+		<property name="Damage Capacity" value="4" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Shielding. (When this unit enters an engagement, place 1 shield on any unit or objective in the engagement.)&#xD;&#xA;&#xD;&#xA;Interrupt: When this unit is focused to strike, deal 1 damage to each enemy Hoth objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Imperial Navy" />
+		<property name="Block" value="63" />
+		<property name="Block Number" value="4" />
+		<property name="Number" value="297" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000487" name="Attack Pattern Delta">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Objective" />	
+		<property name="Force" value="0" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Hoth" />
+		<property name="Damage Capacity" value="5" />
+		<property name="Resources" value="1" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Action: If you control more Hoth objectives than your opponent, look at the top card of your deck. If it is a Vehicle unit with cost 2 or lower, put it into play. (Limit once per turn.)" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Rebel Alliance" />
+		<property name="Block" value="59" />
+		<property name="Block Number" value="1" />
+		<property name="Number" value="279" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000492" name="Battle of Hoth">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Fate" />	
+		<property name="Force" value="3" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="7" />
+		<property name="Text" value="You may deal 1 damage to or remove 1 damage from a target Hoth objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="59" />
+		<property name="Block Number" value="6" />
+		<property name="Number" value="236" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000504" name="Battle of Hoth">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Fate" />	
+		<property name="Force" value="3" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="7" />
+		<property name="Text" value="You may deal 1 damage to or remove 1 damage from a target Hoth objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="61" />
+		<property name="Block Number" value="6" />
+		<property name="Number" value="236" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000510" name="Battle of Hoth">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Fate" />	
+		<property name="Force" value="3" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="8" />
+		<property name="Text" value="You may deal 1 damage to or remove 1 damage from a target Hoth objective." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="62" />
+		<property name="Block Number" value="6" />
+		<property name="Number" value="202" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000503" name="Coordinated Strike">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Event" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Maneuver" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Reaction: After you resolve a strike, immediately strike again with another ready participating unit you control." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="61" />
+		<property name="Block Number" value="5" />
+		<property name="Number" value="290" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000509" name="E-Web Heavy Repeating Blaster">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Enhancement" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Weapon" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;Action: Focus this enhancement to have a target Trooper unit gain [Blast Damage] until the end of the phase." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="62" />
+		<property name="Block Number" value="5" />
+		<property name="Number" value="294" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000499" name="Hold the Line&#33;">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Objective" />	
+		<property name="Force" value="0" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Hoth" />
+		<property name="Damage Capacity" value="4" />
+		<property name="Resources" value="2" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="61" />
+		<property name="Block Number" value="1" />
+		<property name="Number" value="288" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000496" name="Hold-out Blaster">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Enhancement" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Weapon" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Enhance a [Smugglers and Spies] Character unit.&#xD;&#xA;&#xD;&#xA;Limit 1 per unit.&#xD;&#xA;&#xD;&#xA;While you control fewer units than your opponent, double enhanced unit&#39;s combat icons." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="60" />
+		<property name="Block Number" value="4" />
+		<property name="Number" value="285" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000500" name="Hoth Rearguard">
+		<property name="Cost" value="3" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Character-Trooper" />
+		<property name="Damage Capacity" value="2" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Protect Hoth. (If a Hoth card you control would be damaged, you may place the damage on this unit instead.)" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="61" />
+		<property name="Block Number" value="2" />
+		<property name="Number" value="289" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000501" name="Hoth Rearguard">
+		<property name="Cost" value="3" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Character-Trooper" />
+		<property name="Damage Capacity" value="2" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Protect Hoth. (If a Hoth card you control would be damaged, you may place the damage on this unit instead.)" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="61" />
+		<property name="Block Number" value="3" />
+		<property name="Number" value="289" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000502" name="Hoth Rearguard">
+		<property name="Cost" value="3" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Character-Trooper" />
+		<property name="Damage Capacity" value="2" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Protect Hoth. (If a Hoth card you control would be damaged, you may place the damage on this unit instead.)" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="61" />
+		<property name="Block Number" value="4" />
+		<property name="Number" value="289" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000497" name="Narrow Escape">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Event" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Interrupt: When your opponent chooses a single target for a non-capturing card effect, choose a new target for that effect. The new target is chosen as if you executed the effect." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Smugglers and Spies" />
+		<property name="Block" value="60" />
+		<property name="Block Number" value="5" />
+		<property name="Number" value="286" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000515" name="Orbital Resupply Station">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Enhancement" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Location" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;Reduce the cost to play each [Imperial Navy] Vehicle unit with a printed cost of 4 or higher by 1." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Imperial Navy" />
+		<property name="Block" value="63" />
+		<property name="Block Number" value="5" />
+		<property name="Number" value="298" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000488" name="Rogue Leader">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Vehicle-Speeder-Unique" />
+		<property name="Damage Capacity" value="1" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="While you control Rogue Two, this unit gains [Tactics]." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Rebel Alliance" />
+		<property name="Block" value="59" />
+		<property name="Block Number" value="2" />
+		<property name="Number" value="280" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000489" name="Rogue Two">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Vehicle-Speeder-Unique" />
+		<property name="Damage Capacity" value="2" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="This unit gains [Edge-enabled Blast Damage] for each attacking Speeder unit you control." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Rebel Alliance" />
+		<property name="Block" value="59" />
+		<property name="Block Number" value="3" />
+		<property name="Number" value="281" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000494" name="Shadow Operative">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+		<property name="Traits" value="Character" />
+		<property name="Damage Capacity" value="1" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Action: Return this unit to your hand." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Smugglers and Spies" />
+		<property name="Block" value="60" />
+		<property name="Block Number" value="2" />
+		<property name="Number" value="284" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000495" name="Shadow Operative">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+		<property name="Traits" value="Character" />
+		<property name="Damage Capacity" value="1" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Action: Return this unit to your hand." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Smugglers and Spies" />
+		<property name="Block" value="60" />
+		<property name="Block Number" value="3" />
+		<property name="Number" value="284" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000490" name="Snowspeeder">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Unit" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+		<property name="Traits" value="Vehicle-Speeder" />
+		<property name="Damage Capacity" value="1" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Neutral" />
+		<property name="Block" value="59" />
+		<property name="Block Number" value="4" />
+		<property name="Number" value="185" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000491" name="Snowspeeder Launch Bay">
+		<property name="Cost" value="2" />
+		<property name="Type" value="Affiliation" />	
+		<property name="Force" value="2" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Hoth-Location" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="1" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;Reaction: After you strike with a Speeder unit, deal 1 damage to a target enemy Vehicle unit. If the target is a Walker unit, also place 1 focus token on it. (Limit once per phase.)" />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Rebel Alliance" />
+		<property name="Block" value="59" />
+		<property name="Block Number" value="5" />
+		<property name="Number" value="282" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000498" name="Tactical Retreat">
+		<property name="Cost" value="1" />
+		<property name="Type" value="Event" />	
+		<property name="Force" value="1" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="0" />
+		<property name="Resources" value="0" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Action: Return any number of units you control to their owners&#39; hands." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Smugglers and Spies" />
+		<property name="Block" value="60" />
+		<property name="Block Number" value="6" />
+		<property name="Number" value="287" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000493" name="Undercover Dealings">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Objective" />	
+		<property name="Force" value="0" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="" />
+		<property name="Damage Capacity" value="5" />
+		<property name="Resources" value="1" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Reaction: After your opponent refreshes, draw to your reserve value if you control fewer units than your opponent." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Light" />
+		<property name="Affiliation" value="Smugglers and Spies" />
+		<property name="Block" value="60" />
+		<property name="Block Number" value="1" />
+		<property name="Number" value="283" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000511" name="Unstoppable Advance">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Objective" />	
+		<property name="Force" value="0" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Hoth" />
+		<property name="Damage Capacity" value="5" />
+		<property name="Resources" value="2" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="Imperial Navy affiliation only." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Imperial Navy" />
+		<property name="Block" value="63" />
+		<property name="Block Number" value="1" />
+		<property name="Number" value="295" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+	<card id="ff4fb461-8060-457a-9c16-000000000505" name="Vader&#39;s Fist">
+		<property name="Cost" value="0" />
+		<property name="Type" value="Objective" />	
+		<property name="Force" value="0" />	
+		<property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+		<property name="Traits" value="Hoth" />
+		<property name="Damage Capacity" value="5" />
+		<property name="Resources" value="1" />
+		<property name="Edge Priority" value="" />
+		<property name="Text" value="While this objective is undamaged, reduce each opponent&#39;s reserve value by 1." />
+		<property name="Flavor" value="" />
+		<property name="Side" value="Dark" />
+		<property name="Affiliation" value="Sith" />
+		<property name="Block" value="62" />
+		<property name="Block Number" value="1" />
+		<property name="Number" value="291" />
+		<property name="Instructions" value="" />
+		<property name="AutoScript" value="" />
+		<property name="AutoAction" value="" />
+	</card>
+</cards></set>

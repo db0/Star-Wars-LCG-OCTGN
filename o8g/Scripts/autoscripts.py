@@ -380,6 +380,7 @@ def markerEffects(Time = 'Start'):
                      or re.search(r'Echo Caverns',marker[0])
                      or re.search(r'Ion Damaged',marker[0])
                      or re.search(r'Unwavering Resolve',marker[0])
+                     or re.search(r'EWeb Heavy Repeating Blaster',marker[0])
                      or re.search(r'Bring Em On',marker[0])
                      or re.search(r'Shelter from the Storm',marker[0])):
                TokensX('Remove999'+marker[0], marker[0] + ':', card)
@@ -723,12 +724,13 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
                preventDraw = True
                notify(":> {}'s {} draw effects were blocked by {}".format(card.controller,card,c))
    if not preventDraw:
+      debugNotify("Card Draw not prevented")
       if destiVerb == 'draw' and ModifyDraw > 0 and not confirm("You have a card effect in play that modifies the amount of cards you draw. Do you want to continue as normal anyway?\n\n(Answering 'No' will abort this action so that you can prepare for the special changes that happen to your draw."): return 'ABORT'
       draw = num(action.group(1))
       if draw == 999:
          multiplier = 1
-         if currentHandSize(targetPL) >= len(targetPL.hand): # Otherwise drawMany() is going to try and draw "-1" cards which somehow draws our whole deck except one card.
-            count = drawMany(source, currentHandSize(targetPL) - len(targetPL.hand), destination, True) # 999 means we refresh our hand
+         if targetPL.Reserves >= len(targetPL.hand): # Otherwise drawMany() is going to try and draw "-1" cards which somehow draws our whole deck except one card.
+            count = drawMany(source, targetPL.Reserves - len(targetPL.hand), destination, True) # 999 means we refresh our hand
          else: count = 0 
          #confirm("cards drawn: {}".format(count)) # Debug
       else: # Any other number just draws as many cards.
@@ -1102,6 +1104,9 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
    if re.search(r'-toTable', Autoscript):
       destination = table
       destiVerb = 'play'   
+   elif re.search(r'-toDeck', Autoscript):
+      destination = targetPL.piles['Command Deck']
+      destiVerb = 'rework'
    else: 
       destination = targetPL.hand
       destiVerb = 'retrieve'
@@ -1109,10 +1114,10 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
    count = num(action.group(1))
    multiplier = per(Autoscript, card, n, targetCards, notification)
    if source != targetPL.piles['Discard Pile']: # The discard pile is anyway visible.
-      if debugVerbosity >= 2: notify("### Turning Pile Face Up")
-      cover = table.create("8b5a86df-fb10-4e5e-9133-7dc03fbae22d",0,0,1,True) # Creating a dummy card to cover that player's source pile
-      cover.moveTo(source) # Moving that dummy card on top of their source pile
-      for c in source: c.isFaceUp = True # We flip all cards in the player's deck face up so that we can grab their properties
+      if debugVerbosity >= 2: notify("### Moving to Scripting Pile")
+      for c in source: c.moveToBottom(me.ScriptingPile)  # If the source is the Deck, then we move everything to the scripting pile in order to be able to read their properties. We move each new card to the bottom to preserve card order
+      source = me.ScriptingPile
+      rnd(1,10) # We give a delay to allow OCTGN to read the card properties before we proceed with checking them
    restrictions = prepareRestrictions(Autoscript, seek = 'retrieve')
    cardList = []
    countRestriction = re.search(r'-onTop([0-9]+)Cards', Autoscript)
@@ -1121,12 +1126,14 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
    if count == 999: count = topCount # Retrieve999Cards means the script will retrieve all cards that match the requirements, regardless of how many there are. As such, a '-onTop#Cards' modulator should always be included.
    for c in source.top(topCount):
       if debugVerbosity >= 4: notify("### Checking card: {}".format(c))
+      if re.search(r'-tellPlayer',Autoscript): delayed_whisper(":::INFO::: {} card is: {}".format(numOrder(c.getIndex),c)) # The -tellPlayer modulator, will tell the one retrieving what all cards were, even if they are not valid targets
       if checkCardRestrictions(gatherCardProperties(c), restrictions) and checkSpecialRestrictions(Autoscript,c):
          cardList.append(c)
-         if re.search(r'-isTopmost', Autoscript) and len(cardList) == count: break # If we're selecting only the topmost cards, we select only the first matches we get.         
+         if re.search(r'-isTopmost', Autoscript) and len(cardList) == count: break # If we're selecting only the topmost cards, we select only the first matches we get. 
    if debugVerbosity >= 3: notify("### cardList: {}".format(cardList))
    chosenCList = []
-   if len(cardList) > count:
+   abortedRetrieve = False
+   if len(cardList) > count or re.search(r'upToAmount',Autoscript):
       cardChoices = []
       cardTexts = []
       for iter in range(count):
@@ -1138,21 +1145,32 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
                if debugVerbosity >= 4: notify("### Appending card")
                cardChoices.append(c)
                cardTexts.append(c.Text) # We check the card text because there are cards with the same name in different sets (e.g. Darth Vader)            
-         choice = SingleChoice("Choose card to retrieve{}".format({1:''}.get(count,' {} {}'.format(iter + 1,count))), makeChoiceListfromCardList(cardChoices), type = 'button')
-         chosenCList.append(cardChoices[choice])
-         cardList.remove(cardChoices[choice])
+         if re.search(r'upToAmount',Autoscript): cancelButtonName = 'Done'
+         else: cancelButtonName = 'Cancel'
+         choice = SingleChoice("Choose card to retrieve{}".format({1:''}.get(count,' {}/{}'.format(iter + 1,count))), makeChoiceListfromCardList(cardChoices), type = 'button', cancelName = cancelButtonName)
+         if choice == None:
+            if not re.search(r'upToAmount',Autoscript): abortedRetrieve = True # If we have the upToAmount, it means the retrieve can get less cards than the max amount, so cancel does not work as a cancel necessarily.            
+            break
+         else:
+            chosenCList.append(cardChoices[choice])
+            cardList.remove(cardChoices[choice])
    else: chosenCList = cardList
    if debugVerbosity >= 2: notify("### chosenCList: {}".format(chosenCList))
-   for c in chosenCList:
-      if destination == table: placeCard(c)
-      else: c.moveTo(destination)
-   if source != targetPL.piles['Discard Pile']:
-      if debugVerbosity >= 2: notify("### Turning Pile Face Down")
-      for c in source: c.isFaceUp = False # We hide again the source pile cards.
-      cover.moveTo(me.ScriptingPile) # we cannot delete cards so we just hide it.
+   if not abortedRetrieve:   
+      for c in chosenCList:
+         if destination == table: placeCard(c)
+         else: c.moveTo(destination)
+   if source == me.ScriptingPile: # If our source was the scripting pile, we know we just checked the R&D,
+      for c in source: c.moveToBottom(targetPL.piles['Command Deck']) # So we return cards to their original location      
+   if abortedRetrieve: #If the player canceled a retrieve effect from R&D / Stack, we make sure to shuffle their pile as well.
+      notify("{} has aborted the retrieval effect from {}".format(me,card))
+      if source == me.ScriptingPile: shuffle(targetPL.piles['Command Deck'])
+      return 'ABORT'
    if debugVerbosity >= 2: notify("### About to announce.")
+   if re.search(r'doNotReveal',Autoscript): cardNames = "{} cards".format(len(chosenCList))
+   else: cardNames = str([c.name for c in chosenCList])
    if len(chosenCList) == 0: announceString = "{} attempts to {} a card {}, but there were no valid targets.".format(announceText, destiVerb, sourcePath)
-   else: announceString = "{} {} {} {}.".format(announceText, destiVerb, [c.name for c in chosenCList], sourcePath)
+   else: announceString = "{} {} {} {}.".format(announceText, destiVerb, cardNames, sourcePath)
    if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< RetrieveX()")
    return announceString
@@ -1795,6 +1813,17 @@ def checkSpecialRestrictions(Autoscript,card):
             try: debugNotify("Requires Damaged objective but {} Damage Markers found on {}".format(currentTarget.markers[mdict['Damage']],currentTarget),2)
             except: debugNotify("Oops! I guess markers were null", 2)
             validCard = False
+   if re.search(r'hasObjectiveTrait',Autoscript): # If this modilator is there, the current objective needs to have a specific objective
+      debugNotify("Checking for Objective Traits", 2)
+      EngagedObjective = getGlobalVariable('Engaged Objective')
+      if EngagedObjective == 'None': 
+         debugNotify("!!! Failing because we're looking for a trait on objective and there's no objective at all", 2)         
+         validCard = False
+      else:
+         currentTarget = Card(num(EngagedObjective))
+         if not checkCardRestrictions(gatherCardProperties(currentTarget), prepareRestrictions(Autoscript,'type')):
+            debugNotify("Failing because objective trait not matched")
+            validCard = False
    if re.search(r'isCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: 
       debugNotify("!!! Failing because card is not committed to the force", 2)
       validCard = False
@@ -1814,6 +1843,18 @@ def checkSpecialRestrictions(Autoscript,card):
    if not chkPlayer(Autoscript, card.controller, False, True): 
       debugNotify("!!! Failing because not the right controller", 2)
       validCard = False
+   if re.search(r'ifHave(More|Less)',Autoscript):
+      reqRestrictions = prepareRestrictions(Autoscript,'type')
+      myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller == card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller != card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      if re.search(r'ifHaveMore)',Autoscript) and myUnits < opUnits: 
+         debugNotify("Failing because we have less {} than the opponent".format(reqRestrictions))
+         validCard = False
+      elif re.search(r'ifHaveLess)',Autoscript) and myUnits > opUnits: 
+         if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing ifHaveLess fail because we're debugging")
+         else:
+            debugNotify("Failing because we have more {} than the opponent".format(reqRestrictions))
+            validCard = False
    markerName = re.search(r'-hasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
@@ -1923,6 +1964,17 @@ def checkOriginatorRestrictions(Autoscript,card):
             try: debugNotify("Requires Damaged objective but {} Damage Markers found on {}".format(currentTarget.markers[mdict['Damage']],currentTarget),2)
             except: debugNotify("Oops! I guess markers were null", 2)
             validCard = False
+   if re.search(r'hasObjectiveTrait',Autoscript): # If this modilator is there, the current objective needs to have a specific objective
+      debugNotify("Checking for Objective Traits", 2)
+      EngagedObjective = getGlobalVariable('Engaged Objective')
+      if EngagedObjective == 'None': 
+         debugNotify("!!! Failing because we're looking for a trait on objective and there's no objective at all", 2)         
+         validCard = False
+      else:
+         currentTarget = Card(num(EngagedObjective))
+         if not checkCardRestrictions(gatherCardProperties(currentTarget), prepareRestrictions(Autoscript,'type')):
+            debugNotify("Failing because objective trait not matched")
+            validCard = False
    if re.search(r'ifOrigCommited',Autoscript) and card.highlight != LightForceColor and card.highlight != DarkForceColor: validCard = False
    if re.search(r'ifOrigNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): validCard = False
    if re.search(r'ifOrighasEdge',Autoscript) and not gotEdge(card.controller): 
@@ -1931,6 +1983,19 @@ def checkOriginatorRestrictions(Autoscript,card):
    if re.search(r'ifOrighasntEdge',Autoscript) and gotEdge(card.controller): 
       if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing hasn't-edge fail because we're debugging")
       else: validCard = False
+   if re.search(r'ifOrigHas(More|Less)',Autoscript):
+      reqRestrictions = prepareRestrictions(Autoscript,'type')      
+      myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller == card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller != card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      debugNotify("Finished counting units. myUnits = {}.  opUnits = {}".format(myUnits,opUnits))
+      if re.search(r'ifOrigHasMore',Autoscript) and myUnits < opUnits: 
+         debugNotify("Failing because we have less {} than the opponent".format(reqRestrictions))
+         validCard = False
+      elif re.search(r'ifOrigHasLess',Autoscript) and myUnits > opUnits: 
+         if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing ifOrigHasLess fail because we're debugging")
+         else:
+            debugNotify("Failing because we have more {} than the opponent".format(reqRestrictions))
+            validCard = False
    #if not chkPlayer(Autoscript, card.controller, False, False): validCard = False
    markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers

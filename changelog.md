@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.4.0.x
+
+* **The Battle of Hoth** has been added fully scripted!
+
 ### 2.3.13.x
 
 * Added third button to be used to notify your opponent that you're giving them an opportunity to play actions
