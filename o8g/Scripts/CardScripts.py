@@ -2090,7 +2090,7 @@ Admiral's Orders
 -----
 ff4fb461-8060-457a-9c16-000000000288
 -----
-onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-nonUnique-isSilent||whileInPlay:Reduce2CostPlay-forCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
+onPlay:SimplyAnnounce{reduce the cost of the next capital ship they play this phase by 2}$$CreateDummy-nonUnique-isSilent||whileInPlay:Reduce2CostPlay-affectsCapital Ship-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
 
 .....
@@ -2626,7 +2626,7 @@ Don't Get Cocky
 -----
 ff4fb461-8060-457a-9c16-000000000330
 -----
-onPlay:Put2Cocky:BD
+onPlay:Put2Cocky:BD-Targeted-atUnit-isParticipating
 +++++
 
 .....
