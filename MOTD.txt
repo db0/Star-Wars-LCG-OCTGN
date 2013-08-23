@@ -4,10 +4,10 @@ Stat Gathering has now been enabled!
 
 The game will now record the statistics of the games you are playing, such as how many units you played, how many attacks you did etc.
 
-Once a player reaches a victory condition, the game will then upload these statistics to a stat-gathering database.
+Once a player reaches a victory condition, the game will then upload these stats to a database.
 
 We can then use these statistics to see how the metagame is changing as force packs come out, what the performance of various decks is and so on.
 
-So please make sure to always properly finish a game via Dial, Objective or Decking victory, to allow the statistics to be uploaded. 
+So please make sure to always properly finish a game via Dial, Objective or Decking victory, to allow the stats to be aggregated. 
 You can also concede a game from the Game menu if you wish and this will also be recorded.
 =============================
