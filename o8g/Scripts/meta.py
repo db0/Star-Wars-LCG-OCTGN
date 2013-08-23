@@ -1121,10 +1121,9 @@ def MOTDdisplay(MOTD,DYK):
    return 'STOP'
 
 def initGame(): # A function which prepares the game for online submition
-   return # Not live yet
    debugNotify(">>> initGame()") #Debug
    if getGlobalVariable('gameGUID') != 'None': return #If we've already grabbed a GUID, then just use that.
-   (gameInit, initCode) = webRead('http://84.205.248.92/slaghund/init.slag',3000)
+   (gameInit, initCode) = webRead('http://84.205.248.92/slaghund/init.swlcg',3000)
    if initCode != 200:
       #whisper("Cannot grab GameGUID at the moment!") # Maybe no need to inform players yet.
       return
@@ -1136,9 +1135,11 @@ def initGame(): # A function which prepares the game for online submition
    debugNotify("<<< initGame()", 3) #Debug
    
 def reportGame(result = 'DialVictory'): # This submits the game results online.
-   return # Not live yet
    delayed_whisper("Please wait. Submitting Game Stats...")     
    debugNotify(">>> reportGame()") #Debug
+   if not Automations['Play'] or not Automations['Triggers'] or not Automations['Start/End-of-Turn/Phase']:
+      notify(":::INFO::: Aborting Stat Submission because automations are disabled")
+      return
    GUID = getGlobalVariable('gameGUID')
    if GUID == 'None' and debugVerbosity < 0: return # If we don't have a GUID, we can't submit. But if we're debugging, we go through.
    gameEnded = getGlobalVariable('gameEnded')
@@ -1170,7 +1171,7 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
    if (TURNS < 1 or len(players) == 1) and debugVerbosity < 1:
       notify(":::ATTENTION:::Game stats submit aborted due to number of players ( less than 2 ) or turns played (less than 1)")
       return # You can never win before the first turn is finished and we don't want to submit stats when there's only one player.
-   reportURL = 'http://84.205.248.92/swlcg/game.slag?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,PLAYER,RESULT,WIN,AFFILIATION,PODS,DIAL,OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,UNITS,RESOURCES,ATTACKS,EDGEVICTORIES,FORCEVICTORIES,FORCETURNS)
+   reportURL = 'http://84.205.248.92/slaghund/game.swlcg?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,PLAYER,RESULT,WIN,AFFILIATION,PODS,DIAL,OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,UNITS,RESOURCES,ATTACKS,EDGEVICTORIES,FORCEVICTORIES,FORCETURNS)
    if debugVerbosity < 1: # We only submit stats if we're not in debug mode
       (reportTXT, reportCode) = webRead(reportURL,10000)
    else: 
@@ -1178,7 +1179,7 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
          (reportTXT, reportCode) = webRead(reportURL,10000)
          notify('Report URL: {}'.format(reportURL))
    try:
-      if reportTXT != "Updating result...Ok!" and debugVerbosity >=0: whisper("Failed to submit match results") 
+      if (reportTXT != "Adding result...Ok!" and reportTXT != "Updating result...Ok!") and debugVerbosity >=0: notify("Failed to submit match results. Sorry.") 
    except: pass
    # The victorious player also reports for their enemy
    enemyPL = ofwhom('-ofOpponent')
@@ -1224,7 +1225,7 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
    E_FORCEVICTORIES = gameStats[enemyPL.name]['forcev'] # How many force struggles the player won
    E_FORCETURNS = gameStats[enemyPL.name]['forceturns'] # How many balance phases the player started with the force.
    debugNotify("About to report enemy results online.", 2) #Debug
-   E_reportURL = 'http://84.205.248.92/swlcg/game.slag?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,ENEMY,E_RESULT,E_WIN,E_AFFILIATION,E_PODS,E_DIAL,E_OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,E_UNITS,E_RESOURCES,E_ATTACKS,E_EDGEVICTORIES,E_FORCEVICTORIES,E_FORCETURNS)
+   E_reportURL = 'http://84.205.248.92/slaghund/game.swlcg?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,ENEMY,E_RESULT,E_WIN,E_AFFILIATION,E_PODS,E_DIAL,E_OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,E_UNITS,E_RESOURCES,E_ATTACKS,E_EDGEVICTORIES,E_FORCEVICTORIES,E_FORCETURNS)
    if debugVerbosity < 1: # We only submit stats if we're not debugging
       (EreportTXT, EreportCode) = webRead(E_reportURL,10000)
    setGlobalVariable('gameEnded','True')
