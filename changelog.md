@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.4.1.x
+
+* Orbital Resupply Station should now properly only affect units with cost >= 4
+
 ### 2.4.0.x
 
 * **The Battle of Hoth** has been added fully scripted!

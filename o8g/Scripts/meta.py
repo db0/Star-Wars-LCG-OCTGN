@@ -538,6 +538,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
       if debugVerbosity >= 2: notify("### cTuple[0] (i.e. card) is: {}".format(c)) #Debug
       if debugVerbosity >= 4: notify("### cTuple[2] (i.e. autoS) is: {}".format(autoS)) #Debug
       if reductionSearch.group(4) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,seek = 'reduce')):
+         if not checkSpecialRestrictions(autoS,card): continue
          if debugVerbosity >= 3: notify(" ### Search match! Reduction Value is {}".format(reductionSearch.group(2))) # Debug
          if re.search(r'onlyOnce',autoS):
             if dryRun: # For dry Runs we do not want to add the "Activated" token on the card. 
@@ -1391,8 +1392,8 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000487",
-                "ff4fb461-8060-457a-9c16-000000000512",
+                "ff4fb461-8060-457a-9c16-000000000260",
+                "ff4fb461-8060-457a-9c16-000000000261",
                 "ff4fb461-8060-457a-9c16-000000000509",
                 "ff4fb461-8060-457a-9c16-000000000491",
                 "ff4fb461-8060-457a-9c16-000000000489",

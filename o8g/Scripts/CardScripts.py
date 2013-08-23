@@ -3794,7 +3794,7 @@ Rogue Two
 -----
 ff4fb461-8060-457a-9c16-000000000489
 -----
-ExtraIcon:EE-BD:1-perEverySpeeder-AutoTargeted-atSpeeder-isAttacking
+ExtraIcon:EE-BD:1-perEverySpeeder-AutoTargeted-atSpeeder-targetMine-isAttacking
 +++++
 
 .....
