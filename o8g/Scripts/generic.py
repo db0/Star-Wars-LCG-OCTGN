@@ -386,14 +386,11 @@ class MultiChoiceWindow(Form):
          self.TopMost = True # And re-send it to top
          self.timer_tries += 1 # Increment this counter to stop after 3 tries.
       
-def multiChoice(title, options,card): # This displays a choice where the player can select more than one ability to trigger serially one after the other
+def multiChoice(title, options): # This displays a choice where the player can select more than one ability to trigger serially one after the other
    if debugVerbosity >= 1: notify(">>> multiChoice()".format(title))
    if Automations['WinForms']: # If the player has not disabled the custom WinForms, we use those
       Application.EnableVisualStyles() # To make the window look like all other windows in the user's system
-      if card.Type == 'ICE': CPType = 'Intrusion Countermeasures Electronics'  # Just some nice fluff
-      elif re.search(r'Icebreaker', card.Keywords): CPType = 'ICEbreaker GUI'
-      elif card.Type == 'Hardware': CPType = 'Dashboard'
-      else: CPType = 'Control Panel'
+      CPType = 'Control Panel'
       form = MultiChoiceWindow(title, options, CPType) # We create an object called "form" which contains an instance of the MultiChoice windows form.
       form.ShowDialog() # We bring the form to the front to allow the user to make their choices
       choices = form.getIndex() # Once the form is closed, we check an internal variable within the form object to grab what choices they made

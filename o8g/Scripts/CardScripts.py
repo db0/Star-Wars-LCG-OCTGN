@@ -1282,7 +1282,7 @@ Shii-Cho-Training
 -----
 ff4fb461-8060-457a-9c16-000000000140
 -----
-Placement:Force User_and_Unit
+Placement:Force User_and_Unit||ConstantAbility:ShiiCho
 +++++
 
 .....

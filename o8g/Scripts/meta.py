@@ -422,6 +422,27 @@ def calculateCombatIcons(card = None, CIString = None):
       Tactics = 0
    return (Unit_Damage,Blast_Damage,Tactics)
 
+def chkShiiChoTrainnig(card): # Checks if a card or its attachments allow it to split its damage amoing targets
+   debugNotify(">>> chkSiiChoTrainnig() with card {}".format(card)) #Debug   
+   ShiiCho = False
+   Autoscripts = CardsAS.get(card.model,'').split('||')   
+   if len(Autoscripts) > 0:
+      for autoS in Autoscripts:
+         if re.search(r'ConstantAbility:ShiiCho',autoS):
+            debugNotify("Found ShiiCho Training in card abilities!") #Debug
+            ShiiCho = True
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   for attachment in hostCards:
+      if hostCards[attachment] == card._id:
+         debugNotify("Found Attachment: {}".format(Card(attachment)),3) #Debug
+         Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
+         for autoS in Autoscripts:
+            if re.search(r'ConstantAbility:ShiiCho',autoS): 
+               debugNotify("Found ShiiCho Training in card attachments!") #Debug
+               ShiiCho = True
+   debugNotify("<<< chkSiiChoTrainnig() with return {}".format(ShiiCho)) #Debug   
+   return ShiiCho
+   
 def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to be triggered for a (non) Dummy card
    if debugVerbosity >= 4: notify(">>> chkDummy()") #Debug
    if re.search(r'onlyforDummy',Autoscript) and card.highlight != DummyColor: return False
