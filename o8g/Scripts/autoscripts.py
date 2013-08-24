@@ -1559,43 +1559,47 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                if not checkSpecialRestrictions(Autoscript,targetLookup): continue
                reversePlayerChk = False # We return things to normal now.
                if re.search(r'-onHost',Autoscript):   
-                  if debugVerbosity >= 2: notify("### Looking for Host")
+                  debugNotify("Looking for Host")
                   if not card: continue # If this targeting script targets only a host and we have not passed what the attachment is, we cannot find the host, so we abort.
-                  if debugVerbosity >= 2: notify("### Attachment is: {}".format(card))
+                  debugNotify("Attachment is: {}".format(card))
                   hostCards = eval(getGlobalVariable('Host Cards'))
                   isHost = False
+                  debugNotify("hostCards = {}".format([Card(attachID).name for attachID in hostCards]),4)
                   for attachment in hostCards:
+                     debugNotify("Comparing attachment {} (ID: {}) with card {} (ID: {}) and hostCard {} (ID: {}) with targetLookup {} (ID:{})".format(Card(attachment),attachment,card,card._id,Card(hostCards[attachment]),hostCards[attachment],targetLookup,targetLookup._id),4)
                      if attachment == card._id and hostCards[attachment] == targetLookup._id: 
-                        if debugVerbosity >= 2: notify("### Host found! {}".format(targetLookup))
+                        debugNotify("Host found! {}".format(targetLookup))
                         isHost = True
-                  if not isHost: continue
+                  if not isHost: 
+                     debugNotify("{} is not the host of {}. Skipping".format(targetLookup,card))
+                     continue
                if re.search(r'-isJailer',Autoscript): # With this modulator, we're trying to target only cards which are captured by a specific objective
-                  if debugVerbosity >= 2: notify("### Looking for Captured Cards")
+                  debugNotify("Looking for Captured Cards")
                   if not card: continue # If this targeting script targets only a captured card's Jailer and we have not passed what the attachment is, we cannot find the Jailer, so we abort.
-                  if debugVerbosity >= 2: notify("### Captured Card is: {}".format(card))
+                  debugNotify("Captured Card is: {}".format(card))
                   capturedCards = eval(getGlobalVariable('Captured Cards'))
                   isJailer = False
                   for capturedC in capturedCards:
                      if capturedCards[capturedC] == card._id and capturedC == targetLookup._id: 
-                        if debugVerbosity >= 2: notify("### Captured Card found! {}".format(targetLookup))
+                        debugNotify("Captured Card found! {}".format(targetLookup))
                         isJailer = True
                   if not isJailer: continue
                if checkCardRestrictions(gatherCardProperties(targetLookup), targetGroups): 
                   if not targetLookup in foundTargets: 
-                     if debugVerbosity >= 3: notify("### About to append {}".format(targetLookup)) #Debug
+                     debugNotify("About to append {}".format(targetLookup)) #Debug
                      foundTargets.append(targetLookup) # I don't know why but the first match is always processed twice by the for loop.
                elif debugVerbosity >= 3: notify("### findTarget() Rejected {}".format(targetLookup))# Debug
-         if debugVerbosity >= 2: notify("### Finished seeking. foundTargets List = {}".format([c.name for c in foundTargets]))
+         debugNotify("Finished seeking. foundTargets List = {}".format([c.name for c in foundTargets]))
          if re.search(r'DemiAutoTargeted', Autoscript):
-            if debugVerbosity >= 2: notify("### Checking DemiAutoTargeted switches")# Debug
+            debugNotify("Checking DemiAutoTargeted switches")# Debug
             targetNRregex = re.search(r'-choose([1-9])',Autoscript)
             targetedCards = 0
             foundTargetsTargeted = []
-            if debugVerbosity >= 2: notify("### About to count targeted cards")# Debug
+            debugNotify("About to count targeted cards")# Debug
             for targetC in foundTargets:
                if targetC.targetedBy and targetC.targetedBy == me: foundTargetsTargeted.append(targetC)
             if targetNRregex:
-               if debugVerbosity >= 2: notify("!!! targetNRregex exists")# Debug
+               debugNotify("!!! targetNRregex exists")# Debug
                if num(targetNRregex.group(1)) > len(foundTargetsTargeted): pass # Not implemented yet. Once I have choose2 etc I'll work on this
                else: # If we have the same amount of cards targeted as the amount we need, then we just select the targeted cards
                   foundTargets = foundTargetsTargeted # This will also work if the player has targeted more cards than they need. The later choice will be simply between those cards.

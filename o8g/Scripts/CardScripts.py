@@ -1900,7 +1900,7 @@ ff4fb461-8060-457a-9c16-000000000224
 -----
 Placement:Character_and_Unit
 +++++
-R0:DestroyMyself$$Remove999Damage-AutoTargeted-onHost-isReact
+R0:Remove999Damage-AutoTargeted-onHost-isReact$$DestroyMyself
 .....
 Old Ben's Spirit
 -----
@@ -1908,7 +1908,7 @@ ff4fb461-8060-457a-9c16-000000000225
 -----
 Placement:Character_and_Unit
 +++++
-R0:DestroyMyself$$Remove999Damage-AutoTargeted-onHost
+R0:Remove999Damage-AutoTargeted-onHost$$DestroyMyself
 .....
 Probe Droid
 -----
