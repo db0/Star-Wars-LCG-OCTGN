@@ -715,7 +715,7 @@ def readyEffect(card,forced = False):
    hardcoreMode = chkHardcore(card)
    if not hardcoreMode or forced or card.Type == 'Event':
       card.highlight = ReadyEffectColor
-      notify(":::NOTICE::: {}'s {} is about to take effect...".format(me,card))
+      notify(":::NOTICE::: {}'s {} is about to take effect...".format(card.controller,card))
    else: debugNotify("Hardcore mode enabled. Not Highlighting")
    clrResourceMarkers(card)
    warnImminentEffects = getSetting('warnEffect', "An effect is ready to trigger but has not been done automatically in order to allow your opponent to react.\
