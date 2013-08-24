@@ -1,6 +1,14 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.4.3.x
+
+* **Significant** Strikes which have Tactics and Damage, or Tactics>1 will actually ask the player for the right targets. A multiple choice menu will appear for all the units you've targeted, and you'll be able to select which units to damage and which to focus
+* When striking without a target, the game will try to smartly figure out who your target might be and ask for instuctions if confused.
+* Automated Shii-Cho Training
+* Echo Base shouldn't provide a bonus as an edge card anymore
+* Rogue Two should not get bonuses from non-participating units
+
 ### 2.4.2.x
 
 * Enabled Statistics Gathering
