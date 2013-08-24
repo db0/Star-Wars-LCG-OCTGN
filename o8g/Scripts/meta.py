@@ -620,7 +620,7 @@ def compareObjectiveTraits(Trait):
             playerTraitCounts[player.name] += 1
             debugNotify("Found {} Trait in Objective {}. {}'s Counter now {}".format(Trait,obj,player,playerTraitCounts[player.name]),2)
       for card in table: # We check for cards for give bonus objective traits (e.g. Echo Base)
-         if card.controller == player:
+         if card.controller == player and card.highlight != EdgeColor and card.highlight != RevealedColor and card.highlight != UnpaidColor:
             Autoscripts = CardsAS.get(card.model,'').split('||')
             if debugVerbosity >= 3: notify("### Autoscripts len = {}. Autoscripts = {}".format(len(Autoscripts),Autoscripts))
             for autoS in Autoscripts:

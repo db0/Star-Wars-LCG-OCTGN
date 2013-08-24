@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.4.2.x
+
+* Enabled Statistics Gathering
+
 ### 2.4.1.x
 
 * Orbital Resupply Station should now properly only affect units with cost >= 4
