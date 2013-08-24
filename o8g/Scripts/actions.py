@@ -595,14 +595,35 @@ def strike(card, x = 0, y = 0, Continuing = False):
    Unit_DamageTXT = ''
    TacticsTXT = ''
    Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
+   knowsShiiCho = chkShiiChoTrainnig(card)
+   targetUnitsList = [c for c in table if c.targetedBy and c.targetedBy == me and c.Type == 'Unit']
+   if len(targetUnitsList): targetUnit = targetUnitsList[0] # We set a variable for "targetUnit" for those strikes that expect only one target, where target the first valid unit in the list
+   else: # If we haven't targeted anything, we'll try to discover automatically what the target is going to be
+      if Tactics: # If our units has tactics, we can target units outside the battle, and that can make a very big list, so I prefer to ignore it unless they've specifically targeted units
+         if not Continuing: # We only give an option to abort if this was not a continued ability
+            if not confirm(":::WARNING::: You have no selected any target units for your tactics icons! If you continue you'll have to resolve the tactics and unit damage icons manually afterwards. Proceed Anyway?\
+                                 \n\n(Pressing 'No' will abort the strike and you can then target the units you want to focus and strike again."): 
+               subMarker(card, 'Focus',1, True) 
+               if card.highlight == LightForceColor or card.highlight == DarkForceColor: subMarker(card, 'Focus',1, True)
+               return
+         else: delayed_whisper("::WARNING::: Unit has Tactics icons but no enemy units were targeted. Ignoring Unit Damage and Tactics icons")
+         targetUnit = None
+      else:
+         targetUnitsList = [c for c in table if c.orientation == Rot90 and (c.controller != me or len(players) == 1) and c.Type == 'Unit']
+         if not len(targetUnitsList): targetUnit = None # If there's no participating unit on the table, then we select nothing.
+         elif len(targetUnitsList) == 1:
+            if hasDamageProtection(targetUnitsList[0],card): targetUnit = None
+            else: targetUnit = targetUnitsList[0]
+         else:
+            if (Unit_Damage and not knowsShiiCho) and not Tactics:
+               targetChoice = SingleChoice("Please select the target for this strike's unit damage", makeChoiceListfromCardList(targetUnitsList), cancelButton = True)
+               if targetChoice == 'ABORT': targetUnit = None
+               else: targetUnit = targetUnitsList[targetChoice]
+            else: targetUnit = targetUnitsList[0] # If the unit has unit damage and tactics icons, there's no point in asking now, as we're going to ask again a bit later.
+   debugNotify("targetUnitsList = {}. targetUnit = {}".format(targetUnitsList,targetUnit))
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
    if currentTarget.controller == opponent and not hasDamageProtection(currentTarget,card): 
       addMarker(currentTarget, 'Damage',Blast_Damage, True) # We assign the blast damage automatically, since there's only ever one target for it.
-   targetUnitsList = [c for c in table if c.targetedBy and c.targetedBy == me and c.Type == 'Unit']
-   if len(targetUnitsList): targetUnit = targetUnitsList[0] # We set a variable for "targetUnit" for those strikes that expect only one target, where target the first valid unit in the list
-   else: targetUnit = None 
-   debugNotify("targetUnitsList = {}. targetUnit = {}".format(targetUnitsList,targetUnit))
-   knowsShiiCho = chkShiiChoTrainnig(card)
    if (Unit_Damage and not knowsShiiCho) and not Tactics and targetUnit and not hasDamageProtection(targetUnit,card):  # if our strike only does unit damage (which is cannot be spread around), and we've already targeted a unit, then just automatically apply it to it.
       addMarker(targetUnit, 'Damage',Unit_Damage, True)
       Unit_DamageTXT = " to {}".format(targetUnit)
