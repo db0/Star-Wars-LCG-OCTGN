@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.4.3.0"
+      version="2.4.3.2"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -300,10 +300,12 @@
 			<groupaction menu="Draw X..." default="False" shortcut="Ctrl+X" execute="drawMany" />
 			<groupaction menu="Draw from Bottom" default="False" shortcut="Ctrl+Alt+D" execute="drawBottom" />
 			<groupaction menu="Shuffle" default="False" execute="shuffle" />
+			<cardaction menu="Take card to hand" default="True" execute="drawCommandCard" />
 		</group>
 		<group name="Objective Deck" visibility="none" ordered="False" width="63" height="88" icon="Groups/sideboard.png" collapsed="False">
 			<groupaction menu="Draw and Play" default="True" shortcut="Ctrl+O" execute="drawObjective" />
 			<groupaction menu="Shuffle" default="False" execute="shuffle" />
+			<cardaction menu="Play Objective" default="True" execute="playObjectiveCard" />
       </group>
 		<group name="Discard Pile" visibility="all" ordered="False" width="63" height="88" icon="Groups/graveyard.png" collapsed="False" />
 		<group name="Victory Pile" visibility="all" ordered="False" width="63" height="88" icon="Counters/DSOb.png" collapsed="True" />

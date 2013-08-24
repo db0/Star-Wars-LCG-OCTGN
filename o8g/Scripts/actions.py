@@ -1457,6 +1457,12 @@ def drawCommand(group, silent = False):
    card.moveTo(me.hand)
    if not silent: notify("{} Draws a command card.".format(me))
 
+def drawCommandCard(card):
+   if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
+   mute()
+   notify("{} Takes a command card from the {} position in their command deck to their hand.".format(me,numOrder(card.getIndex)))
+   card.moveTo(me.hand)
+
 def drawObjective(group = me.piles['Objective Deck'], silent = False):
    if debugVerbosity >= 1: notify(">>> drawObjective(){}".format(extraASDebug())) #Debug
    mute()
@@ -1469,8 +1475,20 @@ def drawObjective(group = me.piles['Objective Deck'], silent = False):
    if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
    card = group.top()
    storeObjective(card)
-   if debugVerbosity >= 2: notify(">>> About to announce(){}") #Debug
+   if debugVerbosity >= 2: notify(">>> About to announce()") #Debug
    if not silent: notify("{}'s new objective is {}.".format(me,card))
+   
+def playObjectiveCard(card):
+   if debugVerbosity >= 1: notify(">>> drawObjective(){}".format(extraASDebug())) #Debug
+   mute()
+   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
+   for card_id in destroyedObjectives: 
+      try: currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
+      except ValueError: pass 
+   if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
+   storeObjective(card)
+   notify("{}'s new objective is {}.".format(me,card))
    
 def drawMany(group = me.piles['Command Deck'], count = None, destination = None, silent = False):
    if debugVerbosity >= 1: notify(">>> drawMany(){}".format(extraASDebug())) #Debug
