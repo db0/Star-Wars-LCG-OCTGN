@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.4.4.x
+
+* Fixed Prophet of the Dark Side.
+* Added some commands while viewing the command and objective deck. This will allow you to play specific objectives, or draw specific cards by double clicking on them
+
+
 ### 2.4.3.x
 
 * **Significant** Strikes which have Tactics and Damage, or Tactics>1 will actually ask the player for the right targets. A multiple choice menu will appear for all the units you've targeted, and you'll be able to select which units to damage and which to focus

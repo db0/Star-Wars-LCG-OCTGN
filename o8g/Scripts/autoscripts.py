@@ -1487,10 +1487,9 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       TokensX('Put1Echo Caverns:{}-isSilent'.format(IconList[choiceIcons]), '', targetCard)
       notify("{} activates {} to move one {} icon from {} to {}".format(me,card,IconChoiceList[choiceIcons],sourceCard,targetCard))
    elif card.name == "Prophet of the Dark Side" and action == 'PLAY':
+         debugNotify("Using Prophet of the Dark Side ability")
          cardView = me.piles['Command Deck'][1]
-         ScriptingPile
          cardView.moveTo(me.ScriptingPile)
-         #cardView.isFaceUp = True
          rnd(1,10)
          if not haveForce():
             delayed_whisper(":> The Prophet foresees that {} is upcoming!".format(cardView)) # If the player doesn't have the force, we just announce the card
