@@ -5,6 +5,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 
 * Fixed Prophet of the Dark Side.
 * Added some commands while viewing the command and objective deck. This will allow you to play specific objectives, or draw specific cards by double clicking on them
+* Fixed Old Ben's Spirit
 
 
 ### 2.4.3.x
