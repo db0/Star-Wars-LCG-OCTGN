@@ -1,15 +1,9 @@
 =====Message of the Day======
 
-IMPORTANT! PLEASE READ.
+IMPORTANT!
 
-There's a new bug in OCTGN that is bringing player decks in an out-of-sync state after shuffling.
+The shuffle/deck index bug should be fixed again now again.
 
-This means that any of your cards which attempts to grab information from opponent's decks or discard piles might be wrong.
-This will primarily affect cards with effects like "Take them Prisoner" and not even doing it manually will avoid it.
+The persistent freeze immediately upon playing sounds should also be fixed, so you can re-enable sounds if you disabled them for this reason.
 
-Please avoiding playing decks with suchs cards until further notice.
-
-There is nothing I can do about this at the moment as it's a serious OCTGN bug.
-
-I've informed the developers and will inform you on the blog and the MOTD when there's any news.
 =============================
