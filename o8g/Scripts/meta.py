@@ -473,8 +473,8 @@ def resolveUD(card,Unit_Damage):
    targetedStrike = chkTargetedStrike(card)
    targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and not hasDamageProtection(c,card) and (c.orientation == Rot90 or targetedStrike)]
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      if not confirm("You had no valid units targeted for {}'s Unit Damage icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
-      else: targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)]
+      targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)]
+      if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Unit Damage icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)
       if Unit_Damage:
@@ -498,7 +498,7 @@ def resolveUD(card,Unit_Damage):
       addMarker(targetUnitsList[0], 'Damage',Unit_Damage, True)
       targetUnits[targetUnitsList[0].name] = targetUnits.get(targetUnitsList[0].name,0) + Unit_Damage
    else: delayed_whisper(":::WARNING::: No valid units selected as targets for Uunit Damage. Please add damage tokens manually as required.")
-   debugNotify("<<< resolveUD() with targetUnits: {}".format([targetUnits])) #Debug
+   debugNotify("<<< resolveUD() with targetUnits: {}".format([targetUnits)) #Debug
    if len(targetUnits): return [targetUnits]
    else: return []
 
@@ -507,8 +507,8 @@ def resolveTactics(card,Tactics):
    targetUnits = {}
    targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit']
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      if not confirm("You had no valid units targeted for {}'s Tactics icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
-      else: targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)]
+      targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
+      if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Tactics icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)
       if Tactics:
