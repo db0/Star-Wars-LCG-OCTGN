@@ -54,7 +54,7 @@ def calcStringButtonHeight(STRING):
    newlines = 0
    for char in STRING:
       if char == '\n': newlines += 1
-   STRINGheight = 30 + (8 * newlines) + (7 * (len(STRING) / 20))
+   STRINGheight = 30 + (8 * newlines) + (8 * (len(STRING) / 20))
    return STRINGheight
    
 def formStringEscape(STRING): # A function to escape some characters that are not otherwise displayed by WinForms, like amperasands '&'
@@ -340,7 +340,7 @@ class MultiChoiceWindow(Form):
          self.index = self.index + 1 # The internal of the button is also the choice that will be put in our list of integers. 
          btn.Dock = DockStyle.Top # We dock the buttons one below the other, to the top of their container (choicePush)
          btn.AutoSize = True # Doesn't seem to do anything
-         btn.Height = 60 # We make them nice and big
+         btn.Height = calcStringButtonHeight(formStringEscape(option)) 
          btn.Click += self.choiceMade # This triggers the function which records each choice into the confirmValue[] list
          choicePush.Controls.Add(btn) # We add each button to its panel
          btn.BringToFront() # Add new buttons to the bottom of existing ones (Otherwise the buttons would be placed in reverse numerical order)

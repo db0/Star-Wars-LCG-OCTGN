@@ -16,6 +16,7 @@
 
 
 import re, time
+from collections import defaultdict
 
 Automations = {'Play'    : True, # If True, game will automatically trigger card effects when playing or double-clicking on cards. Requires specific preparation in the sets.
                'HARDCORE'               : False, # If True, game will not anymore display highlights and announcements on card waiting to trigger.
@@ -443,6 +444,92 @@ def chkShiiChoTrainnig(card): # Checks if a card or its attachments allow it to 
    debugNotify("<<< chkSiiChoTrainnig() with return {}".format(ShiiCho)) #Debug   
    return ShiiCho
    
+def chkTargetedStrike(card): # Checks if a card or its attachments allow it to split its damage amoing targets
+   debugNotify(">>> chkTargetedStrike() with card {}".format(card)) #Debug   
+   targetedStrike = False
+   Autoscripts = CardsAS.get(card.model,'').split('||')   
+   if len(Autoscripts) > 0:
+      for autoS in Autoscripts:
+         if re.search(r'ConstantAbility:TargetStrike',autoS):
+            debugNotify("Found Targeted Strike in card abilities!") #Debug
+            targetedStrike = True
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   debugNotify("About to check attachments for Targeted Strikes")
+   for attachment in hostCards:
+      if hostCards[attachment] == card._id:
+         debugNotify("Found Attachment: {}".format(Card(attachment)),3) #Debug
+         Autoscripts = CardsAS.get(Card(attachment).model,'').split('||')
+         for autoS in Autoscripts:
+            if re.search(r'ConstantAbility:TargetStrike',autoS) and checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,'hostType')):
+               debugNotify("Found Targeted Strike in card attachments!") #Debug
+               targetedStrike = True
+   debugNotify("<<< chkTargetedStrike() with return {}".format(targetedStrike)) #Debug   
+   return targetedStrike
+   
+def resolveUD(card,Unit_Damage):
+   debugNotify(">>> resolveUD()") #Debug   
+   targetUnits = {}
+   knowsShiiCho = chkShiiChoTrainnig(card)
+   targetedStrike = chkTargetedStrike(card)
+   targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and not hasDamageProtection(c,card) and (c.orientation == Rot90 or targetedStrike)]
+   if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
+      if not confirm("You had no valid units targeted for {}'s Unit Damage icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
+      else: targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)]
+   if len(targetUnitsList) > 1:
+      unitChoices = makeChoiceListfromCardList(targetUnitsList)
+      if Unit_Damage:
+         if not knowsShiiCho:
+            damagedUnit = SingleChoice('Please select the unit to take {} damage'.format(Unit_Damage), unitChoices, cancelButton = True)
+            if damagedUnit != 'ABORT':
+               addMarker(targetUnitsList[damagedUnit], 'Damage',Unit_Damage, True)
+               targetUnits[targetUnitsList[damagedUnit].name] = targetUnits.get(targetUnitsList[damagedUnit].name,0) + Unit_Damage
+         else:
+            damagedUnits = multiChoice("Please assign {} damage tokens among the {} units you've selected".format(Unit_Damage,len(targetUnitsList)), unitChoices)
+            if damagedUnits != 'ABORT': 
+               while len(damagedUnits) != Unit_Damage:
+                  damagedUnits = multiChoice(":::ERROR::: Amount of units chosen does not match your available Unit Damage!\
+                                          \n\nPlease assign {} damage tokens among the {} units you've selected".format(Unit_Damage,len(targetUnitsList)), unitChoices)
+                  if damagedUnits == 'ABORT': break
+            if damagedUnits != 'ABORT':
+               for choice in damagedUnits: 
+                  addMarker(targetUnitsList[choice], 'Damage',1, True)
+                  targetUnits[targetUnitsList[choice].name] = targetUnits.get(targetUnitsList[choice].name,0) + 1
+   elif len(targetUnitsList) == 1: 
+      addMarker(targetUnitsList[0], 'Damage',Unit_Damage, True)
+      targetUnits[targetUnitsList[0].name] = targetUnits.get(targetUnitsList[0].name,0) + Unit_Damage
+   else: delayed_whisper(":::WARNING::: No valid units selected as targets for Uunit Damage. Please add damage tokens manually as required.")
+   debugNotify("<<< resolveUD() with targetUnits: {}".format([targetUnits])) #Debug
+   if len(targetUnits): return [targetUnits]
+   else: return []
+
+def resolveTactics(card,Tactics):
+   debugNotify(">>> resolveTactics()") #Debug   
+   targetUnits = {}
+   targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit']
+   if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
+      if not confirm("You had no valid units targeted for {}'s Tactics icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
+      else: targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)]
+   if len(targetUnitsList) > 1:
+      unitChoices = makeChoiceListfromCardList(targetUnitsList)
+      if Tactics:
+         focusedUnits = multiChoice("Please assign {} focus tokens among the {} units you've selected".format(Tactics,len(targetUnitsList)), unitChoices)
+         if focusedUnits != 'ABORT':
+            while len(focusedUnits) != Tactics:
+               focusedUnits = multiChoice(":::ERROR::: Amount of units chosen does not match your available tactics!\
+                                       \n\nPlease assign {} focus tokens among the {} units you've selected".format(Tactics,len(targetUnitsList)), unitChoices)
+               if focusedUnits == 'ABORT': break
+         if focusedUnits != 'ABORT':
+            for choice in focusedUnits: 
+               addMarker(targetUnitsList[choice], 'Focus',1, True)
+               targetUnits[targetUnitsList[choice].name] = targetUnits.get(targetUnitsList[choice].name,0) + 1
+   elif len(targetUnitsList) == 1: 
+      addMarker(targetUnitsList[0], 'Focus',Tactics, True)
+      targetUnits[targetUnitsList[0].name] = targetUnits.get(targetUnitsList[0].name,0) + Tactics
+   else: delayed_whisper(":::WARNING::: No valid units selected as targets for Tactics. Please add focus tokens manually as required.")
+   debugNotify("<<< resolveTactics() with targetUnits: {}".format([targetUnits])) #Debug   
+   if len(targetUnits): return [targetUnits]
+   else: return []
+
 def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to be triggered for a (non) Dummy card
    if debugVerbosity >= 4: notify(">>> chkDummy()") #Debug
    if re.search(r'onlyforDummy',Autoscript) and card.highlight != DummyColor: return False

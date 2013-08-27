@@ -658,7 +658,7 @@ Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000017
 -----
-onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1-isReact
+onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1-isReact||ConstantAbility:TargetStrike
 +++++
 
 .....
@@ -1018,7 +1018,7 @@ Luke Skywalker
 -----
 ff4fb461-8060-457a-9c16-000000000064
 -----
-atTurnStart:Remove1Focus-duringOpponentTurn-isReact
+atTurnStart:Remove1Focus-duringOpponentTurn-isReact||ConstantAbility:TargetStrike
 +++++
 
 .....
@@ -1026,7 +1026,7 @@ Mandalorian Armor
 -----
 ff4fb461-8060-457a-9c16-000000000078
 -----
-Placement:Character_and_Unit
+Placement:Character_and_Unit||ConstantAbility:TargetStrike-ifHostBoba Fett
 +++++
 
 .....
@@ -1674,7 +1674,7 @@ Vader's Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000105
 -----
-Placement:Force User_or_Force Sensitive|||BonusIcons:UD:1
+Placement:Force User_or_Force Sensitive|||BonusIcons:UD:1||ConstantAbility:TargetStrike-ifHostDarth Vader
 +++++
 
 .....
@@ -3066,7 +3066,7 @@ Makashi Training
 -----
 ff4fb461-8060-457a-9c16-000000000400
 -----
-Placement:Force User
+Placement:Force User||ConstantAbility:TargetStrike
 +++++
 
 .....
@@ -3578,7 +3578,7 @@ Tusken Raider
 -----
 ff4fb461-8060-457a-9c16-000000000479
 -----
-onStrike:ReturnMyself
+onStrike:ReturnMyself-isReact
 +++++
 
 .....

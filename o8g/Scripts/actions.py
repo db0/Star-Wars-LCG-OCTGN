@@ -595,83 +595,42 @@ def strike(card, x = 0, y = 0, Continuing = False):
          return # Strike effects almost universally happen after focus.
    autoscriptOtherPlayers('UnitStrike',card)
    if debugVerbosity >= 2: notify("PlayScripts done. Calculating Icons") #Debug
-   AnnounceText = ''
    Unit_DamageTXT = ''
    TacticsTXT = ''
    Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
-   knowsShiiCho = chkShiiChoTrainnig(card)
-   targetUnitsList = [c for c in table if c.targetedBy and c.targetedBy == me and c.Type == 'Unit']
-   if len(targetUnitsList): targetUnit = targetUnitsList[0] # We set a variable for "targetUnit" for those strikes that expect only one target, where target the first valid unit in the list
-   else: # If we haven't targeted anything, we'll try to discover automatically what the target is going to be
-      if Tactics: # If our units has tactics, we can target units outside the battle, and that can make a very big list, so I prefer to ignore it unless they've specifically targeted units
-         if not Continuing: # We only give an option to abort if this was not a continued ability
-            if not confirm(":::WARNING::: You have no selected any target units for your tactics icons! If you continue you'll have to resolve the tactics and unit damage icons manually afterwards. Proceed Anyway?\
-                                 \n\n(Pressing 'No' will abort the strike and you can then target the units you want to focus and strike again."): 
-               subMarker(card, 'Focus',1, True) 
-               if card.highlight == LightForceColor or card.highlight == DarkForceColor: subMarker(card, 'Focus',1, True)
-               return
-         else: delayed_whisper("::WARNING::: Unit has Tactics icons but no enemy units were targeted. Ignoring Unit Damage and Tactics icons")
-         targetUnit = None
-      else:
-         targetUnitsList = [c for c in table if c.orientation == Rot90 and (c.controller != me or len(players) == 1) and c.Type == 'Unit']
-         if not len(targetUnitsList): targetUnit = None # If there's no participating unit on the table, then we select nothing.
-         elif len(targetUnitsList) == 1:
-            if hasDamageProtection(targetUnitsList[0],card): targetUnit = None
-            else: targetUnit = targetUnitsList[0]
-         else:
-            if (Unit_Damage and not knowsShiiCho) and not Tactics:
-               targetChoice = SingleChoice("Please select the target for this strike's unit damage", makeChoiceListfromCardList(targetUnitsList), cancelButton = True)
-               if targetChoice == 'ABORT': targetUnit = None
-               else: targetUnit = targetUnitsList[targetChoice]
-            else: targetUnit = targetUnitsList[0] # If the unit has unit damage and tactics icons, there's no point in asking now, as we're going to ask again a bit later.
-   debugNotify("targetUnitsList = {}. targetUnit = {}".format(targetUnitsList,targetUnit))
+   AnnounceText = "{} strikes with {} for ".format(me,card)
+   if Unit_Damage and not Tactics: 
+      targetsUD = resolveUD(card,Unit_Damage) # if our strike only does unit damage then just go ahead and resolve it
+      if len(targetsUD): AnnounceText += "{} Unit Damage on {}".format(Unit_Damage,targetsUD)
+      else: AnnounceText += "{} Unit Damage".format(Tactics,targetsUD)
+   elif Tactics and not Unit_Damage: 
+      targetsT = resolveTactics(card,Tactics) # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
+      if len(targetsT): AnnounceText += "{} Tactics on {}".format(Tactics,targetsT)
+      else: AnnounceText += "{} Tactics".format(Tactics,targetsT)
+   elif Unit_Damage and Tactics:
+      if confirm("Resolve Unit Damage first?"):
+         targetsUD = resolveUD(card,Unit_Damage)
+         targetsT = resolveTactics(card,Tactics)
+         if len(targetsT) and len(targetsUD): AnnounceText += "{} Unit Damage on {}, then {} Tactics on {}".format(Unit_Damage,targetsUD,Tactics,targetsT)      
+         elif len(targetsT) and not len(targetsUD): AnnounceText += "{} Unit Damage, then {} Tactics on {}".format(Unit_Damage,Tactics,targetsT)      
+         elif not len(targetsT) and len(targetsUD): AnnounceText += "{} Unit Damage on {}, then {} Tactics".format(Unit_Damage,targetsUD,Tactics)      
+         else: AnnounceText += "{} Unit Damage, then {} Tactics".format(Unit_Damage,Tactics)      
+      else: 
+         targetsT = resolveTactics(card,Tactics)
+         targetsUD = resolveUD(card,Unit_Damage)
+         if len(targetsT) and len(targetsUD): AnnounceText += "{} Tactics on {}, then {} Unit Damage on {}".format(Tactics,targetsT,Unit_Damage,targetsUD)      
+         elif len(targetsT) and not len(targetsUD): AnnounceText += "{} Tactics on {}, then {} Unit Damage".format(Tactics,targetsT,Unit_Damage)      
+         elif not len(targetsT) and len(targetsUD): AnnounceText += "{} Tactics, then {} Unit Damage on {}".format(Tactics,Unit_Damage,targetsUD)      
+         else: AnnounceText += "{} Tactics, then {} Unit Damage".format(Tactics,Unit_Damage)      
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
    if currentTarget.controller == opponent and not hasDamageProtection(currentTarget,card): 
       addMarker(currentTarget, 'Damage',Blast_Damage, True) # We assign the blast damage automatically, since there's only ever one target for it.
-   if (Unit_Damage and not knowsShiiCho) and not Tactics and targetUnit and not hasDamageProtection(targetUnit,card):  # if our strike only does unit damage (which is cannot be spread around), and we've already targeted a unit, then just automatically apply it to it.
-      addMarker(targetUnit, 'Damage',Unit_Damage, True)
-      Unit_DamageTXT = " to {}".format(targetUnit)
-   elif not Unit_Damage and Tactics == 1 and targetUnit:  # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
-      addMarker(targetUnit, 'Focus',Tactics, True)
-      TacticsTXT = " (exhausting {})".format(targetUnit)
-   elif ((Unit_Damage and Tactics) or Tactics > 1 or (Unit_Damage and knowsShiiCho)) and len(targetUnitsList):
-      if len(targetUnitsList) > 1: # We inform the user why we didn't assign markers automatically.
-         unitChoices = makeChoiceListfromCardList(targetUnitsList)
-         if Unit_Damage:
-            if not knowsShiiCho:
-               damagedUnit = SingleChoice('Please select the unit to take {} damage'.format(Unit_Damage), unitChoices, cancelButton = True)
-               if damagedUnit == 'ABORT': return 'ABORT' 
-               else: 
-                  addMarker(targetUnitsList[damagedUnit], 'Damage',Unit_Damage, True)
-            else:
-               damagedUnits = multiChoice("Please assign {} damage tokens among the {} units you've targeted".format(Unit_Damage,len(targetUnitsList)), unitChoices)
-               while len(damagedUnits) != Unit_Damage:
-                  damagedUnits = multiChoice(":::ERROR::: Amount of units chosen does not match your available Unit Damage!\
-                                          \n\nPlease assign {} damage tokens among the {} units you've targeted".format(Unit_Damage,len(targetUnitsList)), unitChoices)
-                  if damagedUnits == 'ABORT': return
-               for choice in damagedUnits: addMarker(targetUnitsList[choice], 'Damage',1, True)
-         if Tactics:
-            focusedUnits = multiChoice("Please assign {} focus tokens among the {} units you've targeted".format(Tactics,len(targetUnitsList)), unitChoices)
-            while len(focusedUnits) != Tactics:
-               focusedUnits = multiChoice(":::ERROR::: Amount of units chosen does not match your available tactics!\
-                                       \n\nPlease assign {} focus tokens among the {} units you've targeted".format(Tactics,len(targetUnitsList)), unitChoices)
-               if focusedUnits == 'ABORT': return
-            for choice in focusedUnits: addMarker(targetUnitsList[choice], 'Focus',1, True)
-      else: # If there's only one unit targeted, we assign all tokens on it
-         addMarker(targetUnitsList[0], 'Damage',Unit_Damage, True)
-         addMarker(targetUnitsList[0], 'Focus',Tactics, True)
-   elif not targetUnit and (Unit_Damage or Tactics): # We give some informatory whispers to the players to help them perform strikes faster in the future
-      delayed_whisper(":::ATTENTION::: You had no units targeted with shift+click, so no combat markers were autoassigned. Remember to target cards before striking with simple effects, to avoid having to add counters manually afterwards")
-   if Unit_Damage: AnnounceText += ' {} Unit Damage{}'.format(Unit_Damage,Unit_DamageTXT)
-   if Tactics: 
-      if AnnounceText == '': AnnounceText += ' {} Tactics{}'.format(Tactics,TacticsTXT)
-      elif Blast_Damage: AnnounceText += ', {} Tactics{}'.format(Tactics,TacticsTXT)
-      else: AnnounceText += ' and {} Tactics{}'.format(Tactics,TacticsTXT)
-   if Blast_Damage: 
-      if AnnounceText == '': AnnounceText += ' {} Blast Damage'.format(Blast_Damage)
-      else: AnnounceText += ' and {} Blast Damage'.format(Blast_Damage)
-   if AnnounceText == '': AnnounceText = " no effect"
-   notify("{} strikes with {} for{}.".format(me,card,AnnounceText))
+      if Blast_Damage: 
+         if Unit_Damage or Tactics: AnnounceText += " and {} Blast Damage on {}".format(Blast_Damage,currentTarget)
+         else: AnnounceText += "{} Blast Damage on {}".format(Blast_Damage,currentTarget)
+   if not Blast_Damage and not Unit_Damage and not Tactics: AnnounceText += "no effect"
+   AnnounceText += '.'
+   notify(AnnounceText)
    if debugVerbosity >= 3: notify("<<< strike()") #Debug    
       
 def participate(card, x = 0, y = 0, silent = False):
