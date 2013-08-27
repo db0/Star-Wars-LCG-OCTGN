@@ -282,7 +282,7 @@ Crossfire
 -----
 ff4fb461-8060-457a-9c16-000000000021
 -----
-
+onPlay:Put1Crossfire:UD-Targeted-atCharacter||onPlay:Put1Crossfire:BD-Targeted-atCharacter||onPlay:Put1Crossfire:Tactics-Targeted-atCharacter
 +++++
 
 .....

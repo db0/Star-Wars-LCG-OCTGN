@@ -631,6 +631,7 @@ def strike(card, x = 0, y = 0, Continuing = False):
    if not Blast_Damage and not Unit_Damage and not Tactics: AnnounceText += "no effect"
    AnnounceText += '.'
    notify(AnnounceText)
+   markerEffects('afterStrike')
    if debugVerbosity >= 3: notify("<<< strike()") #Debug    
       
 def participate(card, x = 0, y = 0, silent = False):

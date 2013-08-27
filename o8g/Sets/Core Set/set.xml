@@ -702,7 +702,7 @@
          <property name="Block" value="015" />
          <property name="Block Number" value="6" />
          <property name="Number" value="0029" />
-         <property name="Instructions" value="" />
+         <property name="Instructions" value="onPlay[Add One Unit Damage Icon|-|Add One Blast Damage Icon|-|Add One Tactics Icon]" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
       </card>

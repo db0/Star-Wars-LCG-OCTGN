@@ -60,7 +60,7 @@ def executePlayScripts(card, action):
          elif re.search(r'notHARDCOREenough', autoS) and chkHardcore(card): Autoscripts.remove(autoS) # the notHARDCOREenough is used for scripts which we don't want firing in hardcore mode, even if they're not reacts.
       debugNotify('Looking for multiple choice options') # Debug
       if action == 'PLAY': trigger = 'onPlay' # We figure out what can be the possible multiple choice trigger
-      elif action == 'TRASH': trigger = 'onDiscard'
+      elif action == 'LEAVING': trigger = 'onLeaving'
       elif action == 'CAPTURE': trigger = 'onCapture'
       else: trigger = 'N/A'
       debugNotify('trigger = {}'.format(trigger)) # Debug
@@ -364,6 +364,10 @@ def markerEffects(Time = 'Start'):
                  or re.search(r'Cocky',marker[0])
                  or re.search(r'Heavy Fire',marker[0])
                  or re.search(r'Ewok Scouted',marker[0]))):
+            TokensX('Remove999'+marker[0], marker[0] + ':', card)
+            notify("--> {} removes {} effect from {}".format(me,marker[0],card))
+         if (Time == 'afterStrike'
+               and (re.search(r'Crossfire',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
          if (Time == 'End' # Time = 'End' means End of Turn

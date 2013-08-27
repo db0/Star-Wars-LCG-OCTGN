@@ -498,7 +498,7 @@ def resolveUD(card,Unit_Damage):
       addMarker(targetUnitsList[0], 'Damage',Unit_Damage, True)
       targetUnits[targetUnitsList[0].name] = targetUnits.get(targetUnitsList[0].name,0) + Unit_Damage
    else: delayed_whisper(":::WARNING::: No valid units selected as targets for Uunit Damage. Please add damage tokens manually as required.")
-   debugNotify("<<< resolveUD() with targetUnits: {}".format([targetUnits)) #Debug
+   debugNotify("<<< resolveUD() with targetUnits: {}".format([targetUnits])) #Debug
    if len(targetUnits): return [targetUnits]
    else: return []
 
@@ -1501,15 +1501,9 @@ def TrialError(group, x=0, y=0): # Debugging
 
 def spawnTestCards():
    testcards = [  
-                "ff4fb461-8060-457a-9c16-000000000305",
+                "ff4fb461-8060-457a-9c16-000000000021",
                 "ff4fb461-8060-457a-9c16-000000000302",
                 "ff4fb461-8060-457a-9c16-000000000509",
-                "ff4fb461-8060-457a-9c16-000000000491",
-                "ff4fb461-8060-457a-9c16-000000000489",
-                "ff4fb461-8060-457a-9c16-000000000488",
-                "ff4fb461-8060-457a-9c16-000000000515",
-                "ff4fb461-8060-457a-9c16-000000000493",
-                "ff4fb461-8060-457a-9c16-000000000505",
                 "ff4fb461-8060-457a-9c16-000000000496"
                 ]
    for idx in range(len(testcards)):
