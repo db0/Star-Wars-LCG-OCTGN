@@ -602,11 +602,11 @@ def strike(card, x = 0, y = 0, Continuing = False):
    if Unit_Damage and not Tactics: 
       targetsUD = resolveUD(card,Unit_Damage) # if our strike only does unit damage then just go ahead and resolve it
       if len(targetsUD): AnnounceText += "{} Unit Damage on {}".format(Unit_Damage,targetsUD)
-      else: AnnounceText += "{} Unit Damage".format(Tactics,targetsUD)
+      else: AnnounceText += "{} Unit Damage".format(Unit_Damage)
    elif Tactics and not Unit_Damage: 
       targetsT = resolveTactics(card,Tactics) # If our strike does only 1 focus and nothing else, then we can auto-assign it to the targeted unit.
       if len(targetsT): AnnounceText += "{} Tactics on {}".format(Tactics,targetsT)
-      else: AnnounceText += "{} Tactics".format(Tactics,targetsT)
+      else: AnnounceText += "{} Tactics".format(Tactics)
    elif Unit_Damage and Tactics:
       if confirm("Resolve Unit Damage first?"):
          targetsUD = resolveUD(card,Unit_Damage)

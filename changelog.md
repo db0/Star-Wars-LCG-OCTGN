@@ -11,6 +11,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * Scripted Crossfire
 * Changed timing of Message from beyond to trigger after Refresh
 * Added an announcement to Confronting the Terror
+* Added Targeted Strike script to all the appropriate cards
 
 ### 2.4.4.x
 
