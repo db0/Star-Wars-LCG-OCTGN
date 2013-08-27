@@ -1786,9 +1786,9 @@ A Message from Beyond
 -----
 ff4fb461-8060-457a-9c16-000000000223
 -----
-
+afterCardRefreshing:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-isReact
 +++++
-R0:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-isReact
+
 .....
 Battle of Hoth
 -----
@@ -2763,6 +2763,14 @@ Yoda's Protection
 ff4fb461-8060-457a-9c16-000000000322
 -----
 Placement:Objective||whileInPlay:Put1Shield-AutoTargeted-onHost-hasntMarker{Shield}-foreachEngagedObjective-ifOrigCurrentObjectiveHost-isReact
++++++
+
+.....
+Confronting The Terror
+-----
+ff4fb461-8060-457a-9c16-000000000323
+-----
+onPlay:SimplyAnnounce{force their opponent to instead divide the damage among any number of units and objectives they control}
 +++++
 
 .....
