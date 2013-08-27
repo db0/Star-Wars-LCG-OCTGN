@@ -1,13 +1,15 @@
 =====Message of the Day======
 
-Statistics Gathering has now been enabled!
+IMPORTANT! PLEASE READ.
 
-The game will now record the statistics of the games you are playing, such as how many units you played, how many attacks you did, what the dial was at the end etc.
+There's a new bug in OCTGN that is bringing player decks in an out-of-sync state after shuffling.
 
-Once a player reaches a victory condition, the game will then upload these stats to a database.
+This means that any of your cards which attempts to grab information from opponent's decks or discard piles might be wrong.
+This will primarily affect cards with effects like "Take them Prisoner" and not even doing it manually will avoid it.
 
-We can then use these statistics to see how the metagame is changing as force packs come out, what the performance of various decks is and so on.
+Please avoiding playing decks with suchs cards until further notice.
 
-So please make sure to always properly finish a game via Dial, Objective or Decking victory, to allow the stats to be aggregated. 
-You can also concede a game from the Game menu if you wish and this will also be recorded.
+There is nothing I can do about this at the moment as it's a serious OCTGN bug.
+
+I've informed the developers and will inform you on the blog and the MOTD when there's any news.
 =============================
