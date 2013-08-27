@@ -7,7 +7,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
   * Now game will ask if you want to use Tactics or Unit Damage first if you have both and will announce the order they were used.
   * Game will now take into account if a unit has targeted strike, and will ignore non-participating targeted units if it doesn't.
   * Game will now confirm with the player if they want to allow it to auto-target, in case they forgot to target units before they strike. This will attempt to figure out which units are valid targets and provide a selection window.
-  * Pressing cancel on selecting units, will not put the tokens anywhere, allowing for manual placement.
+  * Pressing cancel on selecting units (or not using automatic discovery), will not put the tokens anywhere, allowing for manual placement.
 * Scripted Crossfire
 * Changed timing of Message from beyond to trigger after Refresh
 * Added an announcement to Confronting the Terror
