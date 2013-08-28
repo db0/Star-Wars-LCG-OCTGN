@@ -202,7 +202,7 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
       else: ChoiceTXT = "This card has multiple abilities.\nType the ones you would like to use, in order, and press the [OK] button"
       choices = card.Instructions.split('||') # A card with multiple abilities on use MUST use the Instructions properties
       choice = SingleChoice(ChoiceTXT, choices, type = 'button', default = 0)
-      if choice == 'ABORT': return
+      if not choice: return
       selectedAutoscript = Autoscripts[choice]
       if debugVerbosity >= 2: notify("### AutoscriptsList: {}".format(AutoscriptsList)) # Debug
    else: selectedAutoscript = Autoscripts[0]
@@ -1272,7 +1272,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if len(currTargets) == 1: finalTarget = currTargets[0]
       else: 
          choice = SingleChoice("Choose one unit to be destroyed by the Rancor", makeChoiceListfromCardList(currTargets), type = 'button', default = 0)
-         if choice == 'ABORT': 
+         if not choice: 
             notify(":::NOTICE::: {} has skipped Rancor's effects this turn".format(me))
             return
          finalTarget = currTargets[choice]
@@ -1643,7 +1643,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             if choiceType.group(1) == '1':
                if len(foundTargets) == 1: choice = 0 # If we only have one valid target, autoselect it.
                else: choice = SingleChoice(choiceTitle, targetChoices, type = 'button', default = 0)
-               if choice == 'ABORT': del foundTargets[:]
+               if not choice: del foundTargets[:]
                else: foundTargets = [foundTargets.pop(choice)] # if we select the target we want, we make our list only hold that target
       if debugVerbosity >= 3: # Debug
          tlist = [] 

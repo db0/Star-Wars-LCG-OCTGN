@@ -138,7 +138,7 @@ def information(Message):
    
 class SingleChoiceWindow(Form):
  
-   def __init__(self, BoxTitle, BoxOptions, type, defaultOption, cancelButton, cancelName = 'Cancel'):
+   def __init__(self, BoxTitle, BoxOptions, type, defaultOption, pages = 0, cancelButton = True, cancelName = 'Cancel'):
       self.Text = "Select an Option"
       self.index = 0
       self.confirmValue = None
@@ -190,7 +190,7 @@ class SingleChoiceWindow(Form):
       bufferPanel.Left = (self.ClientSize.Width - bufferPanel.Width) / 2
       bufferPanel.AutoSize = True
       choicePanel.Controls.Add(bufferPanel)
-      
+            
       for option in BoxOptions:
          if type == 'radio':
             btn = RadioButton()
@@ -214,25 +214,36 @@ class SingleChoiceWindow(Form):
       button.Dock = DockStyle.Bottom
       button.Click += self.buttonPressed
       if type == 'radio': self.Controls.Add(button) # We only add the "Confirm" button on a radio menu.
-      
-      if cancelButton:
-         cancelButton = Button() # We add a bytton to Cancel the selection
-         cancelButton.Text = cancelName
-         cancelButton.Width = 100
-         cancelButton.Dock = DockStyle.Bottom
-         #button.Anchor = AnchorStyles.Bottom
-         cancelButton.Click += self.cancelPressed
-         self.Controls.Add(cancelButton)
+ 
+      buttonNext = Button()
+      buttonNext.Text = "Next Page"
+      buttonNext.Width = 100
+      buttonNext.Dock = DockStyle.Bottom
+      buttonNext.Click += self.nextPage
+      if pages > 1: self.Controls.Add(buttonNext) # We only add the "Confirm" button on a radio menu.
 
+      cancelButton = Button() # We add a bytton to Cancel the selection
+      cancelButton.Text = cancelName # We can rename the cancel button if we want to.
+      cancelButton.Width = 100
+      cancelButton.Dock = DockStyle.Bottom
+      #button.Anchor = AnchorStyles.Bottom
+      cancelButton.Click += self.cancelPressed
+      if cancelButton: self.Controls.Add(cancelButton)
+      
    def buttonPressed(self, sender, args):
       self.timer.Stop()
       self.Close()
-      
+
+   def nextPage(self, sender, args):
+      self.confirmValue = "Next Page"
+      self.timer.Stop()
+      self.Close()
+ 
    def cancelPressed(self, sender, args): # The function called from the cancelButton
-      self.confirmValue = 'ABORT' # It replaces the choice list with an ABORT message which is parsed by the calling function
+      self.confirmValue = None # It replaces the choice list with an ABORT message which is parsed by the calling function
       self.timer.Stop()
       self.Close() # And then closes the form
- 
+      
    def checkedChanged(self, sender, args):
       self.confirmValue = sender.Name
       
@@ -253,21 +264,30 @@ class SingleChoiceWindow(Form):
          self.timer_tries += 1
 
 def SingleChoice(title, options, type = 'button', default = 0, cancelButton = True, cancelName = 'Cancel'):
-   if debugVerbosity >= 1: notify(">>> SingleChoice()".format(title))
+   debugNotify(">>> SingleChoice()".format(title))
    if Automations['WinForms']:
-      Application.EnableVisualStyles()
-      form = SingleChoiceWindow(title, options, type, default, cancelButton, cancelName = cancelName)
-      form.BringToFront()
-      form.ShowDialog()
-      if form.getIndex() != 'ABORT': choice = num(form.getIndex())
-      else: choice = form.getIndex()
+      optChunks=[options[x:x+7] for x in xrange(0, len(options), 7)]
+      optCurrent = 0
+      choice = "New"
+      while choice == "New" or choice == "Next Page":
+         Application.EnableVisualStyles()
+         form = SingleChoiceWindow(title, optChunks[optCurrent], type, default, pages = len(optChunks), cancelName = cancelName)
+         form.BringToFront()
+         form.ShowDialog()
+         choice = form.getIndex()
+         debugNotify("choice is: {}".format(choice), 2)
+         if choice == "Next Page": 
+            debugNotify("Going to next page", 3)
+            optCurrent += 1
+            if optCurrent >= len(optChunks): optCurrent = 0
+         elif choice != None: 
+            choice = num(form.getIndex()) + (optCurrent * 7) # if the choice is not a next page, then we convert it to an integer and give that back, adding 8 per number of page passed
    else:
       concatTXT = title + '\n\n'
       for iter in range(len(options)):
          concatTXT += '{}:--> {}\n'.format(iter,options[iter])
       choice = askInteger(concatTXT,0)
-      if choice == None: choice = 'ABORT'
-   if debugVerbosity >= 3: notify("<<< SingleChoice() with return {}".format(choice))
+   debugNotify("<<< SingleChoice() with return {}".format(choice), 3)
    return choice
  
    
@@ -387,7 +407,7 @@ class MultiChoiceWindow(Form):
       self.Close() # And then closes the form
  
    def choiceMade(self, sender, args): # The function called when pressing one of the choice buttons
-      self.confirmValue.append((self.currPage * 8) + int(sender.Name)) # We append the button's name to the existing choices list
+      self.confirmValue.append((self.currPage * 7) + int(sender.Name)) # We append the button's name to the existing choices list
       self.label.Text = self.origTitle + "\n\nYour current choices are:\n{}".format(self.confirmValue) # We display what choices we've made until now to the player.
  
    def getIndex(self): # The function called after the form is closed, to grab its choices list
@@ -411,7 +431,7 @@ class MultiChoiceWindow(Form):
 def multiChoice(title, options): # This displays a choice where the player can select more than one ability to trigger serially one after the other
    debugNotify(">>> multiChoice()".format(title))
    if Automations['WinForms']: # If the player has not disabled the custom WinForms, we use those
-      optChunks=[options[x:x+8] for x in xrange(0, len(options), 8)]
+      optChunks=[options[x:x+7] for x in xrange(0, len(options), 7)]
       optCurrent = 0
       choices = "New"
       currChoices = []
