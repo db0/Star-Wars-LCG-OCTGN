@@ -3370,7 +3370,7 @@ Spice Visions
 -----
 ff4fb461-8060-457a-9c16-000000000443
 -----
-
+onPlay:Remove1Focus-Targeted-atCharacter_or_Creature$$Put1Damage-Targeted-atCharacter_or_Creature
 +++++
 
 .....
@@ -3458,7 +3458,7 @@ Spice Visions
 -----
 ff4fb461-8060-457a-9c16-000000000461
 -----
-
+onPlay:Remove1Focus-Targeted-atCharacter_or_Creature$$Put1Damage-Targeted-atCharacter_or_Creature
 +++++
 
 .....
