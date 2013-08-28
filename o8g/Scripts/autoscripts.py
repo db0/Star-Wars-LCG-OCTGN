@@ -1216,11 +1216,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                           \nResources {}, Damage Capacity: {}\
                           \nText: {}\
                           ".format(objNames[iter], objDetails[iter][0], objDetails[iter][1], objDetails[iter][2]))
-      choice = SingleChoice("Which objective do you want to put into play from your deck?", objChoices, type = 'button', default = 0,cancelButton = False)
-      storeObjective(Card(objList[choice]))
-      shuffle(objectives)
-      if debugVerbosity >= 2: notify("#### About to announce")
-      notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
+      choice = SingleChoice("Which objective do you want to put into play from your deck?", objChoices, type = 'button', default = 0)
+      if choice:
+         storeObjective(Card(objList[choice]))
+         shuffle(objectives)
+         if debugVerbosity >= 2: notify("#### About to announce")
+         notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
    elif card.name == 'Black Squadron Pilot' and action == 'PLAY':
       if len(findTarget('AutoTargeted-atFighter_and_Unit-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
          fighter = findTarget('AutoTargeted-atFighter_and_Unit-byMe-choose1')
@@ -1328,10 +1329,11 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                              \nIcons: {}\
                              \nText: {}\
                              ".format(unitNames[iter], unitDetails[iter][0], unitDetails[iter][1], unitDetails[iter][2],unitDetails[iter][3]))
-         choice = SingleChoice("Which Force User unit do you want to put into play from your discard pile?", unitChoices, type = 'button', default = 0, cancelButton = False)
-      placeCard(Card(ForceUserList[choice]))
-      if debugVerbosity >= 2: notify("#### About to announce")
-      notify("{} returns into play".format(Card(ForceUserList[choice])))
+         choice = SingleChoice("Which Force User unit do you want to put into play from your discard pile?", unitChoices, type = 'button', default = 0)
+      if choice:
+         placeCard(Card(ForceUserList[choice]))
+         if debugVerbosity >= 2: notify("#### About to announce")
+         notify("{} returns into play".format(Card(ForceUserList[choice])))
    elif card.name == 'Superlaser Engineer' and action == 'PLAY': 
       cardList = []
       sendToBottomList = []
@@ -1378,19 +1380,20 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                           \nIcons: {}\
                           \nText: {}\
                           ".format(cardNames[iter], cardDetails[iter][0], cardDetails[iter][1], cardDetails[iter][2],cardDetails[iter][3],cardDetails[iter][4],cardDetails[iter][5]))
-      choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
-      capturedC = Card(cardList.pop(choice))
-      capturedC.moveTo(opponent.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
-      if debugVerbosity >= 3: notify("#### About to capture.")
-      capture(chosenObj = card,targetC = capturedC, silent = True)
-      if debugVerbosity >= 3: notify("#### Removing choice text")
-      ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
-      choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
-      for iter in range(len(cardList)):
-         if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
-         if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
-         else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
-      notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
+      choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0)
+      if choice:
+         capturedC = Card(cardList.pop(choice))
+         capturedC.moveTo(opponent.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
+         if debugVerbosity >= 3: notify("#### About to capture.")
+         capture(chosenObj = card,targetC = capturedC, silent = True)
+         if debugVerbosity >= 3: notify("#### Removing choice text")
+         ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
+         choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
+         for iter in range(len(cardList)):
+            if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
+            if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
+            else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
+         notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
    elif card.name == 'Trench Run' and action == 'PLAY': # We move this card to the opponent's exile in order to try and give control to them automatically.
       card.moveTo(opponent.ScriptingPile)
       rnd(1,10)
