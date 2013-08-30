@@ -136,7 +136,7 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
          objectiveList = [Card(objective_ID) for objective_ID in opponentObjectives]
          choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage.", makeChoiceListfromCardList(objectiveList), default = 0)
-         if not choice: return
+         if choice == None: return
          chosenObj = Card(opponentObjectives[choice])
          addMarker(chosenObj, 'Damage',1, True)
          #chosenObj.markers[mdict['Damage']] += 1
@@ -965,7 +965,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
          myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
          objectiveList = [Card(objective_ID) for objective_ID in myObjectives]
          choice = SingleChoice("Choose in to which objective to capture the card.", makeChoiceListfromCardList(objectiveList), default = 0)
-         if not choice: return
+         if choice == None: return
          chosenObj = Card(myObjectives[choice])
       if debugVerbosity >= 2: notify("About to Announce")
       captureTXT += " as part of their {} objective".format(chosenObj)

@@ -456,7 +456,7 @@ def multiChoice(title, options): # This displays a choice where the player can s
       for iter in range(len(options)): # We populate the concat string with the options
          concatTXT += '{}:--> {}\n'.format(iter,options[iter])
       choicesInteger = askInteger(concatTXT,0) # We now ask the user to put in an integer.
-      if not choicesInteger: choices = 'ABORT' # If the user just close the window, abort.
+      if choicesInteger == None: choices = 'ABORT' # If the user just close the window, abort.
       else: 
          choices = list(str(choicesInteger)) # We convert our number into a list of numeric chars
          for iter in range(len(choices)): choices[iter] = int(choices[iter]) # we convert our list of chars into a list of integers      
