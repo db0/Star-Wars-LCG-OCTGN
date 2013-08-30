@@ -1786,7 +1786,7 @@ A Message from Beyond
 -----
 ff4fb461-8060-457a-9c16-000000000223
 -----
-afterCardRefreshing:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-isReact
+afterCardRefreshing:Put1Damage$$Retrieve1Card-grabEnhancement-fromDiscard-isTopmost-duringMyTurn-isReact
 +++++
 
 .....
