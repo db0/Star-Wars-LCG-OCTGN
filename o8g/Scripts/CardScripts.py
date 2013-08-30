@@ -3212,7 +3212,7 @@ ff4fb461-8060-457a-9c16-000000000419
 -----
 
 +++++
-R0:SacrificeMyself$$Deal2Damage-AutoTargeted-atUnit-isAttacking-targetOpponents
+R0:SacrificeMyself$$Deal2Damage-AutoTargeted-atUnit-isAttacking-targetOpponents-isParticipating
 .....
 Protection
 -----
@@ -3826,7 +3826,7 @@ Snowspeeder Launch Bay
 -----
 ff4fb461-8060-457a-9c16-000000000491
 -----
-whileInPlay:Deal1Damage-Targeted-atVehicle-targetOpponents-foreachUnitStrike-typeSpeeder-isReact$$Put1Focus-Targeted-atVehicle_and_Walker-targetOpponents
+whileInPlay:Deal1Damage-Targeted-atVehicle-targetOpponents-foreachUnitStrike-typeSpeeder-isReact-onlyOnce$$Put1Focus-Targeted-atVehicle_and_Walker-targetOpponents
 +++++
 
 .....
