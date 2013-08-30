@@ -1,6 +1,13 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.4.6.x
+
+* Multiple Choices for Tactics or UD will now paginate if there's more than 7 possible choices
+* Proximity Mine won't damage non-participating units now.
+* Abilities from objectives which turn off when they're damaged, will not turn off if they get damaged with more than 1 damage at a time.
+
+
 ### 2.4.5.x
 
 * Improved Strikes further.
