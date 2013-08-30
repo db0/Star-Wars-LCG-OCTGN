@@ -658,7 +658,7 @@ Han Solo
 -----
 ff4fb461-8060-457a-9c16-000000000017
 -----
-onParticipation:Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1-isReact||ConstantAbility:TargetStrike
+onParticipation:Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-choose1-isReact||ConstantAbility:TargetStrike
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-afterCardRefreshing:Put1Damage-duringMyTurn-isReact$$Remove1Damage-AutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-AutoTargeted-atUnit-targetOpponents-choose1
+afterCardRefreshing:Put1Damage-duringMyTurn-isReact$$Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....

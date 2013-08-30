@@ -1564,13 +1564,13 @@ def addMarker(card, tokenType,count = 1, silent = False):
    mute()
    if tokenType == 'Shield':
       if not silent and card.markers[mdict['Shield']] and card.markers[mdict['Shield']] >= 1 and not confirm("This {} already has a shield. You are normally allowed only one shield per card.\n\nBypass Restriction?".format(card.Type)): return 'ABORT'
+   if tokenType == 'Damage' and card.markers[mdict[tokenType]] == 0 and count > 0: # If this is the first damage marker this card gets, then we consider the card to be freshly damaged.
+      executePlayScripts(card, 'DAMAGE')
    card.markers[mdict[tokenType]] += count	
    if not silent: notify("{} adds {} {} to {}.".format(me, count, tokenType, card))
    if tokenType == 'Shield' or tokenType == 'Focus' or tokenType == 'Damage':
       executePlayScripts(card, 'MARKERADD{}'.format(tokenType.upper()))
       #autoscriptOtherPlayers('{}MarkerAdded'.format(tokenType),card,count) # Don't need it yet, so I reduce the load
-   if tokenType == 'Damage' and card.markers[mdict[tokenType]] == 1: # If this is the first damage marker this card gets, then we consider the card to be freshly damaged.
-      executePlayScripts(card, 'DAMAGE')
    debugNotify("<<< addMarker()")
       
 def subFocus(card, x = 0, y = 0, count = 1):
