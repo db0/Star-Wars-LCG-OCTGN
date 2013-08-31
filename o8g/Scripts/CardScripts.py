@@ -570,7 +570,7 @@ Fleet Command Center
 -----
 ff4fb461-8060-457a-9c16-000000000190
 -----
-afterRefresh:Put1Shield-AutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
+afterRefresh:Put1Shield-DemiAutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -2842,7 +2842,7 @@ Bothan Spy
 -----
 ff4fb461-8060-457a-9c16-000000000364
 -----
-SimplyAnnounce{look at opponent's hand}-isReact
+onPlay:SimplyAnnounce{look at opponent's hand}-isReact
 +++++
 
 .....
