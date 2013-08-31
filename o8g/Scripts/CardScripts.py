@@ -3078,6 +3078,14 @@ Placement:Force User||ConstantAbility:TargetStrike
 +++++
 
 .....
+Force Precognition
+-----
+ff4fb461-8060-457a-9c16-000000000401
+-----
+Placement:Force User
++++++
+
+.....
 Secret Guardian ### We use this weird 'whileInPlay' trick because you cannot put markers on cards in your hand, and targeting is wiped when the card is moved by the previous script.
 -----
 ff4fb461-8060-457a-9c16-000000000402
