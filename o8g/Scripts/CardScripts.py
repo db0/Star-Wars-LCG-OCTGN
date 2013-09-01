@@ -3170,7 +3170,7 @@ Han's Heavy Blaster Pistol
 -----
 ff4fb461-8060-457a-9c16-000000000412
 -----
-Placement:Character||BonusIcons:UD:1, BD:1||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-onHost-atHan Solo
+Placement:Character||BonusIcons:UD:1, BD:1||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-onHost-atHan Solo-isDistributedEffect
 +++++
 
 .....
