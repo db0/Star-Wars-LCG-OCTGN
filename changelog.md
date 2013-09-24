@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.5.0.x
+
+* **Escape from Hoth** added unscripted
+
 ### 2.4.6.x
 
 * Multiple Choices for Tactics or UD will now paginate if there's more than 7 possible choices

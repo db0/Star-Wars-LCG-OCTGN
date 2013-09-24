@@ -1,9 +1,7 @@
 =====Message of the Day======
 
-IMPORTANT!
+Escape from Hoth has now been added unscripted to the game. 
 
-The shuffle/deck index bug should be fixed again now again.
-
-The persistent freeze immediately upon playing sounds should also be fixed, so you can re-enable sounds if you disabled them for this reason.
+Feel free to start making decks with it already and card scripts will be arriving soon.
 
 =============================
