@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-	<card id="ff4fb461-8060-457a-9c16-000000000517" name="A Hero's Resolve">
+	<card id="ff4fb461-8060-457a-9c16-000000000517" name="A Hero&#39;s Resolve">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -35,7 +35,7 @@
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Reduce the cost to play this card by 2 if it is played as an enhancement.  You may play this card on a friendly Speeder or Fighter unit as an enhancement with the text: &quot;Enhanced unit gains [Unit Damage] [Tactics], if enhanced unit leaves play, this card into play as a unit.&quot;" />
+		<property name="Text" value="Reduce the cost to play this card by 2 if it is played as an enhancement.&#xD;&#xA;&#xD;&#xA;You may play this card on a friendly Speeder or Fighter unit as an enhancement with the text: &quot;Enhanced unit gains [Unit Damage] [Tactics], if enhanced unit leaves play, this card into play as a unit.&quot;" />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Jedi" />
@@ -135,7 +135,7 @@
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="01" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Reaction: After your opponent's turn begins, sacrifice a unit to remove all focus tokens from a target enhancement or Hoth objective." />
+		<property name="Text" value="Reaction: After your opponent&#39;s turn begins, sacrifice a unit to remove all focus tokens from a target enhancement or Hoth objective." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Rebel Alliance" />
@@ -155,7 +155,7 @@
 		<property name="Damage Capacity" value="2" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Elite. Interrupt: When this unit leaves play, search your deck for a [Rebel Alliance] card, reveal it, and add it to your hand.  Shuffle your deck." />
+		<property name="Text" value="Elite.&#xD;&#xA;&#xD;&#xA;Interrupt: When this unit leaves play, search your deck for a [Rebel Alliance] card, reveal it, and add it to your hand.  Shuffle your deck." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Rebel Alliance" />
@@ -175,7 +175,7 @@
 		<property name="Damage Capacity" value="1" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Shielding. Interrupt: When this unit leaves play, place 1 focus token on a target enemy enhancement." />
+		<property name="Text" value="Shielding.&#xD;&#xA;&#xD;&#xA;Interrupt: When this unit leaves play, place 1 focus token on a target enemy enhancement." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Rebel Alliance" />
@@ -235,7 +235,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="1" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance your play area.  Forced Reaction: After this enhancement enters play, sacrifice a unit or place 1 focus token on this enhancement." />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;Forced Reaction: After this enhancement enters play, sacrifice a unit or place 1 focus token on this enhancement." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Rebel Alliance" />
@@ -275,7 +275,7 @@
 		<property name="Damage Capacity" value="10" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="While this unit is undamaged, it cannot be targeted by enemy card effects.  Reaction: After a card is sacrificed, deal 1 damage to a target enemy unit or objective." />
+		<property name="Text" value="While this unit is undamaged, it cannot be targeted by enemy card effects.&#xD;&#xA;&#xD;&#xA;Reaction: After a card is sacrificed, deal 1 damage to a target enemy unit or objective." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Sith" />
@@ -335,7 +335,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance your play area. Limited. Action: Sacrfice this enhancement to reduce the cost of the next [Sith] card you play this phase by 3." />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;Limited.&#xD;&#xA;&#xD;&#xA;Action: Sacrfice this enhancement to reduce the cost of the next [Sith] card you play this phase by 3." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Sith" />
@@ -375,7 +375,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Play only during your turn. Action: Each player must sacrifice a unit, if able." />
+		<property name="Text" value="Play only during your turn.&#xD;&#xA;&#xD;&#xA;Action: Each player must sacrifice a unit, if able." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Sith" />
@@ -395,7 +395,7 @@
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="You may attach units captured from play to this unit facedown.  Reaction: After this unit is focused to strike, it gains 1 combat icon of your choice for each captured card on it until the end of this strike." />
+		<property name="Text" value="You may attach units captured from play to this unit facedown.&#xD;&#xA;&#xD;&#xA;Reaction: After this unit is focused to strike, it gains 1 combat icon of your choice for each captured card on it until the end of this strike." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Scum and Villainy" />
@@ -455,7 +455,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="2" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance your play area. The first unit you play each turn enters play with 1 focus token on it." />
+		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;The first unit you play each turn enters play with 1 focus token on it." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Neutral" />
