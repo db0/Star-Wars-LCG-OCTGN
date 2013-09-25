@@ -633,6 +633,9 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
          if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
       if action.group(3) == "AnyTokenType": token = chooseAnyToken(sourceCard,action.group(1))
+      if token == None: 
+         whisper("Nothing to remove. Aborting")
+         return 'ABORT'
       if count == 999: modtokens = sourceCard.markers[token] # 999 means move all tokens from one card to the other.
       else: modtokens = count * multiplier
       debugNotify("About to check if it's a basic token to remove")
@@ -2291,6 +2294,7 @@ def chooseAnyToken(card,action):
    else: markerChoices = ["Shield","Focus","Damage"] # If we're adding any type of token, then we always provide a full choice list.
    if len(markerChoices) == 1: 
       token = mdict[markerChoices[0]]
+   elif len(markerChoices) == 0 and (action == 'Remove' or action == 'Transfer'): token = None # This means the card has no tokens to remove
    else:
       tokenChoice = SingleChoice("Choose one token to {} from {}.".format(action,card.name), markerChoices, type = 'button', default = 0)
       if tokenChoice == 'ABORT': return 'ABORT'
