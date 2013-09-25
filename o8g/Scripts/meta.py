@@ -505,9 +505,9 @@ def resolveUD(card,Unit_Damage):
 def resolveTactics(card,Tactics):
    debugNotify(">>> resolveTactics()") #Debug   
    targetUnits = {}
-   targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit']
+   targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and c.isFaceUp]
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card)] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
+      targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
       if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Tactics icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)
