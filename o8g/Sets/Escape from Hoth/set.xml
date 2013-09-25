@@ -35,7 +35,7 @@
 		<property name="Damage Capacity" value="3" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Reduce the cost to play this card by 2 if it is played as an enhancement.&#xD;&#xA;&#xD;&#xA;You may play this card on a friendly Speeder or Fighter unit as an enhancement with the text: &quot;Enhanced unit gains [Unit Damage][Blast Damage]. If enhanced unit leaves play, put this card into play as a unit.&quot;" />
+		<property name="Text" value="Reduce the cost to play this card by 2 if it is played as an enhancement.&#xD;&#xA;&#xD;&#xA;You may play this card on a friendly Speeder or Fighter unit as an enhancement with the text: &quot;Enhanced unit gains [Unit Damage][Tactics]. If enhanced unit leaves play, put this card into play as a unit.&quot;" />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Light" />
 		<property name="Affiliation" value="Jedi" />

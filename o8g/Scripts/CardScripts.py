@@ -3874,7 +3874,7 @@ Luke Skywalker
 -----
 ff4fb461-8060-457a-9c16-000000000518
 -----
-onPlay:CustomScript||BonusIcons:UD:1, BD:1||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atSpeeder_or_Fighter-noTargetingError-maxReduce2||onHostLeaving:CustomScript
+onPlay:CustomScript||BonusIcons:UD:1, T:1||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atSpeeder_or_Fighter-noTargetingError-maxReduce2||onHostLeaving:CustomScript
 +++++
 
 .....
