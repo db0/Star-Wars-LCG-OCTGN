@@ -1011,7 +1011,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if targetCType == '?': targetCType = ''
       if targetC.controller != me: xAxis = 1
       else: xAxis = -1
-      if captureGroup == 'Table' and targetC.highlight != EdgeColor and targetC.highlight != FateColor: # If the card was on the table, we also trigger "removed from play" effects
+      if captureGroup == 'Table' and targetC.highlight != EdgeColor and targetC.highlight != FateColor and targetC.highlight != RevealedColor: # If the card was on the table, we also trigger "removed from play" effects
          if not Continuing and not cardsLeaving(targetC):
             debugNotify("Executing Capture Leaving Play Scripts. Highlight was {}".format(targetC.highlight),2)
             execution = executePlayScripts(targetC, 'LEAVING-CAPTURED')
