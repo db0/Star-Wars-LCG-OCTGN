@@ -1,7 +1,5 @@
 =====Message of the Day======
 
-Escape from Hoth has now been added unscripted to the game. 
-
-Feel free to start making decks with it already and card scripts will be arriving soon.
+Escape from Hoth cards are now automated!
 
 =============================
