@@ -1,6 +1,18 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.5.1.x
+
+* Escape from Hoth now scripted. Some notes:
+  * Luke Skywalker, to use his ability, make sure you've targeted an appropriate unit when you play him. 
+  * Executor's ability will only fire with cards which cause a sacrifice through scripts. If you destroy a unit by mousing over it and pressing delete, you will have to trigger its ability manually, by double-clicking it.
+  * ISB Liaison not fully automated. It sacrifices but just announces its ability. Simply look at the relevant card manually and then draw a card.
+  * Aggression not automated. It just announces.
+* Leia won't trigger if captured from hand.
+* Captured Units or ones in Edge stacks won't appear as strike choices anymore
+* "It could be worse" now will remove 1 damage from a target.
+* Carbonite Transport shouldn't reveal the card name to the opponent anymore.
+
 ### 2.5.0.x
 
 * **Escape from Hoth** added unscripted

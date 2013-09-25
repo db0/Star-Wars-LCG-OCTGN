@@ -632,10 +632,11 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          completedSeek = True #If we have a valid source and destination card, then we can exit the loop
          targetCard = destTargets[0] # After we pop() the choice card, whatever remains is the target card.
          if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
-      if action.group(3) == "AnyTokenType": token = chooseAnyToken(sourceCard,action.group(1))
-      if token == None: 
-         whisper("Nothing to remove. Aborting")
-         return 'ABORT'
+      if action.group(3) == "AnyTokenType": 
+         token = chooseAnyToken(sourceCard,action.group(1))
+         if token == None: 
+            whisper("Nothing to remove. Aborting")
+            return 'ABORT'
       if count == 999: modtokens = sourceCard.markers[token] # 999 means move all tokens from one card to the other.
       else: modtokens = count * multiplier
       debugNotify("About to check if it's a basic token to remove")
@@ -647,9 +648,14 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
          targetCard.markers[token] += modtokens
       notify("{} has moved one focus token from {} to {}".format(card,sourceCard,targetCard))
    else:
-      debugNotify("In normal tokens module",2)
+      debugNotify("In normal tokens module")
       for targetCard in targetCards:
-         if action.group(3) == "AnyTokenType": token = chooseAnyToken(targetCard,action.group(1)) # If we need to find which token to remove, we have to do it once we know which cards we're checking.
+         if action.group(3) == "AnyTokenType":
+            debugNotify("Finding Token Type")
+            token = chooseAnyToken(targetCard,action.group(1)) # If we need to find which token to remove, we have to do it once we know which cards we're checking.
+            if token == None: 
+               whisper("Nothing to remove. Aborting")
+               return 'ABORT'
          if action.group(1) == 'Put':
             if re.search(r'isCost', Autoscript) and targetCard.markers[token] and targetCard.markers[token] > 0 and not confirm(":::ERROR::: This card already has a {} marker on it. Proceed anyway?".format(token[0])):
                return 'ABORT'
@@ -682,7 +688,6 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
             if modtokens < 0: subMarker(targetCard, token[0], abs(modtokens),True)
             else: addMarker(targetCard, token[0], modtokens,True)
          else: targetCard.markers[token] += modtokens # Finally we apply the marker modification
-            
    if abs(num(action.group(2))) == abs(999): total = 'all'
    else: total = abs(modtokens)
    if re.search(r'isPriority', Autoscript): card.highlight = PriorityColor
@@ -2286,6 +2291,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
    return finalMultiplier
    
 def chooseAnyToken(card,action):
+   debugNotify(">>> chooseAnyToken()")
    markerChoices = []
    if action == 'Remove' or action == 'Transfer':
       if card.markers[mdict['Shield']]: markerChoices.append("Shield")
@@ -2299,4 +2305,5 @@ def chooseAnyToken(card,action):
       tokenChoice = SingleChoice("Choose one token to {} from {}.".format(action,card.name), markerChoices, type = 'button', default = 0)
       if tokenChoice == 'ABORT': return 'ABORT'
       token = mdict[markerChoices[tokenChoice]]
+   debugNotify(">>> chooseAnyToken with return {}".format(token))
    return token

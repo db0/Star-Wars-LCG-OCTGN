@@ -698,11 +698,11 @@ def generate(card, x = 0, y = 0):
       whisper("Resources, this card produces not!")
       return
    elif cardResources > 1: 
-      count = askInteger("Card can generate up to {} resources. How many do you want to produce?".format(card.Resources), 1)
+      count = askInteger("Card can generate up to {} resources. How many do you want to produce?".format(cardResources), 1)
       if not count: return # If the player closed the window or put 0, do nothing.
       while count > cardResources:
          count = askInteger(":::ERROR::: This card cannot generate so many resources.\
-                         \n\nPlease input again how many resources to produce (Max {})".format(card.Resources), 1)
+                         \n\nPlease input again how many resources to produce (Max {})".format(cardResources), 1)
          if not count: return # If the player closed the window or put 0, do nothing.      
    else: count = 1
    try: unpaidC.markers[resdict['Resource:{}'.format(card.Affiliation)]] += count
