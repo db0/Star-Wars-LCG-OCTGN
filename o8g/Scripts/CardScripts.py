@@ -3002,7 +3002,7 @@ Security Control Center
 -----
 ff4fb461-8060-457a-9c16-000000000389
 -----
-whileInPlay:Put1Shield-foreachCardPlayed-onTriggerCard-typeUnit-isReact
+whileInPlay:Put1Shield-foreachCardPlayed-byMe-onTriggerCard-typeUnit-isReact
 +++++
 
 .....
@@ -3862,7 +3862,222 @@ onPlay:Lose1Reserves-onOpponent||onDamage:Gain1Reserves-onOpponent||onHeal:Lose1
 +++++
 
 .....
+A Hero's Resolve
+-----
+ff4fb461-8060-457a-9c16-000000000517
+-----
+ConstantEffect:Edge1Bonus-perEveryCard-AutoTargeted-targetMine-isEdgeCard-isDistributedEffect-ifOrigHasntMarker{Damage}
++++++
 
+.....
+Luke Skywalker
+-----
+ff4fb461-8060-457a-9c16-000000000518
+-----
+onPlay:CustomScript||BonusIcons:UD:1, BD:1||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atSpeeder_or_Fighter-noTargetingError-maxReduce2||onHostLeaving:CustomScript
++++++
+
+.....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000521
+-----
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000522
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+Evacuation Procedure
+-----
+ff4fb461-8060-457a-9c16-000000000523
+-----
+atTurnStart:SacrificeTarget-DemiAutoTargeted-atUnit-targetMine-choose1-duringOpponentTurn-isReact$$Remove999Focus-DemiAutoTargeted-atEnhancement_or_Objective_and_Hoth-hasMarker{Focus}-choose1
++++++
+
+.....
+Han Solo
+-----
+ff4fb461-8060-457a-9c16-000000000524
+-----
+onLeaving:Retrieve1Card-grabRebel Alliance-isReact$$ShuffleDeck
++++++
+
+.....
+Toryn Farr
+-----
+ff4fb461-8060-457a-9c16-000000000525
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||onLeaving:Put1Focus-DemiAutoTargeted-atEnhancement-choose1-targetOpponents-isReact
++++++
+
+.....
+Bright Hope
+-----
+ff4fb461-8060-457a-9c16-000000000526
+-----
+whileInPlay:Remove1AnyTokenType-foreachCardLeavingPlay-typeUnit-byFriendlyOriginController-isReact
++++++
+
+.....
+Buried Outpost
+-----
+ff4fb461-8060-457a-9c16-000000000527
+-----
+onPlay:Put1Focus||onPlay:SacrificeTarget-DemiAutoTargeted-atUnit-targetMine-choose1
++++++
+
+.....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000528
+-----
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
++++++
+
+.....
+Executor
+-----
+ff4fb461-8060-457a-9c16-000000000530
+-----
+whileInPlay:Deal1Damage-DemiAutoTargeted-atUnit_or_Objective-targetOpponents-choose1-foreachCardSacrificed-isReact
++++++
+R0:Deal1Damage-DemiAutoTargeted-atUnit_or_Objective-targetOpponents-choose1
+.....
+ISB Liaison
+-----
+ff4fb461-8060-457a-9c16-000000000531
+-----
+
++++++
+R0:SacrificeMyself$$SimplyAnnounce{look at the top card of a deck and then draw a card}
+.....
+ISB Liaison
+-----
+ff4fb461-8060-457a-9c16-000000000532
+-----
+
++++++
+R0:SacrificeMyself$$SimplyAnnounce{look at the top card of a deck and then draw a card}
+.....
+Sith Holocron
+-----
+ff4fb461-8060-457a-9c16-000000000533
+-----
+whileInPlay:Reduce3CostPlay-affectsSith-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeSith-onlyforDummy-isSilent
++++++
+R0:SacrificeMyself$$SimplyAnnounce{reduce the cost of the next Sith card they play this phase by 3}$$CreateDummy-nonUnique-isSilent-doNotDiscard
+.....
+Aggression
+-----
+ff4fb461-8060-457a-9c16-000000000534
+-----
+onPlay:SimplyAnnounce{force each player to sacrifice a unit if able}
++++++
+
+.....
+Hunt Them Down
+-----
+ff4fb461-8060-457a-9c16-000000000535
+-----
+
++++++
+
+.....
+Dengar
+-----
+ff4fb461-8060-457a-9c16-000000000536
+-----
+ConstantAbility:CanCapture-ifInPlay-typeUnit||onStrike:CustomScript
++++++
+
+.....
+Kihraxz-class Assault Fighter
+-----
+ff4fb461-8060-457a-9c16-000000000537
+-----
+onStrike:CaptureTarget-DemiAutoTargeted-atUnit-hasProperty{Cost}le1-targetOpponents-choose1-ifOrighasEdge-isReact
++++++
+
+.....
+Kihraxz-class Assault Fighter
+-----
+ff4fb461-8060-457a-9c16-000000000538
+-----
+onStrike:CaptureTarget-DemiAutoTargeted-atUnit-hasProperty{Cost}le1-targetOpponents-choose1-ifOrighasEdge-isReact
++++++
+
+.....
+Remote Hideout
+-----
+ff4fb461-8060-457a-9c16-000000000539
+-----
+whileInPlay:Put1Focus-foreachCardPlayed-byMe-onTriggerCard-typeUnit-onlyOnce
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000540
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
++++++
+
+.....
+Endless Reserves
+-----
+ff4fb461-8060-457a-9c16-000000000541
+-----
+ConstantEffect:Edge1Bonus-perEveryEvent-AutoTargeted-atEvent-targetMine-isEdgeCard-isDistributedEffect-ifOrigHasntMarker{Damage}
++++++
+
+.....
+Vast Resources
+-----
+ff4fb461-8060-457a-9c16-000000000542
+-----
+onPlay:SimplyAnnounce{reduce the cost of the next card they play this phase by 1}$$CreateDummy-isSilent-nonUnique-doNotDiscard||whileInPlay:Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typenotVast Resources-onlyforDummy-isSilent
++++++
+
+.....
+Vast Resources
+-----
+ff4fb461-8060-457a-9c16-000000000543
+-----
+onPlay:SimplyAnnounce{reduce the cost of the next card they play this phase by 1}$$CreateDummy-isSilent-nonUnique-doNotDiscard||whileInPlay:Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typenotVast Resources-onlyforDummy-isSilent
++++++
+
+.....
+Vast Resources
+-----
+ff4fb461-8060-457a-9c16-000000000544
+-----
+onPlay:SimplyAnnounce{reduce the cost of the next card they play this phase by 1}$$CreateDummy-isSilent-nonUnique-doNotDiscard||whileInPlay:Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typenotVast Resources-onlyforDummy-isSilent
++++++
+
+.....
+Vast Resources
+-----
+ff4fb461-8060-457a-9c16-000000000545
+-----
+onPlay:SimplyAnnounce{reduce the cost of the next card they play this phase by 1}$$CreateDummy-isSilent-nonUnique-doNotDiscard||whileInPlay:Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typenotVast Resources-onlyforDummy-isSilent
++++++
+
+.....
+Vast Resources
+-----
+ff4fb461-8060-457a-9c16-000000000546
+-----
+onPlay:SimplyAnnounce{reduce the cost of the next card they play this phase by 1}$$CreateDummy-isSilent-nonUnique-doNotDiscard||whileInPlay:Reduce1CostPlay-affectsAll-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typenotVast Resources-onlyforDummy-isSilent
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''

@@ -692,14 +692,15 @@ def generate(card, x = 0, y = 0):
    if (card.markers[mdict['Focus']]
          and card.markers[mdict['Focus']] >= 1
          and not confirm("Card is already exhausted. Bypass?")):
-      return 
-   if num(card.Resources) == 0: 
+      return
+   cardResources = calcResources(card)
+   if cardResources == 0: 
       whisper("Resources, this card produces not!")
       return
-   elif num(card.Resources) > 1: 
+   elif cardResources > 1: 
       count = askInteger("Card can generate up to {} resources. How many do you want to produce?".format(card.Resources), 1)
       if not count: return # If the player closed the window or put 0, do nothing.
-      while count > num(card.Resources):
+      while count > cardResources:
          count = askInteger(":::ERROR::: This card cannot generate so many resources.\
                          \n\nPlease input again how many resources to produce (Max {})".format(card.Resources), 1)
          if not count: return # If the player closed the window or put 0, do nothing.      
@@ -716,8 +717,19 @@ def generate(card, x = 0, y = 0):
    incrStat('resources',me.name) # We store that the player has played a unit
    if debugVerbosity >= 3: notify("<<< generate()") #Debug
 
+def calcResources(card):
+   debugNotify(">>> calcResources()") #Debug
+   extraResources = 0
+   if card.name == 'Hunt Them Down': # This objective has +1 resource for each captured card
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
+         if capturedCards[capturedC] == card._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
+            extraResources += 1 # Thus we increase the provided resources by one.
+   debugNotify("<<< calcResources() with return {}".format(num(card.Resources) + extraResources)) #Debug
+   return num(card.Resources) + extraResources
+   
 def findUnpaidCard():
-   if debugVerbosity >= 1: notify(">>> findUnpaidCard()") #Debug
+   debugNotify(">>> findUnpaidCard()") #Debug
    if unpaidCard: return unpaidCard
    else:
       for card in table:
@@ -914,6 +926,9 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             autoscriptOtherPlayers('CardLeavingPlay',card)
             if execution == 'POSTPONED': 
                return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
+         rescuedCount = rescueFromObjective(card) # Since Escape from Hoth, Units can capture cards as well.
+         if rescuedCount >= 1: extraTXT = ", rescuing {} captured cards".format(rescuedCount)
+         else: extraTXT = ''
          freeUnitPlacement(card)
          debugNotify("About to discard card. Highlight is {}. Group is {}".format(card.highlight,card.group.name),2)
          if card.group == table and card.highlight != CapturedColor:
@@ -921,7 +936,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             card.moveTo(card.owner.piles['Discard Pile']) # If the card was not moved around via another effect, then discard it now.
             cardsLeaving(card,'remove')
             playDestroySound(card)
-         if not silent: notify("{} discards {}".format(me,card))
+         if not silent: notify("{} discards {}{}".format(me,card,extraTXT))
    if previousHighlight != DummyColor:
       debugNotify("Checking if the card has attachments to discard as well.")      
       if card.group != table: clearAttachLinks(card) # If a card effect did not prevent the card from leaving the table, then we clear all attachments
@@ -961,12 +976,24 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if Side == 'Light': captor = opponent # Only dark side can capture.
       else: captor = me 
       if not chosenObj or chosenObj.owner != captor:
-         if debugVerbosity >= 2: notify("Don't have preset objective. Seeking...")
+         debugNotify("Don't have preset objective. Seeking...")
          myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
          objectiveList = [Card(objective_ID) for objective_ID in myObjectives]
+         otherHosts = [] #There are some non-objective cards, like Dengar, which are also allowed to capture cards. In the below loop we try to discover if any of them are possible to be used.
+         debugNotify("About to discover otherHosts")
+         for c in table:
+            Autoscripts = CardsAS.get(c.model,'').split('||')
+            for autoS in Autoscripts:
+               if re.search(r'CanCapture',autoS):
+                  if re.search(r'ifInPlay',autoS) and targetC.group != table: continue
+                  if not checkCardRestrictions(gatherCardProperties(targetC), prepareRestrictions(autoS,'type')): continue
+                  debugNotify("Appending {} to otherHosts".format(c),4)
+                  otherHosts.append(c)
+         objectiveList.extend(otherHosts)
          choice = SingleChoice("Choose in to which objective to capture the card.", makeChoiceListfromCardList(objectiveList), default = 0)
          if choice == None: return
-         chosenObj = Card(myObjectives[choice])
+         if choice + 1 > len(myObjectives): chosenObj = otherHosts[choice - len(myObjectives)]
+         else: chosenObj = Card(myObjectives[choice])
       if debugVerbosity >= 2: notify("About to Announce")
       captureTXT += " as part of their {} objective".format(chosenObj)
       if not silent: notify(captureTXT)

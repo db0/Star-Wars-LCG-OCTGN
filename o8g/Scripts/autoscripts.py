@@ -94,7 +94,7 @@ def executePlayScripts(card, action):
          currObjID = getGlobalVariable('Engaged Objective')
          if debugVerbosity >= 2 and scriptHostCHK: notify ('### scriptHostCHK: {}'.format(scriptHostCHK.group(1))) # Debug
          if debugVerbosity >= 2 and actionHostCHK: notify ('### actionHostCHK: {}'.format(actionHostCHK.group(1))) # Debug
-         if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (scriptHostCHK.group(1).upper() == actionHostCHK.group(1))): continue # If this is a host card
+         if (scriptHostCHK or actionHostCHK) and not ((scriptHostCHK and actionHostCHK) and (re.search(r'{}'.format(scriptHostCHK.group(1).upper()),actionHostCHK.group(1)))): continue # If this is a host card
          if ((effectType.group(1) == 'onPlay' and action != 'PLAY') or 
              (effectType.group(1) == 'onResolveFate' and action != 'RESOLVEFATE') or
              (effectType.group(1) == 'onStrike' and action != 'STRIKE') or
@@ -367,7 +367,8 @@ def markerEffects(Time = 'Start'):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
          if (Time == 'afterStrike'
-               and (re.search(r'Crossfire',marker[0]))):
+               and (re.search(r'Crossfire',marker[0])
+                  or re.search(r'Captured Bonus',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
          if (Time == 'End' # Time = 'End' means End of Turn
@@ -1035,6 +1036,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             trashResult = discard(targetCard, silent = True)
             if trashResult == 'ABORT': return 'ABORT'
             elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
+            if action.group(1) == 'Sacrifice': autoscriptOtherPlayers('CardSacrificed',targetCard)     
          elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
          elif action.group(1) == 'Return': 
             returnToHand(targetCard, silent = True)
@@ -1223,8 +1225,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if debugVerbosity >= 2: notify("#### About to announce")
          notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
    elif card.name == 'Black Squadron Pilot' and action == 'PLAY':
-      if len(findTarget('AutoTargeted-atFighter_and_Unit-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
-         fighter = findTarget('AutoTargeted-atFighter_and_Unit-byMe-choose1')
+      if len(findTarget('AutoTargeted-atFighter_and_Unit-targetMine')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
+         fighter = findTarget('AutoTargeted-atFighter_and_Unit-targetMine-choose1')
          if len(fighter) == 0: return
          hostCards = eval(getGlobalVariable('Host Cards'))
          hostCards[card._id] = fighter[0]._id
@@ -1527,6 +1529,43 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          topCard = me.piles['Command Deck'].top()
          if playEdge(topCard,True) != 'ABORT':
             notify("{} used {} to play an edge card from the top of their command deck".format(me,card))
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000000518': # Luke Skywalker B64/2
+      if action == 'PLAY': # In this scenario, Luke is attaching to a fighter or speeder the player had targeted before they played him.
+         vehicle = findTarget('Targeted-atFighter_or_Speeder-targetMine-noTargetingError')
+         if len(vehicle) > 0: #If the player has targeted a fighter or speeder we assume they wanted to play Luke in it.
+            hostCards = eval(getGlobalVariable('Host Cards'))
+            hostCards[card._id] = vehicle[0]._id
+            setGlobalVariable('Host Cards',str(hostCards))
+            cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == vehicle[0]._id])
+            if debugVerbosity >= 2: notify("### About to move into position") #Debug
+            x,y = vehicle[0].position
+            card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
+            card.sendToBack()
+            TokensX('Put1isEnhancement-isSilent', '', card)
+            notify("{} climbs into {}".format(card,vehicle[0]))
+      if re.search(r'HOST-LEAVING',action): # In this scenario, Luke is coming into play after his host card left play.
+            TokensX('Remove1isEnhancement-isSilent', '', card) # We unset Luke from being an enhancement
+            hostCards = eval(getGlobalVariable('Host Cards')) # We clear Luke from the hostcards as this would lead him to get removed from play when his previous host left.
+            del hostCards[card._id]
+            setGlobalVariable('Host Cards',str(hostCards))
+            placeCard(card)
+            executePlayScripts(card, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
+            autoscriptOtherPlayers('CardPlayed',card)
+            notify("{} ejects from their vehicle to safety".format(card))
+   elif card.name == "Dengar" and action == 'STRIKE':
+      delayed_whisper("-- Calculating Extra Combat Icons from captured cards. Please wait...")
+      TokensX('Remove999Captured Bonus:UD-isSilent', '', card)
+      TokensX('Remove999Captured Bonus:BD-isSilent', '', card)
+      TokensX('Remove999Captured Bonus:Tactics-isSilent', '', card)
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      cardCapturesNR = len([att_id for att_id in capturedCards if capturedCards[att_id] == card._id])
+      if cardCapturesNR:
+         for iconIter in range(cardCapturesNR):
+            choice = SingleChoice("Choose the {} icon".format(numOrder(iconIter)), ['Unit Damage','Blast Damage', 'Tactics'], type = 'button', default = 0)
+            if choice == 0: TokensX('Put1Captured Bonus:UD-isSilent', '', card)
+            elif choice == 1: TokensX('Put1Captured Bonus:BD-isSilent', '', card)
+            elif choice == 2: TokensX('Put1Captured Bonus:Tactics-isSilent', '', card)
+            else: break
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 #------------------------------------------------------------------------------
 # Helper Functions
@@ -1552,7 +1591,7 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
          targetGroups = prepareRestrictions(Autoscript)
          if debugVerbosity >= 2: notify("### About to start checking all targeted cards.\n### targetGroups:{}".format(targetGroups)) #Debug
          for targetLookup in group: # Now that we have our list of restrictions, we go through each targeted card on the table to check if it matches.
-            if ((targetLookup.targetedBy and targetLookup.targetedBy == me) or re.search(r'AutoTargeted', Autoscript)) and targetLookup.highlight != EdgeColor and targetLookup.highlight !=FateColor: 
+            if (targetLookup.targetedBy and targetLookup.targetedBy == me) or re.search(r'AutoTargeted', Autoscript):
             # OK the above target check might need some decoding:
             # Look through all the cards on the group and start checking only IF...
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
@@ -1687,7 +1726,7 @@ def prepareRestrictions(Autoscript, seek = 'target'):
    elif seek == 'retrieve': whatTarget = re.search(r'\b(grab)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "retrieve" is used when checking what types of cards to retrieve from one's deck or discard pile
    elif seek == 'reduce': whatTarget = re.search(r'\b(affects)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "reduce" is used when checking for what types of cards to recuce the cost.
    elif seek == 'hostType': whatTarget = re.search(r'\b(ifHost)([A-Za-z_{},& ]+)[-]?', Autoscript) # seek of "reduce" is used when checking for what types of cards to recuce the cost.
-   else: whatTarget = re.search(r'\b(at)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
+   else: whatTarget = re.search(r'-(at)([A-Za-z_{},& ]+)[-]?', Autoscript) # We signify target restrictions keywords by starting a string with "or"
    if whatTarget: 
       if debugVerbosity >= 2: notify("### Splitting on _or_") #Debug
       validTargets = whatTarget.group(2).split('_or_') # If we have a list of valid targets, split them into a list, separated by the string "_or_". Usually this results in a list of 1 item.
@@ -1841,6 +1880,12 @@ def checkSpecialRestrictions(Autoscript,card):
       validCard = False
    if re.search(r'isNotCommited',Autoscript) and (card.highlight == LightForceColor or card.highlight == DarkForceColor): 
       debugNotify("!!! Failing because card is committed to the force", 2)
+      validCard = False
+   if re.search(r'isEdgeCard',Autoscript) and card.highlight != EdgeColor and card.highlight != FateColor: 
+      debugNotify("!!! Failing because card has not been played as an edge card", 2)
+      validCard = False
+   if (card.highlight == EdgeColor or card.highlight == FateColor) and not re.search(r'isEdgeCard',Autoscript):
+      debugNotify("!!! Failing because card is an edge card and we're not explicitly looking for one.", 2)
       validCard = False
    if re.search(r'ifhasEdge',Autoscript) and not gotEdge(card.controller): 
       if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing have-edge fail because we're debugging")

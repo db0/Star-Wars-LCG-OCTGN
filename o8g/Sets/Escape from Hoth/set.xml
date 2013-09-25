@@ -222,7 +222,7 @@
 		<property name="Block" value="65" />
 		<property name="Block Number" value="5" />
 		<property name="Number" value="306" />
-		<property name="Instructions" value="" />
+		<property name="Instructions" value="onPlay[Place one Focus on it|-|Sacrifice a Unit]" />
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
@@ -335,7 +335,7 @@
 		<property name="Damage Capacity" value="0" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Enhance your play area.&#xD;&#xA;&#xD;&#xA;Limited.&#xD;&#xA;&#xD;&#xA;Action: Sacrifice this enhancement to reduce the cost of the next [Sith] card you play this phase by 3." />
+		<property name="Text" value="Enhance your play area. Limited. Action: Sacrifice this enhancement to reduce the cost of the next [Sith] card you play this phase by 3." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Sith" />
