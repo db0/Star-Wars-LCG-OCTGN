@@ -1014,7 +1014,7 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    else: dest = 'hand'
    debugNotify("targetCards(){}".format([c.name for c in targetCards]),2) #Debug   
    for targetCard in targetCards: 
-      if (action.group(1) == 'Capture' or action.group(1) == 'BringToPlay' or  action.group(1) == 'Return') and targetCard.group == table: 
+      if (action.group(1) == 'Capture' or action.group(1) == 'BringToPlay' or  action.group(1) == 'Return') and targetCard.group == table and targetCard.isFaceUp: 
          targetCardlist += '{},'.format(fetchProperty(targetCard, 'name')) # Capture saves the name because by the time we announce the action, the card will be face down.
       else: targetCardlist += '{},'.format(targetCard)
    rnd(1,10) # Dela yto be able to grab the names
