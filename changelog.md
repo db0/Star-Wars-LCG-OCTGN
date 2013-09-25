@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.5.2.x
+
+* Fixed Luke Skywalker as attachment. Now gives Tactics instead of BD
+
 ### 2.5.1.x
 
 * Escape from Hoth now scripted. Some notes:
