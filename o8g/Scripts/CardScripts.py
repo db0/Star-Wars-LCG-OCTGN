@@ -882,7 +882,7 @@ It Could Be Worse
 -----
 ff4fb461-8060-457a-9c16-000000000203
 -----
-
+onPlay:Remove1Damage-Targeted-atUnit_or_Objective
 +++++
 
 .....
