@@ -129,7 +129,7 @@ def parseNewCounters(player,counter,oldValue):
    mute()
    debugNotify(">>> parseNewCounters() for player {} with counter {}. Old Value = {}".format(player,counter.name,oldValue))
    if counter.name == 'Death Star Dial':
-      for player in players: 
+      for player in getPlayers(): 
          if player.counters['Death Star Dial'].value != counter.value: player.counters['Death Star Dial'].value = counter.value
    debugNotify("<<< parseNewCounters()")
 

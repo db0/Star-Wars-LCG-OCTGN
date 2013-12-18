@@ -1228,7 +1228,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
       winnerDifference = 0
       if debugVerbosity >= 2: notify("Edge cards already revealed. Gonna calculate edge") #Debug
       if forceCalc: # forceCalc is only used to make sure the edge has been assigned. If a player already has the edge, we don't change it
-         for player in players: # This is because they may have calculated the edge in the edge phase and discarded their edge cards laready.
+         for player in getPlayers(): # This is because they may have calculated the edge in the edge phase and discarded their edge cards laready.
             plAffiliation = getSpecial('Affiliation',player)
             if plAffiliation.markers[mdict['Edge']] and plAffiliation.markers[mdict['Edge']] == 1: return
       myEdgeTotal = 0

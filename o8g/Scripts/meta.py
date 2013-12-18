@@ -130,9 +130,9 @@ def ofwhom(Autoscript, controller = me):
    if debugVerbosity >= 1: notify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
    targetPL = None
    if re.search(r'o[fn]Opponent', Autoscript):
-      if len(players) > 1:
+      if len(getPlayers()) > 1:
          if controller == me: # If we're the current controller of the card who's scripts are being checked, then we look for our opponent
-            for player in players:
+            for player in getPlayers():
                if player.getGlobalVariable('Side') == '': continue # This is a spectator 
                elif player != me and player.getGlobalVariable('Side') != Side:
                   targetPL = player # Opponent needs to be not us, and of a different type. 
@@ -142,7 +142,7 @@ def ofwhom(Autoscript, controller = me):
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
          targetPL = me
    else: 
-      if len(players) > 1:
+      if len(getPlayers()) > 1:
          if controller != me: targetPL = controller         
          else: targetPL = me
       else: targetPL = me
@@ -151,7 +151,7 @@ def ofwhom(Autoscript, controller = me):
 
 def modifyDial(value):
    if debugVerbosity >= 1: notify(">>> modifyDial(). Value = {}".format(value)) #Debug   
-   for player in players: player.counters['Death Star Dial'].value += value
+   for player in getPlayers(): player.counters['Death Star Dial'].value += value
    if me.counters['Death Star Dial'].value >= 12:
       notify("===::: The Dark Side wins the Game! :::====")
       reportGame('DialVictory')
@@ -177,7 +177,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    selectedAbility.clear()
    setGlobalVariable('Stored Effects',str(selectedAbility))
-   if len(players) > 1: debugVerbosity = -1 # Reset means normal game.
+   if len(getPlayers()) > 1: debugVerbosity = -1 # Reset means normal game.
    elif debugVerbosity != -1 and confirm("Reset Debug Verbosity?"): debugVerbosity = -1 
    capturedCards = eval(getGlobalVariable('Captured Cards')) # This variable is for captured cards.
    capturedCards.clear()
@@ -471,9 +471,9 @@ def resolveUD(card,Unit_Damage):
    targetUnits = {}
    knowsShiiCho = chkShiiChoTrainnig(card)
    targetedStrike = chkTargetedStrike(card)
-   targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and not hasDamageProtection(c,card) and (c.orientation == Rot90 or targetedStrike)]
+   targetUnitsList = [c for c in table if (c.controller != me or len(getPlayers()) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and not hasDamageProtection(c,card) and (c.orientation == Rot90 or targetedStrike)]
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor]
+      targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller != me or len(getPlayers()) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor]
       if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Unit Damage icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)
@@ -505,9 +505,9 @@ def resolveUD(card,Unit_Damage):
 def resolveTactics(card,Tactics):
    debugNotify(">>> resolveTactics()") #Debug   
    targetUnits = {}
-   targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and c.isFaceUp]
+   targetUnitsList = [c for c in table if (c.controller != me or len(getPlayers()) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and c.isFaceUp]
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      targetUnitsList = [c for c in table if (c.controller != me or len(players) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
+      targetUnitsList = [c for c in table if (c.controller != me or len(getPlayers()) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
       if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Tactics icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)
@@ -719,7 +719,7 @@ def compareObjectiveTraits(Trait):
    # This function will go through all objectives on the table, count how many of them contain a specific trait
    # and return a list of the player(s) who have the most objectives with that trait.
    playerTraitCounts = {}
-   for player in players: # We go through all the objectives of each player and count which of them have the relevant trait.
+   for player in getPlayers(): # We go through all the objectives of each player and count which of them have the relevant trait.
       playerTraitCounts[player.name] = 0
       Objectives = eval(player.getGlobalVariable('currentObjectives'))
       if debugVerbosity >= 2: notify("### Checking {} Objectives".format(player.name)) # Debug
@@ -742,7 +742,7 @@ def compareObjectiveTraits(Trait):
    if debugVerbosity >= 2: notify("### Comparing Objectives count") # Debug
    topPlayers = []
    currentMaxCount = 0
-   for player in players:
+   for player in getPlayers():
       debugNotify("Comparing {} with counter at {}. Current Max at {} ".format(player,playerTraitCounts[player.name],currentMaxCount),2)
       if playerTraitCounts[player.name] > currentMaxCount:
          del topPlayers[:] # If that player has the highest current total, remove all other players from the list.
@@ -1163,7 +1163,7 @@ def versionCheck():
    if not startupMsg: MOTD() # If we didn't give out any other message , we give out the MOTD instead.
    startupMsg = True
    ### Below code Not needed anymore in 3.1.x
-   # if not startupMsg and (len(players) > 1 or debugVerbosity == 0): # At debugverbosity 0 I want to try and download the version.
+   # if not startupMsg and (len(getPlayers()) > 1 or debugVerbosity == 0): # At debugverbosity 0 I want to try and download the version.
       # try: (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt',3000)
       # except: code = url = None
       # if debugVerbosity >= 2: notify("### url:{}, code: {}".format(url,code)) #Debug
@@ -1276,7 +1276,7 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
    FORCEVICTORIES = gameStats[me.name]['forcev'] # How many force struggles the player won
    FORCETURNS = gameStats[me.name]['forceturns'] # How many balance phases the player started with the force.
    debugNotify("About to report player results online.", 2) #Debug
-   if (TURNS < 1 or len(players) == 1) and debugVerbosity < 1:
+   if (TURNS < 1 or len(getPlayers()) == 1) and debugVerbosity < 1:
       notify(":::ATTENTION:::Game stats submit aborted due to number of players ( less than 2 ) or turns played (less than 1)")
       return # You can never win before the first turn is finished and we don't want to submit stats when there's only one player.
    reportURL = 'http://84.205.248.92/slaghund/game.swlcg?g={}&u={}&r={}&w={}&aff={}&p={}&d={}&o={}&t={}&v={}&lid={}&gname={}&stu={}&str={}&sta={}&ste={}&stf={}&stb={}'.format(GUID,PLAYER,RESULT,WIN,AFFILIATION,PODS,DIAL,OBJECTIVES,TURNS,VERSION,LEAGUE,GNAME,UNITS,RESOURCES,ATTACKS,EDGEVICTORIES,FORCEVICTORIES,FORCETURNS)
@@ -1395,7 +1395,7 @@ def resetGameStats():
       debugNotify("Gamestats NULL")
       gameStats = {}
    debugNotify("gameStats = {}".format(gameStats), 4) #Debug
-   for player in players:
+   for player in getPlayers():
       debugNotify("Resetting for {}".format(player))
       gameStats[player.name] = {}
       gameStats[player.name]['units'] = 0      
@@ -1413,7 +1413,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
    ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
    whisper("+++ Fetching fresh scripts. Please Wait...")
-   if len(players) > 1 and debugVerbosity < 0:
+   if len(getPlayers()) > 1 and debugVerbosity < 0:
       try: (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/o8g/Scripts/CardScripts.py',5000)
       except: 
          if debugVerbosity >= 0: notify("Timeout Error when trying to download scripts")
@@ -1479,10 +1479,10 @@ def TrialError(group, x=0, y=0): # Debugging
       notify("Debug verbosity is now: {}".format(debugVerbosity))
       return
    notify("### Checking Players")
-   for player in players:
+   for player in getPlayers():
       if player.name == 'db0' or player.name == 'dbzer0': debugVerbosity = 0
    notify("### Checking Debug Validity")
-   if not (len(players) == 1 or debugVerbosity >= 0): 
+   if not (len(getPlayers()) == 1 or debugVerbosity >= 0): 
       whisper("This function is only for development purposes")
       return
    notify("### Checking Side")
