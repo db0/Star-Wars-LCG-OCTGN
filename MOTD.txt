@@ -1,5 +1,7 @@
 =====Message of the Day======
 
-Escape from Hoth cards are now automated!
+The Balance of the Force has been added non-scripted. 
+
+However be aware that there's no scripting yet supporting multiplayer scenarios.
 
 =============================
