@@ -101,14 +101,14 @@ def storeObjective(card, GameSetup = False):
 
 def getSpecial(cardType,player = me):
 # Functions takes as argument the name of a special card, and the player to whom it belongs, and returns the card object.
-   if debugVerbosity >= 1: notify(">>> getSpecial(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> getSpecial(){}".format(extraASDebug())) #Debug
    if cardType == 'BotD':   
       BotD = getGlobalVariable('Balance of the Force')
-      if debugVerbosity >= 3: notify("<<< getSpecial() by returning: {}".format(Card(num(BotD))))
+      debugNotify("<<< getSpecial() by returning: {}".format(Card(num(BotD))))
       return Card(num(BotD))
    else: 
       specialCards = eval(player.getGlobalVariable('specialCards'))
-      if debugVerbosity >= 3: notify("<<< getSpecial() by returning: {}".format(Card(specialCards[cardType])))
+      debugNotify("<<< getSpecial() by returning: {}".format(Card(specialCards[cardType])))
       return Card(specialCards[cardType])
 
 def checkUnique (card):
@@ -125,21 +125,41 @@ def checkUnique (card):
    if debugVerbosity >= 3: notify("<<< checkUnique() - Returning True") #Debug
    return True   
 
-def findOpponent():
+def findOpponent(position = '#1'):
+   debugNotify(">>> findOpponent()") #Debug
+   opponentsList = fetchAllOpponents()
+   if len(opponentsList) == 1: opponentPL = opponentsList[0]
+   else:
+      for player in opponentsList:
+         if player.getGlobalVariable('PLnumber') == position: opponentPL = player
    # Just a quick function to make the code more readable
-   return ofwhom('ofOpponent')
+   debugNotify(">>> findOpponent() returning {}".format(opponentPL.name)) #Debug
+   return opponentPL
       
-def ofwhom(Autoscript, controller = me): 
-   if debugVerbosity >= 1: notify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
+def findAlly(position = '#1'):
+   debugNotify(">>> findAlly()") #Debug
+   if len(myAllies) == 1: allyPL = myAllies[0]
+   else:
+      for player in myAllies:
+         if player.getGlobalVariable('PLnumber') == position: allyPL = player
+   # Just a quick function to make the code more readable
+   debugNotify(">>> findAlly() returning {}".format(allyPL.name)) #Debug
+   return allyPL
+      
+def ofwhom(Autoscript, controller = me, multiText = "Choose which opponent you're targeting with this effect."): 
+   debugNotify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
    targetPL = None
+   opponentList = []
    if re.search(r'o[fn]Opponent', Autoscript):
       if len(getPlayers()) > 1:
          if controller == me: # If we're the current controller of the card who's scripts are being checked, then we look for our opponent
             for player in getPlayers():
                if player.getGlobalVariable('Side') == '': continue # This is a spectator 
-               elif player != me and player.getGlobalVariable('Side') != Side:
-                  targetPL = player # Opponent needs to be not us, and of a different type. 
-                                    # In the future I'll also be checking for teams by using a global player variable for it and having players select their team on startup.
+               elif player != me and player.getGlobalVariable('Side') != Side: opponentList.append(player) # Opponent needs to be not us, and of a different type. 
+               if len(opponentList) == 1: targetPL = opponentList[0]
+               else: 
+                  choice = SingleChoice(multiText, [pl.name for pl in opponentList])
+                  targetPL = opponentList[choice]
          else: targetPL = me # if we're not the controller of the card we're using, then we're the opponent of the player (i.e. we're trashing their card)
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
@@ -149,9 +169,21 @@ def ofwhom(Autoscript, controller = me):
          if controller != me: targetPL = controller         
          else: targetPL = me
       else: targetPL = me
-   if debugVerbosity >= 3: notify("<<< ofwhom() returns {}".format(targetPL))
+   debugNotify("<<< ofwhom() returns {}".format(targetPL))
    return targetPL
 
+def fetchAllOpponents():
+   debugNotify(">>> fetchAllOpponents()") #Debug
+   opponentList = []
+   if len(getPlayers()) > 1:
+      for player in getPlayers():
+         if player.getGlobalVariable('Side') == '': continue # This is a spectator 
+         if player != me and player.getGlobalVariable('Side') != Side: opponentList.append(player) # Opponent needs to be not us, and of a different type. 
+   else: opponentList = [me]
+   debugNotify("<<< fetchAllOpponents()") #Debug
+   return opponentList
+   
+   
 def modifyDial(value):
    if debugVerbosity >= 1: notify(">>> modifyDial(). Value = {}".format(value)) #Debug   
    for player in getPlayers(): player.counters['Death Star Dial'].value += value
@@ -1343,6 +1375,9 @@ def initGame(): # A function which prepares the game for online submition
    debugNotify("<<< initGame()", 3) #Debug
    
 def reportGame(result = 'DialVictory'): # This submits the game results online.
+   if alliesNR > 1 or len(fetchAllOpponents()) > 1:
+      notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
+      return # We currently do not record multiplayer stats
    delayed_whisper("Please wait. Submitting Game Stats...")     
    debugNotify(">>> reportGame()") #Debug
    if not Automations['Play'] or not Automations['Triggers'] or not Automations['Start/End-of-Turn/Phase']:
@@ -1479,6 +1514,7 @@ def incrStat(stat,playerName):
    # 'forceturns'    : How many balance phases the player started with the force.
    # These are then stored into a global variable which is a nested dictionary. First dictionary contains a dictionaty for each player's name with their individual stats.
    debugNotify(">>> incrStat() - {} for {}".format(stat,playerName)) #Debug
+   if alliesNR > 1 or len(fetchAllOpponents()) > 1: return # We currently do not record multiplayer stats
    try: # Just in case. We don't want to break the whole game.
       gameStats = eval(getGlobalVariable('Game Stats'))
       debugNotify("gameStats = {}".format(gameStats), 4) #Debug

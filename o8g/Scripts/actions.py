@@ -26,7 +26,7 @@ import re
 
 Side = None # The side of the player. 
 Affiliation = None
-opponent = None # A variable holding the player object of our opponent.
+# opponent = None # A variable holding the player object of our opponent.
 SetupPhase = False
 unpaidCard = None # A variable that holds the card object of a card that has not been paid yet, for ease of find.
 edgeRevealed = False # Remembers if the player has revealed their edge cards yet or not.
@@ -72,9 +72,9 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          debugNotify("We'at turn End")
          if not forceStruggleDone and Automations['Start/End-of-Turn/Phase']: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
          me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
-         #setGlobalVariable('Active Player', opponent.name)
          atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
          notify("=== {} has ended their turn ===.".format(me))
+         opponent = findOpponent()
          opponent.setActivePlayer() # new in OCTGN 3.0.5.47 
          for card in table:
             if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
@@ -133,13 +133,14 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          notify(":> The Death Star dial advances by 1")
    else:
       if haveForce():
-         opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
-         objectiveList = [Card(objective_ID) for objective_ID in opponentObjectives]
+         objectiveList = []
+         for opponent in fetchAllOpponents():
+            opponentObjectives = eval(opponent.getGlobalVariable('currentObjectives'))
+            objectiveList.extend([Card(objective_ID) for objective_ID in opponentObjectives])
          choice = SingleChoice("The Balance of the Force is in your favour. Choose one Dark Side objective to damage.", makeChoiceListfromCardList(objectiveList), default = 0)
          if choice == None: return
          chosenObj = Card(opponentObjectives[choice])
          addMarker(chosenObj, 'Damage',1, True)
-         #chosenObj.markers[mdict['Damage']] += 1
          notify(":> The Force is with the Light Side! The rebel forces press the advantage and damage {}".format(chosenObj))      
          incrStat('forceturns',me.name) # We store that the opponent has won a force struggle
          
@@ -225,24 +226,26 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
    if Side == 'Light': 
       commitColor = LightForceColor
       commitOpponent = DarkForceColor
+      opSide = 'Dark'
    else: 
       commitColor = DarkForceColor
       commitOpponent = LightForceColor
-   if debugVerbosity >= 2: notify("### Counting my committed cards") #Debug
-   commitedCards = [c for c in table if c.controller == me and (c.highlight == commitColor or findMarker(c, "Unwavering Resolve"))]
-   if debugVerbosity >= 2: notify("### About to loop") #Debug
+      opSide = 'Light'
+   debugNotify("### Counting my committed cards") #Debug
+   commitedCards = [c for c in table if c.controller in myAllies and (c.highlight == commitColor or findMarker(c, "Unwavering Resolve"))]
+   debugNotify("### About to loop") #Debug
    for card in commitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): myStruggleTotal += num(card.Force)
          # We only include cards in the force struggle if they are not exausted and/or have a special ability on them
       except: myStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   if debugVerbosity >= 2: notify("### Counting my opponents cards") #Debug
-   opponentCommitedCards  = [c for c in table if c.controller == opponent and c.highlight == commitOpponent]
+   debugNotify("### Counting my opponents cards") #Debug
+   opponentCommitedCards  = [c for c in table if c.highlight == commitOpponent]
    for card in opponentCommitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): opponentStruggleTotal += num(card.Force)
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   if debugVerbosity >= 2: notify("### About to check for bonus force cards") #Debug
+   debugNotify("### About to check for bonus force cards") #Debug
    for c in table:
       debugNotify("Checking {}".format(c),4) #Debug
       Autoscripts = CardsAS.get(c.model,'').split('||')
@@ -252,51 +255,54 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          if bonusForce:
             targetCards = findTarget(autoS,card = c) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
             multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
-            if debugVerbosity >= 2: notify("### Found card with Bonus force") #Debug
+            debugNotify("### Found card with Bonus force") #Debug
             fBonus = (num(bonusForce.group(1)) * multiplier)
             if c.controller == me: myStruggleTotal += fBonus
             else: opponentStruggleTotal += fBonus
             if fBonus: notify("-- {}: +{} force total for {}".format(c,fBonus,c.controller))
-   if debugVerbosity >= 2: notify("### Checking Struggle") #Debug
+   debugNotify("### Checking Struggle") #Debug
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
-      if debugVerbosity >= 2: notify("### struggleTotal Positive") #Debug
+      debugNotify("### struggleTotal Positive") #Debug
       if (Side == 'Light' and not BotD.alternate == '') or (Side == 'Dark' and not BotD.alternate == 'DarkSide'):
-         if debugVerbosity >= 2: notify("### About to flip BotD due to my victory") #Debug
+         debugNotify("About to flip BotD due to my victory") #Debug
          if Side == 'Light': BotD.switchTo()
          else: BotD.switchTo('DarkSide')
-         x,y = Affiliation.position
-         if debugVerbosity >= 2: notify("### My Affiliation is {} at position {} {}".format(Affiliation, x,y,)) #Debug
+         firstPlayer = findAlly()
+         mainAffiliation = getSpecial('Affiliation',firstPlayer)
+         x,y = mainAffiliation.position
+         debugNotify("First Affiliation is {} at position {} {}".format(mainAffiliation, x,y,)) #Debug
          BotD.moveToTable(x, y + (playerside * 75))
-         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))
-      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,me,myStruggleTotal,opponent,opponentStruggleTotal))         
+         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,Side,myStruggleTotal,opSide,opponentStruggleTotal))
+      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,Side,myStruggleTotal,opSide,opponentStruggleTotal))         
       autoscriptOtherPlayers('ForceStruggleWon',BotD)
       incrStat('forcev',me.name) # We store that the player has won a force struggle
    elif myStruggleTotal - opponentStruggleTotal < 0: 
-      if debugVerbosity >= 2: notify("struggleTotal Negative") #Debug
+      debugNotify("struggleTotal Negative") #Debug
       if (Side == 'Light' and BotD.alternate == '') or (Side == 'Dark' and BotD.alternate == 'DarkSide'):
-         if debugVerbosity >= 2: notify("About to flip BotD due to my opponent's victory") #Debug
+         debugNotify("About to flip BotD due to my opponent's victory") #Debug
          if Side == 'Light': BotD.switchTo('DarkSide')
          else: BotD.switchTo()
-         opponentAffiliation = getSpecial('Affiliation',opponent)
+         firstOpponent = findOpponent()
+         opponentAffiliation = getSpecial('Affiliation',firstOpponent)
          x,y = opponentAffiliation.position
-         if debugVerbosity >= 2: notify("Opponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
+         debugNotify("firstOpponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
          BotD.moveToTable(x - (playerside * 70), y)
-         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
-      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opponent.getGlobalVariable('Side'),me,myStruggleTotal,opponent,opponentStruggleTotal))
+         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(firstOpponent.getGlobalVariable('Side'),Side,myStruggleTotal,opSide,opponentStruggleTotal))
+      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(firstOpponent.getGlobalVariable('Side'),Side,myStruggleTotal,opSide,opponentStruggleTotal))
       autoscriptOtherPlayers('ForceStruggleLost',BotD)
-      incrStat('forcev',opponent.name) # We store that the opponent has won a force struggle
+      incrStat('forcev',firstOpponent.name) # We store that the opponent has won a force struggle
    else: # If the current force totals are tied, we just announce that.
-      if debugVerbosity >= 2: notify("Force struggle is tied") #Debug
+      debugNotify("Force struggle is tied") #Debug
       if BotD.alternate == 'DarkSide': BotDside = 'Dark'
       else: BotDside = 'Light'
-      notify(":> The force struggle is tied. The Balance remains tiped to the {} Side. ({}: {} - {}: {})".format(BotDside,me,myStruggleTotal,opponent,opponentStruggleTotal))
+      notify(":> The force struggle is tied. The Balance remains tiped to the {} Side. ({}: {} - {}: {})".format(BotDside,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       if debugVerbosity >= 0:
          if confirm("Debug Force Win/Loss?"):
             if confirm("Win Force?"): autoscriptOtherPlayers('ForceStruggleWon',BotD)
             else: autoscriptOtherPlayers('ForceStruggleLost',BotD)
    forceStruggleDone = True # Set that the forcestruggle is done.
-   if debugVerbosity >= 3: notify("<<< resolveForceStruggle()") #Debug
+   debugNotify("<<< resolveForceStruggle()") #Debug
          
 def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = False): # Start an Engagement Phase
    if debugVerbosity >= 1: notify(">>> engageTarget(){}".format(extraASDebug())) #Debug
@@ -852,9 +858,10 @@ def handDiscard(card):
 def discardTarget(group, x = 0, y = 0): # Discards target card
    mute()
    for c in table:
-      if c.targetedBy and c.targetedBy == me: discard(card)
+      if c.targetedBy and c.targetedBy == me:
+         remoteCall(c.owner, 'discard', [c,0,0,False,False,me])
    
-def discard(card, x = 0, y = 0, silent = False, Continuing = False):
+def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer = me):
    debugNotify(">>> discard() card = {}".format(card)) #Debug
    mute()
    previousHighlight = card.highlight # We store the highlight before we move the card to the discard pile, to be able to check if it's an edge card to avoid triggering its autoscripts
@@ -863,68 +870,41 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
       card.moveTo(card.owner.piles['Discard Pile'])
       if not silent: notify("{}'s resident effect ends".format(card))
    elif card.Type == "Objective":
-      if card.controller == me:
-         if not Continuing and not silent and not confirm("Did your opponent thwart {}?".format(card.name)): return 'ABORT'
-         if not Continuing and not cardsLeaving(card):
-            execution = executePlayScripts(card, 'THWART')
-            if execution == 'POSTPONED': 
-               return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
-         debugNotify(" About to score objective")
-         currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-         currentObjectives.remove(card._id)
-         rescuedCount = rescueFromObjective(card)
-         if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
-         else: extraTXT = ''
-         me.setGlobalVariable('currentObjectives', str(currentObjectives))
-         opponent.counters['Objectives Destroyed'].value += 1         
-         if Side == 'Light': 
-            modifyDial(opponent.counters['Objectives Destroyed'].value)
-            notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
-         else: 
-            notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
-            if len(myAllies) == 2: objRequired = 5
-            else: objRequired = 3
-            if opponent.counters['Objectives Destroyed'].value >= objRequired: 
-               notify("===::: The Light Side wins the Game! :::====")
-               reportGame('ObjectiveDefeat')
-               #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
-         global reversePlayerChk
-         reversePlayerChk = True
-         autoscriptOtherPlayers('ObjectiveThwarted',card)
-         reversePlayerChk = False
-         playThwartSound()
-         card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
-      else:
-         if not Continuing and not silent and not confirm("Are you sure you want to thwart {}?".format(card.name)): return 'ABORT'
-         if not Continuing and not cardsLeaving(card):
-            execution = executePlayScripts(card, 'THWART')
-            if execution == 'POSTPONED': 
-               return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
-         destroyedObjectives = eval(getGlobalVariable('destroyedObjectives')) 
-         # Since we cannot modify the shared variables of other players, we store the destroyed card ids in a global variable
-         # Then when the other player tries to refresh, it first removes any destroyed objectives from their list.
-         destroyedObjectives.append(card._id)
-         rescuedCount = rescueFromObjective(card)
-         if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
-         else: extraTXT = ''
-         setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
-         if Side == 'Dark': 
-            me.counters['Objectives Destroyed'].value += 1
-            modifyDial(me.counters['Objectives Destroyed'].value)
-            notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
-         else: 
-            for player in myAllies: # In multiplayer we increase the destroyed objectives of each LS player
-               player.counters['Objectives Destroyed'].value += 1
-            notify("{} thwarts {}{}.".format(me,card,extraTXT))
-            if len(myAllies) == 2: objRequired = 5
-            else: objRequired = 3
-            if me.counters['Objectives Destroyed'].value >= objRequired: 
-               notify("===::: The Light Side wins the Game! :::====")
-               reportGame('ObjectiveVictory')
-               #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
-         autoscriptOtherPlayers('ObjectiveThwarted',card)
-         playThwartSound()
-         card.moveTo(me.piles['Victory Pile']) # Objectives are won by the opponent
+      if initPlayer == me: 
+         
+         confirmTXT = 'your opponent'
+      else: 
+         confirmTXT = initPlayer.name
+         opponent = initPlayer         
+      if not Continuing and not silent and not confirm("Did {} thwart {}?".format(confirmTXT,card.name)): return 'ABORT'
+      if not Continuing and not cardsLeaving(card):
+         execution = executePlayScripts(card, 'THWART')
+         if execution == 'POSTPONED': 
+            return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
+      debugNotify(" About to score objective")
+      currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+      currentObjectives.remove(card._id)
+      rescuedCount = rescueFromObjective(card)
+      if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
+      else: extraTXT = ''
+      me.setGlobalVariable('currentObjectives', str(currentObjectives))
+      opponent.counters['Objectives Destroyed'].value += 1         
+      if Side == 'Light': 
+         modifyDial(opponent.counters['Objectives Destroyed'].value)
+         notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
+      else: 
+         notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
+         if len(myAllies) == 2: objRequired = 5
+         else: objRequired = 3
+         if opponent.counters['Objectives Destroyed'].value >= objRequired: 
+            notify("===::: The Light Side wins the Game! :::====")
+            reportGame('ObjectiveDefeat')
+      global reversePlayerChk
+      reversePlayerChk = True
+      autoscriptOtherPlayers('ObjectiveThwarted',card)
+      reversePlayerChk = False
+      playThwartSound()
+      card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
       cardsLeaving(card,'remove')
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
