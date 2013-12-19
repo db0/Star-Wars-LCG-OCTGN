@@ -848,7 +848,12 @@ def handDiscard(card):
       card.moveTo(me.piles['Discard Pile'])
       notify("{} discards {}".format(me,card))
    debugNotify("<<< handDiscard()") #Debug
-      
+
+def discardTarget(group, x = 0, y = 0): # Discards target card
+   mute()
+   for c in table:
+      if c.targetedBy and c.targetedBy == me: discard(card)
+   
 def discard(card, x = 0, y = 0, silent = False, Continuing = False):
    debugNotify(">>> discard() card = {}".format(card)) #Debug
    mute()
@@ -903,11 +908,13 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
          if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
          else: extraTXT = ''
          setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
-         me.counters['Objectives Destroyed'].value += 1
          if Side == 'Dark': 
+            me.counters['Objectives Destroyed'].value += 1
             modifyDial(me.counters['Objectives Destroyed'].value)
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: 
+            for player in myAllies: # In multiplayer we increase the destroyed objectives of each LS player
+               player.counters['Objectives Destroyed'].value += 1
             notify("{} thwarts {}{}.".format(me,card,extraTXT))
             if len(myAllies) == 2: objRequired = 5
             else: objRequired = 3
@@ -1450,7 +1457,7 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
 def drawCommand(group, silent = False):
    if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
    mute()
-   if len(group) == 0: 
+   if len(group) == 0 and len(myAllies) == 1:
       notify(":::ATTENTION::: {} cannot draw another card. {} loses the game!".format(me,me))
       reportGame('DeckDefeat')   
    card = group.top()
@@ -1500,7 +1507,7 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    if SSize == 0: return 0
    if count == None: count = askInteger("Draw how many cards?", 5)
    if count == None: return 0
-   if count > SSize : 
+   if count > SSize and len(myAllies) == 1: 
       notify(":::ATTENTION::: {} cannot draw {} cards. {} loses the game!".format(me,count,me))
       reportGame('DeckDefeat')
       return 0

@@ -274,6 +274,7 @@
       <groupaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectTargetCard" />
 		<cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		<cardaction menu="Discard Card/Thwart Objective" default="False" shortcut="Del" execute="discard" />
+		<cardaction menu="Destroy Target Card/Objective" default="False" shortcut="Del" execute="discardTarget" />
       <!-- <cardaction menu="Show Card Position" default="False" shortcut="Ctrl+Shift+X" execute="ShowPosC" /> -->
 	</table>
 	<player summary="Hand: {#Hand} / DS Dial: {#Death Star Dial} / Victory Pile {#Objectives Destroyed}">
@@ -294,7 +295,7 @@
 			<groupaction menu="Random Discard" default="False" execute="handRandomDiscard" />
          <groupaction menu="Show a Card at Random" default="False" execute="showatrandom"/>
          <cardaction menu="Inspect" default="False" shortcut="Ctrl+I" execute="inspectCard" />
-         <cardaction menu="Discard/Remove 4th Objective" default="False" shortcut="del" execute="handDiscard" />           
+         <cardaction menu="Discard/Remove 4th Objective" default="False" shortcut="Del" execute="handDiscard" />           
          <cardaction menu="Send to bottom of deck (random order)" default="False" shortcut="Ctrl+B" batchExecute="sendToBottom" />
 		</hand>
 		<group name="Command Deck" visibility="none" ordered="False" width="63" height="88" icon="Groups/library.png" collapsed="False">
