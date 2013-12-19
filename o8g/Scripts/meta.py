@@ -47,6 +47,7 @@ costModifiers = [] # used in reduceCost to store the cards that might hold poten
 #hostCards = {} # A dictionary which holds which is the host of each attachment
 alliesNR = 1
 MPxOffset = 0
+MPyOffset = 0
     
 def storeSpecial(card): 
 # Function stores into a shared variable some special cards that other players might look up.
@@ -71,13 +72,13 @@ def storeObjective(card, GameSetup = False):
    if GameSetup:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable(MPxOffset + (playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective), True)
+         Objective.moveToTable(MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective), True)
          Objective.highlight = ObjectiveSetupColor # During game setup, we put the objectives face down so that the players can draw their hands before we reveal them.
          Objective.orientation = Rot90
    else:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable( MPxOffset + (playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
+         Objective.moveToTable( MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
          xPos, yPos = Objective.position
          countCaptures = 0
          if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
@@ -170,6 +171,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    opponent = None
    alliesNR = 1
    MPxOffset = 0
+   MPyOffset = 0
    edgeRevealed = False
    firstTurn = True
    limitedPlayed = False
@@ -215,24 +217,21 @@ def placeCard(card):
                card.moveToTable(positionC[0],positionC[1])
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
-               if alliesNR == 3:
-                  loopsNR = unitAmount / 5 # With three player, we only allow 5 units per player to prevent overlapping
-                  loopback = 5 * loopsNR
-               elif alliesNR == 2:
-                  loopsNR = unitAmount / 6
-                  loopback = 6 * loopsNR
-               else: 
+               if alliesNR == 1:
                   loopsNR = unitAmount / 7 
                   loopback = 7 * loopsNR
+               else: 
+                  loopsNR = unitAmount / 6 # With multiplayer, we only allow 6 units per player to prevent overlapping
+                  loopback = 6 * loopsNR
                if getSetting('Unit Placement', 'Center') == 'Center': # If the unit placement is the default center orientation, then we start placing units from the center outwards
                   if unitAmount == 0: xoffset = MPxOffset + (playerside * 20) - 25
                   else: xoffset = MPxOffset + (-playerside * ((2 * (unitAmount % 2)) - 1) * (((unitAmount - loopback) + 1) / 2) * cheight(card,0)) + (playerside * 20) - 25 # The -25 is an offset to help center the table.
                   if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
-                  yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)
+                  yoffset = MPyOffset + yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)
                else:                  
                   xoffset = MPxOffset + (playerside * (-325 + cheight(card,0))) + (playerside * cheight(card,0) * (unitAmount - loopback)) - 25
                   if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
-                  yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)                  
+                  yoffset = MPyOffset + yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)                  
                card.moveToTable(xoffset,yoffset)
             playUnitSound(card)
          if card.Type == 'Enhancement':
@@ -1049,9 +1048,9 @@ def cardsLeaving(card,action = 'chk'):
    
 def setupMultiPlayer():
    debugNotify(">>> setupMultiPlayer()") #Debug
-   global alliesNR,MPxOffset
+   global alliesNR,MPxOffset, MPyOffset
    TwoPlayerPos = {'#1':350, '#2':-350}
-   ThreePlayerPos = {'#1':600, '#2':0, '#3':-600}
+   ThreePlayerPos = {'#1':0, '#2':350, '#3':-350}
    for player in getPlayers():
       if len(player.hand) == 0 and not confirm("Have all the players loaded their decks?\
                                             \n\n(If not, the game will not be able to setup correctly. Press 'Yes' only if everyone but spectators have loaded a deck"): 
@@ -1113,6 +1112,7 @@ def setupMultiPlayer():
          debugNotify("Found 1 available position")
          me.setGlobalVariable('PLnumber', availablePos[0]) 
          MPxOffset = ThreePlayerPos[availablePos[0]]
+      if MPxOffset == 0: MPyOffset = playerside * 250
    debugNotify("<<< setupMultiPlayer() with MPxOffset = {}".format(MPxOffset)) #Debug
    
 def findAvailablePos(myAllies):
@@ -1145,15 +1145,17 @@ def debugPLPos(group = table,x = 0,y = 0):
          table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * -390) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Wait! Button
          table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Actions? Button
    else:
-      for MPxOffset in [600 * playerside, 0, -600 * playerside]:
+      for MPxOffset in [350 * playerside, 0, -350 * playerside]:
          Affiliation = table.create("ff4fb461-8060-457a-9c16-000000000095", 0, 0, 1, True) 
-         Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
-         table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", MPxOffset + (playerside * -340) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The OK Button
-         table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * -390) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Wait! Button
-         table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Actions? Button
+         if MPxOffset == 0: MPyOffset = playerside * 250
+         else: MPyOffset = 0
+         Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 20) + yaxisMove(Affiliation))
+         table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", MPxOffset + (playerside * -340) - 25, MPyOffset + (playerside * 130) + yaxisMove(Affiliation), 1, True) # The OK Button
+         table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * -390) - 25, MPyOffset + (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+         table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, MPyOffset + (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Actions? Button
    
 def switchPLPos(group = table,x = 0,y = 0):
-   global MPxOffset, alliesNR
+   global MPxOffset, alliesNR, MPyOffset
    mute()
    posChoice = SingleChoice("Switch to which pos?", ['2pl #1','2pl #2','3pl #1','3pl #2','3pl #3'])
    if posChoice == 0: 
@@ -1164,10 +1166,11 @@ def switchPLPos(group = table,x = 0,y = 0):
       MPxOffset = -350 * playerside
    if posChoice == 2: 
       alliesNR = 3
-      MPxOffset = 600 * playerside
+      MPxOffset = 0
+      MPyOffset = playerside * 250
    if posChoice == 3: 
       alliesNR = 3
-      MPxOffset = 0
+      MPxOffset = 600 * playerside
    if posChoice == 4: 
       alliesNR = 3
       MPxOffset = -600 * playerside
