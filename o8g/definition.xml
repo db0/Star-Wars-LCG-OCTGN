@@ -200,8 +200,8 @@
          <groupaction menu="Switch Custom Forms ON/OFF" default="False" execute="switchWinForms" />  
          <groupaction menu="Re-Download all card automations" default="False" execute="fetchCardScripts" />
          <groupaction menu="Debug" default="False" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
-		         <groupaction menu="Debug PL Pos" default="False" execute="debugPLPos" />  
-		         <groupaction menu="Change PL Pos" default="False" shortcut="Ctrl+Shift+P" execute="switchPLPos" />  
+<!--         <groupaction menu="Debug PL Pos" default="False" execute="debugPLPos" />   
+         <groupaction menu="Change PL Pos" default="False" shortcut="Ctrl+Shift+P" execute="switchPLPos" />  -->
       </groupactions>
 <!--		<cardaction menu="DebugTest" default="True" execute="flipcard" /> -->
 <!--		<groupaction menu="SoundTest" Shortcut="Ctrl+S"  execute="soundTest" /> -->

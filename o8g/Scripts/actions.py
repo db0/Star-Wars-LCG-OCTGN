@@ -441,7 +441,7 @@ def gameSetup(group, x = 0, y = 0):
       if debugVerbosity >= 3: notify("### Placing Affiliation")
       Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 20) + yaxisMove(Affiliation))
       if getSetting('Buttons', True):
-         if alliesNR == 1:
+         if len(myAllies) == 1:
             table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", (playerside * 340) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
             table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", (playerside * 340) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait! Button
             table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", (playerside * 340) - 25, (playerside * 100) + yaxisMove(Affiliation), 1, True) # The Actions? Button
@@ -451,7 +451,7 @@ def gameSetup(group, x = 0, y = 0):
             table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, MPyOffset + (playerside * 180) + yaxisMove(Affiliation), 1, True) # The Actions? Button         
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
                                                # We also create it if there's only one player for debug purposes
-         if me.getGlobalVariable('PLnumber') == '#1' or alliesNR == 1:
+         if me.getGlobalVariable('PLnumber') == '#1' or len(myAllies) == 1:
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
             BotD.moveToTable( MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
             if debugVerbosity >= 2: notify("### BOTD alternate is : {}".format(BotD.alternate))
@@ -877,7 +877,9 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
          else: 
             notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
-            if opponent.counters['Objectives Destroyed'].value >= 3: 
+            if len(myAllies) == 2: objRequired = 5
+            else: objRequired = 3
+            if opponent.counters['Objectives Destroyed'].value >= objRequired: 
                notify("===::: The Light Side wins the Game! :::====")
                reportGame('ObjectiveDefeat')
                #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
@@ -907,7 +909,9 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False):
             notify("{} thwarts {}. The Death Star Dial advances by {}".format(me,card,me.counters['Objectives Destroyed'].value))
          else: 
             notify("{} thwarts {}{}.".format(me,card,extraTXT))
-            if me.counters['Objectives Destroyed'].value >= 3: 
+            if len(myAllies) == 2: objRequired = 5
+            else: objRequired = 3
+            if me.counters['Objectives Destroyed'].value >= objRequired: 
                notify("===::: The Light Side wins the Game! :::====")
                reportGame('ObjectiveVictory')
                #notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")               
