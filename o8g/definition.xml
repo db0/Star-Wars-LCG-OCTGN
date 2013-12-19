@@ -150,6 +150,7 @@
      <globalvariable name="destroyedObjectives" value="[]" />      
      <globalvariable name="Balance of the Force" value="" /> 
      <globalvariable name="Engaged Objective" value="None" />      
+     <globalvariable name="Current Attacker" value="None" />      
      <globalvariable name="Existing Units" value="{}" />      
      <globalvariable name="Revealed Edge" value="{}" />      
      <globalvariable name="Engagement Phase" value="0" />      

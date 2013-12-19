@@ -312,7 +312,7 @@ def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = Fal
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() 
    if debugVerbosity >= 2: notify("About to find targeted objectives.") #Debug
    if not targetObjective:
-      cardList = [c for c in table if (c.Type == 'Objective' or re.search(r'EngagedAsObjective',CardsAS.get(c.model,'')))  and c.targetedBy and c.targetedBy == me and c.controller == opponent]
+      cardList = [c for c in table if (c.Type == 'Objective' or re.search(r'EngagedAsObjective',CardsAS.get(c.model,''))) and c.targetedBy and c.targetedBy == me and c.controller in fetchAllOpponents()]
       if debugVerbosity >= 2: notify("About to count found objectives list. List is {}".format(cardList)) #Debug
       if len(cardList) == 0: 
          whisper("You need to target an opposing Objective to start an Engagement")
@@ -321,6 +321,7 @@ def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = Fal
    targetObjective.highlight = DefendColor
    if debugVerbosity >= 2: notify("About set the global variable") #Debug
    setGlobalVariable('Engaged Objective',str(targetObjective._id))
+   setGlobalVariable('Current Attacker',str(me._id))
    showCurrentPhase()
    #setGlobalVariable('Engagement Phase','1')
    if debugVerbosity >= 2: notify("About to announce") #Debug
@@ -355,7 +356,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
       cancel = False
       unopposedDamage = 1
       for c in table:
-         if debugVerbosity >= 4: notify("### Checking unopposed effects from {}".format(c)) # Debug
+         debugNotify("### Checking unopposed effects from {}".format(c), 4) # Debug
          if c.name == 'Echo Base Defense' and re.search(r'Hoth',currentTarget.Traits) and currentTarget.controller == c.controller:
             if debugVerbosity >= 2: notify("### Found Echo Base Defense")
             HothControllers = compareObjectiveTraits('Hoth')
@@ -377,12 +378,11 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
                   if uBonus: notify("-- {} raises Unopposed damage to {}".format(c,uBonus))
                   unopposedDamage = uBonus
       if not cancel:
-         if debugVerbosity >= 2: notify("### Unopposed Damage not cancelled")
-         if currentTarget.controller == me: attacker = opponent
-         else: attacker = me
+         debugNotify("### Unopposed Damage not cancelled")
+         if currentTarget.controller.getGlobalVariable('Side') == 'Dark': attackerSide = 'Light'
+         else: attackerSide = 'Dark'
          if debugVerbosity >= 1: notify("Unopposed prolly Happens because debugVerbosity >= 1")
-         else: notify(":> {} managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attacker,currentTarget,unopposedDamage))
-         #currentTarget.markers[mdict['Damage']] += unopposedDamage
+         else: notify(":> The {} Side managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attackerSide,currentTarget,unopposedDamage))
          addMarker(currentTarget, 'Damage',unopposedDamage, True)
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    autoscriptOtherPlayers('FinishedEngagement',currentTarget)
@@ -391,6 +391,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
       if card.highlight == DefendColor: card.highlight = None
    notify("The engagement at {} is finished.".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
+   setGlobalVariable('Current Attacker','None')
    setGlobalVariable('Engagement Phase','0')
    for card in table: # We get rid of all the Edge cards at the end of an engagement in case the player hasn't done so already.
       if card.highlight == EdgeColor or card.highlight == FateColor: discard(card) # We remove both player's edge cards
@@ -408,7 +409,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
 def gameSetup(group, x = 0, y = 0):
    if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
    mute()
-   global SetupPhase, opponent
+   global SetupPhase
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
@@ -417,9 +418,6 @@ def gameSetup(group, x = 0, y = 0):
          whisper("Please wait until your opponent has placed their Affiliation down before proceeding")
          return
       if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
-      opponent = ofwhom('ofOpponent') # Setting a variable to quickly have the opponent's object when we need it.
-      try: debugNotify("Opponent = {}".format(opponent),3)
-      except: debugNotify(":::ERROR::: I do not seem to have an 'opponent' variable. len(players) = {}".format(len(players)))
       for card in me.hand:
          if card.Type != 'Objective': 
             whisper(":::Warning::: You are not supposed to have any non-Objective cards in your hand at this point")
@@ -634,7 +632,7 @@ def strike(card, x = 0, y = 0, Continuing = False):
          elif not len(targetsT) and len(targetsUD): AnnounceText += "{} Tactics, then {} Unit Damage on {}".format(Tactics,Unit_Damage,targetsUD)      
          else: AnnounceText += "{} Tactics, then {} Unit Damage".format(Tactics,Unit_Damage)      
    currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find the current objective target to see who's the owner, because only the attacker does blast damage
-   if currentTarget.controller == opponent and not hasDamageProtection(currentTarget,card): 
+   if currentTarget.controller in fetchAllOpponents() and not hasDamageProtection(currentTarget,card): 
       addMarker(currentTarget, 'Damage',Blast_Damage, True) # We assign the blast damage automatically, since there's only ever one target for it.
       if Blast_Damage: 
          if Unit_Damage or Tactics: AnnounceText += " and {} Blast Damage on {}".format(Blast_Damage,currentTarget)
@@ -659,7 +657,7 @@ def participate(card, x = 0, y = 0, silent = False):
       whisper(":::ERROR::: Please start an engagement first!")
       return
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))      
-   if currentTarget.controller == opponent:
+   if currentTarget.controller in fetchAllOpponents():
       if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       if not silent: notify("{} selects {} as an attacker.".format(me, card))
       executePlayScripts(card, 'ATTACK')   
@@ -871,11 +869,15 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
       if not silent: notify("{}'s resident effect ends".format(card))
    elif card.Type == "Objective":
       if initPlayer == me: 
-         
          confirmTXT = 'your opponent'
+         opponentList = fetchAllOpponents()
+         choice = SingleChoice("Choose which opponent thwarted this objective.", [pl.name for pl in opponentList])
+         if choice == None: return
+         opponentPL = opponentList[choice]
+         silent = True # We silence so that the game doesn't put out a second dialogue
       else: 
          confirmTXT = initPlayer.name
-         opponent = initPlayer         
+         opponentPL = initPlayer         
       if not Continuing and not silent and not confirm("Did {} thwart {}?".format(confirmTXT,card.name)): return 'ABORT'
       if not Continuing and not cardsLeaving(card):
          execution = executePlayScripts(card, 'THWART')
@@ -888,15 +890,15 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
       if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
       else: extraTXT = ''
       me.setGlobalVariable('currentObjectives', str(currentObjectives))
-      opponent.counters['Objectives Destroyed'].value += 1         
+      opponentPL.counters['Objectives Destroyed'].value += 1         
       if Side == 'Light': 
-         modifyDial(opponent.counters['Objectives Destroyed'].value)
-         notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponent,card,opponent.counters['Objectives Destroyed'].value))
+         modifyDial(opponentPL.counters['Objectives Destroyed'].value)
+         notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponentPL,card,opponentPL.counters['Objectives Destroyed'].value))
       else: 
-         notify("{} thwarts {}{}.".format(opponent,card,extraTXT))
+         notify("{} thwarts {}{}.".format(opponentPL,card,extraTXT))
          if len(myAllies) == 2: objRequired = 5
          else: objRequired = 3
-         if opponent.counters['Objectives Destroyed'].value >= objRequired: 
+         if opponentPL.counters['Objectives Destroyed'].value >= objRequired: 
             notify("===::: The Light Side wins the Game! :::====")
             reportGame('ObjectiveDefeat')
       global reversePlayerChk
@@ -904,7 +906,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
       autoscriptOtherPlayers('ObjectiveThwarted',card)
       reversePlayerChk = False
       playThwartSound()
-      card.moveTo(opponent.piles['Victory Pile']) # Objectives are won by the opponent
+      card.moveTo(opponentPL.piles['Victory Pile']) # Objectives are won by the opponent
       cardsLeaving(card,'remove')
    elif card.Type == "Affiliation" or card.Type == "BotD": 
       whisper("This isn't the card you're looking for...")
@@ -947,29 +949,34 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
    if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
    mute()
    if not targetC:
-      if debugVerbosity >= 2: notify("Don't have preset target. Seeking...")
+      debugNotify("Don't have preset target. Seeking...")
       for card in table:
-         if debugVerbosity >= 2: notify("### Searching table") #Debug
+         debugNotify("### Searching table") #Debug
          if card.targetedBy and card.targetedBy == me and card.Type != "Objective": 
             if card.highlight == CapturedColor and not confirm("Are you sure you want to move this captured card to a different objective?"): continue
             targetC = card
       if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
       else:
-         if debugVerbosity >= 2: notify("### Searching opponent's hand") #Debug
-         for card in opponent.hand:
-            if card.targetedBy and card.targetedBy == me: targetC = card
-         if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner)
-         else:
-            if debugVerbosity >= 2: notify("### Searching command deck") #Debug
-            for card in opponent.piles['Command Deck'].top(3):
-               if debugVerbosity >= 3: notify("### Checking {}".format(card)) #Debug
+         debugNotify("### Searching opponents' hand") #Debug
+         for opponentPL in fetchAllOpponents():
+            for card in opponentPL.hand:
                if card.targetedBy and card.targetedBy == me: targetC = card
-            if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
+            if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner)
+            else:
+               debugNotify("### Searching command deck") #Debug
+               for card in opponentPL.piles['Command Deck'].top(3):
+                  debugNotify("### Checking {}".format(card), 3) #Debug
+                  if card.targetedBy and card.targetedBy == me: targetC = card
+               if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
    else: captureTXT = ":> {} has captured one card from {}'s {}".format(me,targetC.owner,targetC.group.name)
    if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
    else: 
       captureGroup = targetC.group.name
-      if Side == 'Light': captor = opponent # Only dark side can capture.
+      if Side == 'Light': 
+         opponentList = fetchAllOpponents()
+         choice = SingleChoice("Choose which opponent captured this card.", [pl.name for pl in opponentList])
+         if choice == None: return
+         captor = opponentList[choice]
       else: captor = me 
       if not chosenObj or chosenObj.owner != captor:
          debugNotify("Don't have preset objective. Seeking...")
@@ -990,7 +997,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
          if choice == None: return
          if choice + 1 > len(myObjectives): chosenObj = otherHosts[choice - len(myObjectives)]
          else: chosenObj = Card(myObjectives[choice])
-      if debugVerbosity >= 2: notify("About to Announce")
+      debugNotify("About to Announce")
       captureTXT += " as part of their {} objective".format(chosenObj)
       if not silent: notify(captureTXT)
       rnd(1,10)
@@ -1229,16 +1236,18 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if plAffiliation.markers[mdict['Edge']] and plAffiliation.markers[mdict['Edge']] == 1: return
       myEdgeTotal = 0
       opponentEdgeTotal = 0
+      if Side == 'Light': opSide = 'Dark'
+      else: opSide = 'Light'
       for card in table:
          if debugVerbosity >= 4: notify("#### Checking {}".format(card)) #Debug
          if (card.highlight == EdgeColor or card.highlight == FateColor) and card.isFaceUp:
-            if card.owner == me: myEdgeTotal += num(card.Force)
+            if card.controller in myAllies: myEdgeTotal += num(card.Force)
             else: opponentEdgeTotal += num(card.Force)
             if card.highlight == FateColor: notify(":::WARNING::: {} has not yet resolved their {}".format(card.owner,card))
          bonusEdge = calcBonusEdge(card)
          if bonusEdge: # Card with edge need to be participating.
             if debugVerbosity >= 2: notify("### Found card with Bonus edge") #Debug
-            if card.controller == me: myEdgeTotal += bonusEdge
+            if card.controller in myAllies: myEdgeTotal += bonusEdge
             else: opponentEdgeTotal += bonusEdge
       currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find out what the current objective as we can use it to figure out if we're an attacker or defender.
       if myEdgeTotal > opponentEdgeTotal:
@@ -1248,23 +1257,28 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
          # We check to see if we already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             Affiliation.markers[mdict['Edge']] = 1
-            notify("The {} has the edge in this engagement ({}: {} force VS {}: {} force)".format(me,me, myEdgeTotal, opponent, opponentEdgeTotal))
-            if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
+            notify("The {} Side has the edge in this engagement ({}: {} force VS {}: {} force)".format(Side,Side, myEdgeTotal, opSide, opponentEdgeTotal))
+            if currentTarget.controller in fetchAllOpponents(): autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
             incrStat('edgev',me.name) # We store that the player has won an edge battle
          elif not forceCalc: delayed_whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          winnerDifference = opponentEdgeTotal - myEdgeTotal
-         if debugVerbosity >= 2: notify("### Opponent has the edge") #Debug
-         oppAffiliation = getSpecial('Affiliation',opponent)
+         debugNotify("Opponent has the edge") #Debug
+         try:
+            opponentPL = Player(num(getGlobalVariable('Current Attacker')))
+         except: 
+            notify(":::ERROR::: Nobody is currently attacking. Aborting!")
+            return
+         oppAffiliation = getSpecial('Affiliation',opponentPL)
          if not (oppAffiliation.markers[mdict['Edge']] and oppAffiliation.markers[mdict['Edge']] == 1): 
          # We check to see if our opponent already have the edge marker on our affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
             oppAffiliation.markers[mdict['Edge']] = 1
-            notify("The {} have the edge in this engagement ({}: {} force VS {}: {} force)".format(oppAffiliation,me, myEdgeTotal, opponent, opponentEdgeTotal))
-            if currentTarget.controller == opponent: autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
+            notify("The {} Side has the edge in this engagement ({}: {} force VS {}: {} force)".format(opSide,Side, myEdgeTotal, opSide, opponentEdgeTotal))
+            if currentTarget.controller in fetchAllOpponents(): autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
-            incrStat('edgev',opponent.name) # We store that the player has won an edge battle
+            incrStat('edgev',opponentPL.name) # We store that the player has won an edge battle
          elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
          if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
@@ -1272,10 +1286,13 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
          defenderAffiliation = getSpecial('Affiliation',currentTarget.controller)
          unopposed = True
          for card in table:
-            if card.orientation == Rot90 and card.controller == currentTarget.controller: unopposed = False
+            if card.orientation == Rot90 and card.controller in fetchAllAllies(currentTarget.controller): unopposed = False
          if unopposed:
-            if currentTarget.controller == me: attacker = opponent
-            else: attacker = me
+            try:
+               attacker = Player(num(getGlobalVariable('Current Attacker')))
+            except: 
+               notify(":::ERROR::: Nobody is currently attacking. Aborting!")
+               return
             if debugVerbosity >= 2: notify("### Unopposed Attacker") #Debug
             if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
@@ -1289,7 +1306,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if not (defenderAffiliation.markers[mdict['Edge']] and defenderAffiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                defenderAffiliation.markers[mdict['Edge']] = 1
-               notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(me, myEdgeTotal, opponent, opponentEdgeTotal,currentTarget.controller))
+               notify("Nobody managed to get the upper hand in the edge struggle ({}: {} force VS {}: {} force), so {} retains the edge as the defender.".format(Side, myEdgeTotal, opSide, opponentEdgeTotal,currentTarget.controller))
                autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, 0)
                incrStat('edgev',currentTarget.controller.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")

@@ -172,17 +172,27 @@ def ofwhom(Autoscript, controller = me, multiText = "Choose which opponent you'r
    debugNotify("<<< ofwhom() returns {}".format(targetPL))
    return targetPL
 
-def fetchAllOpponents():
+def fetchAllOpponents(targetPL = me):
    debugNotify(">>> fetchAllOpponents()") #Debug
    opponentList = []
    if len(getPlayers()) > 1:
       for player in getPlayers():
          if player.getGlobalVariable('Side') == '': continue # This is a spectator 
-         if player != me and player.getGlobalVariable('Side') != Side: opponentList.append(player) # Opponent needs to be not us, and of a different type. 
-   else: opponentList = [me]
+         if player != targetPL and player.getGlobalVariable('Side') != targetPL.getGlobalVariable('Side'): opponentList.append(player) # Opponent needs to be not us, and of a different type. 
+   else: opponentList = [me] # For debug purposes
    debugNotify("<<< fetchAllOpponents()") #Debug
-   return opponentList
+   return opponentList   
    
+def fetchAllAllies(targetPL = me):
+   debugNotify(">>> fetchAllOpponents()") #Debug
+   alliesList = []
+   if len(getPlayers()) > 1:
+      for player in getPlayers():
+         if player.getGlobalVariable('Side') == '': continue # This is a spectator 
+         if player == targetPL or player.getGlobalVariable('Side') == targetPL.getGlobalVariable('Side'): alliesList.append(player) # Opponent needs to be not us, and of a different type. 
+   else: alliesList = [me] # For debug purposes
+   debugNotify("<<< fetchAllOpponents()") #Debug
+   return alliesList   
    
 def modifyDial(value):
    if debugVerbosity >= 1: notify(">>> modifyDial(). Value = {}".format(value)) #Debug   
@@ -225,6 +235,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    for plName in edgeRevealed: edgeRevealed[plName] = False # Clearing some variables just in case they were left over. 
    setGlobalVariable('Revealed Edge',str(edgeRevealed))
    setGlobalVariable('Engaged Objective','None')
+   setGlobalVariable('Current Attacker','None')
    setGlobalVariable('Engagement Phase','0')
    setGlobalVariable('Turn','0')
    me.setGlobalVariable('freePositions',str([]))
