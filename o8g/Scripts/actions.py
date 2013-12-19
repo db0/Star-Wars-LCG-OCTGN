@@ -437,20 +437,25 @@ def gameSetup(group, x = 0, y = 0):
       if len(deck) == 0:
          whisper ("Please load a deck first!")
          return
+      if setupMultiPlayer() == 'ABORT': return
       if debugVerbosity >= 3: notify("### Placing Affiliation")
-      Affiliation.moveToTable((playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
+      Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
       if getSetting('Buttons', True):
-         table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", (playerside * 340) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
-         table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", (playerside * 340) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait! Button
-         table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", (playerside * 340) - 25, (playerside * 100) + yaxisMove(Affiliation), 1, True) # The Actions? Button
+         if alliesNR == 1:
+            table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", MPxOffset + (playerside * 340) - 25, (playerside * 20) + yaxisMove(Affiliation), 1, True) # The OK Button
+            table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * 340) - 25, (playerside * 60) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+            table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * 340) - 25, (playerside * 100) + yaxisMove(Affiliation), 1, True) # The Actions? Button
+         else: # With multiplayer we place the buttons below each affiliation to save space
+            table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", MPxOffset + (playerside * -340) - 25, (playerside * 180) + yaxisMove(Affiliation), 1, True) # The OK Button
+            table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * -390) - 25, (playerside * 180) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+            table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, (playerside * 180) + yaxisMove(Affiliation), 1, True) # The Actions? Button         
       if Side == 'Light' or len(players) == 1: #We create the balance of the force card during the dark side's setup, to avoid duplicates. 
                                                # We also create it if there's only one player for debug purposes
-         try:                                             
+         if me.getGlobalVariable('PLnumber') == '#1' or alliesNR == 1:
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
-            BotD.moveToTable((playerside * -380) - 25, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+            BotD.moveToTable( MPxOffset + (playerside * -380) - 25, (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
             if debugVerbosity >= 2: notify("### BOTD alternate is : {}".format(BotD.alternate))
             setGlobalVariable('Balance of the Force', str(BotD._id))
-         except: notify("!!!ERROR!!! {} - In gameSetup()\n!!! PLEASE INSTALL MARKERS SET FILE !!!".format(me))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
@@ -1170,7 +1175,7 @@ def play(card):
          if confirm(confirmTXT):
             extraTXT += " (Bypassing Uniqueness Restriction!)"
          else: return         
-   card.moveToTable(0, 0 + yaxisMove(card))
+   card.moveToTable(MPxOffset, 0 + yaxisMove(card))
    if checkPaidResources(card) == 'NOK':
       card.highlight = UnpaidColor 
       unpaidCard = card
@@ -1194,7 +1199,7 @@ def playEdge(card, silent = False):
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    edgeCount = len([c for c in table if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == me])
    mute()
-   card.moveToTable(playerside * 300, (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
+   card.moveToTable(MPxOffset + (playerside * 300), (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    card.highlight = EdgeColor
    card.peek()
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))

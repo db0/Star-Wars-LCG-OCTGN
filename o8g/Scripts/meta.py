@@ -16,7 +16,7 @@
 
 
 import re, time
-from collections import defaultdict
+from collections import defaultdict, namedtuple
 
 Automations = {'Play'    : True, # If True, game will automatically trigger card effects when playing or double-clicking on cards. Requires specific preparation in the sets.
                'HARDCORE'               : False, # If True, game will not anymore display highlights and announcements on card waiting to trigger.
@@ -45,6 +45,8 @@ gatheredCardList = False # A variable used in reduceCost to avoid scanning the t
 costModifiers = [] # used in reduceCost to store the cards that might hold potential cost-modifying effects. We store them globally so that we only scan the table once per execution
 #cardAttachementsNR = {} # A dictionary which counts how many attachment each host has
 #hostCards = {} # A dictionary which holds which is the host of each attachment
+alliesNR = 1
+MPxOffset = 0
     
 def storeSpecial(card): 
 # Function stores into a shared variable some special cards that other players might look up.
@@ -69,13 +71,13 @@ def storeObjective(card, GameSetup = False):
    if GameSetup:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable((playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective), True)
+         Objective.moveToTable(MPxOffset + (playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective), True)
          Objective.highlight = ObjectiveSetupColor # During game setup, we put the objectives face down so that the players can draw their hands before we reveal them.
          Objective.orientation = Rot90
    else:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable((playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
+         Objective.moveToTable( MPxOffset + (playerside * -315) - 25, (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
          xPos, yPos = Objective.position
          countCaptures = 0
          if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
@@ -159,13 +161,15 @@ def modifyDial(value):
 
 def resetAll(): # Clears all the global variables in order to start a new game.
    global unpaidCard, edgeRevealed, firstTurn, debugVerbosity
-   global Side, Affiliation, opponent, limitedPlayed
+   global Side, Affiliation, opponent, limite1dPlayed, alliesNR, MPxOffset
    if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
    mute()
    Side = None
    Affiliation = None
    unpaidCard = None 
    opponent = None
+   alliesNR = 1
+   MPxOffset = 0
    edgeRevealed = False
    firstTurn = True
    limitedPlayed = False
@@ -190,6 +194,7 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    setGlobalVariable('Turn','0')
    me.setGlobalVariable('freePositions',str([]))
    me.setGlobalVariable('currentObjectives', '[]')
+   me.setGlobalVariable('PLnumber', '') 
    resetGameStats()
    if debugVerbosity >= 1: notify("<<< resetAll()") #Debug
    
@@ -210,15 +215,22 @@ def placeCard(card):
                card.moveToTable(positionC[0],positionC[1])
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
-               loopsNR = unitAmount / 7
-               loopback = 7 * loopsNR
+               if alliesNR == 3:
+                  loopsNR = unitAmount / 5 # With three player, we only allow 5 units per player to prevent overlapping
+                  loopback = 5 * loopsNR
+               elif alliesNR == 2:
+                  loopsNR = unitAmount / 6
+                  loopback = 6 * loopsNR
+               else: 
+                  loopsNR = unitAmount / 7 
+                  loopback = 7 * loopsNR
                if getSetting('Unit Placement', 'Center') == 'Center': # If the unit placement is the default center orientation, then we start placing units from the center outwards
-                  if unitAmount == 0: xoffset = (playerside * 20) - 25
-                  else: xoffset = (-playerside * (1 - (2 * (unitAmount % 2))) * (((unitAmount - loopback) + 1) / 2) * cheight(card,0)) + (playerside * 20) - 25 # The -25 is an offset to help center the table.
+                  if unitAmount == 0: xoffset = MPxOffset + (playerside * 20) - 25
+                  else: xoffset = MPxOffset + (-playerside * ((2 * (unitAmount % 2)) - 1) * (((unitAmount - loopback) + 1) / 2) * cheight(card,0)) + (playerside * 20) - 25 # The -25 is an offset to help center the table.
                   if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
                   yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)
                else:                  
-                  xoffset = (playerside * (-325 + cheight(card,0))) + (playerside * cheight(card,0) * (unitAmount - loopback)) - 25
+                  xoffset = MPxOffset + (playerside * (-325 + cheight(card,0))) + (playerside * cheight(card,0) * (unitAmount - loopback)) - 25
                   if debugVerbosity >= 2: notify("### xoffset is: {}.".format(xoffset)) #Debug
                   yoffset = yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)                  
                card.moveToTable(xoffset,yoffset)
@@ -244,7 +256,7 @@ def placeCard(card):
                   if host[0].Type == 'Objective': card.moveToTable(x + (playerside * xAxis * cwidth(card,0) / 2 * cardAttachementsNR), y)
                   else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
                   card.sendToBack()
-            else: card.moveToTable(0, 0 + yaxisMove(card))
+            else: card.moveToTable(MPxOffset + 0, 0 + yaxisMove(card))
       else: debugNotify("No Placement Automations. Doing Nothing",2)
       if card.Type == 'Unit': incrStat('units',me.name) # We store that the player has played a unit
       if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
@@ -480,7 +492,7 @@ def resolveUD(card,Unit_Damage):
       if Unit_Damage:
          if not knowsShiiCho:
             damagedUnit = SingleChoice('Please select the unit to take {} damage'.format(Unit_Damage), unitChoices, cancelButton = True)
-            if damagedUnit != 'ABORT':
+            if damagedUnit != None:
                addMarker(targetUnitsList[damagedUnit], 'Damage',Unit_Damage, True)
                targetUnits[targetUnitsList[damagedUnit].name] = targetUnits.get(targetUnitsList[damagedUnit].name,0) + Unit_Damage
          else:
@@ -1035,12 +1047,137 @@ def cardsLeaving(card,action = 'chk'):
    debugNotify("<<< modCardsLeaving with cardLeaving = {}".format(cardLeaving))
    return cardLeaving
    
+def setupMultiPlayer():
+   debugNotify(">>> setupMultiPlayer()") #Debug
+   global alliesNR,MPxOffset
+   TwoPlayerPos = {'#1':350, '#2':-350}
+   ThreePlayerPos = {'#1':600, '#2':0, '#3':-600}
+   for player in getPlayers():
+      if len(player.hand) == 0 and not confirm("Have all the players loaded their decks?\
+                                            \n\n(If not, the game will not be able to setup correctly. Press 'Yes' only if everyone but spectators have loaded a deck"): 
+         return 'ABORT'         
+   myAllies = []
+   for player in getPlayers():
+      if player.getGlobalVariable('Side') == Side:
+         myAllies.append(player)
+   alliesNR = len(myAllies)
+   if alliesNR == 1: MPxOffset = 0 # With just one player per side, we just leave them at the default placement
+   elif alliesNR == 2:
+      debugNotify("Starting 2 player MP setup for {}".format(me))
+      availablePos = findAvailablePos(myAllies)
+      if len(availablePos) == 2:
+         debugNotify("Found 2 available positions")
+         posChoice = SingleChoice("Select your player position for this game.", availablePos)
+         doubleCheckPos = findAvailablePos(myAllies)
+         if availablePos[posChoice] in doubleCheckPos: # Double checking to avoid syncronized choices.
+            me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
+            if debugVerbosity >= 4: notify("### Just set {} PLnumber shared var to {}".format(me,me.getGlobalVariable('PLnumber')))
+            MPxOffset = TwoPlayerPos[availablePos[posChoice]]
+         else:
+            whisper(":::ERROR::: Oops! It seems the other player was faster than you and already picked the {} position. Automatically setting you as Player {}".format(availablePos[posChoice],doubleCheckPos[0]))
+            me.setGlobalVariable('PLnumber', doubleCheckPos[0])        
+            MPxOffset = TwoPlayerPos[doubleCheckPos[0]]
+      elif len(availablePos) == 1:
+         debugNotify("Found 1 available position")
+         me.setGlobalVariable('PLnumber', availablePos[0]) 
+         MPxOffset = TwoPlayerPos[availablePos[0]]
+      else: 
+         notify(":::ERROR::: 0 Available Player Positions. Something went wrong?")
+         return 'ABORT'
+   elif alliesNR == 3: 
+      debugNotify("Starting 3 player MP setup")
+      extraTXT = ''
+      availablePos = findAvailablePos(myAllies)
+      if len(availablePos) == 3:
+         debugNotify("Found 3 available positions")
+         posChoice = SingleChoice("Select your player position for this game.", availablePos)
+         doubleCheckPos = findAvailablePos(myAllies)
+         if availablePos[posChoice] in doubleCheckPos:
+            me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
+            MPxOffset = ThreePlayerPos[availablePos[posChoice]]      
+         else: 
+            availablePos = doubleCheckPos
+            extraTXT = "Oops! It seems another player was faster than you and already picked the {} position.  Please choose again.\n\n".format(availablePos[posChoice])
+      if len(availablePos) == 2:
+         debugNotify("Found 2 available positions")
+         posChoice = SingleChoice("{}Select your player position for this game.".format(extraTXT), availablePos)
+         doubleCheckPos = findAvailablePos(myAllies)
+         if availablePos[posChoice] in doubleCheckPos:
+            me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
+            MPxOffset = ThreePlayerPos[availablePos[posChoice]]      
+         else: 
+            whisper(":::ERROR::: Oops! It seems the other player was faster than you and already picked the {} position. Automatically setting you as Player {}".format(availablePos[posChoice],doubleCheckPos[0]))
+            me.setGlobalVariable('PLnumber', doubleCheckPos[0])        
+            MPxOffset = ThreePlayerPos[doubleCheckPos[0]]
+      elif len(availablePos) == 1:
+         debugNotify("Found 1 available position")
+         me.setGlobalVariable('PLnumber', availablePos[0]) 
+         MPxOffset = ThreePlayerPos[availablePos[0]]
+   debugNotify("<<< setupMultiPlayer() with MPxOffset = {}".format(MPxOffset)) #Debug
+   
+def findAvailablePos(myAllies):
+   debugNotify(">>> findAvailablePos()") #Debug
+   if len(myAllies) == 2: # 2v2 or #2v1
+      availablePos = ['#1','#2']
+      for player in myAllies:
+         PLpos = player.getGlobalVariable('PLnumber')
+         if debugVerbosity >= 4: notify("### Just grabbed {} Shared PLnumber and it is {}".format(player,PLpos))
+         if PLpos != '': 
+            availablePos.remove(PLpos)
+            debugNotify("{} position {} removed from list. Current list = {}".format(player, PLpos, availablePos), 4)
+         else: debugNotify("{} position not set yet".format(player), 4)
+   elif len(myAllies) == 3: # 3v1
+      availablePos = ['#1','#2','#3']
+      for player in myAllies:
+         PLpos = player.getGlobalVariable('PLnumber')
+         if PLpos != '': availablePos.remove(PLpos)
+   else: availablePos = [] # Single player on that side
+   debugNotify("<<< findAvailablePos() with return: {}".format(availablePos)) #Debug
+   return availablePos
+   
+def debugPLPos(group = table,x = 0,y = 0):
+   mute()
+   if confirm("2 allies setup test"):
+      for MPxOffset in [350 * playerside, -350 * playerside]:
+         Affiliation = table.create("ff4fb461-8060-457a-9c16-000000000095", 0, 0, 1, True) 
+         Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
+         table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", MPxOffset + (playerside * -340) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The OK Button
+         table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * -390) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+         table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Actions? Button
+   else:
+      for MPxOffset in [600 * playerside, 0, -600 * playerside]:
+         Affiliation = table.create("ff4fb461-8060-457a-9c16-000000000095", 0, 0, 1, True) 
+         Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, (playerside * 20) + yaxisMove(Affiliation))
+         table.create("eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc", MPxOffset + (playerside * -340) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The OK Button
+         table.create("92df7072-0613-4e76-9fb0-e1b2b6d46473", MPxOffset + (playerside * -390) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Wait! Button
+         table.create("ef1f6e91-4d7f-4a10-963c-832953f985b8", MPxOffset + (playerside * -440) - 25, (playerside * 130) + yaxisMove(Affiliation), 1, True) # The Actions? Button
+   
+def switchPLPos(group = table,x = 0,y = 0):
+   global MPxOffset, alliesNR
+   mute()
+   posChoice = SingleChoice("Switch to which pos?", ['2pl #1','2pl #2','3pl #1','3pl #2','3pl #3'])
+   if posChoice == 0: 
+      alliesNR = 2
+      MPxOffset = 350 * playerside
+   if posChoice == 1: 
+      alliesNR = 2
+      MPxOffset = -350 * playerside
+   if posChoice == 2: 
+      alliesNR = 3
+      MPxOffset = 600 * playerside
+   if posChoice == 3: 
+      alliesNR = 3
+      MPxOffset = 0
+   if posChoice == 4: 
+      alliesNR = 3
+      MPxOffset = -600 * playerside
+   
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------
 
 def switchAutomation(type,command = 'Off'):
-   if debugVerbosity >= 1: notify(">>> switchAutomation(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> switchAutomation(){}".format(extraASDebug())) #Debug
    global Automations
    if (Automations[type] and command == 'Off') or (not Automations[type] and command == 'Announce'):
       if type == 'HARDCORE': 

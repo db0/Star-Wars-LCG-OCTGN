@@ -265,28 +265,33 @@ class SingleChoiceWindow(Form):
 
 def SingleChoice(title, options, type = 'button', default = 0, cancelButton = True, cancelName = 'Cancel'):
    debugNotify(">>> SingleChoice()".format(title))
-   if Automations['WinForms']:
-      optChunks=[options[x:x+7] for x in xrange(0, len(options), 7)]
-      optCurrent = 0
-      choice = "New"
-      while choice == "New" or choice == "Next Page" or (not choice and not cancelButton):
-         Application.EnableVisualStyles()
-         form = SingleChoiceWindow(title, optChunks[optCurrent], type, default, pages = len(optChunks), cancelButtonBool = cancelButton, cancelName = cancelName)
-         form.BringToFront()
-         form.ShowDialog()
-         choice = form.getIndex()
-         debugNotify("choice is: {}".format(choice), 2)
-         if choice == "Next Page": 
-            debugNotify("Going to next page", 3)
-            optCurrent += 1
-            if optCurrent >= len(optChunks): optCurrent = 0
-         elif choice != None: 
-            choice = num(form.getIndex()) + (optCurrent * 7) # if the choice is not a next page, then we convert it to an integer and give that back, adding 8 per number of page passed
-   else:
-      concatTXT = title + '\n\n'
-      for iter in range(len(options)):
-         concatTXT += '{}:--> {}\n'.format(iter,options[iter])
-      choice = askInteger(concatTXT,0)
+   ### Old WinForms code is (hopefully) obsolete now
+   # if Automations['WinForms']:
+      # optChunks=[options[x:x+7] for x in xrange(0, len(options), 7)]
+      # optCurrent = 0
+      # choice = "New"
+      # while choice == "New" or choice == "Next Page" or (not choice and not cancelButton):
+         # Application.EnableVisualStyles()
+         # form = SingleChoiceWindow(title, optChunks[optCurrent], type, default, pages = len(optChunks), cancelButtonBool = cancelButton, cancelName = cancelName)
+         # form.BringToFront()
+         # form.ShowDialog()
+         # choice = form.getIndex()
+         # debugNotify("choice is: {}".format(choice), 2)
+         # if choice == "Next Page": 
+            # debugNotify("Going to next page", 3)
+            # optCurrent += 1
+            # if optCurrent >= len(optChunks): optCurrent = 0
+         # elif choice != None: 
+            # choice = num(form.getIndex()) + (optCurrent * 7) # if the choice is not a next page, then we convert it to an integer and give that back, adding 8 per number of page passed
+   # else:
+   choice = "New"
+   if cancelButton: customButtonsList = [cancelName]
+   else: customButtonsList = []
+   while choice == "New" or (not choice and not cancelButton):
+      choice = askChoice(title, options, customButtons = customButtonsList)
+      debugNotify("choice is: {}".format(choice), 2)
+      if choice > 0: choice -= 1 # Reducing by 1 because askChoice() starts from 1 but my code expects to start from 0
+      elif choice <= 0: choice = None
    debugNotify("<<< SingleChoice() with return {}".format(choice), 3)
    return choice
  
