@@ -193,7 +193,7 @@
          </textblocks>
       </template>
    <!-- Event Templates -->
-      <template src="Proxy/Events/Event_Sith.png">
+      <template src="Proxy/Events/Event_Sith.jpg">
          <matches>
             <match name="Affiliation" value="Sith" />
             <match name="Type" value="Event" />
@@ -225,7 +225,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Events/Event_Imperial.png">
+      <template src="Proxy/Events/Event_Imperial.jpg">
          <matches>
             <match name="Affiliation" value="Imperial Navy" />
             <match name="Type" value="Event" />
@@ -257,7 +257,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Events/Event_Scums.png">
+      <template src="Proxy/Events/Event_Scums.jpg">
          <matches>
             <match name="Affiliation" value="Scum and Villainy" />
             <match name="Type" value="Event" />
@@ -289,7 +289,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Events/Event_Rebels.png">
+      <template src="Proxy/Events/Event_Rebels.jpg">
          <matches>
             <match name="Affiliation" value="Rebel Alliance" />
             <match name="Type" value="Event" />
@@ -321,7 +321,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Events/Event_Jedi.png">
+      <template src="Proxy/Events/Event_Jedi.jpg">
          <matches>
             <match name="Affiliation" value="Jedi" />
             <match name="Type" value="Event" />
@@ -353,7 +353,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Events/Event_Smugglers.png">
+      <template src="Proxy/Events/Event_Smugglers.jpg">
          <matches>
             <match name="Affiliation" value="Smugglers and Spies" />
             <match name="Type" value="Event" />
@@ -385,7 +385,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Events/Event_Neutral.png">
+      <template src="Proxy/Events/Event_Neutral.jpg">
          <matches>
             <match name="Affiliation" value="Neutral" />
             <match name="Type" value="Event" />
@@ -984,7 +984,7 @@
          </textblocks>
       </template>
    <!-- Unit Template -->
-      <template src="Proxy/Units/Unit_Sith.png">
+      <template src="Proxy/Units/Unit_Sith.jpg">
          <matches>
             <match name="Affiliation" value="Sith" />
             <match name="Type" value="Unit" />
@@ -1043,7 +1043,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Units/Unit_Imperial.png">
+      <template src="Proxy/Units/Unit_Imperial.jpg">
          <matches>
             <match name="Affiliation" value="Imperial Navy" />
             <match name="Type" value="Unit" />
@@ -1102,7 +1102,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Units/Unit_Rebels.png">
+      <template src="Proxy/Units/Unit_Rebels.jpg">
          <matches>
             <match name="Affiliation" value="Rebel Alliance" />
             <match name="Type" value="Unit" />
@@ -1161,7 +1161,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Units/Unit_Jedi.png">
+      <template src="Proxy/Units/Unit_Jedi.jpg">
          <matches>
             <match name="Affiliation" value="Jedi" />
             <match name="Type" value="Unit" />
@@ -1220,7 +1220,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Units/Unit_Smugglers.png">
+      <template src="Proxy/Units/Unit_Smugglers.jpg">
          <matches>
             <match name="Affiliation" value="Smugglers and Spies" />
             <match name="Type" value="Unit" />
@@ -1279,7 +1279,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Units/Unit_Scum.png">
+      <template src="Proxy/Units/Unit_Scum.jpg">
          <matches>
             <match name="Affiliation" value="Scum and Villainy" />
             <match name="Type" value="Unit" />
@@ -1338,7 +1338,7 @@
             </link>
          </textblocks>
       </template>
-      <template src="Proxy/Units/Unit_Neutral.png">
+      <template src="Proxy/Units/Unit_Neutral.jpg">
          <matches>
             <match name="Affiliation" value="Neutral" />
             <match name="Type" value="Unit" />
@@ -1399,7 +1399,7 @@
          </textblocks>
       </template>
    <!-- Fate Templates -->
-      <template src="Proxy/Fate/Fate.png">
+      <template src="Proxy/Fate/Fate.jpg">
          <matches>
             <match name="Type" value="Fate" />
          </matches>

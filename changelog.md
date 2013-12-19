@@ -1,6 +1,15 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.6.1.x
+
+* Resampled all sounds to 44100
+* Added placement code which can also handle 2v2, 2v1 and 3v1
+
+### 2.6.0.x
+
+* Added Balance of the Force unscripted
+
 ### 2.5.2.x
 
 * Fixed Luke Skywalker as attachment. Now gives Tactics instead of BD
