@@ -40,11 +40,19 @@ capturingObjective = None # A global variable which holds which objective just c
 # Phases
 #---------------------------------------------------------------------------
 
-def showCurrentPhase(): # Just say a nice notification about which phase you're on.
-   if getGlobalVariable('Engaged Objective') != 'None':
-      notify(engagementPhases[num(getGlobalVariable('Engagement Phase'))])
-   else: 
-      notify(phases[num(me.getGlobalVariable('Phase'))])
+def showCurrentPhase(phaseNR = None): # Just say a nice notification about which phase you're on.
+   if phaseNR: notify(phases[phaseNR])
+   else:
+      if getGlobalVariable('Engaged Objective') != 'None':
+         notify(engagementPhases[num(getGlobalVariable('Engagement Phase'))])
+      else:
+         phaseRegex = re.search(r'(Dark|Light):([0-6])',getGlobalVariable('Phase'))
+         debugNotify("phaseRegex groups = {}".format(phaseRegex.groups()),4)
+         if not phaseRegex: 
+            notify(":::ERROR::: Something went wrong with the phase set. Resetting to Dark:0")
+            setGlobalVariable('Phase','Dark:0')
+            return
+         notify(phases[num(phaseRegex.group(2))])
    
 def nextPhase(group = table, x = 0, y = 0, setTo = None):  
 # Function to take you to the next phase. 
@@ -65,33 +73,39 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          elif phase == 5: finishEngagement() # If it's the reward unopposed phase, we simply end the engagement immediately after
    else:
       debugNotify("Normal Phase change")
-      phase = num(me.getGlobalVariable('Phase'))
+      phaseRegex = re.search(r'(Dark|Light):([0-6])',getGlobalVariable('Phase'))
+      debugNotify("phaseRegex groups = {}".format(phaseRegex.groups()),3)
+      debugNotify("phaseRegex group(1) = [{}]. My Side = [{}]".format(phaseRegex.group(1), Side),4)
+      if not phaseRegex: 
+         notify(":::ERROR::: Something went wrong with the phase set. Resetting to Dark:0")
+         setGlobalVariable('Phase','Dark:0')
+         return
+      if phaseRegex.group(1) != Side:
+         debugNotify("Not currently the active Side")
+         if confirm(":::WARNING::: It is not the {} side turn yet. Do you want to bypass and jump to your own refresh phase?".format(Side)):
+            grabTurn(findAlly()) # Give the turn to ally in position #1
+            setGlobalVariable('Phase','{}:0'.format(Side))
+            phase = 0
+         else: return  
+      phase = num(phaseRegex.group(2))
+      if Side == 'Light': opSide = 'Dark'
+      else: opSide = 'Light'
       if phase == 6: 
          debugNotify("We'at turn End")
          if not forceStruggleDone and Automations['Start/End-of-Turn/Phase']: resolveForceStruggle() # If the player forgot to do their force stuggle, then we just do it quickly for them.
-         me.setGlobalVariable('Phase','0') # In case we're on the last phase (Force), we end our turn.
+         setGlobalVariable('Phase','{}:0'.format(opSide)) # In case we're on the last phase (Force), we end our turn.
          atTimedEffects(Time = 'End') # Scripted events at the end of the player's turn
-         notify("=== {} has ended their turn ===.".format(me))
+         notify("=== The {} side has ended their turn ===.".format(Side))
          opponent = findOpponent()
          opponent.setActivePlayer() # new in OCTGN 3.0.5.47 
          for card in table:
             if card.markers[mdict['Activation']]: card.markers[mdict['Activation']] = 0 # At the end of each turn we clear the once-per turn abilities.
-         #if debugVerbosity >= 3: notify("<<< nextPhase(). Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
          debugNotify("Exiting Because we've finished our turn")
          return
-      elif not me.isActivePlayer:
-         debugNotify("Not currently the active player")
-         #if debugVerbosity >= 2: notify("### Active Player: {}".format(getGlobalVariable('Active Player'))) #Debug
-         if not confirm("Your opponent has not finished their turn yet. Are you sure you want to jump to your turn?"): return
-         me.setActivePlayer() # new in OCTGN 3.0.5.47 
-         me.setGlobalVariable('Phase','1')
-         #setGlobalVariable('Active Player', me.name)
-         phase = 1
       else: 
          debugNotify("Normal Phase change")
-         if phase == -1: phase = 1 # This is for the first phase of the LS player.
-         else: phase += 1
-         me.setGlobalVariable('Phase',str(phase)) # Otherwise, just move up one phase
+         phase += 1
+         #setGlobalVariable('Phase','{}:{}'.format(Side,str(phase))) # Otherwise, just move up one phase # Prolly unnecessary 
       if phase == 1: goToBalance()
       elif phase == 2: goToRefresh()
       elif phase == 3: goToDraw()
@@ -100,8 +114,8 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
          goToDeployment()
       elif phase == 5:
          if firstTurn and Side == 'Dark':
-            notify(":::NOTICE::: {} skips his first conflict phase".format(me))
-            firstTurn = False
+            notify(":::NOTICE::: The Dark Side skips their first conflict phase".format(me))
+            clearFirstTurn()
             goToForce()
          else: goToConflict()
       elif phase == 6: goToForce()
@@ -110,11 +124,16 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
    if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
    mute()
    atTimedEffects(Time = 'Start') # Scripted events at the start of the player's turn
-   if not me.isActivePlayer:
-      if not confirm("Your opponent has not finished their turn yet. Are you sure you want to continue?"): return
-      else: me.setActivePlayer()
-   me.setGlobalVariable('Phase','1')
-   showCurrentPhase()
+   phaseRegex = re.search(r'(Dark|Light):([0-6])',getGlobalVariable('Phase'))
+   if not phaseRegex: 
+      notify(":::ERROR::: Something went wrong with the phase set. Resetting to Dark:0")
+      setGlobalVariable('Phase','Dark:0')
+      return
+   if phaseRegex.group(1) != Side:
+      if not confirm("The opposing side has not finished their turn yet. Are you sure you want to continue to your own balance phase?"): return
+      else: grabTurn(findAlly())
+   setGlobalVariable('Phase','{}:1'.format(Side))
+   showCurrentPhase(1)
    global limitedPlayed
    limitedPlayed = False # Player can now play another limited card.
    turn = num(getGlobalVariable('Turn'))
@@ -146,14 +165,13 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterBalance')   
    mute()
-   global firstTurn
-   me.setGlobalVariable('Phase','2')
-   showCurrentPhase()
+   setGlobalVariable('Phase','{}:2'.format(Side))
+   showCurrentPhase(2)
    if not Automations['Start/End-of-Turn/Phase']: return
    if not firstTurn: notify(":> {} refreshed all their cards".format(me))   
    if firstTurn and Side == 'Light':
-      notify(":::NOTICE::: {} skips his first card refresh".format(me))
-      firstTurn = False
+      notify(":::NOTICE::: The Light Side skips their first card refresh")
+      clearFirstTurn()
    else:
       for card in table:
          if card.controller == me and card.highlight != CapturedColor:
@@ -181,8 +199,8 @@ def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    mute()
    global handRefillDone
    handRefillDone = False
-   me.setGlobalVariable('Phase','3')
-   showCurrentPhase()
+   setGlobalVariable('Phase','{}:3'.format(Side))
+   showCurrentPhase(3)
    if not Automations['Start/End-of-Turn/Phase']: return
    if len(me.hand) == 0: refillHand() # If the player's hand is empty, there's no option to take. Just refill.
    
@@ -190,16 +208,16 @@ def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment
    if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterDraw')
    mute()
-   me.setGlobalVariable('Phase','4')
-   showCurrentPhase()   
+   setGlobalVariable('Phase','{}:4'.format(Side))
+   showCurrentPhase(4)   
    if not Automations['Start/End-of-Turn/Phase']: return
    
 def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
    if debugVerbosity >= 1: notify(">>> goToConflict(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterDeployment')   
    mute()
-   me.setGlobalVariable('Phase','5')
-   showCurrentPhase()   
+   setGlobalVariable('Phase','{}:5'.format(Side))
+   showCurrentPhase(5)   
    if not Automations['Start/End-of-Turn/Phase']: return
 
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
@@ -209,14 +227,14 @@ def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
    global forceStruggleDone
    forceStruggleDone = False # At the start of the force phase, the force struggle is obviously not done yet.
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() # If the playes jump to the force phase after engagement, we make sure we clear the engagement.
-   me.setGlobalVariable('Phase','6')
-   showCurrentPhase()
+   setGlobalVariable('Phase','{}:6'.format(Side))
+   showCurrentPhase(6)
    delayed_whisper(":::ATTENTION::: Once you've committed all the units you want to the force, press Ctrl+F6 to resolve the force struggle")
    if not Automations['Start/End-of-Turn/Phase']: return
 
 def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggle
    mute()
-   if num(me.getGlobalVariable('Phase')) != 6 and not confirm("The force struggle is only supposed to happen at the end of your force phase. Bypass?"):
+   if not re.search(r'6',getGlobalVariable('Phase')) and not confirm("The force struggle is only supposed to happen at the end of your force phase. Bypass?"):
       return # If it's not the force phase, give the player an opportunity to abort.
    global forceStruggleDone
    myStruggleTotal = 0
@@ -305,7 +323,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
 def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = False): # Start an Engagement Phase
    if debugVerbosity >= 1: notify(">>> engageTarget(){}".format(extraASDebug())) #Debug
    mute()
-   if me.getGlobalVariable('Phase') != '5' and not confirm("You need to be in the conflict phase before you can engage an objective. Bypass?"):
+   if not re.search(r'5',getGlobalVariable('Phase')) and not confirm("You need to be in the conflict phase before you can engage an objective. Bypass?"):
       return
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() 
    if debugVerbosity >= 2: notify("About to find targeted objectives.") #Debug
@@ -1138,11 +1156,10 @@ def play(card):
    elif card.Type == 'Objective': 
       handDiscard(card)
       return # If the player double clicked on an objective, we assume they were selecting one of their three objectives to to put at the bot. of their deck.
-   if ((card.Type == 'Enhancement' or card.Type == 'Unit')
-      and (me.getGlobalVariable('Phase') != '4'
-         or (me.getGlobalVariable('Phase') == '5' and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))))
-      and not confirm(":::WARNING:::\n\nNormally this type of card cannot be played outside the deployment phase. Are you sure you want to continue?")):
-         return # If the card is a unit or enhancement, it can only be played during the deployment phase. Here we add a check to prevent the player from playing it out-of-phase.
+   if card.Type == 'Enhancement' or card.Type == 'Unit':
+      if not re.search(r'4',getGlobalVariable('Phase')) and (re.search(r'5',getGlobalVariable('Phase')) and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))):
+         if not confirm(":::WARNING:::\n\nNormally this type of card cannot be played outside the deployment phase. Are you sure you want to continue?"): 
+            return # If the card is a unit or enhancement, it can only be played during the deployment phase. Here we add a check to prevent the player from playing it out-of-phase.
    if card.Type == 'Enhancement':
       hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
       if hostType:

@@ -1125,15 +1125,15 @@ def setupMultiPlayer():
          if availablePos[posChoice] in doubleCheckPos: # Double checking to avoid syncronized choices.
             me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
             if debugVerbosity >= 4: notify("### Just set {} PLnumber shared var to {}".format(me,me.getGlobalVariable('PLnumber')))
-            MPxOffset = TwoPlayerPos[availablePos[posChoice]]
+            MPxOffset = playerside * TwoPlayerPos[availablePos[posChoice]]
          else:
             whisper(":::ERROR::: Oops! It seems the other player was faster than you and already picked the {} position. Automatically setting you as Player {}".format(availablePos[posChoice],doubleCheckPos[0]))
             me.setGlobalVariable('PLnumber', doubleCheckPos[0])        
-            MPxOffset = TwoPlayerPos[doubleCheckPos[0]]
+            MPxOffset = playerside * TwoPlayerPos[doubleCheckPos[0]]
       elif len(availablePos) == 1:
          debugNotify("Found 1 available position")
          me.setGlobalVariable('PLnumber', availablePos[0]) 
-         MPxOffset = TwoPlayerPos[availablePos[0]]
+         MPxOffset = playerside * TwoPlayerPos[availablePos[0]]
       else: 
          notify(":::ERROR::: 0 Available Player Positions. Something went wrong?")
          return 'ABORT'
@@ -1147,7 +1147,7 @@ def setupMultiPlayer():
          doubleCheckPos = findAvailablePos(myAllies)
          if availablePos[posChoice] in doubleCheckPos:
             me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
-            MPxOffset = ThreePlayerPos[availablePos[posChoice]]      
+            MPxOffset = playerside * ThreePlayerPos[availablePos[posChoice]]      
          else: 
             availablePos = doubleCheckPos
             extraTXT = "Oops! It seems another player was faster than you and already picked the {} position.  Please choose again.\n\n".format(availablePos[posChoice])
@@ -1157,7 +1157,7 @@ def setupMultiPlayer():
          doubleCheckPos = findAvailablePos(myAllies)
          if availablePos[posChoice] in doubleCheckPos:
             me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
-            MPxOffset = ThreePlayerPos[availablePos[posChoice]]      
+            MPxOffset = playerside * ThreePlayerPos[availablePos[posChoice]]      
          else: 
             whisper(":::ERROR::: Oops! It seems the other player was faster than you and already picked the {} position. Automatically setting you as Player {}".format(availablePos[posChoice],doubleCheckPos[0]))
             me.setGlobalVariable('PLnumber', doubleCheckPos[0])        
@@ -1165,7 +1165,7 @@ def setupMultiPlayer():
       elif len(availablePos) == 1:
          debugNotify("Found 1 available position")
          me.setGlobalVariable('PLnumber', availablePos[0]) 
-         MPxOffset = ThreePlayerPos[availablePos[0]]
+         MPxOffset = playerside * ThreePlayerPos[availablePos[0]]
       if MPxOffset == 0: MPyOffset = playerside * 250
    debugNotify("<<< setupMultiPlayer() with MPxOffset = {}".format(MPxOffset)) #Debug
    
@@ -1188,7 +1188,18 @@ def findAvailablePos(myAllies):
    else: availablePos = [] # Single player on that side
    debugNotify("<<< findAvailablePos() with return: {}".format(availablePos)) #Debug
    return availablePos
-   
+
+def clearFirstTurn(Init = True):
+   debugNotify(">>> clearFirstTurn()") #Debug
+   global firstTurn
+   if Init:
+      for player in myAllies: 
+         if player == me: firstTurn = False
+         else: remoteCall(player, 'clearFirstTurn', [False])
+   else: firstTurn = False
+   debugNotify("<<< clearFirstTurn()") #Debug
+      
+      
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

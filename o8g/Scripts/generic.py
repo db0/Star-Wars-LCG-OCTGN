@@ -621,6 +621,13 @@ def fetchHost(card):
    debugNotify("<<< fetchHost() with return {}".format(host)) #Debug
    return host
       
+def grabTurn(targetPL = me): # Grabs the turn from the currently active player and gives it to a target player
+   for player in getPlayers():
+      if player != me and player.isActivePlayer: remoteCall(player,'giveTurn', [me])
+      
+def giveTurn(targetPL): # Passes the turn to the requested player (used via remoteCall)
+   targetPL.setActivePlayer()
+   
 #---------------------------------------------------------------------------
 # Card Placement functions
 #---------------------------------------------------------------------------

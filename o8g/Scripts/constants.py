@@ -62,12 +62,12 @@ Yaxis = 'y'
 
 phases = [
     "Opponent's Turn",
-    "=== Balance Phase: {} ===".format(me),
-    "=== Refresh Phase: {} ===".format(me),
-    "=== Draw Phase: {} ===".format(me),
-    "=== Deployment Phase: {} ===".format(me),
-    "=== Conflict Phase: {} ===".format(me),
-    "=== Force Phase: {} ===".format(me)]
+    "=== Balance Phase: {} ===",
+    "=== Refresh Phase: {} ===",
+    "=== Draw Phase: {} ===",
+    "=== Deployment Phase: {} ===",
+    "=== Conflict Phase: {} ===",
+    "=== Force Phase: {} ==="]
 
 engagementPhases = [
     "+++ Engagement: Declare Objective +++",
