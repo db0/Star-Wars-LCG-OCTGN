@@ -1194,7 +1194,18 @@ def playEdge(card, silent = False):
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    edgeCount = len([c for c in table if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == me])
    mute()
-   card.moveToTable(MPxOffset + (playerside * 300), MPyOffset + (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
+   card.moveToTable(MPxOffset + (playerside * 250), MPyOffset + (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
+   attacker = Player(num(getGlobalVariable('Current Attacker')))
+   currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
+   if attacker != me and currentTarget.controller != me: # If we play an edge card as an ally, we always place it on the main player's edge stack
+      if attacker in myAllies: edgeOwner = attacker
+      else: edgeOwner = currentTarget.controller
+      card.setController(edgeOwner)
+      if edgeCount > 0: 
+         for c in table:
+            if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == edgeOwner: lastEdge = c
+         x,y = c.position
+         c.moveToTable(x, y + (playerside * 40)) # We try to move the allie's edge card to the edge stack
    card.highlight = EdgeColor
    card.peek()
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
@@ -1212,7 +1223,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
       edgeNr = 0
       if debugVerbosity >= 2: notify("Edge cards not revealed yet. About to do that") #Debug
       for card in table:
-         if card.highlight == EdgeColor and not card.isFaceUp and card.owner == me:
+         if card.highlight == EdgeColor and not card.isFaceUp and card.controller in myAllies:
             card.isFaceUp = True
             if card.Type == 'Fate': 
                fateNr += 1
