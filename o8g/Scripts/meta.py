@@ -192,18 +192,18 @@ def fetchAllOpponents(targetPL = me):
          if player.getGlobalVariable('Side') == '': continue # This is a spectator 
          if player != targetPL and player.getGlobalVariable('Side') != targetPL.getGlobalVariable('Side'): opponentList.append(player) # Opponent needs to be not us, and of a different type. 
    else: opponentList = [me] # For debug purposes
-   debugNotify("<<< fetchAllOpponents()") #Debug
+   debugNotify("<<< fetchAllOpponents() returning size {} ".format(len(opponentList))) #Debug
    return opponentList   
    
 def fetchAllAllies(targetPL = me):
-   debugNotify(">>> fetchAllOpponents()") #Debug
+   debugNotify(">>> fetchAllAllies()") #Debug
    alliesList = []
    if len(getPlayers()) > 1:
       for player in getPlayers():
          if player.getGlobalVariable('Side') == '': continue # This is a spectator 
          if player == targetPL or player.getGlobalVariable('Side') == targetPL.getGlobalVariable('Side'): alliesList.append(player) # Opponent needs to be not us, and of a different type. 
    else: alliesList = [me] # For debug purposes
-   debugNotify("<<< fetchAllOpponents()") #Debug
+   debugNotify("<<< fetchAllAllies() returning size {} ".format(len(alliesList))) #Debug
    return alliesList   
    
 def modifyDial(value):
@@ -537,9 +537,9 @@ def resolveUD(card,Unit_Damage):
    targetUnits = {}
    knowsShiiCho = chkShiiChoTrainnig(card)
    targetedStrike = chkTargetedStrike(card)
-   targetUnitsList = [c for c in table if (c.controller != me or len(getPlayers()) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and not hasDamageProtection(c,card) and (c.orientation == Rot90 or targetedStrike)]
+   targetUnitsList = [c for c in table if (c.controller in fetchAllOpponents() or len(getPlayers()) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and not hasDamageProtection(c,card) and (c.orientation == Rot90 or targetedStrike)]
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller != me or len(getPlayers()) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor]
+      targetUnitsList = [c for c in table if (c.orientation == Rot90 or targetedStrike) and (c.controller in fetchAllOpponents() or len(getPlayers()) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor]
       if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Unit Damage icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)
@@ -571,9 +571,9 @@ def resolveUD(card,Unit_Damage):
 def resolveTactics(card,Tactics):
    debugNotify(">>> resolveTactics()") #Debug   
    targetUnits = {}
-   targetUnitsList = [c for c in table if (c.controller != me or len(getPlayers()) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and c.isFaceUp]
+   targetUnitsList = [c for c in table if (c.controller in fetchAllOpponents() or len(getPlayers()) == 1) and c.targetedBy and c.targetedBy == me and c.Type == 'Unit' and c.isFaceUp]
    if not len(targetUnitsList): # if the player hasn't targeted any units, then we try to figure out which units might be a valid target for the Unit Damage
-      targetUnitsList = [c for c in table if (c.controller != me or len(getPlayers()) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
+      targetUnitsList = [c for c in table if (c.controller in fetchAllOpponents() or len(getPlayers()) == 1) and c.Type == 'Unit' and not hasDamageProtection(c,card) and c.isFaceUp and c.highlight != EdgeColor] # We first make the list, so as to avoid asking if there's not going to be any valid target anyway.
       if len(targetUnitsList) and not confirm("You had no valid units targeted for {}'s Tactics icons. Attempt to discover targets automatically?".format(card.name)): targetUnitsList = []
    if len(targetUnitsList) > 1:
       unitChoices = makeChoiceListfromCardList(targetUnitsList)

@@ -34,7 +34,6 @@ handRefillDone = False # A variable which tracks if the player has refilled thei
 forceStruggleDone = False # A variable which tracks if the player's have actually done the force struggle for this turn (just in case it's forgotten)
 ModifyDraw = 0 # When 1 it signifies an effect that affects the number of cards drawn per draw.
 limitedPlayed = False # A Variable which records if the player has played a limited card this turn
-reversePlayerChk = False # The reversePlayerChk variable is set to true by the calling function if we want the scripts to explicitly treat who discarded the objective opposite. For example for the ability of Decoy at Dantooine, since it's the objective's own controller that discards the cards usually, we want the game to treat it always as if their opponent is discarding instead.
 capturingObjective = None # A global variable which holds which objective just captured a card.
 
 #---------------------------------------------------------------------------
@@ -413,8 +412,8 @@ def gameSetup(group, x = 0, y = 0):
    objectives = me.piles['Objective Deck']
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
       if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
-      if not ofwhom('ofOpponent') and len(players) > 1: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
-         whisper("Please wait until your opponent has placed their Affiliation down before proceeding")
+      if len(fetchAllOpponents()) == 0: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
+         whisper("Please wait until all your opponents have loaded their decks before proceeding")
          return
       if len(me.hand) > 3 and not confirm("Have you moved one of your 4 objectives to the bottom of your objectives deck?"): return
       for card in me.hand:
@@ -888,22 +887,21 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
       rescuedCount = rescueFromObjective(card)
       if rescuedCount >= 1: extraTXT = ", rescuing {} of their captured cards".format(rescuedCount)
       else: extraTXT = ''
-      me.setGlobalVariable('currentObjectives', str(currentObjectives))
-      opponentPL.counters['Objectives Destroyed'].value += 1         
+      me.setGlobalVariable('currentObjectives', str(currentObjectives))      
       if Side == 'Light': 
+         opponentPL.counters['Objectives Destroyed'].value += 1         
          modifyDial(opponentPL.counters['Objectives Destroyed'].value)
          notify("{} thwarts {}. The Death Star Dial advances by {}".format(opponentPL,card,opponentPL.counters['Objectives Destroyed'].value))
       else: 
+         for player in fetchAllOpponents(): # Light side players share destroyed objectives number
+            player.counters['Objectives Destroyed'].value += 1         
          notify("{} thwarts {}{}.".format(opponentPL,card,extraTXT))
          if len(myAllies) == 2: objRequired = 5
          else: objRequired = 3
          if opponentPL.counters['Objectives Destroyed'].value >= objRequired: 
             notify("===::: The Light Side wins the Game! :::====")
             reportGame('ObjectiveDefeat')
-      global reversePlayerChk
-      reversePlayerChk = True
-      autoscriptOtherPlayers('ObjectiveThwarted',card)
-      reversePlayerChk = False
+      autoscriptOtherPlayers('ObjectiveThwarted',card, origin_player = opponentPL)
       playThwartSound()
       card.moveTo(opponentPL.piles['Victory Pile']) # Objectives are won by the opponent
       cardsLeaving(card,'remove')
@@ -1011,7 +1009,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       if debugVerbosity >= 2: notify("About to move to objective")
       targetCType = targetC.Type # Used later for the autoscripting of other cards
       if targetCType == '?': targetCType = ''
-      if targetC.controller != me: xAxis = 1
+      if targetC.controller in fetchAllOpponents(): xAxis = 1
       else: xAxis = -1
       if captureGroup == 'Table' and targetC.highlight != EdgeColor and targetC.highlight != FateColor and targetC.highlight != RevealedColor: # If the card was on the table, we also trigger "removed from play" effects
          if not Continuing and not cardsLeaving(targetC):
@@ -1543,7 +1541,7 @@ def showatrandom(group = None, count = 1, targetPL = None, silent = False, cover
    side = 1
    if not targetPL: targetPL = me
    if not group: group = targetPL.hand
-   if targetPL != me: side = -1
+   if targetPL in fetchAllOpponents(): side = -1
    if len(group) == 0:
       whisper(":::WARNING::: {} had no cards in their hand!".format(targetPL))
       return shownCards

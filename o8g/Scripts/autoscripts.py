@@ -223,7 +223,7 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
 # Other Player trigger
 #------------------------------------------------------------------------------
    
-def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Function that triggers effects based on the opponent's cards.
+def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_player = me): # Function that triggers effects based on the opponent's cards.
 # This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
 # For example a card that would produce credits whenever a trace was attempted. 
    if not Automations['Triggers']: return # If automations have been disabled, do nothing.
@@ -257,7 +257,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1): # Func
          # See for example Renegade Squadron Mobilization, where we need to check that the controller of the card leaving play is the opponent of the player that controls Renegade Squadron Mobilization
          # If we had let it as it was, it would simply check if Renegade Squadron Mobilization is controlled by the opponent, thus triggering the script each time our opponent's action discarded a unit, even if the unit was ours.
          if re.search(r'-byFriendlyOriginController', autoS) and chkPlayer('byMe', origin_card.controller,False, player = card.controller) == 0: continue
-         if chkPlayer(autoS, card.controller,False) == 0: continue # Check that the effect's origninator is valid.
+         if chkPlayer(autoS, card.controller,False, player = origin_player) == 0: continue # Check that the effect's origninator is valid.
          if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
                                                                     # This is different from -isOptional in order to be able to trigger abilities we cannot automate otherwise.
@@ -1391,7 +1391,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
                           \nText: {}\
                           ".format(cardNames[iter], cardDetails[iter][0], cardDetails[iter][1], cardDetails[iter][2],cardDetails[iter][3],cardDetails[iter][4],cardDetails[iter][5]))
       choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0)
-      if choice:
+      if choice != None:
          capturedC = Card(cardList.pop(choice))
          capturedC.moveTo(opponentPL.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
          if debugVerbosity >= 3: notify("#### About to capture.")
@@ -1459,7 +1459,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       else:
          currentTarget = Card(num(EngagedObjective))     
          if currentTarget.controller != me or currentTarget == card:
-            whisper(":::Error::: Current engagement not at another on of your objectives.")
+            whisper(":::Error::: Current engagement not at another one of your objectives.")
             return
       currentTarget.highlight = None
       card.highlight = DefendColor
@@ -1581,7 +1581,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
 def findTarget(Autoscript, fromHand = False, card = None): # Function for finding the target of an autoscript
    debugNotify(">>> findTarget(){}".format(extraASDebug(Autoscript))) #Debug
    debugNotify("fromHand = {}. card = {}".format(fromHand,card)) #Debug
-   global reversePlayerChk
    try:
       if fromHand == True or re.search(r'-fromHand',Autoscript): group = me.hand
       elif re.search(r'-fromTopDeckMine',Autoscript): # Quick job because I cannot be bollocksed.
@@ -1604,12 +1603,12 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
             # * Card is targeted and targeted by the player OR target search has the -AutoTargeted modulator and it is NOT highlighted as a Fate, Edge or Captured.
             # * The player who controls this card is supposed to be me or the enemy.
                if debugVerbosity >= 2: notify("### Checking {}".format(targetLookup))
+               playerChk = me
                if card:
                   if card.controller != me: # If we have provided the originator card to findTarget, and the card is not our, we assume that we need to treat the script as being run by our opponent
                      debugNotify("Reversing player check")
-                     reversePlayerChk = True
-               if not checkSpecialRestrictions(Autoscript,targetLookup): continue
-               reversePlayerChk = False # We return things to normal now.
+                     playerChk = card.controller
+               if not checkSpecialRestrictions(Autoscript,targetLookup,playerChk): continue
                if re.search(r'-onHost',Autoscript):   
                   debugNotify("Looking for Host")
                   if not card: continue # If this targeting script targets only a host and we have not passed what the attachment is, we cannot find the host, so we abort.
@@ -1672,14 +1671,14 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
                if len(mergedList) > 0: targetsText += "not {}".format(mergedList)
                if targetsText.endswith(' and '): targetsText = targetsText[:-len(' and ')]
             if debugVerbosity >= 2: notify("### About to chkPlayer()")# Debug
+            playerChk = me
             if card:
                if card.controller != me: # If we have provided the originator card to findTarget, and the card is not our, we assume that we need to treat the script as being run by our opponent
                   debugNotify("Reversing player check")
-                  reversePlayerChk = True
-            if not chkPlayer(Autoscript, targetLookup.controller, False, True): 
+                  playerChk = card.controller
+            if not chkPlayer(Autoscript, targetLookup.controller, False, True, player = playerChk): 
                allegiance = re.search(r'target(Opponents|Mine)', Autoscript)
                requiredAllegiances.append(allegiance.group(1))
-            reversePlayerChk = False # We return things to normal now.
             if len(requiredAllegiances) > 0: targetsText += "\nValid Target Allegiance: {}.".format(requiredAllegiances)
             delayed_whisper(":::ERROR::: You need to target a valid card before using this action{}.".format(targetsText))
          elif len(foundTargets) >= 1 and re.search(r'-choose',Autoscript):
@@ -1786,7 +1785,7 @@ def checkCardRestrictions(cardPropertyList, restrictionsList):
    if debugVerbosity >= 1: notify("<<< checkCardRestrictions() with return {}".format(validCard)) #Debug
    return validCard
 
-def checkSpecialRestrictions(Autoscript,card):
+def checkSpecialRestrictions(Autoscript,card, playerChk = me):
 # Check the autoscript for special restrictions of a valid card
 # If the card does not validate all the restrictions included in the autoscript, we reject it
    if debugVerbosity >= 1: notify(">>> checkSpecialRestrictions() {}".format(extraASDebug(Autoscript))) #Debug
@@ -1904,7 +1903,7 @@ def checkSpecialRestrictions(Autoscript,card):
       else: 
          debugNotify("!!! Failing because card's controller has the edge", 2)
          validCard = False
-   if not chkPlayer(Autoscript, card.controller, False, True): 
+   if not chkPlayer(Autoscript, card.controller, False, True, playerChk): 
       debugNotify("!!! Failing because not the right controller", 2)
       validCard = False
    if re.search(r'ifHave(More|Less)',Autoscript):
@@ -2060,7 +2059,6 @@ def checkOriginatorRestrictions(Autoscript,card):
          else:
             debugNotify("Failing because we have more {} than the opponent".format(reqRestrictions))
             validCard = False
-   #if not chkPlayer(Autoscript, card.controller, False, False): validCard = False
    markerName = re.search(r'-ifOrigHasMarker{([\w :]+)}',Autoscript) # Checking if we need specific markers on the card.
    if markerName: #If we're looking for markers, then we go through each targeted card and check if it has any relevant markers
       if debugVerbosity >= 2: notify("### Checking marker restrictions")# Debug
@@ -2177,13 +2175,8 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False, player = me): #
       if manual or len(players) == 1: 
          debugNotify("!!! Force Succeeding for Manual/Debug")         
          validPlayer = 1 # On a manual or debug run we always succeed
-      if not reversePlayerChk: 
-         debugNotify("<<< chkPlayer() with validPlayer: {}".format(validPlayer)) # Debug
-         return validPlayer
-      else: # In case reversePlayerChk is set to true, we want to return the opposite result. This means that if a scripts expect the one running the effect to be the player, we'll return 1 only if the one running the effect is the opponent. See Decoy at Dantoine for a reason
-         debugNotify("<<< chkPlayer() reversed!") # Debug      
-         if validPlayer == 0 or len(players) == 1 or manual or (not byOpponent and not byMe): return 1 # For debug purposes, I want it to be true when there's  only one player in the match
-         else: return 0
+      debugNotify("<<< chkPlayer() with validPlayer: {}".format(validPlayer)) # Debug
+      return validPlayer
    except: 
       notify("!!!ERROR!!! Null value on chkPlayer()")
       return 0
