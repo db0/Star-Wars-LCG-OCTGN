@@ -2159,16 +2159,16 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False, player = me): #
          debugNotify("Doing normal chk",3)
          byOpponent = re.search(r'(byOpponent|forOpponent)', Autoscript)
          byMe = re.search(r'(byMe|forMe)', Autoscript)
-      if re.search(r'duringOpponentTurn', Autoscript) and controller.isActivePlayer: 
-         debugNotify("!!! Failing because ability is for {} opponent's turn and {}.isActivePlayer is {}".format(controller,controller,controller.isActivePlayer))            
+      if re.search(r'duringOpponentTurn', Autoscript) and re.search(r'{}'.format(controller.getGlobalVariable('Side')),getGlobalVariable('Phase')): 
+         debugNotify("!!! Failing because ability is for {} opponent's turn.".format(controller))
          validPlayer = 0 # If the card can only fire furing its controller's opponent's turn
-      elif re.search(r'duringMyTurn', Autoscript) and not controller.isActivePlayer: 
-         debugNotify("!!! Failing because ability is for {}'s turn and {}.isActivePlayer is {}".format(controller,controller,controller.isActivePlayer))            
+      elif re.search(r'duringMyTurn', Autoscript) and not re.search(r'{}'.format(controller.getGlobalVariable('Side')),getGlobalVariable('Phase')): 
+         debugNotify("!!! Failing because ability is for {}'s turn.".format(controller))
          validPlayer = 0 # If the card can only fire furing its controller's turn
-      elif byOpponent and controller == player: 
-         debugNotify("!!! Failing because ability is byOpponent and controller is {}".format(controller))
+      elif byOpponent and controller in fetchAllAllies(player): 
+         debugNotify("!!! Failing because ability is byOpponent and controller is an Ally")
          validPlayer =  0 # If the card needs to be played by a rival.
-      elif byMe and controller != player: 
+      elif byMe and controller in fetchAllOpponents(player): 
          debugNotify("!!! Failing because ability is for byMe and controller is {}".format(controller))
          validPlayer =  0 # If the card needs to be played by us.
       else: debugNotify("!!! Succeeding by Default") # Debug

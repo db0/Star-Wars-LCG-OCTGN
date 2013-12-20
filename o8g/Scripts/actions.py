@@ -1157,7 +1157,9 @@ def play(card):
       handDiscard(card)
       return # If the player double clicked on an objective, we assume they were selecting one of their three objectives to to put at the bot. of their deck.
    if card.Type == 'Enhancement' or card.Type == 'Unit':
-      if not re.search(r'4',getGlobalVariable('Phase')) and (re.search(r'5',getGlobalVariable('Phase')) and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))):
+      phaseRegex = re.search(r'(Dark|Light):([0-6])',getGlobalVariable('Phase'))
+      phase = num(phaseRegex.group(2))
+      if (phaseRegex.group(1) != Side and phase != 5) or (phase != 4 and phase != 5) or (phase == 5 and not re.search(r'DeployAllowance:Conflict',CardsAS.get(card.model,''))):
          if not confirm(":::WARNING:::\n\nNormally this type of card cannot be played outside the deployment phase. Are you sure you want to continue?"): 
             return # If the card is a unit or enhancement, it can only be played during the deployment phase. Here we add a check to prevent the player from playing it out-of-phase.
    if card.Type == 'Enhancement':
