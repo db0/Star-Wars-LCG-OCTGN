@@ -1088,10 +1088,10 @@ def GameX(Autoscript, announceText, card, targetCards = None, notification = Non
    elif re.search(r'forOwner', Autoscript): player = card.owner 
    elif re.search(r'forDark Side', Autoscript): 
       if Side == 'Dark': player = me
-      else: player == opponent
+      else: player == findOpponent('Ask',"Please choose which opponent has won the game.")
    elif re.search(r'forLight Side', Autoscript): 
       if Side == 'Light': player = me
-      else: player == opponent
+      else: player == findOpponent('Ask',"Please choose which opponent has won the game.")
    else: player == me
    if action.group(1) == 'Lose': 
       announceString = "=== {} loses the game! ===".format(player)
@@ -1197,7 +1197,6 @@ def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notific
 def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly unique to specific cards, not worth making a whole generic function for them.
    if debugVerbosity >= 1: notify(">>> CustomScript() with action: {}".format(action)) #Debug
    mute()
-   global opponent
    discardPile = me.piles['Discard Pile']
    objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
@@ -1259,12 +1258,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          card.sendToBack()
          TokensX('Put1isEnhancement-isSilent', '', card)
    elif card.name == 'Cruel Interrogations' and action == 'PLAY':
-      #if not confirm("Do you wish to use Cruel Interrogations' Reaction?"): return
-      while len(opponent.hand) == 0: 
-         if not confirm("Your opponent has no cards in their hand.\n\nRetry?"): return
-      turn = num(getGlobalVariable('Turn'))
-      captureTarget = opponent.hand.random()
-      capture(chosenObj = card, targetC = captureTarget)
+      for opponentPL in fetchAllOpponents():
+         if len(opponentPL.hand) == 0: 
+            whisper("{} had no cards in their hand.".format(opponentPL))
+            continue
+         captureTarget = opponentPL.hand.random()
+         capture(chosenObj = card, targetC = captureTarget)
    elif card.name == 'Rancor' and action == 'afterCardRefreshing' and card.controller == me:
       possibleTargets = [c for c in table if c.Type == 'Unit' and not re.search('Vehicle',c.Traits)]
       if len(possibleTargets) == 0: return 'ABORT' # Nothing to kill
@@ -1372,7 +1371,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       cardNames = []
       cardDetails = []
       debugNotify("About to move cards to me.ScriptingPile",2)
-      for c in opponent.piles['Command Deck'].top(3):
+      opponentPL = findOpponent('Ask','Choose player on whom to use Take Them Prisoner')
+      for c in opponentPL.piles['Command Deck'].top(3):
          c.moveTo(me.ScriptingPile)
          cardList.append(c._id)
       rnd(1,10)
@@ -1393,7 +1393,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       choice = SingleChoice("Which card do you wish to capture?", ChoiceTXT, type = 'button', default = 0)
       if choice:
          capturedC = Card(cardList.pop(choice))
-         capturedC.moveTo(opponent.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
+         capturedC.moveTo(opponentPL.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
          if debugVerbosity >= 3: notify("#### About to capture.")
          capture(chosenObj = card,targetC = capturedC, silent = True)
          if debugVerbosity >= 3: notify("#### Removing choice text")
@@ -1401,14 +1401,13 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
          for iter in range(len(cardList)):
             if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
-            if iter == choice: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],0)
-            else: Card(cardList[iter]).moveTo(opponent.piles['Command Deck'],1)
-         notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponent))
+            if iter == choice: Card(cardList[iter]).moveTo(opponentPL.piles['Command Deck'],0)
+            else: Card(cardList[iter]).moveTo(opponentPL.piles['Command Deck'],1)
+         notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponentPL))
    elif card.name == 'Trench Run' and action == 'PLAY': # We move this card to the opponent's exile in order to try and give control to them automatically.
-      card.moveTo(opponent.ScriptingPile)
-      rnd(1,10)
       if me.hasInvertedTable(): card.moveToTable(0,0)
       else:  card.moveToTable(0,-cheight(card))
+      card.setController(findOpponent())
       if debugVerbosity >= 2: notify("About to whisper") # Debug
       whisper(":::IMPORTANT::: Please make sure that the controller for this card is always the Dark Side player")
    elif card.name == 'Twist of Fate' and action == 'RESOLVEFATE': 
@@ -1519,10 +1518,10 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          if cardView.group == me.ScriptingPile: cardView.moveTo(me.piles['Command Deck'])
          rnd(1,10)
    elif card.name == "Z-95 Headhunter" and action == 'STRIKE':
-      opponent = findOpponent()
-      shownCards = showatrandom(targetPL = opponent, silent = True)
+      opponentPL = findOpponent('Ask',"Choose one opponent on whom to use {}".format(card.name))
+      shownCards = showatrandom(targetPL = opponentPL, silent = True)
       if len(shownCards) == 0:
-         notify("{} has no cards in their hand".format(opponent))
+         notify("{} has no cards in their hand".format(opponentPL))
          return
       notify("{} discovers {} in an surprise strike!".format(card,shownCards[0]))
       rnd(1,10)
@@ -1590,8 +1589,8 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
          return [me.piles['Command Deck'].top()]
       elif re.search(r'-fromTopDeckOpponents',Autoscript): 
          debugNotify("Returing opponent top deck card",2)
-         opponent = findOpponent()
-         return [opponent.piles['Command Deck'].top()]
+         opponentPL = findOpponent('Ask')
+         return [opponentPL.piles['Command Deck'].top()]
       else: group = table
       foundTargets = []
       if re.search(r'Targeted', Autoscript):
@@ -1802,7 +1801,7 @@ def checkSpecialRestrictions(Autoscript,card):
       validCard = False
    if re.search(r'isAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
-         if c != card and c.orientation == Rot90 and c.controller == card.controller: 
+         if c != card and c.orientation == Rot90 and c.controller in fetchAllAllies(card.controller): 
             debugNotify("!!! Failing because it's not participating alone", 2)
             validCard = False
    if re.search(r'isCaptured',Autoscript):
@@ -1850,12 +1849,12 @@ def checkSpecialRestrictions(Autoscript,card):
          validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if re.search(r'isAttacking',Autoscript) and currentTarget.controller == card.controller:
+         if re.search(r'isAttacking',Autoscript) and currentTarget.controller in fetchAllAllies(card.controller):
             if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-attacking fail because we're debugging")
             else: 
                debugNotify("!!! Failing because unit it not attacking", 2)
                validCard = False
-         elif re.search(r'isDefending',Autoscript) and currentTarget.controller != card.controller: 
+         elif re.search(r'isDefending',Autoscript) and currentTarget.controller not in fetchAllAllies(card.controller): 
             if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-defending fail because we're debugging")
             else: 
                debugNotify("!!! Failing because unit is not defending", 2)
@@ -1910,8 +1909,8 @@ def checkSpecialRestrictions(Autoscript,card):
       validCard = False
    if re.search(r'ifHave(More|Less)',Autoscript):
       reqRestrictions = prepareRestrictions(Autoscript,'type')
-      myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller == card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
-      opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller != card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller in fetchAllAllies(card.controller) and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller in fetchAllOpponents(card.controller) and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
       if re.search(r'ifHaveMore)',Autoscript) and myUnits < opUnits: 
          debugNotify("Failing because we have less {} than the opponent".format(reqRestrictions))
          validCard = False
@@ -1994,7 +1993,7 @@ def checkOriginatorRestrictions(Autoscript,card):
       elif card.orientation != Rot90 and card.highlight != DefendColor: validCard = False
    if re.search(r'ifOrigAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
-         if c != card and c.orientation == Rot90 and c.controller == card.controller: validCard = False
+         if c != card and c.orientation == Rot90 and c.controller in fetchAllAllies(card.controller): validCard = False
    if re.search(r'ifOrigNotParticipating',Autoscript) and (card.orientation == Rot90 or card.highlight == DefendColor): validCard = False
    if re.search(r'ifOrigEdgeWinner',Autoscript):
       plAffiliation = getSpecial('Affiliation',card.controller)
@@ -2011,10 +2010,10 @@ def checkOriginatorRestrictions(Autoscript,card):
       if EngagedObjective == 'None': validCard = False
       else:
          currentTarget = Card(num(EngagedObjective))
-         if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller == card.controller: 
+         if re.search(r'ifOrigAttacking',Autoscript) and currentTarget.controller in fetchAllAllies(card.controller): 
             if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-attacking fail because we're debugging")
             else: validCard = False
-         elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller != card.controller: 
+         elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller not in fetchAllAllies(card.controller): 
             if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-defending fail because we're debugging")
             else: validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
@@ -2050,8 +2049,8 @@ def checkOriginatorRestrictions(Autoscript,card):
       else: validCard = False
    if re.search(r'ifOrigHas(More|Less)',Autoscript):
       reqRestrictions = prepareRestrictions(Autoscript,'type')      
-      myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller == card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
-      opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller != card.controller and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      myUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller in fetchAllAllies(card.controller)and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
+      opUnits = len([c for c in table if checkCardRestrictions(gatherCardProperties(c), reqRestrictions) and c.controller in fetchAllOpponents(card.controller)and c.isFaceUp and c.highlight != DummyColor and c.highlight != RevealedColor and c.highlight != EdgeColor])
       debugNotify("Finished counting units. myUnits = {}.  opUnits = {}".format(myUnits,opUnits))
       if re.search(r'ifOrigHasMore',Autoscript) and myUnits <= opUnits: 
          debugNotify("Failing because we have less {} than the opponent".format(reqRestrictions))

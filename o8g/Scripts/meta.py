@@ -125,23 +125,35 @@ def checkUnique (card):
    if debugVerbosity >= 3: notify("<<< checkUnique() - Returning True") #Debug
    return True   
 
-def findOpponent(position = '#1'):
+def findOpponent(position = '#1', multiText = "Choose which opponent you're targeting with this effect."):
    debugNotify(">>> findOpponent()") #Debug
-   opponentsList = fetchAllOpponents()
-   if len(opponentsList) == 1: opponentPL = opponentsList[0]
+   opponentList = fetchAllOpponents()
+   if len(opponentList) == 1: opponentPL = opponentList[0]
    else:
-      for player in opponentsList:
-         if player.getGlobalVariable('PLnumber') == position: opponentPL = player
+      if position == 'Ask':
+         debugNotify("About to Ask for opponent")
+         choice = SingleChoice(multiText, [pl.name for pl in opponentList])
+         opponentPL = opponentList[choice]         
+      else:
+         debugNotify("looking for opponent in position {}".format(position))
+         for player in opponentList:
+            if player.getGlobalVariable('PLnumber') == position: opponentPL = player
    # Just a quick function to make the code more readable
    debugNotify(">>> findOpponent() returning {}".format(opponentPL.name)) #Debug
    return opponentPL
       
-def findAlly(position = '#1'):
+def findAlly(position = '#1', multiText = "Choose which ally you're targeting with this effect."):
    debugNotify(">>> findAlly()") #Debug
    if len(myAllies) == 1: allyPL = myAllies[0]
    else:
-      for player in myAllies:
-         if player.getGlobalVariable('PLnumber') == position: allyPL = player
+      if position == 'Ask':
+         debugNotify("About to Ask for ally")
+         choice = SingleChoice(multiText, [pl.name for pl in myAllies])
+         allyPL = myAllies[choice]         
+      else:
+         debugNotify("looking for Ally in position {}".format(position))
+         for player in myAllies:
+            if player.getGlobalVariable('PLnumber') == position: allyPL = player
    # Just a quick function to make the code more readable
    debugNotify(">>> findAlly() returning {}".format(allyPL.name)) #Debug
    return allyPL
@@ -205,13 +217,12 @@ def modifyDial(value):
 
 def resetAll(): # Clears all the global variables in order to start a new game.
    global unpaidCard, edgeRevealed, firstTurn, debugVerbosity
-   global Side, Affiliation, opponent, limite1dPlayed, myAllies, MPxOffset
+   global Side, Affiliation, limite1dPlayed, myAllies, MPxOffset
    if debugVerbosity >= 1: notify(">>> resetAll(){}".format(extraASDebug())) #Debug
    mute()
    Side = None
    Affiliation = None
    unpaidCard = None 
-   opponent = None
    myAllies = []
    MPxOffset = 0
    MPyOffset = 0

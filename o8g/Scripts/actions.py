@@ -26,7 +26,6 @@ import re
 
 Side = None # The side of the player. 
 Affiliation = None
-# opponent = None # A variable holding the player object of our opponent.
 SetupPhase = False
 unpaidCard = None # A variable that holds the card object of a card that has not been paid yet, for ease of find.
 edgeRevealed = False # Remembers if the player has revealed their edge cards yet or not.
