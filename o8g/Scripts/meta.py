@@ -1397,7 +1397,7 @@ def initGame(): # A function which prepares the game for online submition
    debugNotify("<<< initGame()", 3) #Debug
    
 def reportGame(result = 'DialVictory'): # This submits the game results online.
-   if alliesNR > 1 or len(fetchAllOpponents()) > 1:
+   if len(myAllies) > 1 or len(fetchAllOpponents()) > 1:
       notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
       return # We currently do not record multiplayer stats
    delayed_whisper("Please wait. Submitting Game Stats...")     
@@ -1536,7 +1536,7 @@ def incrStat(stat,playerName):
    # 'forceturns'    : How many balance phases the player started with the force.
    # These are then stored into a global variable which is a nested dictionary. First dictionary contains a dictionaty for each player's name with their individual stats.
    debugNotify(">>> incrStat() - {} for {}".format(stat,playerName)) #Debug
-   if alliesNR > 1 or len(fetchAllOpponents()) > 1: return # We currently do not record multiplayer stats
+   if len(myAllies) > 1 or len(fetchAllOpponents()) > 1: return # We currently do not record multiplayer stats
    try: # Just in case. We don't want to break the whole game.
       gameStats = eval(getGlobalVariable('Game Stats'))
       debugNotify("gameStats = {}".format(gameStats), 4) #Debug
