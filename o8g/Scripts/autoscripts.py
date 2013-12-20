@@ -437,10 +437,9 @@ def redirect(Autoscript, card, action, X = 0,targetC = None):
       notify("{:=^36}".format(title))
       TitleDone = True
    debugNotify("card.owner = {}".format(card.owner),2)
-   targetPL = ofwhom(Autoscript,card.owner) # So that we know to announce the right person the effect, affects.
-   if action == 'Quick': announceText = "{} uses {}'s ability to".format(targetPL,card) 
+   if action == 'Quick': announceText = "{} uses {}'s ability to".format(card.controller,card) 
    elif card.highlight == DummyColor: announceText = "{}'s lingering effects:".format(card)
-   else: announceText = "{} uses {} to".format(targetPL,card)
+   else: announceText = "{} uses {} to".format(card.controller,card)
    debugNotify(" targetC: {}. Notification Type = {}".format([c.name for c in targetC],'Quick'), 3) # Debug   
    if regexHooks['GainX'].search(Autoscript):
       debugNotify("in GainX hook")
@@ -795,7 +794,7 @@ def DiscardX(Autoscript, announceText, card, targetCards = None, notification = 
    if count == 0: 
       debugNotify("Exiting because count == 0")
       return (announceText,count) # If there are no cards, then we effectively did nothing, so we don't change the notification.
-   if notification == 'Quick': announceString = "{} discards {} cards".format(announceText, count)
+   if notification == 'Quick': announceString = "{}{} discard {} cards".format(announceText,otherTXT, count)
    else: announceString = "{}{} discard {} cards from their hand".format(announceText,otherTXT, count)
    if notification and multiplier > 0: notify(':> {}.'.format(announceString))
    if debugVerbosity >= 3: notify("<<< DiscardX()")

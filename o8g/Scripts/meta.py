@@ -158,25 +158,54 @@ def findAlly(position = '#1', multiText = "Choose which ally you're targeting wi
    debugNotify(">>> findAlly() returning {}".format(allyPL.name)) #Debug
    return allyPL
       
-def ofwhom(Autoscript, controller = me, multiText = "Choose which opponent you're targeting with this effect."): 
+def ofwhom(Autoscript, controller = me, multiText = None): 
    debugNotify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
    targetPL = None
-   opponentList = []
+   playerList = []
    if re.search(r'o[fn]Opponent', Autoscript):
+      if not multiText: multiText = "Choose which opponent you're targeting with this effect."
       if len(getPlayers()) > 1:
-         if controller == me: # If we're the current controller of the card who's scripts are being checked, then we look for our opponent
-            for player in getPlayers():
-               if player.getGlobalVariable('Side') == '': continue # This is a spectator 
-               elif player != me and player.getGlobalVariable('Side') != Side: opponentList.append(player) # Opponent needs to be not us, and of a different type. 
-               if len(opponentList) == 1: targetPL = opponentList[0]
-               else: 
-                  choice = SingleChoice(multiText, [pl.name for pl in opponentList])
-                  targetPL = opponentList[choice]
-         else: targetPL = me # if we're not the controller of the card we're using, then we're the opponent of the player (i.e. we're trashing their card)
+         for player in getPlayers():
+            if player.getGlobalVariable('Side') == '': 
+               debugNotify("ofwhom() -- rejecting {} because they are a spectator".format(player))
+               continue # This is a spectator 
+            elif player.getGlobalVariable('Side') != controller.getGlobalVariable('Side'): 
+               playerList.append(player) # Opponent needs to be not us, and of a different type. 
+               debugNotify("ofwhom() -- appending {}".format(player),4)
+            else: debugNotify("ofwhom() -- rejecting {} because their side {} matches controller Side ({})".format(player, player.getGlobalVariable('Side'), controller.getGlobalVariable('Side')), 4)
+         debugNotify("playerList = {}".format(playerList), 4)
+         if len(playerList) == 1: targetPL = playerList[0]
+         elif len(playerList) == 0: 
+            notify(":::Error::: No Valid Opponents found. Returning Myself as failsafe")
+            targetPL = me
+         else: 
+            choice = SingleChoice(multiText, [pl.name for pl in playerList])
+            targetPL = playerList[choice]
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
          targetPL = me
-   else: 
+   elif re.search(r'o[fn]Ally', Autoscript):
+      if not multiText: multiText = "Choose which allied player you're targeting with this effect."
+      if len(getPlayers()) > 1:
+         for player in getPlayers():
+            if player.getGlobalVariable('Side') == '': 
+               debugNotify("ofwhom() -- rejecting {} because they are a spectator".format(player))
+               continue # This is a spectator 
+            elif player.getGlobalVariable('Side') == controller.getGlobalVariable('Side'): 
+               playerList.append(player) # Opponent needs to be not us, and of a different type. 
+               debugNotify("ofwhom() -- appending {}".format(player),4)
+            else: debugNotify("ofwhom() -- rejecting {} because their side {} does not match controller Side ({})".format(player, player.getGlobalVariable('Side'), controller.getGlobalVariable('Side')), 4)
+         if len(playerList) == 1: targetPL = playerList[0]
+         elif len(playerList) == 0: 
+            notify(":::Error::: No Valid Allies found. Returning Myself as failsafe")
+            targetPL = me
+         else: 
+            choice = SingleChoice(multiText, [pl.name for pl in playerList])
+            targetPL = playerList[choice]
+      else: 
+         if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
+         targetPL = me
+   else: # If the script does not mention "of opponent, then it's targeting the controller
       if len(getPlayers()) > 1:
          if controller != me: targetPL = controller         
          else: targetPL = me
