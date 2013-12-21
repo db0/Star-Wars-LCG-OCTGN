@@ -1,6 +1,17 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.6.2.x
+
+* Leia Organa will now properly ask the captor on which objective to go to.
+* Moving cards around manually will carry their attached cards with them. This means objectives moving in the refresh phase will take their attachments will them finally.
+* Made phase changes common for each team.
+* Made cards like Vader's Fist and Interrogation Droid work properly in multiplayer.
+* In MP the game will now ask which opponent you're targeting when only one needs to be selected.
+* Playing Edge cards as an ally should now stack with the main player's other edge cards.
+* Can now target a card and press Del to discard it. This way you can destroy objectives and units from your opponent yourself.
+
+
 ### 2.6.1.x
 
 * Resampled all sounds to 44100
