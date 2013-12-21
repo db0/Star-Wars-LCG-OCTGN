@@ -2019,6 +2019,12 @@ def checkOriginatorRestrictions(Autoscript,card):
          elif re.search(r'ifOrigDefending',Autoscript)  and currentTarget.controller not in fetchAllAllies(card.controller): 
             if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-defending fail because we're debugging")
             else: validCard = False
+         if re.search(r'ifOrigPlayerAttacker',Autoscript) and Player(num(getGlobalVariable('Current Attacker'))) != card.controller: 
+            if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-player-attacker fail because we're debugging")
+            else: validCard = False
+         if re.search(r'ifOrigPlayerDefender',Autoscript) and currentTarget.controller != card.controller: 
+            if len(players) == 1 and debugVerbosity >= 0: notify("!!! Bypassing not-player-defender fail because we're debugging")
+            else: validCard = False
    if re.search(r'isDamagedObjective',Autoscript): # If this keyword is there, the current objective needs to be damaged
       debugNotify("Checking for Damaged Objective", 2)
       EngagedObjective = getGlobalVariable('Engaged Objective')
@@ -2160,10 +2166,12 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False, player = me): #
       if targetChk: # If set to true, it means we're checking from the findTarget() function, which needs a different keyword in case we end up with two checks on a card's controller on the same script (e.g. Darth Vader)
          debugNotify("Doing targetChk",3)
          byOpponent = re.search(r'targetOpponents', Autoscript)
+         byAlly = re.search(r'targetAllied', Autoscript)
          byMe = re.search(r'targetMine', Autoscript)
       else:
          debugNotify("Doing normal chk",3)
          byOpponent = re.search(r'(byOpponent|forOpponent)', Autoscript)
+         byAllies = re.search(r'(byAlly|forAlly)', Autoscript)
          byMe = re.search(r'(byMe|forMe)', Autoscript)
       if re.search(r'duringOpponentTurn', Autoscript) and re.search(r'{}'.format(controller.getGlobalVariable('Side')),getGlobalVariable('Phase')): 
          debugNotify("!!! Failing because ability is for {} opponent's turn.".format(controller))
@@ -2174,7 +2182,10 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False, player = me): #
       elif byOpponent and controller in fetchAllAllies(player): 
          debugNotify("!!! Failing because ability is byOpponent and controller is an Ally")
          validPlayer =  0 # If the card needs to be played by a rival.
-      elif byMe and controller in fetchAllOpponents(player): 
+      elif byAlly and controller in fetchAllOpponents(player): 
+         debugNotify("!!! Failing because ability is for byAlly and controller is {}".format(controller))
+         validPlayer =  0 # If the card needs to be played by us.
+      elif byMe and controller != player: 
          debugNotify("!!! Failing because ability is for byMe and controller is {}".format(controller))
          validPlayer =  0 # If the card needs to be played by us.
       else: debugNotify("!!! Succeeding by Default") # Debug
