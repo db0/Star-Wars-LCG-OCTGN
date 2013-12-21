@@ -979,7 +979,10 @@ def clearAttachLinks(card):
       hostCardSnapshot = dict(hostCards)
       for attachment in hostCardSnapshot:
          if hostCardSnapshot[attachment] == card._id:
-            if Card(attachment) in table: discard(Card(attachment))
+            attachedCard = Card(attachment)
+            if attachedCard in table: 
+               if attachedCard.controller == me: discard(attachedCard)
+               else: remoteCall(attachedCard.controller, 'discard', [attachedCard,0,0,False,False,me])
             del hostCards[attachment]
    debugNotify("### Checking if the card is attached to unlink.")      
    if hostCards.has_key(card._id): del hostCards[card._id] # If the card was an attachment, delete the link

@@ -1044,9 +1044,11 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
    else:
       for targetCard in targetCards:
          if action.group(1) == 'Destroy' or action.group(1) == 'Sacrifice':
-            trashResult = discard(targetCard, silent = True)
-            if trashResult == 'ABORT': return 'ABORT'
-            elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
+            if targetCard.controller == me:
+               trashResult = discard(targetCard, silent = True)
+               if trashResult == 'ABORT': return 'ABORT'
+               elif trashResult == 'COUNTERED': extraTXT = " (Countered!)"
+            else: remoteCall(targetCard.controller, 'discard', [targetCard,0,0,True,False,me])
             if action.group(1) == 'Sacrifice': autoscriptOtherPlayers('CardSacrificed',targetCard)     
          elif action.group(1) == 'Exile' and exileCard(targetCard, silent = True) != 'ABORT': pass
          elif action.group(1) == 'Return': 
@@ -1291,7 +1293,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             return
          finalTarget = currTargets[choice]
       if debugVerbosity >= 2: notify("### finalTarget = {}".format(finalTarget)) #Debug
-      discard(finalTarget,silent = True)
+      if finalTarget.controller == me: discard(finalTarget,silent = True)
+      else: remoteCall(finalTarget.controller, 'discard', [finalTarget,0,0,True,False,me])
       if finalTarget == card: notify("{}'s Rancor destroys itself in its wild rampage".format(me))
       else: notify("{}'s Rancor rampages and destroys {}".format(me,finalTarget))
    elif card.name == 'Rescue Mission' and action == 'PLAY':

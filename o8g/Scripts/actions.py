@@ -861,7 +861,7 @@ def discardTarget(group, x = 0, y = 0): # Discards target card
    mute()
    for c in table:
       if c.targetedBy and c.targetedBy == me:
-         remoteCall(c.owner, 'discard', [c,0,0,False,False,me])
+         remoteCall(c.controller, 'discard', [c,0,0,False,False,me])
    
 def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer = me):
    debugNotify(">>> discard() card = {}".format(card)) #Debug
@@ -877,7 +877,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
          opponentList = fetchAllOpponents()
          if len(opponentList) > 1:
             choice = SingleChoice("Choose which opponent thwarted this objective.", [pl.name for pl in opponentList])
-            if choice == None: return
+            if choice == None: return 'ABORT'
             opponentPL = opponentList[choice]
          else: opponentPL = opponentList[0]
          silent = True # We silence so that the game doesn't put out a second dialogue
@@ -888,7 +888,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
       if not Continuing and not cardsLeaving(card):
          execution = executePlayScripts(card, 'THWART')
          if execution == 'POSTPONED': 
-            return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
+            return 'POSTPONED'# If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
       debugNotify(" About to score objective")
       currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
       currentObjectives.remove(card._id)
@@ -928,7 +928,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
             execution = executePlayScripts(card, 'LEAVING-DISCARD') # Objective discard scripts are dealt with onThwart.
             autoscriptOtherPlayers('CardLeavingPlay',card)
             if execution == 'POSTPONED': 
-               return # If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
+               return 'POSTPONED'# If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
          rescuedCount = rescueFromObjective(card) # Since Escape from Hoth, Units can capture cards as well.
          if rescuedCount >= 1: extraTXT = ", rescuing {} captured cards".format(rescuedCount)
          else: extraTXT = ''
