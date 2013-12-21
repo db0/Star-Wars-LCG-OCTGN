@@ -842,7 +842,7 @@ Interrogation Droid
 -----
 ff4fb461-8060-457a-9c16-000000000122
 -----
-onPlay:Discard1Card-ofAllOpponents-isRandom-isReact
+onPlay:Discard1Card-ofOpponent-isRandom-isReact
 +++++
 
 .....
@@ -850,7 +850,7 @@ Interrogation Droid
 -----
 ff4fb461-8060-457a-9c16-000000000123
 -----
-onPlay:Discard1Card-ofAllOpponents-isRandom-isReact
+onPlay:Discard1Card-ofOpponent-isRandom-isReact
 +++++
 
 .....
@@ -3858,7 +3858,7 @@ Vader's Fist
 -----
 ff4fb461-8060-457a-9c16-000000000505
 -----
-onPlay:Lose1Reserves-onAllOpponents||onDamage:Gain1Reserves-onAllOpponents||onHeal:Lose1Reserves-onAllOpponents||onThwart:Gain1Reserves-onAllOpponents-ifOrigHasntMarker{Damage}
+onPlay:Lose1Reserves-onOpponent||onDamage:Gain1Reserves-onOpponent||onHeal:Lose1Reserves-onOpponent||onThwart:Gain1Reserves-onOpponent-ifOrigHasntMarker{Damage}
 +++++
 
 .....
