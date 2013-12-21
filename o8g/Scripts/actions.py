@@ -946,9 +946,9 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
    debugNotify("<<< discard()") #Debug
    return 'OK'
 
-def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False, Continuing = False): # Tries to find a targeted card in the table or the oppomnent's hand to capture
+def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent = False, Continuing = False, captureGroup = None): # Tries to find a targeted card in the table or the oppomnent's hand to capture
    global capturingObjective
-   if Continuing: chosenObj = capturingObjective
+   #if Continuing: chosenObj = capturingObjective
    debugNotify(">>> capture(){}".format(extraASDebug())) #Debug
    if debugVerbosity >= 2 and chosenObj: notify("### chosenObj = {}".format(chosenObj)) #Debug
    if debugVerbosity >= 2 and targetC: notify("### targetC = {}".format(targetC)) #Debug
@@ -973,82 +973,84 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
                   debugNotify("### Checking {}".format(card), 3) #Debug
                   if card.targetedBy and card.targetedBy == me: targetC = card
                if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
-   else: captureTXT = ":> {} has captured one card from {}'s {}".format(me,targetC.owner,targetC.group.name)
-   if not targetC: whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
+   else: captureTXT = ":> {} has captured one card from {}".format(me,targetC.owner)
+   if not targetC: 
+      whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
+      return
    else: 
-      captureGroup = targetC.group.name
-      if Side == 'Light': 
-         opponentList = fetchAllOpponents()
-         choice = SingleChoice("Choose which opponent captured this card.", [pl.name for pl in opponentList])
-         if choice == None: return
-         captor = opponentList[choice]
-      else: captor = me 
-      if not chosenObj or chosenObj.owner != captor:
-         debugNotify("Don't have preset objective. Seeking...")
-         myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
-         objectiveList = [Card(objective_ID) for objective_ID in myObjectives]
-         otherHosts = [] #There are some non-objective cards, like Dengar, which are also allowed to capture cards. In the below loop we try to discover if any of them are possible to be used.
-         debugNotify("About to discover otherHosts")
-         for c in table:
-            Autoscripts = CardsAS.get(c.model,'').split('||')
-            for autoS in Autoscripts:
-               if re.search(r'CanCapture',autoS):
-                  if re.search(r'ifInPlay',autoS) and targetC.group != table: continue
-                  if not checkCardRestrictions(gatherCardProperties(targetC), prepareRestrictions(autoS,'type')): continue
-                  debugNotify("Appending {} to otherHosts".format(c),4)
-                  otherHosts.append(c)
-         objectiveList.extend(otherHosts)
-         choice = SingleChoice("Choose in to which objective to capture the card.", makeChoiceListfromCardList(objectiveList), default = 0)
-         if choice == None: return
-         if choice + 1 > len(myObjectives): chosenObj = otherHosts[choice - len(myObjectives)]
-         else: chosenObj = Card(myObjectives[choice])
-      debugNotify("About to Announce")
-      captureTXT += " as part of their {} objective".format(chosenObj)
-      if not silent: notify(captureTXT)
-      rnd(1,10)
-      if debugVerbosity >= 2: notify("About evaluate capture cards")
-      capturedCards = eval(getGlobalVariable('Captured Cards'))
-      capturedCards[targetC._id] = chosenObj._id
-      xPos, yPos = chosenObj.position
-      countCaptures = 0 
-      for capturedC in capturedCards:
-         if capturedCards[capturedC] == chosenObj._id: countCaptures += 1
-      if captureGroup == 'Table': clearAttachLinks(targetC) # If the card was in the table, we check if it had any attachments to discard
-      if debugVerbosity >= 2: notify("About to move to objective")
-      targetCType = targetC.Type # Used later for the autoscripting of other cards
-      if targetCType == '?': targetCType = ''
-      if targetC.controller in fetchAllOpponents(): xAxis = 1
-      else: xAxis = -1
-      if captureGroup == 'Table' and targetC.highlight != EdgeColor and targetC.highlight != FateColor and targetC.highlight != RevealedColor: # If the card was on the table, we also trigger "removed from play" effects
+      if not captureGroup: captureGroup = targetC.group
+      if captureGroup == table and targetC.highlight != EdgeColor and targetC.highlight != FateColor and targetC.highlight != RevealedColor: # If the card was on the table, we also trigger "removed from play" effects
          if not Continuing and not cardsLeaving(targetC):
             debugNotify("Executing Capture Leaving Play Scripts. Highlight was {}".format(targetC.highlight),2)
             execution = executePlayScripts(targetC, 'LEAVING-CAPTURED')
             autoscriptOtherPlayers('CardLeavingPlay',targetC)
             if execution == 'POSTPONED': 
-               capturingObjective = chosenObj
+               #capturingObjective = chosenObj
                return
             selectedAbility = eval(getGlobalVariable('Stored Effects'))
-      if not Continuing: clearStoredEffects(targetC,True)            
-      freeUnitPlacement(targetC)
-      targetC.moveToTable(xPos - (cwidth(targetC) * playerside * xAxis / 2 * countCaptures), yPos, True)
-      targetC.sendToBack()
-      targetC.isFaceUp = False
-      if chosenObj.owner == me: targetC.peek()
-      targetC.orientation = Rot0
-      targetC.highlight = CapturedColor
-      targetC.target(False)
-      targetC.markers[mdict['Shield']] = 0
-      targetC.markers[mdict['Damage']] = 0
-      targetC.markers[mdict['Focus']] = 0
-      targetC.setController(chosenObj.owner)
-      debugNotify("Finished Capturing. Removing from cardsLeavingPlay var",2)
-      cardsLeaving(targetC,'remove')
-      debugNotify("About to reset shared variable",2)
-      setGlobalVariable('Captured Cards',str(capturedCards))
-      debugNotify("About to initiate autoscripts",2)
-      capturingObjective = chosenObj # We use a global variable in order for scripts which require it, to find out which objective got the captured card.
-      autoscriptOtherPlayers('{}CardCapturedFrom{}'.format(targetCType,captureGroup),targetC) # We send also the card type. Some capture hooks only trigger of a specific kind of captured card (e.g. bespin exchange)
-      capturingObjective = None # We clear it at the end.
+      if Side == 'Light': 
+         opponentList = fetchAllOpponents()
+         if len(opponentList) > 1:
+            choice = SingleChoice("Choose which opponent captured this card.", [pl.name for pl in opponentList])
+            if choice == None: return
+            captor = opponentList[choice]
+         else: captor = opponentList[0]
+      else: captor = me
+      if captor != me: # The actual capture script needs to be run by the captor
+         giveCard(targetC,captor)
+         remoteCall(captor,'capture', [table,0,0,chosenObj,targetC,silent,True,captureGroup])
+         cardsLeaving(targetC,'remove')
+      else:
+         claimCard(targetC)
+         if not chosenObj or chosenObj.owner != captor:
+            debugNotify("Don't have preset objective. Seeking...")
+            myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
+            objectiveList = [Card(objective_ID) for objective_ID in myObjectives]
+            otherHosts = [] #There are some non-objective cards, like Dengar, which are also allowed to capture cards. In the below loop we try to discover if any of them are possible to be used.
+            debugNotify("About to discover otherHosts")
+            for c in table:
+               Autoscripts = CardsAS.get(c.model,'').split('||')
+               for autoS in Autoscripts:
+                  if re.search(r'CanCapture',autoS):
+                     if re.search(r'ifInPlay',autoS) and targetC.group != table: continue
+                     if not checkCardRestrictions(gatherCardProperties(targetC), prepareRestrictions(autoS,'type')): continue
+                     debugNotify("Appending {} to otherHosts".format(c),4)
+                     otherHosts.append(c)
+            objectiveList.extend(otherHosts)
+            choice = SingleChoice("Choose in to which objective to capture this card.", makeChoiceListfromCardList(objectiveList), default = 0)
+            if choice == None:
+               if targetC.owner != me: giveCard(targetC,targetC.owner,captureGroup) # If we aborted the capture, we pass the card back to its original owner
+               return
+            if choice + 1 > len(myObjectives): chosenObj = otherHosts[choice - len(myObjectives)]
+            else: chosenObj = Card(myObjectives[choice])
+         debugNotify("About to Announce")
+         captureTXT += " as part of their {} objective".format(chosenObj)
+         if not silent: notify(captureTXT)
+         rnd(1,10)
+         if debugVerbosity >= 2: notify("About evaluate capture cards")
+         capturedCards = eval(getGlobalVariable('Captured Cards'))
+         capturedCards[targetC._id] = chosenObj._id
+         if captureGroup == table: clearAttachLinks(targetC) # If the card was in the table, we check if it had any attachments to discard
+         targetCType = targetC.Type # Used later for the autoscripting of other cards
+         if targetCType == '?': targetCType = ''
+         clearStoredEffects(targetC,True)            
+         freeUnitPlacement(targetC)
+         targetC.isFaceUp = False
+         targetC.orientation = Rot0
+         targetC.target(False)
+         targetC.markers[mdict['Shield']] = 0
+         targetC.markers[mdict['Damage']] = 0
+         targetC.markers[mdict['Focus']] = 0
+         debugNotify("Finished Capturing. Removing from cardsLeavingPlay var",2)
+         cardsLeaving(targetC,'remove')
+         debugNotify("About to reset shared variable",2)
+         setGlobalVariable('Captured Cards',str(capturedCards))
+         orgAttachments(chosenObj)
+         if chosenObj.controller == me: targetC.peek()
+         debugNotify("About to initiate autoscripts",2)
+         capturingObjective = chosenObj # We use a global variable in order for scripts which require it, to find out which objective got the captured card.
+         autoscriptOtherPlayers('{}CardCapturedFrom{}'.format(targetCType,captureGroup.name),targetC) # We send also the card type. Some capture hooks only trigger of a specific kind of captured card (e.g. bespin exchange)
+         capturingObjective = None # We clear it at the end.
    debugNotify("<<< capture()") #Debug
 
 def clearCaptures(card, x=0, y=0): # Simply clears all the cards that the game thinks the objective has captured

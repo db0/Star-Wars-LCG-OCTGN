@@ -636,10 +636,12 @@ def claimCard(card, player = me): # Requests the controller of a card to pass co
       if card.controller != me: whisper(":::ERROR::: claimCard() failed. Card controller still {}".format(card.controller.name))
    debugNotify("<<< claimCard()") #Debug
    
-def giveCard(card,player): # Passes control of a card to a given player.
+def giveCard(card,player,pile = None): # Passes control of a card to a given player.
    debugNotify(">>> giveCard()") #Debug
    if card.group == table: card.setController(player)
-   else: card.moveTo(player.ScriptingPile)
+   else: 
+      if pile: card.moveTo(pile) # If we pass a pile variable, it means we likely want to return the card to its original location (say after an aborted capture)
+      else: card.moveTo(player.ScriptingPile)
       # If the card is in one of our piles, we cannot pass control to another player since we control the whole pile. We need to move it to their scripting pile. 
       # This should automatically also pass control to the controller of that pile
    update()

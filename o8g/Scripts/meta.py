@@ -355,6 +355,7 @@ def orgAttachments(card,facing = 'Same'):
             countCaptures += 1
             Card(capturedC).moveToTable(x - (xAlg * countCaptures), y, True) # Captures are placed towards the left.
             Card(capturedC).sendToBack()
+            Card(capturedC).highlight = CapturedColor
    else:
       xAlg = 0 # The Default placement on the X axis, is to place the attachments at the same X as their parent
       yAlg = -(cwidth() / 4 * sideOffset)
