@@ -2174,7 +2174,7 @@ def chkPlayer(Autoscript, controller, manual, targetChk = False, player = me): #
       else:
          debugNotify("Doing normal chk",3)
          byOpponent = re.search(r'(byOpponent|forOpponent)', Autoscript)
-         byAllies = re.search(r'(byAlly|forAlly)', Autoscript)
+         byAlly = re.search(r'(byAlly|forAlly)', Autoscript)
          byMe = re.search(r'(byMe|forMe)', Autoscript)
       if re.search(r'duringOpponentTurn', Autoscript) and re.search(r'{}'.format(controller.getGlobalVariable('Side')),getGlobalVariable('Phase')): 
          debugNotify("!!! Failing because ability is for {} opponent's turn.".format(controller))
