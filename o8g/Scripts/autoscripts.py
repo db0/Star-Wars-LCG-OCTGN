@@ -2130,7 +2130,7 @@ def makeChoiceListfromCardList(cardList,includeText = False, includeForce = Fals
       if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
       if T.Type == 'Unit': combatIcons = "\nPrinted Icons: " + parseCombatIcons(T.properties['Combat Icons'])
       else: combatIcons = ''
-      if includeForce = False: fText = '\nForce: ' + fetchProperty(T, 'Force')
+      if includeForce: fText = '\nForce: ' + fetchProperty(T, 'Force')
       else: fText = ''
       if includeText: cText = '\n' + fetchProperty(T, 'Text')
       else: cText = ''
