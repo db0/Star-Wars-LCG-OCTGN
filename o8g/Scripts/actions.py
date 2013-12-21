@@ -887,9 +887,11 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
       if initPlayer == me: 
          confirmTXT = 'your opponent'
          opponentList = fetchAllOpponents()
-         choice = SingleChoice("Choose which opponent thwarted this objective.", [pl.name for pl in opponentList])
-         if choice == None: return
-         opponentPL = opponentList[choice]
+         if len(opponentList) > 1:
+            choice = SingleChoice("Choose which opponent thwarted this objective.", [pl.name for pl in opponentList])
+            if choice == None: return
+            opponentPL = opponentList[choice]
+         else: opponentPL = opponentList[0]
          silent = True # We silence so that the game doesn't put out a second dialogue
       else: 
          confirmTXT = initPlayer.name
@@ -1342,7 +1344,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
 def placeReserve(card):
    debugNotify(">>> placeReserve()") #Debug
    mute()
-   if len(myAllies) == 1: 
+   if len(myAllies) == 1 and len(getPlayers()) != 1: # The last one is to allow debug in solo
       whisper(":::ERROR::: You can only place cards in the common reserve if you have an ally.")
       return
    if card.Type == "Objective":       
@@ -1357,11 +1359,38 @@ def placeReserve(card):
    
 def playReserve(group):
    mute()
-   if len(myAllies) == 1: 
+   if len(myAllies) == 1 and len(getPlayers()) != 1: 
       whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
       return
-   
-   
+   fullReserves = grabFullReserves()
+   choice = SingleChoice("Select one card from your common reserves to play", makeChoiceListfromCardList(fullReserves, True))
+   if choice != None: 
+      prevGroup = fullReserves[choice].group # We store its current group to return it to in case something goes wrong.
+      claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
+      play(fullReserves[choice])
+      if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+         
+def playEdgeReserve(group):
+   mute()
+   if len(myAllies) == 1 and len(getPlayers()) != 1: 
+      whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
+      return
+   fullReserves = grabFullReserves()
+   choice = SingleChoice("Select one card from your common reserves to place as edge", makeChoiceListfromCardList(fullReserves, True, True))
+   if choice != None: 
+      claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
+      playEdge(fullReserves[choice])
+      if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+      
+def grabFullReserves():
+   debugNotify(">>> grabFullReserves()") #Debug
+   fullReserves = []
+   for player in myAllies:
+      if len(player.piles['Common Reserve']) and player.piles['Common Reserve'][0].Type == '?': whisper(":::WARNING::: Could not read the common reserves of {}. Please ask them to give you pile visibility before running this action again".format(player.name))
+      else: fullReserves.extend(player.piles['Common Reserve'].top(1))
+   debugNotify("<<< grabFullReserves() found {} cards: {}".format(len(fullReserves),[c.name for c in fullReserves])) #Debug
+   return fullReserves
+      
 def groupToDeck (group = me.hand, player = me, silent = False):
    if debugVerbosity >= 1: notify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
    mute()

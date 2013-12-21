@@ -135,19 +135,24 @@ def parseNewCounters(player,counter,oldValue):
 
 def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove):
    mute()
+   if isScriptMove: return # If the card move happened via a script, then all automations should have happened already.
    if fromGroup == me.hand and toGroup == table: 
       return # Not implemented yet
-   if fromGroup == table and toGroup != table and card.owner == me: # If the player dragged a card manually from the table to their discard pile...
-      debugNotify("Clearing card attachments")
-      clearAttachLinks(card)
    if toGroup == me.piles['Common Reserve']:
       if card.Type == "Objective":
          whisper(":::ERROR::: You cannot put objectives in your common reserve")
          card.moveTo(fromGroup)
+         return # We forcefully quit so that we don't clear attachments yet
       if len(toGroup) > 1: # If they moved a card into the common reserve while another was already in, then we clear the common reserve as well.
          for c in toGroup:
             if c != card: 
-               card.moveTo(me.piles['Discard Pile'])
+               c.moveTo(me.piles['Discard Pile'])
                notify(":> {} discarded 1 card from their Common Reserve".format(me))
-      
+   elif fromGroup == table and toGroup == table and card.controller == me: # If the player dragged a card manually to a different location on the table, we want to re-arrange the attachments
+      if card.Type == 'Objective' or card.Type == 'Unit': 
+         update()
+         orgAttachments(card) 
+   if fromGroup == table and toGroup != table and card.owner == me: # If the player dragged a card manually from the table to their discard pile...
+      debugNotify("Clearing card attachments")
+      clearAttachLinks(card)      
       

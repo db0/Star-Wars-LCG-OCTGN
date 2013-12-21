@@ -628,6 +628,23 @@ def grabTurn(targetPL = me): # Grabs the turn from the currently active player a
 def giveTurn(targetPL): # Passes the turn to the requested player (used via remoteCall)
    targetPL.setActivePlayer()
    
+def claimCard(card, player = me): # Requests the controller of a card to pass control to another player (script runner by default)
+   debugNotify(">>> claimCard()") #Debug
+   if card.controller != me: # If the card is already ours, we do not need to do anything.
+      remoteCall(card.controller,'giveCard', [card,player])
+      update() # We make sure all network calls have completed before continuing.
+      if card.controller != me: whisper(":::ERROR::: claimCard() failed. Card controller still {}".format(card.controller.name))
+   debugNotify("<<< claimCard()") #Debug
+   
+def giveCard(card,player): # Passes control of a card to a given player.
+   debugNotify(">>> giveCard()") #Debug
+   if card.group == table: card.setController(player)
+   else: card.moveTo(player.ScriptingPile)
+      # If the card is in one of our piles, we cannot pass control to another player since we control the whole pile. We need to move it to their scripting pile. 
+      # This should automatically also pass control to the controller of that pile
+   update()
+   debugNotify("<<< giveCard()") #Debug
+   
 #---------------------------------------------------------------------------
 # Card Placement functions
 #---------------------------------------------------------------------------

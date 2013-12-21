@@ -2110,7 +2110,7 @@ def compareValue(comparison, value, requirement):
    debugNotify("<<< compareValue() with return True")
    return True # If none of the requirements fail, we return true
      
-def makeChoiceListfromCardList(cardList,includeText = False):
+def makeChoiceListfromCardList(cardList,includeText = False, includeForce = False):
 # A function that returns a list of strings suitable for a choice menu, out of a list of cards
 # Each member of the list includes a card's name, traits, resources, markers and, if applicable, combat icons
    if debugVerbosity >= 1: notify(">>> makeChoiceListfromCardList()")
@@ -2130,6 +2130,8 @@ def makeChoiceListfromCardList(cardList,includeText = False):
       if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
       if T.Type == 'Unit': combatIcons = "\nPrinted Icons: " + parseCombatIcons(T.properties['Combat Icons'])
       else: combatIcons = ''
+      if includeForce = False: fText = '\nForce: ' + fetchProperty(T, 'Force')
+      else: fText = ''
       if includeText: cText = '\n' + fetchProperty(T, 'Text')
       else: cText = ''
       hostCards = eval(getGlobalVariable('Host Cards'))
@@ -2141,7 +2143,7 @@ def makeChoiceListfromCardList(cardList,includeText = False):
       if capturedNr >= 1: cCaptures = '\nCaptures:' + str(capturedNr)
       else: cCaptures = ''
       if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
-      choiceTXT = "{}\n{}\n{}{}{}{}{}\nBlock: {}{}".format(T.name,T.Type,markers,stats,combatIcons,cAttachments,cCaptures,T.Block,cText)
+      choiceTXT = "{}\n{}\n{}{}{}{}{}{}\nBlock: {}{}".format(T.name,T.Type,markers,stats,combatIcons,fText,cAttachments,cCaptures,T.Block,cText)
       targetChoices.append(choiceTXT)
    return targetChoices
    if debugVerbosity >= 3: notify("<<< makeChoiceListfromCardList()")

@@ -318,14 +318,14 @@ def placeCard(card):
                if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
                host = findTarget('Targeted-at{}'.format(hostType.group(1)))
                if host == []: 
-                  whisper("ABORTING!")
+                  whisper(":::ABORTING!:::")
                   return
                else:
                   if debugVerbosity >= 2: notify("### We have a host") #Debug
                   hostCards = eval(getGlobalVariable('Host Cards'))
                   hostCards[card._id] = host[0]._id
                   setGlobalVariable('Host Cards',str(hostCards))
-                  orgAttachments(card)
+                  orgAttachments(host[0])
             else: card.moveToTable(MPxOffset + 0, 0 + yaxisMove(card))
       else: debugNotify("No Placement Automations. Doing Nothing",2)
       if card.Type == 'Unit': incrStat('units',me.name) # We store that the player has played a unit
@@ -338,6 +338,7 @@ def orgAttachments(card,facing = 'Same'):
    debugNotify(">>> orgAttachments()") #Debug
    attNR = 1
    debugNotify(" Card Name : {}".format(card.name), 4)
+   update()
    x,y = card.position
    if card.controller == me: sideOffset = playerside # If it's our card, we need to assign it towards our side
    else: sideOffset = playerside * -1 # Otherwise we assign it towards the opponent's side
@@ -1654,7 +1655,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
       ScriptsDownload = None
    if debugVerbosity >= 2: notify("### code: {}, text: {}".format(code, ScriptsDownload)) #Debug
    if code != 200 or not ScriptsDownload or (ScriptsDownload and not re.search(r'ANR CARD SCRIPTS', ScriptsDownload)): 
-      whisper(":::WARNING::: Cannot download card scripts at the moment. Will use localy stored ones.")
+      whisper(":::WARNING::: Cannot download card scripts at the moment. Will use locally stored ones.")
       Split_Main = ScriptsLocal.split('=====') # Split_Main is separating the file description from the rest of the code
    else: 
       #WHAT THE FUUUUUCK? Why does it gives me a "value cannot be null" when it doesn't even come into this path with a broken connection?!
