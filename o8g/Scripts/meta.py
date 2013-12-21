@@ -160,9 +160,9 @@ def findAlly(position = '#1', multiText = "Choose which ally you're targeting wi
       
 def ofwhom(Autoscript, controller = me, multiText = None): 
    debugNotify(">>> ofwhom(){}".format(extraASDebug(Autoscript))) #Debug
-   targetPL = None
+   targetPLs = []
    playerList = []
-   if re.search(r'o[fn]Opponent', Autoscript):
+   if re.search(r'o[fn]Opponent', Autoscript) or re.search(r'o[fn]AllOpponents', Autoscript):
       if not multiText: multiText = "Choose which opponent you're targeting with this effect."
       if len(getPlayers()) > 1:
          for player in getPlayers():
@@ -174,17 +174,19 @@ def ofwhom(Autoscript, controller = me, multiText = None):
                debugNotify("ofwhom() -- appending {}".format(player),4)
             else: debugNotify("ofwhom() -- rejecting {} because their side {} matches controller Side ({})".format(player, player.getGlobalVariable('Side'), controller.getGlobalVariable('Side')), 4)
          debugNotify("playerList = {}".format(playerList), 4)
-         if len(playerList) == 1: targetPL = playerList[0]
+         if len(playerList) == 1: targetPLs.append(playerList[0])
          elif len(playerList) == 0: 
             notify(":::Error::: No Valid Opponents found. Returning Myself as failsafe")
-            targetPL = me
-         else: 
-            choice = SingleChoice(multiText, [pl.name for pl in playerList])
-            targetPL = playerList[choice]
+            targetPLs.append(me)
+         else:
+            if re.search(r'o[fn]All', Autoscript): targetPLs = playerList
+            else:
+               choice = SingleChoice(multiText, [pl.name for pl in playerList])
+               targetPLs.append(playerList[choice])
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
-         targetPL = me
-   elif re.search(r'o[fn]Ally', Autoscript):
+         targetPLs.append(me)
+   elif re.search(r'o[fn]Ally', Autoscript) or re.search(r'o[fn]AllAllies', Autoscript):
       if not multiText: multiText = "Choose which allied player you're targeting with this effect."
       if len(getPlayers()) > 1:
          for player in getPlayers():
@@ -195,23 +197,25 @@ def ofwhom(Autoscript, controller = me, multiText = None):
                playerList.append(player) # Opponent needs to be not us, and of a different type. 
                debugNotify("ofwhom() -- appending {}".format(player),4)
             else: debugNotify("ofwhom() -- rejecting {} because their side {} does not match controller Side ({})".format(player, player.getGlobalVariable('Side'), controller.getGlobalVariable('Side')), 4)
-         if len(playerList) == 1: targetPL = playerList[0]
+         if len(playerList) == 1: targetPLs.append(playerList[0])
          elif len(playerList) == 0: 
             notify(":::Error::: No Valid Allies found. Returning Myself as failsafe")
-            targetPL = me
+            targetPLs.append(me)
          else: 
-            choice = SingleChoice(multiText, [pl.name for pl in playerList])
-            targetPL = playerList[choice]
+            if re.search(r'o[fn]All', Autoscript): targetPLs = playerList
+            else:
+               choice = SingleChoice(multiText, [pl.name for pl in playerList])
+               targetPLs = playerList[choice]
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
-         targetPL = me
+         targetPLs.append(me)
    else: # If the script does not mention "of opponent, then it's targeting the controller
       if len(getPlayers()) > 1:
-         if controller != me: targetPL = controller         
-         else: targetPL = me
-      else: targetPL = me
-   debugNotify("<<< ofwhom() returns {}".format(targetPL))
-   return targetPL
+         if controller != me: targetPLs.append(controller)
+         else: targetPLs.append(me)
+      else: targetPLs.append(me)
+   debugNotify("<<< ofwhom() returns {}".format(targetPLs))
+   return targetPLs
 
 def fetchAllOpponents(targetPL = me):
    debugNotify(">>> fetchAllOpponents()") #Debug
@@ -1487,7 +1491,8 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
       if (reportTXT != "Adding result...Ok!" and reportTXT != "Updating result...Ok!") and debugVerbosity >=0: notify("Failed to submit match results. Sorry.") 
    except: pass
    # The victorious player also reports for their enemy
-   enemyPL = ofwhom('-ofOpponent')
+   enemyPLs = ofwhom('-ofOpponent')
+   enemyPL = enemyPLs[0]
    ENEMY = enemyPL.name
    enemyAff = getSpecial('Affiliation',enemyPL)
    E_AFFILIATION = enemyAff.Affiliation
