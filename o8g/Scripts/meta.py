@@ -79,18 +79,8 @@ def storeObjective(card, GameSetup = False):
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
          Objective.moveToTable( MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
-         xPos, yPos = Objective.position
-         countCaptures = 0
-         if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
-         capturedCards = eval(getGlobalVariable('Captured Cards'))
-         for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
-            if capturedCards[capturedC] == Objective._id:
-               if debugVerbosity >= 2: notify("Moved Objective has Captured cards. Moving them...")
-               countCaptures += 1
-               Card(capturedC).moveToTable(xPos - (cwidth(Objective) * playerside / 2 * countCaptures), yPos, True)
-               Card(capturedC).sendToBack()
-         #Objective.orientation = Rot90
-      rnd(1,100) # We put a delay here to allow the table to read the card autoscripts before we try to execute them.
+         orgAttachments(Objective)
+      update() # We put a delay here to allow the table to read the card autoscripts before we try to execute them.
       if debugVerbosity >= 2: notify("### About to set destroyedObjectives") #Debug      
       setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
       if debugVerbosity >= 2: notify("### About to execure play Scripts") #Debug      
@@ -335,20 +325,57 @@ def placeCard(card):
                   hostCards = eval(getGlobalVariable('Host Cards'))
                   hostCards[card._id] = host[0]._id
                   setGlobalVariable('Host Cards',str(hostCards))
-                  cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == host[0]._id])
-                  if debugVerbosity >= 2: notify("### About to move into position") #Debug
-                  x,y = host[0].position
-                  if host[0].controller != me: xAxis = -1
-                  else: xAxis = 1
-                  if host[0].Type == 'Objective': card.moveToTable(x + (playerside * xAxis * cwidth(card,0) / 2 * cardAttachementsNR), y)
-                  else: card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
-                  card.sendToBack()
+                  orgAttachments(card)
             else: card.moveToTable(MPxOffset + 0, 0 + yaxisMove(card))
       else: debugNotify("No Placement Automations. Doing Nothing",2)
       if card.Type == 'Unit': incrStat('units',me.name) # We store that the player has played a unit
       if debugVerbosity >= 3: notify("<<< placeCard()") #Debug
    except: notify("!!! ERROR !!! in placeCard()")
-   
+
+def orgAttachments(card,facing = 'Same'):
+# This function takes all the cards attached to the current card and re-places them so that they are all visible
+# xAlg, yAlg are the algorithsm which decide how the card is placed relative to its host and the other hosted cards. They are always multiplied by attNR
+   debugNotify(">>> orgAttachments()") #Debug
+   attNR = 1
+   debugNotify(" Card Name : {}".format(card.name), 4)
+   x,y = card.position
+   if card.controller == me: sideOffset = playerside # If it's our card, we need to assign it towards our side
+   else: sideOffset = playerside * -1 # Otherwise we assign it towards the opponent's side
+   if card.Type == 'Objective':
+      debugNotify("Found specialHostPlacementAlgs", 3)
+      xAlg = cwidth() / 2 * sideOffset
+      yAlg = 0
+      countCaptures = 0
+      if debugVerbosity >= 2: notify("### About to retrieve captured cards") #Debug      
+      capturedCards = eval(getGlobalVariable('Captured Cards'))
+      for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
+         if capturedCards[capturedC] == card._id:
+            if debugVerbosity >= 2: notify("Moved Objective has Captured cards. Moving them...")
+            countCaptures += 1
+            Card(capturedC).moveToTable(x - (xAlg * countCaptures), y, True) # Captures are placed towards the left.
+            Card(capturedC).sendToBack()
+   else:
+      xAlg = 0 # The Default placement on the X axis, is to place the attachments at the same X as their parent
+      yAlg = -(cwidth() / 4 * sideOffset)
+   hostCards = eval(getGlobalVariable('Host Cards'))
+   cardAttachements = [Card(att_id) for att_id in hostCards if hostCards[att_id] == card._id]
+   for attachment in cardAttachements:
+      if facing == 'Faceup': FaceDown = False
+      elif facing == 'Facedown': FaceDown = True
+      else: # else is the default of 'Same' and means the facing stays the same as before.
+         if attachment.isFaceUp: FaceDown = False
+         else: FaceDown = True
+      attachment.moveToTable(x + (xAlg * attNR), y + (yAlg * attNR),FaceDown)
+      if attachment.controller == me and FaceDown: attachment.peek()
+      attachment.setIndex(len(cardAttachements) - attNR) # This whole thing has become unnecessary complicated because sendToBack() does not work reliably
+      debugNotify("{} index = {}".format(attachment,attachment.getIndex), 4) # Debug
+      attNR += 1
+      debugNotify("Moving {}, Iter = {}".format(attachment,attNR), 4)
+   card.sendToFront() # Because things don't work as they should :(
+   if debugVerbosity >= 4: # Checking Final Indices
+      for attachment in cardAttachements: notify("{} index = {}".format(attachment,attachment.getIndex)) # Debug
+   debugNotify("<<< orgAttachments()", 3) #Debug      
+      
 def findMarker(card, markerDesc): # Goes through the markers on the card and looks if one exist with a specific description
    if debugVerbosity >= 1: notify(">>> findMarker(){}".format(extraASDebug())) #Debug
    foundKey = None

@@ -1339,6 +1339,29 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
       if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
 
+def placeReserve(card):
+   debugNotify(">>> placeReserve()") #Debug
+   mute()
+   if len(myAllies) == 1: 
+      whisper(":::ERROR::: You can only place cards in the common reserve if you have an ally.")
+      return
+   if card.Type == "Objective":       
+      whisper(":::ERROR::: You can only place command cards in your common reserve.")
+      return
+   if len(me.piles['Common Reserve']) != 0:
+      notify(":> {} discarded {} card from their Common Reserve".format(me,len(me.piles['Common Reserve'])))
+      for c in me.piles['Common Reserve']: c.moveTo(me.piles['Discard Pile'])
+   card.moveTo(me.piles['Common Reserve'])
+   notify("{} placed 1 new card in their Common Reserve".format(me,card))
+   debugNotify("<<< placeReserve()") #Debug
+   
+def playReserve(group):
+   mute()
+   if len(myAllies) == 1: 
+      whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
+      return
+   
+   
 def groupToDeck (group = me.hand, player = me, silent = False):
    if debugVerbosity >= 1: notify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
    mute()

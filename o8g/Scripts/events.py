@@ -135,18 +135,19 @@ def parseNewCounters(player,counter,oldValue):
 
 def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove):
    mute()
-   global scriptedPlay 
-   #debugNotify("scriptedPlay = {}".format(scriptedPlay))
    if fromGroup == me.hand and toGroup == table: 
-      return # Doesn't work. Too many outlier scenarios. See https://github.com/kellyelton/OCTGN/issues/984
-      if not scriptedPlay: 
-         intPlay(card)
-         scriptedPlay -= 1
-      else: 
-         scriptedPlay -= 1
-         if scriptedPlay < 0: scriptedPlay = 0 # Just in case
+      return # Not implemented yet
    if fromGroup == table and toGroup != table and card.owner == me: # If the player dragged a card manually from the table to their discard pile...
       debugNotify("Clearing card attachments")
       clearAttachLinks(card)
+   if toGroup == me.piles['Common Reserve']:
+      if card.Type == "Objective":
+         whisper(":::ERROR::: You cannot put objectives in your common reserve")
+         card.moveTo(fromGroup)
+      if len(toGroup) > 1: # If they moved a card into the common reserve while another was already in, then we clear the common reserve as well.
+         for c in toGroup:
+            if c != card: 
+               card.moveTo(me.piles['Discard Pile'])
+               notify(":> {} discarded 1 card from their Common Reserve".format(me))
       
       

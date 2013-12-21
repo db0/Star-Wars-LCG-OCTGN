@@ -59,6 +59,8 @@ RevealedColor = "#999999"
 
 Xaxis = 'x'
 Yaxis = 'y'
+CardWidth = 63
+CardHeight = 88
 
 phases = [
     "Opponent's Turn",

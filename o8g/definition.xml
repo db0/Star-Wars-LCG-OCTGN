@@ -291,6 +291,7 @@
 		<hand name="Hand" visibility="me" ordered="False" width="63" height="88" icon="Groups/hand.png">
 			<cardaction menu="Play Card" default="True" execute="play" />
 			<cardaction menu="Place as Edge Card" default="False" shortcut="Ctrl+E" execute="playEdge" />
+			<cardaction menu="Place in Common Reserve" default="False" shortcut="Ctrl+R" execute="placeReserve" />
 			<groupaction menu="Mulligan" default="False" execute="mulligan" />
 			<groupaction menu="Refill Hand" default="False" shortcut="Ctrl+Shift+R" execute="refillHand" />
 			<groupaction menu="Random Discard" default="False" execute="handRandomDiscard" />
@@ -314,7 +315,10 @@
       </group>
 		<group name="Discard Pile" visibility="all" ordered="False" width="63" height="88" icon="Groups/graveyard.png" collapsed="False" />
 		<group name="Victory Pile" visibility="all" ordered="False" width="63" height="88" icon="Counters/DSOb.png" collapsed="True" />
-		<group name="Common Reserve" visibility="me" ordered="False" width="63" height="88" icon="Counters/Common_Reserve.png" collapsed="True" />
+		<group name="Common Reserve" visibility="me" ordered="False" width="63" height="88" icon="Counters/Common_Reserve.png" collapsed="True">
+			<groupaction menu="Play Card" default="True" shortcut="Ctrl+Alt+P" execute="playReserve" />
+			<groupaction menu="Place Edge Card" default="False" shortcut="Ctrl+Alt+E" execute="playEdgeReserve" />
+      </group>
 		<group name="Removed from Game" visibility="all" ordered="False" width="63" height="88" shortcut="F8" icon="Groups/removed.png" collapsed="True" />
 		<group name="ScriptingPile" visibility="me" ordered="False" width="63" height="88" shortcut="F8" icon="Groups/scripting.png" collapsed="True" />
       <counter name="Reserves" default="6" reset="True" icon="Counters/Reserves.png" />
