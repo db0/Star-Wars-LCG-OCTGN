@@ -276,19 +276,13 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
             if c.controller == me: myStruggleTotal += fBonus
             else: opponentStruggleTotal += fBonus
             if fBonus: notify("-- {}: +{} force total for {}".format(c,fBonus,c.controller))
-   debugNotify("### Checking Struggle") #Debug
+   debugNotify("Checking Struggle") #Debug
    BotD = getSpecial('BotD')
    if myStruggleTotal - opponentStruggleTotal > 0: 
-      debugNotify("### struggleTotal Positive") #Debug
+      debugNotify("struggleTotal Positive") #Debug
       if (Side == 'Light' and not BotD.alternate == '') or (Side == 'Dark' and not BotD.alternate == 'DarkSide'):
          debugNotify("About to flip BotD due to my victory") #Debug
-         if Side == 'Light': BotD.switchTo()
-         else: BotD.switchTo('DarkSide')
-         firstPlayer = findAlly()
-         mainAffiliation = getSpecial('Affiliation',firstPlayer)
-         x,y = mainAffiliation.position
-         debugNotify("First Affiliation is {} at position {} {}".format(mainAffiliation, x,y,)) #Debug
-         BotD.moveToTable(x, y + (playerside * 75))
+         remoteCall(BotD.controller,'giveBoTD', [])
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,Side,myStruggleTotal,opSide,opponentStruggleTotal))         
       autoscriptOtherPlayers('ForceStruggleWon',BotD)
@@ -297,15 +291,9 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       debugNotify("struggleTotal Negative") #Debug
       if (Side == 'Light' and BotD.alternate == '') or (Side == 'Dark' and BotD.alternate == 'DarkSide'):
          debugNotify("About to flip BotD due to my opponent's victory") #Debug
-         if Side == 'Light': BotD.switchTo('DarkSide')
-         else: BotD.switchTo()
-         firstOpponent = findOpponent()
-         opponentAffiliation = getSpecial('Affiliation',firstOpponent)
-         x,y = opponentAffiliation.position
-         debugNotify("firstOpponent Affiliation is {} at position {} {}".format(opponentAffiliation, x,y,)) #Debug
-         BotD.moveToTable(x - (playerside * 70), y)
-         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(firstOpponent.getGlobalVariable('Side'),Side,myStruggleTotal,opSide,opponentStruggleTotal))
-      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(firstOpponent.getGlobalVariable('Side'),Side,myStruggleTotal,opSide,opponentStruggleTotal))
+         remoteCall(BotD.controller,'giveBoTD', [])
+         notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opSide,Side,myStruggleTotal,opSide,opponentStruggleTotal))
+      else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opSide,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       autoscriptOtherPlayers('ForceStruggleLost',BotD)
       incrStat('forcev',firstOpponent.name) # We store that the opponent has won a force struggle
    else: # If the current force totals are tied, we just announce that.

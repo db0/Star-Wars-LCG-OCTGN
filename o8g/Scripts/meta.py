@@ -1259,8 +1259,20 @@ def clearFirstTurn(Init = True):
          else: remoteCall(player, 'clearFirstTurn', [False])
    else: firstTurn = False
    debugNotify("<<< clearFirstTurn()") #Debug
-      
-      
+
+def giveBoTD():
+   debugNotify(">>> giveBoTD()") #Debug
+   BotD = getSpecial('BotD')
+   if BotD.alternate == 'DarkSide': BotD.switchTo()
+   else: BotD.switchTo('DarkSide')
+   firstPlayer = findOpponent()
+   mainAffiliation = getSpecial('Affiliation',firstPlayer)
+   x,y = mainAffiliation.position
+   debugNotify("First Affiliation is {} at position {} {}".format(mainAffiliation, x,y,)) #Debug
+   BotD.moveToTable(x, y + (playerside * 75))
+   giveCard(BotD,firstPlayer)
+   debugNotify("<<< giveBoTD()") #Debug
+
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------
