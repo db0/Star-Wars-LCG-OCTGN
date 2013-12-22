@@ -3362,7 +3362,7 @@ Aqualish Thug
 -----
 ff4fb461-8060-457a-9c16-000000000441
 -----
-onPlay:SimplyAnnounce{force each opponent to deal 2 damage divided among any number of objectives he controls.}-isReact
+onPlay:SimplyAnnounce{force each opponent to deal 2 damage divided among any number of objectives they controls.}-isReact
 +++++
 
 .....
@@ -3370,7 +3370,7 @@ Aqualish Thug
 -----
 ff4fb461-8060-457a-9c16-000000000442
 -----
-onPlay:SimplyAnnounce{force each opponent to deal 2 damage divided among any number of objectives he controls.}-isReact
+onPlay:SimplyAnnounce{force each opponent to deal 2 damage divided among any number of objectives they controls.}-isReact
 +++++
 
 .....
@@ -3410,7 +3410,7 @@ Traitorous Wing Guard
 -----
 ff4fb461-8060-457a-9c16-000000000447
 -----
-ExtraIcon:BD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetMine
+ExtraIcon:BD:1-perEveryObjective-AutoTargeted-atObjective-hasCaptures-max1-targetAllied
 +++++
 
 .....
@@ -3602,7 +3602,7 @@ Gaffi Stick
 -----
 ff4fb461-8060-457a-9c16-000000000480
 -----
-Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetMine-isParticipating-isDistributedEffect-ignore1-ifOrigParticipatingHost
+Placement:Scavenger||ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-targetAllied-isParticipating-isDistributedEffect-ignore1-ifOrigParticipatingHost
 +++++
 
 .....
