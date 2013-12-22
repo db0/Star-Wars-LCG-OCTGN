@@ -1,7 +1,9 @@
 =====Message of the Day======
 
-The Balance of the Force has been added non-scripted. 
+2v2 is now available!
 
-However be aware that there's no scripting yet supporting multiplayer scenarios.
+Do you want to read the details?
 
 =============================
+&&
+http://octgn.gamersjudgement.com/wordpress/swlcg/game-now-2v2-compatible/

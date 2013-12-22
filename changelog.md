@@ -12,8 +12,6 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * Playing Edge cards as an ally should now stack with the main player's other edge cards.
 * Can now target a card and press Del to discard it. This way you can destroy objectives and units from your opponent yourself.
 
-
-
 ### 2.6.1.x
 
 * Resampled all sounds to 44100
