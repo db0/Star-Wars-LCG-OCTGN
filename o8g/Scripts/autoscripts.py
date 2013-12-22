@@ -256,7 +256,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
          # If we have the -byOpposingOriginController modulator, our scripts need to compare the controller of the card that triggered the script with the controller of the card that has the script.
          # See for example Renegade Squadron Mobilization, where we need to check that the controller of the card leaving play is the opponent of the player that controls Renegade Squadron Mobilization
          # If we had let it as it was, it would simply check if Renegade Squadron Mobilization is controlled by the opponent, thus triggering the script each time our opponent's action discarded a unit, even if the unit was ours.
-         if re.search(r'-byFriendlyOriginController', autoS) and chkPlayer('byMe', origin_card.controller,False, player = card.controller) == 0: continue
+         if re.search(r'-byFriendlyOriginController', autoS) and chkPlayer('byAlly', origin_card.controller,False, player = card.controller) == 0: continue
          if chkPlayer(autoS, card.controller,False, player = origin_player) == 0: continue # Check that the effect's origninator is valid.
          if re.search(r'-ifCapturingObjective', autoS) and capturingObjective != card: continue  # If the card required itself to be the capturing objective, we check it here via a global variable.             
          confirmText = re.search(r'ifConfirm{(A-Za-z0-9)+}', autoS) # If the card contains the modified "ifConfirm{some text}" then we present "some text" as a question before proceeding.
@@ -1546,7 +1546,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             notify("{} used {} to play an edge card from the top of their command deck".format(me,card))
    elif card.model == 'ff4fb461-8060-457a-9c16-000000000518': # Luke Skywalker B64/2
       if action == 'PLAY': # In this scenario, Luke is attaching to a fighter or speeder the player had targeted before they played him.
-         vehicle = findTarget('Targeted-atFighter_or_Speeder-targetMine-noTargetingError')
+         vehicle = findTarget('Targeted-atFighter_or_Speeder-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a fighter or speeder we assume they wanted to play Luke in it.
             hostCards = eval(getGlobalVariable('Host Cards'))
             hostCards[card._id] = vehicle[0]._id
