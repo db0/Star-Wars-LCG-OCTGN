@@ -135,6 +135,7 @@ def parseNewCounters(player,counter,oldValue):
 
 def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove):
    mute()
+   global unpaidCard
    if isScriptMove: return # If the card move happened via a script, then all automations should have happened already.
    if fromGroup == me.hand and toGroup == table: 
       return # Not implemented yet
@@ -154,5 +155,6 @@ def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,is
          orgAttachments(card) 
    if fromGroup == table and toGroup != table and card.owner == me: # If the player dragged a card manually from the table to their discard pile...
       debugNotify("Clearing card attachments")
+      if unpaidCard == card: unpaidCard = None
       clearAttachLinks(card)      
       

@@ -665,10 +665,10 @@ def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to 
    return True
 
 def gotEdge(targetPL = None):
-   debugNotify(">>> gotEdge()") #Debug
+   debugNotify(">>> gotEdge() with targetPL = {}".format(targetPL)) #Debug
    gotIt = False
-   if not targetPL: targetPL == me
-   if player in fetchAllAllies(targetPL):
+   if not targetPL: targetPL = me
+   for player in fetchAllAllies(targetPL):
       targetAffiliation = getSpecial('Affiliation',targetPL)
       if targetAffiliation.markers[mdict['Edge']] and targetAffiliation.markers[mdict['Edge']] == 1: gotIt = True      
    debugNotify("<<< gotEdge() returns {}".format(gotIt)) #Debug

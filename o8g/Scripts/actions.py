@@ -185,7 +185,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
                   card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
             if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
                card.markers[mdict['Shield']] = 0
-   notify("All {} Side cards refreshed".format(Side))
+   notify(":> All {} Side cards refreshed".format(Side))
    for player in myAllies: remoteCall(player,'refreshObjectives',[])
    atTimedEffects(Time = 'afterCardRefreshing') 
    
@@ -290,7 +290,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opSide,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opSide,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       autoscriptOtherPlayers('ForceStruggleLost',BotD)
-      incrStat('forcev',firstOpponent.name) # We store that the opponent has won a force struggle
+      incrStat('forcev',findOpponent().name) # We store that the opponent has won a force struggle
    else: # If the current force totals are tied, we just announce that.
       debugNotify("Force struggle is tied") #Debug
       if BotD.alternate == 'DarkSide': BotDside = 'Dark'
