@@ -3,6 +3,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 
 ### 2.6.2.x
 
+* Made game 2v2 compatible (Added Common Reserves and code for it etc)
 * Leia Organa will now properly ask the captor on which objective to go to.
 * Moving cards around manually will carry their attached cards with them. This means objectives moving in the refresh phase will take their attachments will them finally.
 * Made phase changes common for each team.
@@ -10,6 +11,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 * In MP the game will now ask which opponent you're targeting when only one needs to be selected.
 * Playing Edge cards as an ally should now stack with the main player's other edge cards.
 * Can now target a card and press Del to discard it. This way you can destroy objectives and units from your opponent yourself.
+
 
 
 ### 2.6.1.x
