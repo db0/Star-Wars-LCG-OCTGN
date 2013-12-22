@@ -124,7 +124,7 @@ ff4fb461-8060-457a-9c16-000000000059
 -----
 
 +++++
-R1:Put1Shield-AutoTargeted-atUnit_and_Vehicle-isParticipating-targetMine-choose1-hasntMarker{Shield}
+R1:Put1Shield-AutoTargeted-atUnit_and_Vehicle-isParticipating-targetAllied-choose1-hasntMarker{Shield}
 .....
 Battlefield Engineers
 -----
@@ -538,7 +538,7 @@ Fall Back!
 -----
 ff4fb461-8060-457a-9c16-000000000196
 -----
-onPlay:ReturnTarget-Targeted-atUnit
+onPlay:ReturnTarget-Targeted-atUnit-targetAllied
 +++++
 
 .....
@@ -570,7 +570,7 @@ Fleet Command Center
 -----
 ff4fb461-8060-457a-9c16-000000000190
 -----
-afterRefresh:Put1Shield-DemiAutoTargeted-atUnit-hasntMarker{Shield}-targetMine-choose1-duringMyTurn-isReact
+afterRefresh:Put1Shield-DemiAutoTargeted-atUnit-hasntMarker{Shield}-targetAllied-choose1-duringMyTurn-isReact
 +++++
 
 .....
@@ -610,7 +610,7 @@ Force Rejuvenation
 -----
 ff4fb461-8060-457a-9c16-000000000166
 -----
-onPlay:Remove999Focus$$Remove999Damage-Targeted-atCharacter
+onPlay:Remove999Focus$$Remove999Damage-Targeted-atCharacter-targetAllied
 +++++
 
 .....
@@ -1818,7 +1818,7 @@ Darth Vader
 -----
 ff4fb461-8060-457a-9c16-000000000248
 -----
-whileInPlay:IncreaseBD:1-forMe-typeUnit-isAttacking-ifOrigParticipating
+whileInPlay:IncreaseBD:1-forAlly-typeUnit-isAttacking-ifOrigParticipating
 +++++
 
 .....
