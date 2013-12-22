@@ -738,7 +738,7 @@ def calcResources(card):
    
 def findUnpaidCard():
    debugNotify(">>> findUnpaidCard()") #Debug
-   if unpaidCard: return unpaidCard
+   if unpaidCard and unpaidCard.group == table: return unpaidCard
    else:
       for card in table:
          if (card.highlight == UnpaidColor or card.highlight == UnpaidAbilityColor) and card.controller == me: return card
