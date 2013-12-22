@@ -1,6 +1,13 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.6.3.x
+
+* Allied participating units will now pass control to the main players to allow cards like Orbital Bombardment to work correctly
+* Fixed Jawa Scavenger triggering when allies were the main players.
+* Reviewed all cards until Edge of Darkness for MP-tweaking
+
+
 ### 2.6.2.x
 
 * Made game 2v2 compatible (Added Common Reserves and code for it etc)
