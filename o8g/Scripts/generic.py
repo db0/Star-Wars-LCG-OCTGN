@@ -638,7 +638,7 @@ def claimCard(card, player = me): # Requests the controller of a card to pass co
          update()
          count += 1
          if count >= 10:
-            whisper(":::ERROR::: claimCard() failed. Card controller still {}. Giving up".format(card.controller.name))
+            debugNotify(":::ERROR::: claimCard() failed. Card controller still {}. Giving up".format(card.controller.name))
             return
    debugNotify("<<< claimCard()") #Debug
    

@@ -1293,6 +1293,18 @@ def unsetRefillDone(): # A function that sets a global variable which tracks if 
 def chkRefillDone(): # A function that refills the hand of each player who has not done so until now
    if not handRefillDone and Automations['Start/End-of-Turn/Phase']: refillHand()
    
+def clearParticipations(remoted = False):
+   mute()
+   for card in table:
+      if card.orientation == Rot90 and card.owner != card.controller: claimCard(card, card.owner)
+   if not remoted:
+      for player in getPlayers(): remoteCall(player,'clearParticipations',[True])
+   else:
+      for card in table:
+         if card.controller == me:
+            if card.highlight == DefendColor: card.highlight = None
+            if card.orientation == Rot90: card.orientation = Rot0
+
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------

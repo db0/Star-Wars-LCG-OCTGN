@@ -2008,9 +2008,17 @@ def checkOriginatorRestrictions(Autoscript,card):
          debugNotify("!!! Failing because originator's controller is not the edge winner")
          validCard = False
    if re.search(r'ifOrigEdgeLoser',Autoscript):
-      plAffiliation = getSpecial('Affiliation',card.controller)
-      if plAffiliation.markers[mdict['Edge']]:
-         debugNotify("!!! Failing because originator's controller the edge winner")
+      currObjID = getGlobalVariable('Engaged Objective')
+      if currObjID == 'None': 
+         debugNotify("!!! Failing because there's no current engagement", 2)
+         validCard = False      
+      if Card(num(currObjID)).controller == card.controller or Player(num(getGlobalVariable('Current Attacker'))) == card.controller:
+         plAffiliation = getSpecial('Affiliation',card.controller)
+         if plAffiliation.markers[mdict['Edge']]:
+            debugNotify("!!! Failing because originator's controller is the edge winner")
+            validCard = False
+      else: 
+         debugNotify("!!! Failing because originator's controller is not the main player in the current engagement", 2)
          validCard = False
    if re.search(r'ifOrigAttacking',Autoscript) or re.search(r'ifOrigDefending',Autoscript):
       EngagedObjective = getGlobalVariable('Engaged Objective')

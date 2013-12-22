@@ -385,9 +385,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          addMarker(currentTarget, 'Damage',unopposedDamage, True)
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    autoscriptOtherPlayers('FinishedEngagement',currentTarget)
-   for card in table:
-      if card.orientation == Rot90: card.orientation = Rot0
-      if card.highlight == DefendColor: card.highlight = None
+   clearParticipations()
    notify("The engagement at {} is finished.".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
    setGlobalVariable('Current Attacker','None')
@@ -655,12 +653,15 @@ def participate(card, x = 0, y = 0, silent = False):
    if getGlobalVariable('Engaged Objective') == 'None':
       whisper(":::ERROR::: Please start an engagement first!")
       return
-   currentTarget = Card(num(getGlobalVariable('Engaged Objective')))      
+   currentTarget = Card(num(getGlobalVariable('Engaged Objective')))   
    if currentTarget.controller in fetchAllOpponents():
+      attacker = Player(num(getGlobalVariable('Current Attacker')))
+      giveCard(card,attacker) # We pass allied participating units to the main player in the attack, to allow cards like Jawa Scaveneger and Orbital Bombardment to work correctly.
       if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       if not silent: notify("{} selects {} as an attacker.".format(me, card))
       executePlayScripts(card, 'ATTACK')   
    else:
+      giveCard(card,currentTarget.controller)
       if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
       if not silent: notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
