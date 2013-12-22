@@ -676,6 +676,7 @@ def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from partic
    mute()
    if card.orientation == Rot90: 
       card.orientation = Rot0
+      if card.owner != me: giveCard(card,card.owner)
       if not silent: notify("{} takes {} out of the engagement.".format(me, card))
    else: whisper(":::ERROR::: Unit is not currently participating in battle")
 
