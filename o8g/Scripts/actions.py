@@ -110,7 +110,8 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       elif phase == 2: goToRefresh()
       elif phase == 3: goToDraw()
       elif phase == 4: 
-         if not handRefillDone and Automations['Start/End-of-Turn/Phase']: refillHand() # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
+         for player in myAllies: remoteCall(player,'chkRefillDone',[]) # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
+         update()
          goToDeployment()
       elif phase == 5:
          if firstTurn and Side == 'Dark':
@@ -174,7 +175,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
       clearFirstTurn()
    else:
       for card in table:
-         if card.controller == me and card.highlight != CapturedColor:
+         if card.controller in myAllies and card.highlight != CapturedColor:
             if debugVerbosity >= 2: notify("### Removing Focus Tokens")
             if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
                card.markers[mdict['Focus']] -=1
@@ -182,23 +183,14 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
                   card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
             if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
                card.markers[mdict['Shield']] = 0
-   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
-   for card_id in destroyedObjectives: 
-      try: currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
-      except ValueError: pass 
-   while len(currentObjectives) < 3:
-      card = me.piles['Objective Deck'].top()
-      storeObjective(card)
-      currentObjectives = eval(me.getGlobalVariable('currentObjectives')) # We don't need to clear destroyed objectives anymore, since that is taken care of during storeObjective()
+   for player in myAllies: remoteCall(player,'refreshObjectives',[])
    atTimedEffects(Time = 'afterCardRefreshing') 
    
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterRefresh') # We put "afterRefresh" in the refresh phase, as cards trigger immediately after refreshing. Not after the refresh phase as a whole.
    mute()
-   global handRefillDone
-   handRefillDone = False
+   for player in myAllies: remoteCall(player,'unsetRefillDone',[])
    setGlobalVariable('Phase','{}:3'.format(Side))
    showCurrentPhase(3)
    if not Automations['Start/End-of-Turn/Phase']: return
@@ -1541,10 +1533,6 @@ def drawObjective(group = me.piles['Objective Deck'], silent = False):
    mute()
    if len(group) == 0: return
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
-   for card_id in destroyedObjectives: 
-      try: currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
-      except ValueError: pass 
    if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
    card = group.top()
    storeObjective(card)
@@ -1555,10 +1543,6 @@ def playObjectiveCard(card):
    if debugVerbosity >= 1: notify(">>> drawObjective(){}".format(extraASDebug())) #Debug
    mute()
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
-   for card_id in destroyedObjectives: 
-      try: currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
-      except ValueError: pass 
    if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
    storeObjective(card)
    notify("{}'s new objective is {}.".format(me,card))
@@ -1587,13 +1571,12 @@ def refillHand(group = me.hand): # Simply refills the player's hand to their res
    if debugVerbosity >= 1: notify(">>> refillHand(){}".format(extraASDebug())) #Debug
    mute()
    global handRefillDone
-   if len(me.hand) < me.Reserves: 
-      drawMany(count = me.Reserves - len(me.hand))
+   if len(me.hand) < me.Reserves - len(me.piles['Common Reserve']): 
+      drawMany(count = me.Reserves - len(me.hand) - len(me.piles['Common Reserve']))
    notify(":> {} Refills their hand to their reserve maximum".format(me))
    handRefillDone = True
    if debugVerbosity >= 3: notify("<<< refillHand()")
-      
-   
+        
 def drawBottom(group, x = 0, y = 0):
 	if len(group) == 0: return
 	mute()

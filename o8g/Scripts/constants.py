@@ -64,12 +64,12 @@ CardHeight = 88
 
 phases = [
     "Opponent's Turn",
-    "=== Balance Phase: {} ===",
-    "=== Refresh Phase: {} ===",
-    "=== Draw Phase: {} ===",
-    "=== Deployment Phase: {} ===",
-    "=== Conflict Phase: {} ===",
-    "=== Force Phase: {} ==="]
+    "=== Balance Phase ===",
+    "=== Refresh Phase ===",
+    "=== Draw Phase ===",
+    "=== Deployment Phase ===",
+    "=== Conflict Phase ===",
+    "=== Force Phase ==="]
 
 engagementPhases = [
     "+++ Engagement: Declare Objective +++",

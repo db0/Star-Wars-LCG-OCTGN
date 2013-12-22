@@ -61,12 +61,6 @@ def storeObjective(card, GameSetup = False):
 # This function also reorganizes the objectives on the table
    if debugVerbosity >= 1: notify(">>> storeObjective(){}") #Debug
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-   destroyedObjectives = eval(getGlobalVariable('destroyedObjectives'))
-   for card_id in destroyedObjectives: 
-      try:
-         currentObjectives.remove(card_id) # Removing destroyed objectives before checking.
-         destroyedObjectives.remove(card_id) # When we successfully remove an objective stored in this list, we clear it as well, so that we don't check it again in the future.
-      except ValueError: pass # If an exception is thrown, it means that destroyed objective does not exist in this objective list
    currentObjectives.append(card._id)
    if debugVerbosity >= 2: notify("About to iterate the list: {}".format(currentObjectives))
    if GameSetup:
@@ -81,8 +75,6 @@ def storeObjective(card, GameSetup = False):
          Objective.moveToTable( MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
          orgAttachments(Objective)
       update() # We put a delay here to allow the table to read the card autoscripts before we try to execute them.
-      if debugVerbosity >= 2: notify("### About to set destroyedObjectives") #Debug      
-      setGlobalVariable('destroyedObjectives', str(destroyedObjectives))
       if debugVerbosity >= 2: notify("### About to execure play Scripts") #Debug      
       executePlayScripts(card, 'PLAY')
    if debugVerbosity >= 2: notify("### About to set currentObjectives") #Debug      
@@ -1277,6 +1269,22 @@ def giveBoTD():
    giveCard(BotD,firstPlayer)
    debugNotify("<<< giveBoTD()") #Debug
 
+def refreshObjectives():
+   debugNotify(">>> refreshObjectives()") #Debug
+   mute()
+   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+   while len(currentObjectives) < 3:
+      card = me.piles['Objective Deck'].top()
+      storeObjective(card)
+   debugNotify("<<< refreshObjectives()") #Debug
+   
+def unsetRefillDone(): # A function that sets a global variable which tracks if each player has refilled their hand this draw phase. 
+   global handRefillDone
+   handRefillDone = False
+   
+def chkRefillDone(): # A function that refills the hand of each player who has not done so until now
+   if not handRefillDone and Automations['Start/End-of-Turn/Phase']: refillHand()
+   
 #------------------------------------------------------------------------------
 # Switches
 #------------------------------------------------------------------------------
