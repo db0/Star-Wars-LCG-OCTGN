@@ -110,7 +110,9 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       elif phase == 2: goToRefresh()
       elif phase == 3: goToDraw()
       elif phase == 4: 
-         for player in myAllies: remoteCall(player,'chkRefillDone',[]) # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
+         for player in myAllies: 
+            if player == me: chkRefillDone() # In order for the Deployment Phase announcement to go afterwards, we send it locally.
+            else: remoteCall(player,'chkRefillDone',[]) # If the player forgot to refill their hand in the Draw Phase, do it automatically for them now.
          update()
          goToDeployment()
       elif phase == 5:
@@ -183,6 +185,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
                   card.markers[mdict['Focus']] -=1 # Cards with the Elite text, remove an extra focus during refresh.
             if card.markers[mdict['Shield']] and card.markers[mdict['Shield']] > 0: 
                card.markers[mdict['Shield']] = 0
+   notify("All {} Side cards refreshed".format(Side))
    for player in myAllies: remoteCall(player,'refreshObjectives',[])
    atTimedEffects(Time = 'afterCardRefreshing') 
    
@@ -1264,23 +1267,33 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
       if myEdgeTotal > opponentEdgeTotal:
          winnerDifference = myEdgeTotal - opponentEdgeTotal
          if debugVerbosity >= 2: notify("### I've got the edge") #Debug
-         if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
-         # We check to see if we already have the edge marker on our affiliation card (from our opponent running the same script)
+         if currentTarget.controller in myAllies: allyPL = currentTarget.controller
+         else: 
+            try:
+               allyPL = Player(num(getGlobalVariable('Current Attacker')))
+            except: 
+               notify(":::ERROR::: Nobody is currently attacking. Aborting!")
+               return
+         allyAffiliation = getSpecial('Affiliation',allyPL)
+         if not (allyAffiliation.markers[mdict['Edge']] and allyAffiliation.markers[mdict['Edge']] == 1): 
+         # We check to see if we already have the edge marker on the affiliation card (from our opponent running the same script)
             clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
-            Affiliation.markers[mdict['Edge']] = 1
+            allyAffiliation.markers[mdict['Edge']] = 1
             notify("The {} Side has the edge in this engagement ({}: {} force VS {}: {} force)".format(Side,Side, myEdgeTotal, opSide, opponentEdgeTotal))
             if currentTarget.controller in fetchAllOpponents(): autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
-            incrStat('edgev',me.name) # We store that the player has won an edge battle
+            incrStat('edgev',allyAffiliation.name) # We store that the player has won an edge battle
          elif not forceCalc: delayed_whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          winnerDifference = opponentEdgeTotal - myEdgeTotal
          debugNotify("Opponent has the edge") #Debug
-         try:
-            opponentPL = Player(num(getGlobalVariable('Current Attacker')))
-         except: 
-            notify(":::ERROR::: Nobody is currently attacking. Aborting!")
-            return
+         if currentTarget.controller in myAllies:
+            try:
+               opponentPL = Player(num(getGlobalVariable('Current Attacker')))
+            except: 
+               notify(":::ERROR::: Nobody is currently attacking. Aborting!")
+               return
+         else: opponentPL = currentTarget.controller
          oppAffiliation = getSpecial('Affiliation',opponentPL)
          if not (oppAffiliation.markers[mdict['Edge']] and oppAffiliation.markers[mdict['Edge']] == 1): 
          # We check to see if our opponent already have the edge marker on our affiliation card (from our opponent running the same script)
@@ -1368,7 +1381,7 @@ def grabFullReserves():
    debugNotify(">>> grabFullReserves()") #Debug
    fullReserves = []
    for player in myAllies:
-      if len(player.piles['Common Reserve']) and player.piles['Common Reserve'][0].Type == '?': whisper(":::WARNING::: Could not read the common reserves of {}. Please ask them to give you pile visibility before running this action again".format(player.name))
+      if len(player.piles['Common Reserve']) and player.piles['Common Reserve'][0].Type == '?': information(":::WARNING::: Could not read the common reserves of {}. Please ask them to give you pile visibility before running this action again".format(player.name))
       else: fullReserves.extend(player.piles['Common Reserve'].top(1))
    debugNotify("<<< grabFullReserves() found {} cards: {}".format(len(fullReserves),[c.name for c in fullReserves])) #Debug
    return fullReserves

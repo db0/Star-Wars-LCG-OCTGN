@@ -332,7 +332,7 @@ def orgAttachments(card,facing = 'Same'):
    debugNotify(" Card Name : {}".format(card.name), 4)
    update()
    x,y = card.position
-   if card.controller == me: sideOffset = playerside # If it's our card, we need to assign it towards our side
+   if card.controller in myAllies: sideOffset = playerside # If it's our card, we need to assign it towards our side
    else: sideOffset = playerside * -1 # Otherwise we assign it towards the opponent's side
    if card.Type == 'Objective':
       debugNotify("Found specialHostPlacementAlgs", 3)
@@ -359,8 +359,10 @@ def orgAttachments(card,facing = 'Same'):
       else: # else is the default of 'Same' and means the facing stays the same as before.
          if attachment.isFaceUp: FaceDown = False
          else: FaceDown = True
-      attachment.moveToTable(x + (xAlg * attNR), y + (yAlg * attNR),FaceDown)
-      if attachment.controller == me and FaceDown: attachment.peek()
+      if attachment.controller == me:
+         attachment.moveToTable(x + (xAlg * attNR), y + (yAlg * attNR),FaceDown)
+         if FaceDown: attachment.peek()
+      else: remoteCall(attachment.controller, 'moveForeignCard', [attachment, x + (xAlg * attNR), y + (yAlg * attNR), FaceDown])
       attachment.setIndex(len(cardAttachements) - attNR) # This whole thing has become unnecessary complicated because sendToBack() does not work reliably
       debugNotify("{} index = {}".format(attachment,attachment.getIndex), 4) # Debug
       attNR += 1
@@ -369,18 +371,24 @@ def orgAttachments(card,facing = 'Same'):
    if debugVerbosity >= 4: # Checking Final Indices
       for attachment in cardAttachements: notify("{} index = {}".format(attachment,attachment.getIndex)) # Debug
    debugNotify("<<< orgAttachments()", 3) #Debug      
-      
+
+def moveForeignCard(card,x,y,faceDown = False): # A remote function to allow other players to move our cards.
+   debugNotify(">>> moveForeignCard()") #Debug
+   mute()
+   card.moveToTable(x, y, faceDown)
+   debugNotify("<<< moveForeignCard()") #Debug
+
 def findMarker(card, markerDesc): # Goes through the markers on the card and looks if one exist with a specific description
-   if debugVerbosity >= 1: notify(">>> findMarker(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> findMarker(){}".format(extraASDebug())) #Debug
    foundKey = None
    if markerDesc in mdict: markerDesc = mdict[markerDesc][0] # If the marker description is the code of a known marker, then we need to grab the actual name of that.
    for key in card.markers:
-      if debugVerbosity >= 3: notify("### Key: {}\nmarkerDesc: {}".format(key[0],markerDesc)) # Debug
+      debugNotify("Key: {}\nmarkerDesc: {}".format(key[0],markerDesc)) # Debug
       if re.search(r'{}'.format(markerDesc),key[0]) or markerDesc == key[0]:
          foundKey = key
-         if debugVerbosity >= 2: notify("### Found {} on {}".format(key[0],card))
+         debugNotify("Found {} on {}".format(key[0],card))
          break
-   if debugVerbosity >= 3: notify("<<< findMarker() by returning: {}".format(foundKey))
+   debugNotify("<<< findMarker() by returning: {}".format(foundKey))
    return foundKey
 
 def parseCombatIcons(STRING, dictReturn = False):
@@ -659,11 +667,10 @@ def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to 
 def gotEdge(targetPL = None):
    debugNotify(">>> gotEdge()") #Debug
    gotIt = False
-   if targetPL:
+   if not targetPL: targetPL == me
+   if player in fetchAllAllies(targetPL):
       targetAffiliation = getSpecial('Affiliation',targetPL)
-      if targetAffiliation.markers[mdict['Edge']] and targetAffiliation.markers[mdict['Edge']] == 1: gotIt = True
-   else:
-      if Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1: gotIt = True
+      if targetAffiliation.markers[mdict['Edge']] and targetAffiliation.markers[mdict['Edge']] == 1: gotIt = True      
    debugNotify("<<< gotEdge() returns {}".format(gotIt)) #Debug
    return gotIt
 
@@ -1265,7 +1272,7 @@ def giveBoTD():
    mainAffiliation = getSpecial('Affiliation',firstPlayer)
    x,y = mainAffiliation.position
    debugNotify("First Affiliation is {} at position {} {}".format(mainAffiliation, x,y,)) #Debug
-   BotD.moveToTable(x, y + (playerside * 75))
+   BotD.moveToTable(x, y - (playerside * 75))
    giveCard(BotD,firstPlayer)
    debugNotify("<<< giveBoTD()") #Debug
 

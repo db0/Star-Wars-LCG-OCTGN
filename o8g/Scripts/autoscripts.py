@@ -1384,10 +1384,10 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          cardList.append(c._id)
       rnd(1,10)
       for cid in cardList:
-         if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(cid).name))
+         debugNotify("Card Name: {}".format(Card(cid).name))
          cardNames.append(Card(cid).name)
          cardDetails.append((Card(cid).Type,Card(cid).properties['Damage Capacity'],Card(cid).Resources,Card(cid).Traits,parseCombatIcons(Card(cid).properties['Combat Icons']),Card(cid).Text)) # Creating a tuple with some details per objective
-         if debugVerbosity >= 3: notify("#### Finished Storing.")
+         debugNotify("#### Finished Storing.")
       ChoiceTXT = []
       for iter in range(len(cardList)):
          ChoiceTXT.append("{}\
@@ -1401,13 +1401,14 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if choice != None:
          capturedC = Card(cardList.pop(choice))
          capturedC.moveTo(opponentPL.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
-         if debugVerbosity >= 3: notify("#### About to capture.")
+         debugNotify("About to capture.")
          capture(chosenObj = card,targetC = capturedC, silent = True)
-         if debugVerbosity >= 3: notify("#### Removing choice text")
+         debugNotify("#### Removing choice text")
          ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
          choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
          for iter in range(len(cardList)):
-            if debugVerbosity >= 2: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
+            debugNotify("Iter = {}".format(iter))
+            if debugVerbosity >= 4: confirm("#### Moving {} (was at position {}. choice was {})".format(Card(cardList[iter]).name, iter,choice))
             if iter == choice: Card(cardList[iter]).moveTo(opponentPL.piles['Command Deck'],0)
             else: Card(cardList[iter]).moveTo(opponentPL.piles['Command Deck'],1)
          notify(":> {} activates Takes Them Prisoner to capture one card from the top 3 cards of {}'s command deck".format(me,opponentPL))
@@ -1415,7 +1416,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if me.hasInvertedTable(): card.moveToTable(0,0)
       else:  card.moveToTable(0,-cheight(card))
       card.setController(findOpponent())
-      if debugVerbosity >= 2: notify("About to whisper") # Debug
+      debugNotify("About to whisper") # Debug
       whisper(":::IMPORTANT::: Please make sure that the controller for this card is always the Dark Side player")
    elif card.name == 'Twist of Fate' and action == 'RESOLVEFATE': 
       for card in table:
