@@ -1199,6 +1199,7 @@ def playEdge(card, silent = False):
       return 'ABORT'
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    edgeCount = len([c for c in table if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == me])
+   debugNotify("edgeCount = {}".format(edgeCount))
    mute()
    card.moveToTable(MPxOffset + (playerside * 250), MPyOffset + (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    attacker = Player(num(getGlobalVariable('Current Attacker')))
@@ -1206,12 +1207,12 @@ def playEdge(card, silent = False):
    if attacker != me and currentTarget.controller != me: # If we play an edge card as an ally, we always place it on the main player's edge stack
       if attacker in myAllies: edgeOwner = attacker
       else: edgeOwner = currentTarget.controller
-      card.setController(edgeOwner)
       if edgeCount > 0: 
          for c in table:
             if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == edgeOwner: lastEdge = c
-         x,y = c.position
-         c.moveToTable(x, y + (playerside * 40)) # We try to move the allie's edge card to the edge stack
+         x,y = lastEdge.position
+         lastEdge.moveToTable(x, y + (playerside * 40)) # We try to move the ally's edge card to the edge stack
+      card.setController(edgeOwner)
    card.highlight = EdgeColor
    card.peek()
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
@@ -1282,7 +1283,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             notify("The {} Side has the edge in this engagement ({}: {} force VS {}: {} force)".format(Side,Side, myEdgeTotal, opSide, opponentEdgeTotal))
             if currentTarget.controller in fetchAllOpponents(): autoscriptOtherPlayers('AttackerEdgeWin',currentTarget, winnerDifference)
             else: autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, winnerDifference)
-            incrStat('edgev',allyAffiliation.name) # We store that the player has won an edge battle
+            incrStat('edgev',allyPL.name) # We store that the player has won an edge battle
          elif not forceCalc: delayed_whisper(":::NOTICE::: You already have the edge. Nothing else to do.")
       elif myEdgeTotal < opponentEdgeTotal:
          winnerDifference = opponentEdgeTotal - myEdgeTotal
