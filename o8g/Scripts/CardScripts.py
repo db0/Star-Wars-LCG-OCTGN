@@ -2676,7 +2676,7 @@ ff4fb461-8060-457a-9c16-000000000319
 -----
 
 +++++
-R0:ReturnTarget-Targeted-atUnit
+R0:ReturnTarget-Targeted-atUnit-byAlly
 .....
 Last Defense of Hoth
 -----
@@ -2690,7 +2690,7 @@ Lucrative Contract
 -----
 ff4fb461-8060-457a-9c16-000000000343
 -----
-afterCardRefreshing:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetMine-choose1-hasMarker{Focus}-duringMyTurn-isReact
+afterCardRefreshing:Remove1Focus-AutoTargeted-atUnit_and_Mercenary_or_Unit_and_Bounty Hunter-targetAllied-choose1-hasMarker{Focus}-duringMyTurn-isReact
 +++++
 
 .....
@@ -2714,7 +2714,7 @@ Sabotage in the Snow
 -----
 ff4fb461-8060-457a-9c16-000000000349
 -----
-afterDeployment:Transfer1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-destinationAny-hasntMarker{Shield}-targetMine-duringMyTurn-isReact
+afterDeployment:Transfer1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-destinationAny-hasntMarker{Shield}-targetAllied-duringMyTurn-isReact
 +++++
 
 .....
