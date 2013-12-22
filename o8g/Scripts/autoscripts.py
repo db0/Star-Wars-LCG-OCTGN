@@ -1403,7 +1403,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          capturedC.moveTo(opponentPL.piles['Command Deck']) # We move it back to the deck, so that the capture function can announce the correct location from which it was taken.
          debugNotify("About to capture.")
          capture(chosenObj = card,targetC = capturedC, silent = True)
-         debugNotify("#### Removing choice text")
+         debugNotify("Removing choice text")
          ChoiceTXT.pop(choice) # We also remove the choice text entry at that point.
          choice = SingleChoice("Which card do you wish to leave on top of your opponent's command deck?", ChoiceTXT, type = 'button', default = 0,cancelButton = False)
          for iter in range(len(cardList)):

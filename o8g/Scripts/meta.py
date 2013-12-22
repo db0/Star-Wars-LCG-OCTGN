@@ -1265,6 +1265,7 @@ def clearFirstTurn(Init = True):
 
 def giveBoTD():
    debugNotify(">>> giveBoTD()") #Debug
+   mute()
    BotD = getSpecial('BotD')
    if BotD.alternate == 'DarkSide': BotD.switchTo()
    else: BotD.switchTo('DarkSide')

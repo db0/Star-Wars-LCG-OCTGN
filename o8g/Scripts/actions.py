@@ -1193,17 +1193,18 @@ def play(card):
          autoscriptOtherPlayers('CardPlayed',card)
       
 def playEdge(card, silent = False):
-   if debugVerbosity >= 1: notify(">>> playEdge(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> playEdge() with card = {}".format(card)) #Debug
    if getGlobalVariable('Engaged Objective') == 'None': 
       whisper(":::ERROR::: You have to be in an engagement to play edge cards. ABORTING!")
       return 'ABORT'
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
-   edgeCount = len([c for c in table if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == me])
+   edgeCount = len([c for c in table if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller in myAllies])
    debugNotify("edgeCount = {}".format(edgeCount))
    mute()
    card.moveToTable(MPxOffset + (playerside * 250), MPyOffset + (playerside * 30) + yaxisMove(card) + (playerside * 40 * edgeCount), True)
    attacker = Player(num(getGlobalVariable('Current Attacker')))
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))
+   debugNotify("attacker = {}, currentTarget = {}".format(attacker,currentTarget))
    if attacker != me and currentTarget.controller != me: # If we play an edge card as an ally, we always place it on the main player's edge stack
       if attacker in myAllies: edgeOwner = attacker
       else: edgeOwner = currentTarget.controller
@@ -1211,8 +1212,12 @@ def playEdge(card, silent = False):
          for c in table:
             if (c.highlight == EdgeColor or c.highlight == FateColor) and c.controller == edgeOwner: lastEdge = c
          x,y = lastEdge.position
-         lastEdge.moveToTable(x, y + (playerside * 40)) # We try to move the ally's edge card to the edge stack
+         card.moveToTable(x, y + (playerside * 40)) # We try to move the ally's edge card to the edge stack
       card.setController(edgeOwner)
+   if debugVerbosity >=4 and not confirm("Do you see the card?"):
+      notify("card group == {}. Moving Around".format(card.group.name))
+      card.moveToTable(0, 0)
+      notify("card group now == {}".format(card.group.name))
    card.highlight = EdgeColor
    card.peek()
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
@@ -1373,7 +1378,8 @@ def playEdgeReserve(group):
       return
    fullReserves = grabFullReserves()
    choice = SingleChoice("Select one card from your common reserves to place as edge", makeChoiceListfromCardList(fullReserves, True, True))
-   if choice != None: 
+   if choice != None:
+      prevGroup = fullReserves[choice].group
       claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
       playEdge(fullReserves[choice])
       if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)

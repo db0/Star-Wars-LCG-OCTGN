@@ -287,7 +287,7 @@ def SingleChoice(title, options, type = 'button', default = 0, cancelButton = Tr
    choice = "New"
    if cancelButton: customButtonsList = [cancelName]
    else: customButtonsList = []
-   while choice == "New" or (not choice and not cancelButton):
+   while choice == "New" or (choice == None and not cancelButton):
       choice = askChoice(title, options, customButtons = customButtonsList)
       debugNotify("choice is: {}".format(choice), 2)
       if choice > 0: choice -= 1 # Reducing by 1 because askChoice() starts from 1 but my code expects to start from 0
@@ -632,12 +632,19 @@ def claimCard(card, player = me): # Requests the controller of a card to pass co
    debugNotify(">>> claimCard()") #Debug
    if card.controller != me: # If the card is already ours, we do not need to do anything.
       remoteCall(card.controller,'giveCard', [card,player])
-      update() # We make sure all network calls have completed before continuing.
-      if card.controller != me: whisper(":::ERROR::: claimCard() failed. Card controller still {}".format(card.controller.name))
+       # We make sure all network calls have completed before continuing.
+      count = 0
+      while card.controller != me: 
+         update()
+         count += 1
+         if count >= 10:
+            whisper(":::ERROR::: claimCard() failed. Card controller still {}. Giving up".format(card.controller.name))
+            return
    debugNotify("<<< claimCard()") #Debug
    
 def giveCard(card,player,pile = None): # Passes control of a card to a given player.
    debugNotify(">>> giveCard()") #Debug
+   mute()
    if card.group == table: card.setController(player)
    else: 
       if pile: card.moveTo(pile) # If we pass a pile variable, it means we likely want to return the card to its original location (say after an aborted capture)
