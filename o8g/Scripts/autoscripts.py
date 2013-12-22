@@ -1251,7 +1251,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          card.sendToBack()
          TokensX('Put1isEnhancement-isSilent', '', card)
    elif card.name == 'Wedge Antilles' and action == 'PLAY':
-      if len(findTarget('AutoTargeted-atFighter_or_Speeder-byMe')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a Fighter or Speeder. Do so now?"):
+      if len(findTarget('AutoTargeted-atFighter_or_Speeder-byAlly')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a Fighter or Speeder. Do so now?"):
          fighter = findTarget('AutoTargeted-atFighter_or_Speeder-byMe-choose1')
          if len(fighter) == 0: return
          hostCards = eval(getGlobalVariable('Host Cards'))

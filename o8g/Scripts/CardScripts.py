@@ -2642,7 +2642,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000352
 -----
-whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}
+whileInPlay:IncreaseBD:1-forAlly-typeUnit-hasMarker{Shield}
 +++++
 
 .....
@@ -2650,7 +2650,7 @@ Forward Command Post
 -----
 ff4fb461-8060-457a-9c16-000000000353
 -----
-whileInPlay:IncreaseBD:1-forMe-typeUnit-hasMarker{Shield}
+whileInPlay:IncreaseBD:1-forAlly-typeUnit-hasMarker{Shield}
 +++++
 
 .....

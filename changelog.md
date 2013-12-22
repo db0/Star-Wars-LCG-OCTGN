@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.6.3.x
+
+Cards to Fix for multiplayer
+
+Echo Base Defense
+
 ### 2.6.2.x
 
 * Made game 2v2 compatible (Added Common Reserves and code for it etc)
