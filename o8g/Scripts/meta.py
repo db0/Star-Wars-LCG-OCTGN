@@ -1280,8 +1280,7 @@ def giveBoTD():
 def refreshObjectives():
    debugNotify(">>> refreshObjectives()") #Debug
    mute()
-   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-   while len(currentObjectives) < 3:
+   while len(eval(me.getGlobalVariable('currentObjectives'))) < 3:
       card = me.piles['Objective Deck'].top()
       storeObjective(card)
    debugNotify("<<< refreshObjectives()") #Debug
