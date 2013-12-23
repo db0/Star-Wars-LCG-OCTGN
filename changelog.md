@@ -1,6 +1,12 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.6.4.x
+
+* Balance of the Force now scripted. Some notes:
+  * Shistavanen Wolfman won't trigger from your discard pile. You have to play him manually when you win the force struggle accordingly.
+
+
 ### 2.6.3.x
 
 * Allied participating units will now pass control to the main players to allow cards like Orbital Bombardment to work correctly

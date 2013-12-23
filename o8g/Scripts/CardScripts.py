@@ -2330,7 +2330,7 @@ Anger
 -----
 ff4fb461-8060-457a-9c16-000000000305
 -----
-Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-foreachForceStruggleLost-duringOpponentTurn-isReact-isForced
+Placement:Character||whileInPlay:SacrificeTarget-AutoTargeted-onHost-foreachForceStruggleDark-duringOpponentTurn-isReact-isForced
 +++++
 
 .....
@@ -4082,7 +4082,7 @@ Watchers in the Wasteland
 -----
 ff4fb461-8060-457a-9c16-000000000547
 -----
-
+ConstantEffect:Force1Bonus-AutoTargeted-fromCommonReserves-targetAllied-perEveryReserve
 +++++
 
 .....
@@ -4090,7 +4090,7 @@ Obi-Wan Kenobi
 -----
 ff4fb461-8060-457a-9c16-000000000548
 -----
-
+whileInPlay:CustomScript-foreachForceStruggleLight-isReact
 +++++
 
 .....
@@ -4098,7 +4098,7 @@ Shistavanen Wolfman
 -----
 ff4fb461-8060-457a-9c16-000000000549
 -----
-
+ConstantEffect:Edge1Bonus
 +++++
 
 .....
@@ -4106,7 +4106,7 @@ Shistavanen Wolfman
 -----
 ff4fb461-8060-457a-9c16-000000000550
 -----
-
+ConstantEffect:Edge1Bonus
 +++++
 
 .....
@@ -4114,7 +4114,7 @@ Force Cleansing
 -----
 ff4fb461-8060-457a-9c16-000000000551
 -----
-
+Placement:Character-byAlly||whileInPlay:Remove1Focus-AutoTargeted-onHost-foreachDialIncrease-isReact-isForced$$Remove1Damage-AutoTargeted-onHost
 +++++
 
 .....
@@ -4132,13 +4132,13 @@ ff4fb461-8060-457a-9c16-000000000553
 -----
 
 +++++
-
+R0:Put1Focus-isCost$$CustomScript
 .....
 Blue Leader
 -----
 ff4fb461-8060-457a-9c16-000000000554
 -----
-
+onStrike:Deal1Damage-DemiAutoTargeted-atObjective-isNotParticipating-targetOpponents-choose1-ifOrigAttacking-isReact
 +++++
 
 .....
@@ -4146,7 +4146,7 @@ B-Wing
 -----
 ff4fb461-8060-457a-9c16-000000000555
 -----
-
+onStrike:Draw1Card-onAlly-isReact
 +++++
 
 .....

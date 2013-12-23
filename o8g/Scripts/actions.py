@@ -280,7 +280,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          remoteCall(BotD.controller,'giveBoTD', [])
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(Side,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(Side,Side,myStruggleTotal,opSide,opponentStruggleTotal))         
-      autoscriptOtherPlayers('ForceStruggleWon',BotD)
+      autoscriptOtherPlayers('ForceStruggle{}'.format(Side),BotD)
       incrStat('forcev',me.name) # We store that the player has won a force struggle
    elif myStruggleTotal - opponentStruggleTotal < 0: 
       debugNotify("struggleTotal Negative") #Debug
@@ -289,7 +289,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          remoteCall(BotD.controller,'giveBoTD', [])
          notify(":> The force struggle tips the balance of the force towards the {} side ({}: {} - {}: {})".format(opSide,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       else: notify(":> The balance of the force remains skewed towards the {}. ({}: {} - {}: {})".format(opSide,Side,myStruggleTotal,opSide,opponentStruggleTotal))
-      autoscriptOtherPlayers('ForceStruggleLost',BotD)
+      autoscriptOtherPlayers('ForceStruggle{}'.format(opSide),BotD)
       incrStat('forcev',findOpponent().name) # We store that the opponent has won a force struggle
    else: # If the current force totals are tied, we just announce that.
       debugNotify("Force struggle is tied") #Debug
@@ -298,8 +298,8 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       notify(":> The force struggle is tied. The Balance remains tiped to the {} Side. ({}: {} - {}: {})".format(BotDside,Side,myStruggleTotal,opSide,opponentStruggleTotal))
       if debugVerbosity >= 0:
          if confirm("Debug Force Win/Loss?"):
-            if confirm("Win Force?"): autoscriptOtherPlayers('ForceStruggleWon',BotD)
-            else: autoscriptOtherPlayers('ForceStruggleLost',BotD)
+            if confirm("Light Win Force?"): autoscriptOtherPlayers('ForceStruggleLight',BotD)
+            else: autoscriptOtherPlayers('ForceStruggleDark',BotD)
    forceStruggleDone = True # Set that the forcestruggle is done.
    debugNotify("<<< resolveForceStruggle()") #Debug
          

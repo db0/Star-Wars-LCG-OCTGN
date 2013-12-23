@@ -161,30 +161,33 @@ def ofwhom(Autoscript, controller = me, multiText = None):
             notify(":::Error::: No Valid Opponents found. Returning Myself as failsafe")
             targetPLs.append(me)
          else:
-            if re.search(r'o[fn]All', Autoscript): targetPLs = playerList
+            if re.search(r'o[fn]AllOpponents', Autoscript): targetPLs = playerList
             else:
                choice = SingleChoice(multiText, [pl.name for pl in playerList])
                targetPLs.append(playerList[choice])
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
          targetPLs.append(me)
-   elif re.search(r'o[fn]Ally', Autoscript) or re.search(r'o[fn]AllAllies', Autoscript):
+   elif re.search(r'o[fn]Team', Autoscript) or re.search(r'o[fn]Ally', Autoscript) or re.search(r'o[fn]AllAllies', Autoscript):
       if not multiText: multiText = "Choose which allied player you're targeting with this effect."
       if len(getPlayers()) > 1:
          for player in getPlayers():
             if player.getGlobalVariable('Side') == '': 
                debugNotify("ofwhom() -- rejecting {} because they are a spectator".format(player))
                continue # This is a spectator 
-            elif player.getGlobalVariable('Side') == controller.getGlobalVariable('Side'): 
-               playerList.append(player) # Opponent needs to be not us, and of a different type. 
-               debugNotify("ofwhom() -- appending {}".format(player),4)
+            elif player.getGlobalVariable('Side') == controller.getGlobalVariable('Side'):
+               if re.search(r'o[fn]Ally', Autoscript) and player == controller: 
+                  debugNotify("ofwhom() -- rejecting {} because we're looking only for their allies".format(player, 4))
+               else:
+                  playerList.append(player) # Opponent needs to be not us, and of a different type. 
+                  debugNotify("ofwhom() -- appending {}".format(player),4)
             else: debugNotify("ofwhom() -- rejecting {} because their side {} does not match controller Side ({})".format(player, player.getGlobalVariable('Side'), controller.getGlobalVariable('Side')), 4)
          if len(playerList) == 1: targetPLs.append(playerList[0])
          elif len(playerList) == 0: 
             notify(":::Error::: No Valid Allies found. Returning Myself as failsafe")
             targetPLs.append(me)
          else: 
-            if re.search(r'o[fn]All', Autoscript): targetPLs = playerList
+            if re.search(r'o[fn]AllAllies', Autoscript): targetPLs = playerList
             else:
                choice = SingleChoice(multiText, [pl.name for pl in playerList])
                targetPLs = playerList[choice]
@@ -224,6 +227,8 @@ def fetchAllAllies(targetPL = me):
 def modifyDial(value):
    if debugVerbosity >= 1: notify(">>> modifyDial(). Value = {}".format(value)) #Debug   
    for player in getPlayers(): player.counters['Death Star Dial'].value += value
+   if value > 0: autoscriptOtherPlayers('DialIncrease',Affiliation)
+   else: autoscriptOtherPlayers('DialDecrease',Affiliation)
    if len(myAllies) == 2: winningValue = 16
    else: winningValue = 12
    if me.counters['Death Star Dial'].value >= winningValue:

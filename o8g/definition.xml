@@ -19,6 +19,7 @@
       <script src="Scripts/actions.py" />
       <script src="Scripts/constants.py" />
       <script src="Scripts/autoscripts.py" />
+      <script src="Scripts/customscripts.py" />
       <script src="Scripts/generic.py" />
       <script src="Scripts/meta.py" />
       <script src="Scripts/sounds.py" />
