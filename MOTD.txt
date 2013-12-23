@@ -1,7 +1,5 @@
 =====Message of the Day======
 
-UPDATE: Ooops! Just fixed the nasty endless objectives refresh bug, Sorry about that :)
-
 2v2 is now available!
 
 Do you want to read the details?
