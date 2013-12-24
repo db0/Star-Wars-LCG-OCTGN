@@ -393,6 +393,9 @@ def markerEffects(Time = 'Start'):
             if re.search(r'Secret Guardian',marker[0]): 
                returnToHand(card,silent = True)
                notify("--> {} returned Secret Guardian {} to their hand".format(me,card))
+            if re.search(r'Mercenary Support',marker[0]): 
+               remoteCall(card.controller, 'discard', [card,0,0,True,False,card.controller])
+               notify("--> {} discarded Supporting Mercenary {}".format(me,card))
                
 
    
@@ -1062,6 +1065,10 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             autoscriptOtherPlayers('CardPlayed',targetCard)            
          elif action.group(1) == 'Capture': 
             if re.search("-captureOnMyself", Autoscript): capture(targetC = targetCard, silent = True, chosenObj = card)
+            if re.search("-onAnyAlliedObjective", Autoscript): # This allows the script runner to choose any objective to capture to, which might not even be one of theirs.
+               objectiveList = [obj for obj in table if obj.Type == 'Objective' and obj.Side == 'Dark']
+               choice = SingleChoice("Select one objective to capture {}".format(targetC), makeChoiceListfromCardList(objectiveList, True))
+               capture(targetC = targetCard, silent = True, chosenObj = objectiveList[choice])
             else: capture(targetC = targetCard, silent = True)
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)

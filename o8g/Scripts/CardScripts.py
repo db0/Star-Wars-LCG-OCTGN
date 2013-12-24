@@ -4331,7 +4331,7 @@ Punishing One
 -----
 ff4fb461-8060-457a-9c16-000000000578
 -----
-
+afterDraw:CaptureTarget-onAnyAlliedObjective-Targeted-isCaptured-duringMyTurn-isReact
 +++++
 
 .....

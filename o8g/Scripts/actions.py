@@ -994,7 +994,8 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
                #capturingObjective = chosenObj
                return
             selectedAbility = eval(getGlobalVariable('Stored Effects'))
-      if Side == 'Light': 
+      if chosenObj: captor = chosenObj.controller # If we have a selected objective already then the captor is always its controller
+      elif Side == 'Light': 
          opponentList = fetchAllOpponents()
          if len(opponentList) > 1:
             choice = SingleChoice("Choose which opponent captured this card.", [pl.name for pl in opponentList])
@@ -1008,7 +1009,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
          cardsLeaving(targetC,'remove')
       else:
          claimCard(targetC)
-         if not chosenObj or chosenObj.owner != captor:
+         if not chosenObj:
             debugNotify("Don't have preset objective. Seeking...")
             myObjectives = eval(captor.getGlobalVariable('currentObjectives'))
             objectiveList = [Card(objective_ID) for objective_ID in myObjectives]
