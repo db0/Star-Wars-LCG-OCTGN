@@ -758,7 +758,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                else: notify("!!! No reduceCost regex Match!") 
             #if re.search(r'ifInstalled',autoS) and (card.group != table or card.highlight == RevealedColor): continue
             if reductionSearch: # If the above search matches (i.e. we have a card with reduction for Rez and a condition we continue to check if our card matches the condition)
-               if debugVerbosity >= 3: notify("### Possible Match found in {}".format(c)) # Debug         
+               debugNotify("Possible Match found in {}".format(c),3) # Debug         
                if not chkDummy(autoS, c): continue   
                if not checkOriginatorRestrictions(autoS,c): continue  
                if not chkSuperiority(autoS, c): continue
@@ -771,15 +771,15 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
                                                                   # In each entry we store a tuple of the card object and the search result for its cost modifying abilities, so that we don't regex again later. 
       if len(costReducers): costModifiers.extend(costReducers)
    for cTuple in costModifiers: # Now we check what kind of cost modification each card provides. First we check for cost increasers and then for cost reducers
-      if debugVerbosity >= 4: notify("### Checking next cTuple") #Debug
+      debugNotify("Checking next cTuple",4) # Debug
       c = cTuple[0]
       reductionSearch = cTuple[1]
       autoS = cTuple[2]
       debugNotify("cTuple[0] (i.e. card) is: {}".format(c)) #Debug
-      if debugVerbosity >= 4: notify("### cTuple[2] (i.e. autoS) is: {}".format(autoS)) #Debug
+      debugNotify("cTuple[2] (i.e. autoS) is: {}".format(autoS),4) # Debug
       if reductionSearch.group(4) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,seek = 'reduce')):
          if not checkSpecialRestrictions(autoS,card): continue
-         if debugVerbosity >= 3: notify(" ### Search match! Reduction Value is {}".format(reductionSearch.group(2))) # Debug
+         debugNotify("### Search match! Reduction Value is {}".format(reductionSearch.group(2)),3) # Debug
          if re.search(r'onlyOnce',autoS):
             if dryRun: # For dry Runs we do not want to add the "Activated" token on the card. 
                if oncePerTurn(c, act = 'dryRun') == 'ABORT': continue 
@@ -866,7 +866,7 @@ def compareObjectiveTraits(Trait):
             for autoS in Autoscripts:
                debugNotify("Checking {} for Objective Trait boosting AS: {}".format(card,autoS)) # Debug
                search = 'Trait{Objective_and_' + Trait + '}([0-9])Bonus' # Doing a concatenate because python b0rks if I try to do it with format.
-               if debugVerbosity >= 3: notify("### Finished concatenating") # Debug
+               debugNotify("Finished concatenating",3) # Debug
                TraitBonus = re.search(r'{}'.format(search),autoS)
                if TraitBonus: 
                   playerTraitCounts[player.name] += num(TraitBonus.group(1))
@@ -887,7 +887,7 @@ def compareObjectiveTraits(Trait):
 
 def chkSuperiority(Autoscript, card):
    debugNotify(">>> chkSuperiority()") #Debug
-   if debugVerbosity >= 3: notify("### AS = {}. Card = {}".format(Autoscript, card)) #Debug
+   debugNotify("AS = {}. Card = {}".format(Autoscript, card),3) # Debug
    haveSuperiority = True # The default is True, which means that if we do not have a relevant autoscript, it's always True
    supRegex = re.search(r'-ifSuperiority([\w ]+)',Autoscript)
    if supRegex:
@@ -907,7 +907,7 @@ def calcBonusEdge(card): # This function calculated how much Edge bonus a card i
          edgeRegex = re.search(r'Edge([0-9])Bonus',autoS)
          if edgeRegex and debugVerbosity >= 4: notify("#### regex found") # Debug
          if not edgeRegex: 
-            if debugVerbosity >= 4: notify("#### regex NOT found") # Debug
+            debugNotify("regex NOT found",4) # Debug
             continue # If the script doesn't provide edge bonus, ignore it
          if card.orientation != Rot90 and not re.search(r'-isDistributedEffect',autoS): continue  # If the card isn't participating or the script isn't providing a distributed benefit, ignore it
          if not chkSuperiority(autoS, card): continue # If the script requires superiority but we don't have it, ignore it

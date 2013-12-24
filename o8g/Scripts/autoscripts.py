@@ -231,14 +231,14 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
    for card in table:
       debugNotify(' Checking {}'.format(card)) # Debug
       if not card.isFaceUp: 
-         if debugVerbosity >= 4: notify("### Card is not faceup") # Debug
+         debugNotify("Card is not faceup",4) # Debug
          continue # Don't take into accounts cards that are face down for some reason. 
       if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == FateColor or card.highlight == UnpaidColor: 
-         if debugVerbosity >= 4: notify("### Card is inactive") # Debug
+         debugNotify("Card is inactive",4) # Debug
          continue # We do not care about inactive cards.
       costText = '{} activates {} to'.format(card.controller, card) 
       Autoscripts = CardsAS.get(card.model,'').split('||')
-      if debugVerbosity >= 4: notify("### {}'s AS: {}".format(card,Autoscripts)) # Debug
+      debugNotify("{}'s AS: {}".format(card,Autoscripts),4) # Debug
       autoScriptSnapshot = list(Autoscripts)
       for autoS in autoScriptSnapshot: # Checking and removing anything other than whileRezzed or whileScored.
          if not re.search(r'whileInPlay', autoS): Autoscripts.remove(autoS)
@@ -519,7 +519,7 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
    for targetPL in targetPLs:
       multiplier = per(Autoscript, card, n, targetCards) # We check if the card provides a gain based on something else, such as favour bought, or number of dune fiefs controlled by rivals.
       if action.group(1) == 'Lose': gain *= -1 
-      if debugVerbosity >= 3: notify("### GainX() after per") #Debug
+      debugNotify("GainX() after per",3) # Debug
       gainReduce = findCounterPrevention(gain * multiplier, action.group(3), targetPL) # If we're going to gain counter, then we check to see if we have any markers which might reduce the cost.
       if re.match(r'Reserves', action.group(3)): 
          if action.group(1) == 'SetTo': targetPL.counters['Reserves'].value = 0 # If we're setting to a specific value, we wipe what it's currently.
@@ -617,7 +617,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
             targetChoices = makeChoiceListfromCardList(sourceTargets)
             choiceC = SingleChoice("Choose from which card to remove the token", targetChoices, type = 'button', default = 0)
             if choiceC == 'ABORT': return 'ABORT'
-            if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
+            debugNotify("choiceC = {}".format(choiceC),4) # Debug
             sourceCard = sourceTargets.pop(choiceC)
          else: sourceCard = sourceTargets[0]
          debugNotify("sourceCard = {}".format(sourceCard)) # Debug
@@ -1334,18 +1334,18 @@ def findTarget(Autoscript, fromHand = False, card = None): # Function for findin
 def gatherCardProperties(card):
    debugNotify(">>> gatherCardProperties()") #Debug
    cardProperties = []
-   if debugVerbosity >= 4: notify("### Appending name") #Debug                
+   debugNotify("Appending name",4) # Debug                
    cardProperties.append(card.name) # We are going to check its name
-   if debugVerbosity >= 4: notify("### Appending Type") #Debug                
+   debugNotify("Appending Type",4) # Debug                
    cardProperties.append(card.Type) # We are going to check its Type
-   if debugVerbosity >= 4: notify("### Appending Affiliation") #Debug                
+   debugNotify("Appending Affiliation",4) # Debug                
    cardProperties.append(card.Affiliation) # We are going to check its Affiliation
-   if debugVerbosity >= 4: notify("### Appending Traits") #Debug                
+   debugNotify("Appending Traits",4) # Debug                
    cardSubtypes = card.Traits.split('-') # And each individual trait. Traits are separated by " - "
    for cardSubtype in cardSubtypes:
       strippedCS = cardSubtype.strip() # Remove any leading/trailing spaces between traits. We need to use a new variable, because we can't modify the loop iterator.
       if strippedCS: cardProperties.append(strippedCS) # If there's anything left after the stip (i.e. it's not an empty string anymrore) add it to the list.
-   if debugVerbosity >= 4: notify("### Appending Side") #Debug                
+   debugNotify("Appending Side",4) # Debug                
    cardProperties.append(card.Side) # We are also going to check if the card is for Dark or Light Side
    debugNotify("<<< gatherCardProperties() with Card Properties: {}".format(cardProperties)) #Debug
    return cardProperties
@@ -1373,15 +1373,15 @@ def prepareRestrictions(Autoscript, seek = 'target'):
          targetGroups.insert(iter,([],[])) # We create a tuple of two list. The first list is the valid properties, the second the invalid ones
          multiConditionTargets = ValidTargetsSnapshot[iter].split('_and_') # We put all the mutliple conditions in a new list, separating each element.
          debugNotify("Splitting on _and_ & _or_ ") #Debug
-         if debugVerbosity >= 4: notify("### multiConditionTargets is: {}".format(multiConditionTargets)) #Debug
+         debugNotify("multiConditionTargets is: {}".format(multiConditionTargets),4) # Debug
          for chkCondition in multiConditionTargets:
-            if debugVerbosity >= 4: notify("### Checking: {}".format(chkCondition)) #Debug
+            debugNotify("Checking: {}".format(chkCondition),4) # Debug
             regexCondition = re.search(r'(no[nt]){?([A-Za-z,& ]+)}?', chkCondition) # Do a search to see if in the multicondition targets there's one with "non" in front
             if regexCondition and (regexCondition.group(1) == 'non' or regexCondition.group(1) == 'not'):
-               if debugVerbosity >= 4: notify("### Invalid Target") #Debug
+               debugNotify("Invalid Target",4) # Debug
                if regexCondition.group(2) not in targetGroups[iter][1]: targetGroups[iter][1].append(regexCondition.group(2)) # If there is, move it without the "non" into the invalidTargets list.
             else: 
-               if debugVerbosity >= 4: notify("### Valid Target") #Debug
+               debugNotify("Valid Target",4) # Debug
                targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
    eldebugNotify("No restrictions regex") #Debug 
    debugNotify("<<< prepareRestrictions() by returning: {}.".format(targetGroups))
@@ -1402,14 +1402,14 @@ def checkCardRestrictions(cardPropertyList, restrictionsList):
       debugNotify("restrictionsGroup checking: {}".format(restrictionsGroup),3)
       if len(restrictionsList) > 0 and len(restrictionsGroup[0]) > 0: 
          for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
-            if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
+            debugNotify("Checking for valid match on {}".format(validtargetCHK),4) # Debug
             if not validtargetCHK in cardPropertyList: 
-               if debugVerbosity >= 4: notify("### {} not found in {}".format(validtargetCHK,cardPropertyList)) #Debug
+               debugNotify("{} not found in {}".format(validtargetCHK,cardPropertyList),4) # Debug
                validCard = False
       elif debugVerbosity >= 4: notify("### No positive restrictions")
       if len(restrictionsList) > 0 and len(restrictionsGroup[1]) > 0: # If we have no target restrictions, any selected card will do as long as it's a valid target.
          for invalidtargetCHK in restrictionsGroup[1]:
-            if debugVerbosity >= 4: notify("### Checking for invalid match on {}".format(invalidtargetCHK)) #Debug
+            debugNotify("Checking for invalid match on {}".format(invalidtargetCHK),4) # Debug
             if invalidtargetCHK in cardPropertyList: validCard = False
       elif debugVerbosity >= 4: notify("### No negative restrictions")
       if validCard: break # If we already passed a restrictions check, we don't need to continue checking restrictions 
@@ -1758,14 +1758,14 @@ def makeChoiceListfromCardList(cardList,includeText = False, includeForce = Fals
    targetChoices = []
    debugNotify("About to prepare choices list.")# Debug
    for T in cardList:
-      if debugVerbosity >= 4: notify("### Checking {}".format(T))# Debug
+      debugNotify("Checking {}".format(T),4) # Debug
       markers = 'Counters:'
       if T.markers[mdict['Damage']] and T.markers[mdict['Damage']] >= 1: markers += " {} Damage,".format(T.markers[mdict['Damage']])
       if T.markers[mdict['Focus']] and T.markers[mdict['Focus']] >= 1: markers += " {} Focus,".format(T.markers[mdict['Focus']])
       if T.markers[mdict['Shield']] and T.markers[mdict['Shield']] >= 1: markers += " {} Shield.".format(T.markers[mdict['Shield']])
       if markers != 'Counters:': markers += '\n'
       else: markers = ''
-      if debugVerbosity >= 4: notify("### Finished Adding Markers. Adding stats...")# Debug               
+      debugNotify("Finished Adding Markers. Adding stats...",4) # Debug               
       stats = ''
       if num(T.Resources) >= 1: stats += "Resources: {}. ".format(T.Resources)
       if num(T.properties['Damage Capacity']) >= 1: stats += "HP: {}.".format(T.properties['Damage Capacity'])
@@ -1783,7 +1783,7 @@ def makeChoiceListfromCardList(cardList,includeText = False, includeForce = Fals
       capturedNr = len([cID for cID in capturedCards if capturedCards[cID] == T._id])
       if capturedNr >= 1: cCaptures = '\nCaptures:' + str(capturedNr)
       else: cCaptures = ''
-      if debugVerbosity >= 4: notify("### Finished Adding Stats. Going to choice...")# Debug               
+      debugNotify("Finished Adding Stats. Going to choice...",4) # Debug               
       choiceTXT = "{}\n{}\n{}{}{}{}{}{}\nBlock: {}{}".format(T.name,T.Type,markers,stats,combatIcons,fText,cAttachments,cCaptures,T.Block,cText)
       targetChoices.append(choiceTXT)
    return targetChoices

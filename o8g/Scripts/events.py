@@ -64,15 +64,15 @@ def checkDeckLegality():
    ok = True
    commandDeck = me.piles['Command Deck']
    objectiveDeck = me.piles['Objective Deck']
-   if debugVerbosity >= 4: notify("### About to compare deck sizes.") #Debug
+   debugNotify("About to compare deck sizes.",4) # Debug
    if len(objectiveDeck) != len(commandDeck) / 5: 
       ok = False
       notify(":::ERROR::: {}'s decks do not sync (Nr. of objective cards ({}) =/= Nr. of command cards ({}) / 5.".format(me,len(objectiveDeck),len(commandDeck)))
-   if debugVerbosity >= 4: notify("### About to move cards into scripting pile") #Debug
+   debugNotify("About to move cards into scripting pile",4) # Debug
    for card in objectiveDeck: card.moveTo(me.ScriptingPile)
    for card in commandDeck: card.moveTo(me.ScriptingPile)
    rnd(1,10)
-   if debugVerbosity >= 4: notify("### About to check each card in the decks") #Debug
+   debugNotify("About to check each card in the decks",4) # Debug
    objectiveBlocks = []
    commandBlocks = []
    limitedBlocksFound = []

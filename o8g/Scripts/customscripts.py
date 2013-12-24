@@ -325,8 +325,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       targetChoices = makeChoiceListfromCardList(currentTargets)
       choiceC = SingleChoice("Choose from which card to remove a combat icon", targetChoices, type = 'button', default = 0)
       if choiceC == 'ABORT': return
-      if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
-      if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
+      debugNotify("choiceC = {}".format(choiceC),4) # Debug
+      debugNotify("currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets]),4) # Debug
       sourceCard = currentTargets.pop(choiceC)
       debugNotify("sourceCard = {}".format(sourceCard)) # Debug
       targetCard = currentTargets[0] # After we pop() the choice card, whatever remains is the target card.

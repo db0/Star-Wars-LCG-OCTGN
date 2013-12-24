@@ -580,9 +580,9 @@ def fetchProperty(card, property):
    if property == 'name': currentValue = card.name
    else: currentValue = card.properties[property]
    if currentValue == '?' or currentValue == 'Card':
-      if debugVerbosity >= 4: notify("### Card properties unreadable") #Debug
+      debugNotify("Card properties unreadable",4) # Debug
       if not card.isFaceUp and card.group == table:
-         if debugVerbosity >= 3: notify("### Need to flip card up to read its properties.") #Debug
+         debugNotify("Need to flip card up to read its properties.",3) # Debug
          #x,y = card.position
          #cover = table.create("8b5a86df-fb10-4e5e-9133-7dc03fbae22d",x,y,1,False)
          #cover.moveToTable(x,y,False)
@@ -590,7 +590,7 @@ def fetchProperty(card, property):
          coverExists = True
          card.isFaceUp = True
          loopChk(card)
-      if debugVerbosity >= 3: notify("### Ready to grab real properties.") #Debug
+      debugNotify("Ready to grab real properties.",3) # Debug
       if property == 'name': currentValue = card.name # Now that we had a chance to flip the card face up temporarily, we grab its property again.
       else: currentValue = card.properties[property]
    if coverExists: 

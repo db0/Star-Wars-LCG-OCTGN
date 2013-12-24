@@ -1270,7 +1270,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
       if Side == 'Light': opSide = 'Dark'
       else: opSide = 'Light'
       for card in table:
-         if debugVerbosity >= 4: notify("#### Checking {}".format(card)) #Debug
+         debugNotify("Checking {}".format(card),4) # Debug
          if (card.highlight == EdgeColor or card.highlight == FateColor) and card.isFaceUp:
             if card.controller in myAllies: myEdgeTotal += num(card.Force)
             else: opponentEdgeTotal += num(card.Force)
@@ -1453,7 +1453,7 @@ def handRandomDiscard(group, count = None, player = None, destination = None, si
       count = SSize
       whisper("You do not have enough cards in your hand to complete this action. Will discard as many as possible")   
    for iter in range(count):
-      if debugVerbosity >= 3: notify("#### : handRandomDiscard() iter: {}".format(iter + 1)) # Debug
+      debugNotify(": handRandomDiscard() iter: {}".format(iter + 1),3) # Debug
       card = group.random()
       if card == None: return iter + 1 # If we have no more cards, then return how many we managed to discard.
       card.moveTo(destination)
