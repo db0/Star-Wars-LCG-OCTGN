@@ -408,11 +408,12 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
 def gameSetup(group, x = 0, y = 0):
    debugNotify(">>> gameSetup(){}".format(extraASDebug())) #Debug
    mute()
+   update()
    global SetupPhase
    deck = me.piles['Command Deck']
    objectives = me.piles['Objective Deck']
    if SetupPhase and len(me.hand) != 1: # If the hand has only one card, we assume the player reset and has the affiliation now there.
-      if debugVerbosity >= 3: notify("### Executing Second Setup Phase")
+      debugNotify("Executing Second Setup Phase",3)
       if len(fetchAllOpponents()) == 0: # If the other player hasn't chosen their side yet, it means they haven't yet tried to setup their table, so we abort
          whisper("Please wait until all your opponents have loaded their decks before proceeding")
          return
@@ -429,19 +430,19 @@ def gameSetup(group, x = 0, y = 0):
       delayed_whisper(":::ATTENTION::: Once your opponent has put down their starting objectives and decided to mulligan or not, double click on one of your objectives to reveal them and trigger any effects.")
       SetupPhase = False
    else: # This choice is only for a new game.
-      if debugVerbosity >= 3: notify("### Executing First Setup Phase")
+      debugNotify("Executing First Setup Phase",3)
       if not Affiliation:
          information("::: ERROR::: No Affiliation card found! Please load a deck which contains an Affiliation card.")
          return
       else:
          if Affiliation.group == table and not confirm("Are you sure you want to setup for a new game? (This action should only be done after a table reset)"): return
-      if debugVerbosity >= 3: notify("### Setting SetupPhase Variable")
+      debugNotify("Setting SetupPhase Variable",3)
       SetupPhase = True
       if len(deck) == 0:
          whisper ("Please load a deck first!")
          return
       if setupMultiPlayer() == 'ABORT': return
-      if debugVerbosity >= 3: notify("### Placing Affiliation")
+      debugNotify("Placing Affiliation",3)
       Affiliation.moveToTable(MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 20) + yaxisMove(Affiliation))
       if getSetting('Buttons', True):
          if len(myAllies) == 1:
@@ -462,13 +463,13 @@ def gameSetup(group, x = 0, y = 0):
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
       notify("{} is representing the {}.".format(me,Affiliation))
-      if debugVerbosity >= 3: notify("### Shuffling Decks")
+      debugNotify("Shuffling Decks",3)
       shuffle(objectives)
-      if debugVerbosity >= 3: notify("### Drawing 4 Objectives")
+      debugNotify("Drawing 4 Objectives",3)
       drawMany(objectives, 4, silent = True)
       notify("{} is choosing their objectives.".format(me))
       whisper(":::ATTENTION::: Once both players have discarded their 4th objective, press Ctrl+Shift+S to place your objectives on the table and draw your starting hand.")
-      if debugVerbosity >= 3: notify("### Reshuffling Deck")
+      debugNotify("Reshuffling Deck",3)
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
       initGame()
@@ -766,10 +767,10 @@ def checkPaidResources(card):
             count += card.markers[cMarkerKey]  # We increase the count of how many resources have been paid for this card
             debugNotify("About to check found resource affiliaton") #Debug
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
-               if debugVerbosity >= 3: notify("### Affiliation match. Affiliation = {}. Marker = {}.".format(card.Affiliation,resdictKey))
+               debugNotify("Affiliation match. Affiliation = {}. Marker = {}.".format(card.Affiliation,resdictKey),3)
                affiliationMatch = True # We set that we've also got a matching resource affiliation
       if cMarkerKey[0] == "Ignores Affiliation Match": 
-         if debugVerbosity >= 3: notify("### Ignoring affiliation match due to marker on card. Marker = {}".format(cMarkerKey))
+         debugNotify("Ignoring affiliation match due to marker on card. Marker = {}".format(cMarkerKey),3)
          affiliationMatch = True # If we have a marker that ignores affiliations, we can start ignoring this card's as well
    for c in table:
       if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')) and chkDummy(CardsAS.get(c.model,''), c): 

@@ -309,12 +309,12 @@ def atTimedEffects(Time = 'Start'): # Function which triggers card effects at th
    TitleDone = False
    X = 0
    for card in table:
-      if debugVerbosity >= 4: notify("### Checking card: {}".format(card))
+      debugNotify("Checking card: {}".format(card),4)
       if card.highlight == CapturedColor or card.highlight == EdgeColor or card.highlight == UnpaidColor: 
-         if debugVerbosity >= 3: notify("### Card inactive. Ignoring")
+         debugNotify("Card inactive. Ignoring",3)
          continue # We do not care about inactive cards.
       if not card.isFaceUp: 
-         if debugVerbosity >= 3: notify("### Card is face down. Ignoring")
+         debugNotify("Card is face down. Ignoring",3)
          continue
       Autoscripts = CardsAS.get(card.model,'').split('||')
       for autoS in Autoscripts:
@@ -1154,24 +1154,24 @@ def RetrieveX(Autoscript, announceText, card, targetCards = None, notification =
       else: topCount = len(source)
       if count == 999: count = topCount # Retrieve999Cards means the script will retrieve all cards that match the requirements, regardless of how many there are. As such, a '-onTop#Cards' modulator should always be included.
       for c in source.top(topCount):
-         if debugVerbosity >= 4: notify("### Checking card: {}".format(c))
+         debugNotify("Checking card: {}".format(c),4)
          if re.search(r'-tellPlayer',Autoscript): delayed_whisper(":::INFO::: {} card is: {}".format(numOrder(c.getIndex),c)) # The -tellPlayer modulator, will tell the one retrieving what all cards were, even if they are not valid targets
          if checkCardRestrictions(gatherCardProperties(c), restrictions) and checkSpecialRestrictions(Autoscript,c):
             cardList.append(c)
             if re.search(r'-isTopmost', Autoscript) and len(cardList) == count: break # If we're selecting only the topmost cards, we select only the first matches we get. 
-      if debugVerbosity >= 3: notify("### cardList: {}".format(cardList))
+      debugNotify("cardList: {}".format(cardList),3)
       chosenCList = []
       abortedRetrieve = False
       if len(cardList) > count or re.search(r'upToAmount',Autoscript):
          cardChoices = []
          cardTexts = []
          for iter in range(count):
-            if debugVerbosity >= 4: notify("#### iter: {}/{}".format(iter,count))
+            debugNotify("iter: {}/{}".format(iter,count),4)
             del cardChoices[:]
             del cardTexts[:]
             for c in cardList:
                if c.Text not in cardTexts: # we don't want to provide the player with a the same card as a choice twice.
-                  if debugVerbosity >= 4: notify("### Appending card")
+                  debugNotify("Appending card",4)
                   cardChoices.append(c)
                   cardTexts.append(c.Text) # We check the card text because there are cards with the same name in different sets (e.g. Darth Vader)            
             if re.search(r'upToAmount',Autoscript): cancelButtonName = 'Done'
@@ -1399,7 +1399,7 @@ def checkCardRestrictions(cardPropertyList, restrictionsList):
    # And then we check if no properties from the invalid list are in the properties
    # If both of these are true, then the card is a valid choice for our action.
       validCard = True # We need to set it here as well for further loops
-      if debugVerbosity >= 3: notify("### restrictionsGroup checking: {}".format(restrictionsGroup))
+      debugNotify("restrictionsGroup checking: {}".format(restrictionsGroup),3)
       if len(restrictionsList) > 0 and len(restrictionsGroup[0]) > 0: 
          for validtargetCHK in restrictionsGroup[0]: # look if the card we're going through matches our valid target checks
             if debugVerbosity >= 4: notify("### Checking for valid match on {}".format(validtargetCHK)) #Debug
@@ -1900,7 +1900,7 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
                      TraitsList = TraitRegex.group(1).split('_and_') # We make a list of all the traits the bonus effect of the cardprovides
                      if debugVerbosity >= 4: notify("### TraitsList = {}".format(TraitsList)) 
                      TraitsRestrictions = prepareRestrictions(Autoscript) # Then we gather the trait restrictions the original effect was looking for
-                     if debugVerbosity >= 4: notify("### TraitsRestrictions = {}".format(TraitsRestrictions))
+                     debugNotify("TraitsRestrictions = {}".format(TraitsRestrictions),4)
                      if checkCardRestrictions(TraitsList, TraitsRestrictions) and checkSpecialRestrictions(Autoscript,c): # Finally we compare the bonus traits of the card we found, wit  h the traits the original effect was polling for.
                         multiplier += num(TraitRegex.group(2)) * chkPlayer(autoS, c.controller, False, True) # If they match, we increase our multiplier by the relevant number, if the card has the appropriate controller according to its effect.
       else: #If we're not looking for a particular target, then we check for everything else.

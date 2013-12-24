@@ -99,12 +99,12 @@ def checkDeckLegality():
             notify(":::ERROR::: Restricted Affiliation Objective found in {}'s deck: {}".format(me,card))
             ok = False
    for objective in objectiveBlocks:
-      if debugVerbosity >= 4: notify("#### Checking Objective Block {} ({})".format(objective[1],objective[0]))
+      debugNotify("Checking Objective Block {} ({})".format(objective[1],objective[0]),4)
       blocks = []
       commandBlocksSnapshot = list(commandBlocks)
       for command in commandBlocksSnapshot:
          if command[1] == objective[1] and command[2] not in blocks:
-            if debugVerbosity >= 4: notify("#### Block {} Command {} found".format(command[1],command[2]))
+            debugNotify("Block {} Command {} found".format(command[1],command[2]),4)
             blocks.append(command[2])
             commandBlocks.remove(command)
       if len(blocks) < 5: 

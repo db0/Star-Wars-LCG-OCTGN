@@ -862,7 +862,7 @@ def compareObjectiveTraits(Trait):
       for card in table: # We check for cards for give bonus objective traits (e.g. Echo Base)
          if card.controller == player and card.highlight != EdgeColor and card.highlight != RevealedColor and card.highlight != UnpaidColor:
             Autoscripts = CardsAS.get(card.model,'').split('||')
-            if debugVerbosity >= 3: notify("### Autoscripts len = {}. Autoscripts = {}".format(len(Autoscripts),Autoscripts))
+            debugNotify("Autoscripts len = {}. Autoscripts = {}".format(len(Autoscripts),Autoscripts),3)
             for autoS in Autoscripts:
                debugNotify("Checking {} for Objective Trait boosting AS: {}".format(card,autoS)) # Debug
                search = 'Trait{Objective_and_' + Trait + '}([0-9])Bonus' # Doing a concatenate because python b0rks if I try to do it with format.
@@ -899,11 +899,11 @@ def chkSuperiority(Autoscript, card):
 def calcBonusEdge(card): # This function calculated how much Edge bonus a card is providing
    debugNotify(">>> calcBonusEdge() with card: {}".format(card)) #Debug
    Autoscripts = CardsAS.get(card.model,'').split('||')
-   if debugVerbosity >= 3: notify(" ### Split Autoscripts = {}".format(Autoscripts))
+   debugNotify("### Split Autoscripts = {}".format(Autoscripts),4)
    edgeBonus = 0
    if len(Autoscripts) > 0:
       for autoS in Autoscripts:
-         if debugVerbosity >= 3: notify("### regex searching on {}".format(autoS))
+         debugNotify("regex searching on {}".format(autoS),3)
          edgeRegex = re.search(r'Edge([0-9])Bonus',autoS)
          if edgeRegex and debugVerbosity >= 4: notify("#### regex found") # Debug
          if not edgeRegex: 
@@ -914,7 +914,7 @@ def calcBonusEdge(card): # This function calculated how much Edge bonus a card i
          if not checkOriginatorRestrictions(autoS,card): continue # If the script's originator has some restrictions we can't pass, we abort.
          # If the card does not provide an edge bonus, or is not participating, then we ignore it.
          # -isDistributedEffect is a hacky modulator I've added to signify that it's not the card itself that provides the Edge, but other card on the table (e.g. see Hoth Operations)                                                                                                
-         if debugVerbosity >= 3: notify("### Found edgeRegex. Checking Values")
+         debugNotify("Found edgeRegex. Checking Values",3)
          bonus = num(edgeRegex.group(1))
          targetCards = findTarget(autoS,card = card)
          multiplier = per(autoS, card, 0, targetCards)
@@ -968,7 +968,7 @@ def readyEffect(card,forced = False):
    
 def clrResourceMarkers(card):
    for cMarkerKey in card.markers: 
-      if debugVerbosity >= 3: notify("### Checking marker {}.".format(cMarkerKey[0]))
+      debugNotify("Checking marker {}.".format(cMarkerKey[0]),3)
       for resdictKey in resdict:
          if resdict[resdictKey] == cMarkerKey or cMarkerKey[0] == 'Ignores Affiliation Match': 
             card.markers[cMarkerKey] = 0
@@ -1193,7 +1193,7 @@ def setupMultiPlayer():
          doubleCheckPos = findAvailablePos(myAllies)
          if availablePos[posChoice] in doubleCheckPos: # Double checking to avoid syncronized choices.
             me.setGlobalVariable('PLnumber', availablePos[posChoice]) 
-            if debugVerbosity >= 4: notify("### Just set {} PLnumber shared var to {}".format(me,me.getGlobalVariable('PLnumber')))
+            debugNotify("Just set {} PLnumber shared var to {}".format(me,me.getGlobalVariable('PLnumber')),4)
             MPxOffset = playerside * TwoPlayerPos[availablePos[posChoice]]
          else:
             whisper(":::ERROR::: Oops! It seems the other player was faster than you and already picked the {} position. Automatically setting you as Player {}".format(availablePos[posChoice],doubleCheckPos[0]))
@@ -1244,7 +1244,7 @@ def findAvailablePos(myAllies):
       availablePos = ['#1','#2']
       for player in myAllies:
          PLpos = player.getGlobalVariable('PLnumber')
-         if debugVerbosity >= 4: notify("### Just grabbed {} Shared PLnumber and it is {}".format(player,PLpos))
+         debugNotify("Just grabbed {} Shared PLnumber and it is {}".format(player,PLpos),4)
          if PLpos != '': 
             availablePos.remove(PLpos)
             debugNotify("{} position {} removed from list. Current list = {}".format(player, PLpos, availablePos), 4)

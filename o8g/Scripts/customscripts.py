@@ -49,7 +49,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       objDetails = []
       debugNotify("Storing objective properties and moving them back")
       for obj in objList:
-         if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(obj).name))
+         debugNotify("Card Name: {}".format(Card(obj).name),3)
          if Card(obj).name in objNames: 
             objList.remove(obj)
          else: 
@@ -107,7 +107,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       minCost = 10 
       currTargets = []
       for c in possibleTargets:
-         if debugVerbosity >= 4: notify("### Checking {}".format(c))
+         debugNotify("Checking {}".format(c),4)
          if num(c.Cost) < minCost:
             del currTargets[:]
             currTargets.append(c)
@@ -155,12 +155,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       ForceUserList = []
       debugNotify("Storing unit properties and moving them back")
       for unit in discardList:
-         if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(unit).name))
+         debugNotify("Card Name: {}".format(Card(unit).name),3)
          if not Card(unit).name in unitNames and re.search(r'Force User',Card(unit).Traits):
             ForceUserList.append(unit)
             unitNames.append(Card(unit).name)
             unitDetails.append((Card(unit).properties['Damage Capacity'],Card(unit).Traits,parseCombatIcons(Card(unit).properties['Combat Icons']),Card(unit).Text)) # Creating a tuple with some details per objective
-         if debugVerbosity >= 3: notify("#### Finished Storing. Moving back")
+         debugNotify("Finished Storing. Moving back",3)
          Card(unit).moveTo(discardPile)
       if len(ForceUserList) == 0: 
          whisper("::ERROR::: There is no force user in your discard pile!")
