@@ -276,7 +276,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
                continue
          if not chkDummy(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
-         eldebugNotify("Not Looking for specific type or type specified found.")
+         else: debugNotify("Not Looking for specific type or type specified found.")
          if not checkOriginatorRestrictions(autoS,card): continue
          if re.search(r'onlyOnce',autoS) and oncePerTurn(card, silent = True, act = 'dryRun') == 'ABORT': continue # If the card's ability is only once per turn, use it or silently abort if it's already been used
          debugNotify("Automatic Autoscripts: {}".format(autoS)) # Debug
@@ -1383,7 +1383,7 @@ def prepareRestrictions(Autoscript, seek = 'target'):
             else: 
                debugNotify("Valid Target",4) # Debug
                targetGroups[iter][0].append(chkCondition) # Else just move the individual condition to the end if validTargets list
-   eldebugNotify("No restrictions regex") #Debug 
+   else: debugNotify("No restrictions regex") #Debug 
    debugNotify("<<< prepareRestrictions() by returning: {}.".format(targetGroups))
    return targetGroups
 

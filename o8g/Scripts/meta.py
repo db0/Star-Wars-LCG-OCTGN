@@ -726,7 +726,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
          if not re.search(r'onPay', autoS): 
             debugNotify("No onPay trigger found in {}!".format(autoS))
             continue
-         eldebugNotify("onPay trigger found in {}!".format(autoS))
+         else: debugNotify("onPay trigger found in {}!".format(autoS))
          reductionSearch = re.search(r'Reduce([0-9]+)Cost({}|All)'.format(type), autoS)
          if debugVerbosity >= 2: #Debug
             if reductionSearch: notify("!!! self-reduce regex groups: {}".format(reductionSearch.groups()))
