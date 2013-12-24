@@ -4290,7 +4290,7 @@ Logistics Officer
 -----
 ff4fb461-8060-457a-9c16-000000000573
 -----
-
+onPlay:TakeoverMyself-onAlly-isOptional$$Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-noTargetingError
 +++++
 
 .....
@@ -4298,7 +4298,7 @@ Logistics Officer
 -----
 ff4fb461-8060-457a-9c16-000000000574
 -----
-
+onPlay:TakeoverMyself-onAlly-isOptional$$Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-noTargetingError
 +++++
 
 .....
@@ -4306,7 +4306,7 @@ Weapons Upgrade
 -----
 ff4fb461-8060-457a-9c16-000000000575
 -----
-
+Placement:Vehicle_and_Unit||BonusIcons:BD:1||onPlay:CustomScript
 +++++
 
 .....
@@ -4322,8 +4322,9 @@ Mercenary Support
 -----
 ff4fb461-8060-457a-9c16-000000000577
 -----
-
+whileInPlay:Put1Mercenary Support-foreachCardPlayed-onTriggerCard-typeMercenary_or_Bounty Hunter-isSilent-onlyforDummy$$TakeoverTarget-onAlly-isSilent
 +++++
+R0:Put1Focus-isCost$$CreateDummy-isSilent-doNotDiscard$$BringToPlayTarget-Targeted-atMercenary_or_Bounty Hunter-fromHand
 
 .....
 Punishing One

@@ -194,11 +194,7 @@ def ofwhom(Autoscript, controller = me, multiText = None):
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
          targetPLs.append(me)
-   else: # If the script does not mention "of opponent, then it's targeting the controller
-      if len(getPlayers()) > 1:
-         if controller != me: targetPLs.append(controller)
-         else: targetPLs.append(me)
-      else: targetPLs.append(me)
+   else: targetPLs.append(controller) # If the script does not mention Opponent or Ally, then it's targeting the controller
    debugNotify("<<< ofwhom() returns {}".format(targetPLs))
    return targetPLs
 

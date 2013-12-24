@@ -55,8 +55,7 @@ def executePlayScripts(card, action):
              re.search(r'onPay', autoS) or # onPay effects are only useful before we go to the autoscripts, for the cost reduction.
              re.search(r'-isTrigger', autoS) or
              re.search(r'Empty', autoS)): Autoscripts.remove(autoS) # Empty means the card has no autoscript, but we still want an empty list.
-         elif re.search(r'excludeDummy', autoS) and card.highlight == DummyColor: Autoscripts.remove(autoS)
-         elif re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor: Autoscripts.remove(autoS)
+         elif not chkDummy(autoS, card): Autoscripts.remove(autoS)
          elif re.search(r'notHARDCOREenough', autoS) and chkHardcore(card): Autoscripts.remove(autoS) # the notHARDCOREenough is used for scripts which we don't want firing in hardcore mode, even if they're not reacts.
       debugNotify('Looking for multiple choice options') # Debug
       if action == 'PLAY': trigger = 'onPlay' # We figure out what can be the possible multiple choice trigger
@@ -186,9 +185,7 @@ def useAbility(card, x = 0, y = 0, manual = True): # The start of autoscript act
    Autoscripts = CardsAA.get(card.model,'').split('||')
    AutoScriptSnapshot = list(Autoscripts)
    for autoS in AutoScriptSnapshot: # Checking and removing any clickscripts which were put here in error.
-      if ((re.search(r'onlyforDummy', autoS) and card.highlight != DummyColor)
-         or (re.search(r'(CreateDummy|excludeDummy)', autoS) and card.highlight == DummyColor)): # Dummies in general don't create new dummies
-         Autoscripts.remove(autoS)
+      if not chkDummy(autoS, card): Autoscripts.remove(autoS)
    debugNotify("Removed bad options")
    if len(Autoscripts) == 0:
       whisper("This card has no automated abilities. Aborting")
@@ -1070,9 +1067,9 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
          elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
          elif action.group(1) == 'Takeover':
-            # I could theoretically add a modulator here to provide a different player to take control of the card. i.e. -handToAlly or -handToOpponent
-            claimCard(targetCard)
-            targetCard.moveToTable(MPxOffset, MPyOffset + yaxisMove(card))
+            targetPLs = ofwhom(Autoscript, card.controller)
+            claimCard(targetCard,targetPLs[0])
+            remoteCall(targetPLs[0],'placeCard',[targetCard])
          elif action.group(1) == 'Rescue': rescue(targetCard,silent = True)
          elif action.group(1) == 'Uncommit':
             if targetCard.Side == 'Light': commitColor = LightForceColor

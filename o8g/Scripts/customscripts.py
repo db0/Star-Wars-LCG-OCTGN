@@ -418,6 +418,12 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for player in myAllies: remoteCall(player,'BlueSquadronSupport',[card])
    elif card.name == "Repair and Refurbish" and action == 'Start':
       for player in myAllies: remoteCall(player,'RepairRefurbish',[card])
+   elif card.name == "Weapons Upgrade" and action == 'PLAY':
+      hostCards = eval(getGlobalVariable('Host Cards'))
+      try:
+         if Card(hostCards[card._id]).controller != me:
+            DrawX('Draw1Card', "{} provides a {} to a friendly unit to".format(me,card), card, targetCards = None, notification = 'Quick', n = 0)
+      except: whisper(":::ERROR::: when looking for host of {}".format(card))
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 
 def chkLookupRestrictions(card,lookup,origin_card):
