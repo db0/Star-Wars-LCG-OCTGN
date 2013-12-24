@@ -735,7 +735,7 @@
 		<property name="Damage Capacity" value="22" />
 		<property name="Resources" value="0" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Reduce this card's cost by 1 for each point on the Death Star dial.&#xD;&#xA;&#xD;&#xA;Action: Pay this unit's cost to turn it over and put it into play.&#xD;&#xA;&#xD;&#xA;-&#xD;&#xA;&#xD;&#xA;Elite. Shielding. When an enemy objective leaves play, place its controller's affiliation card under this unit, facedown. If you have each opponent&#39;s affiliation card, you win the game.&#xD;&#xA;&#xD;&#xA;Interrupt: When this unit focuses to strike, each opponent must destroy a unit or objective he controls." />
+		<property name="Text" value="Reduce this card's cost by 1 for each point on the Death Star dial.&#xD;&#xA;&#xD;&#xA;Action: Pay this unit's cost to turn it over and put it into play." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Imperial Navy" />
@@ -745,6 +745,26 @@
 		<property name="Instructions" value="" />
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
+      <alternate name="Death Star II" type="Deployed">
+         <property name="Cost" value="22" />
+         <property name="Type" value="Unit" />	
+         <property name="Force" value="5" />	
+         <property name="Combat Icons" value="UD:2, BD:3, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+         <property name="Traits" value="Space Station-Unique" />
+         <property name="Damage Capacity" value="22" />
+         <property name="Resources" value="0" />
+         <property name="Edge Priority" value="" />
+         <property name="Text" value="Elite. Shielding. When an enemy objective leaves play, place its controller's affiliation card under this unit, facedown. If you have each opponent&#39;s affiliation card, you win the game.&#xD;&#xA;&#xD;&#xA;Interrupt: When this unit focuses to strike, each opponent must destroy a unit or objective he controls." />
+         <property name="Flavor" value="" />
+         <property name="Side" value="Dark" />
+         <property name="Affiliation" value="Imperial Navy" />
+         <property name="Block" value="D01" />
+         <property name="Block Number" value="1" />
+         <property name="Number" value="455" />
+         <property name="Instructions" value="" />
+         <property name="AutoScript" value="" />
+         <property name="AutoAction" value="" />
+      </alternate>
 	</card>
 	<card id="ff4fb461-8060-457a-9c16-000000000584" name="Lemelisk&#39;s Ambition">
 		<property name="Cost" value="0" />

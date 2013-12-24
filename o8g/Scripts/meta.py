@@ -190,12 +190,12 @@ def ofwhom(Autoscript, controller = me, multiText = None):
             if re.search(r'o[fn]AllAllies', Autoscript): targetPLs = playerList
             else:
                choice = SingleChoice(multiText, [pl.name for pl in playerList])
-               targetPLs = playerList[choice]
+               targetPLs.append(playerList[choice])
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
          targetPLs.append(me)
    else: targetPLs.append(controller) # If the script does not mention Opponent or Ally, then it's targeting the controller
-   debugNotify("<<< ofwhom() returns {}".format(targetPLs))
+   debugNotify("<<< ofwhom() returns {}".format([pl.name for pl in targetPLs]))
    return targetPLs
 
 def fetchAllOpponents(targetPL = me):
@@ -665,6 +665,21 @@ def chkDummy(Autoscript, card): # Checks if a card's effect is only supposed to 
    if re.search(r'excludeDummy', Autoscript) and card.highlight == DummyColor: return False
    return True
 
+def chkParticipants(Autoscript, card):
+   # This function check to see if one side of the engagement has the amount of units required for this effect to trigger.
+   debugNotify(">>> chkParticipants() with Autoscript = {}".format(Autoscript)) #Debug
+   participantRegex = re.search(r'-if(Attackers|Defenders)(Opponents|Allies)(eq|le|ge|gt|lt)([0-9])',Autoscript)
+   validCard = True
+   if participantRegex:
+      if participantRegex.group(1) == 'Attackers': mainPlayer = Player(num(getGlobalVariable('Current Attacker')))
+      else: mainPlayer = Card(num(getGlobalVariable('Engaged Objective'))).controller
+      if participantRegex.group(2) == 'Opponents': playerTeam = fetchAllOpponents(card.controller)
+      else: playerTeam = fetchAllAllies(card.controller)
+      participatingUnits = [c for c in table if c.orientation == Rot90 and c.controller in playerTeam and mainPlayer in playerTeam]
+      validCard = compareValue(participantRegex.group(3), len(participatingUnits), num(participantRegex.group(4)))
+   debugNotify(">>> chkParticipants() with validCard = {}".format(validCard)) #Debug
+   return validCard
+   
 def gotEdge(targetPL = None):
    debugNotify(">>> gotEdge() with targetPL = {}".format(targetPL)) #Debug
    gotIt = False
@@ -1295,9 +1310,11 @@ def chkRefillDone(): # A function that refills the hand of each player who has n
    
 def clearAllParticipations(remoted = False):
    mute()
-   debugNotify(">>> clearAllParticipations()") #Debug
+   debugNotify(">>> clearAllParticipations() with remoted = {}".format(remoted)) #Debug
    if not remoted:
-      for player in getPlayers(): remoteCall(player,'clearAllParticipations',[True])
+      for player in getPlayers(): 
+         debugNotify("Remote sending to {}".format(player),4)
+         remoteCall(player,'clearAllParticipations',[True])
    else:
       rnd(1,100) # A small wait to allow all our card controls to return to us.
       for card in table:
@@ -1306,8 +1323,7 @@ def clearAllParticipations(remoted = False):
             if card.orientation == Rot90: 
                card.orientation = Rot0
                if card.owner != me: returnSupportUnit(card)
-
-   debugNotify("<<< clearAllParticipations()") #Debug
+   debugNotify("<<< clearAllParticipations() with remoted = {}".format(remoted)) #Debug
 
 def returnSupportUnit(card):
    mute()
@@ -1810,7 +1826,7 @@ def spawnTestCards():
       
 def spawnSetCards():
    setCards = []    ### BOTF Set 547 - 636 ###
-   for signi in range(547,567 + 1): # We need the +1 in the end to get the last Card ID in the set.
+   for signi in range(547,582 + 1): # We need the +1 in the end to get the last Card ID in the set.
       cID = "ff4fb461-8060-457a-9c16-000000000{}".format(signi)
       try:
          test = table.create(cID, 0, 0, 1, True)

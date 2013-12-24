@@ -157,4 +157,4 @@ def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,is
       debugNotify("Clearing card attachments")
       if unpaidCard == card: unpaidCard = None
       clearAttachLinks(card)      
-      
+      removeCapturedCard(card)

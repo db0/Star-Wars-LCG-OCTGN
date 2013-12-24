@@ -4082,7 +4082,7 @@ Watchers in the Wasteland
 -----
 ff4fb461-8060-457a-9c16-000000000547
 -----
-ConstantEffect:Force1Bonus-AutoTargeted-fromCommonReserves-targetAllied-perEveryReserve
+ConstantEffect:Force1Bonus-perReservesAllied
 +++++
 
 .....
@@ -4178,7 +4178,7 @@ Rendar's Wrath
 -----
 ff4fb461-8060-457a-9c16-000000000559
 -----
-whileInPlay:Deal1Damage-AutoTargeted-isDefending-isAlone-foreachDefendersDeclared-isReact
+whileInPlay:Deal1Damage-AutoTargeted-atUnit-isDefending-isAlone-foreachDefendersDeclared-ifDefendersOpponenteq1-isReact
 +++++
 
 .....
@@ -4234,7 +4234,7 @@ Mara Jade
 -----
 ff4fb461-8060-457a-9c16-000000000566
 -----
-ConstantAbility:TargetStrike||atTurnEnd:Remove1Focus-isReact$$UseCustomAbility
+ConstantAbility:TargetStrike||atTurnEnd:Remove1Focus-isSilent-isReact$$UseCustomAbility
 +++++
 
 .....
@@ -4290,7 +4290,7 @@ Logistics Officer
 -----
 ff4fb461-8060-457a-9c16-000000000573
 -----
-onPlay:TakeoverMyself-onAlly-isOptional$$Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-noTargetingError
+onPlay:TakeoverMyself-onAllies-isOptional$$Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-noTargetingError
 +++++
 
 .....
@@ -4298,7 +4298,7 @@ Logistics Officer
 -----
 ff4fb461-8060-457a-9c16-000000000574
 -----
-onPlay:TakeoverMyself-onAlly-isOptional$$Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-noTargetingError
+onPlay:TakeoverMyself-onAllies-isOptional$$Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-noTargetingError
 +++++
 
 .....
@@ -4322,7 +4322,7 @@ Mercenary Support
 -----
 ff4fb461-8060-457a-9c16-000000000577
 -----
-whileInPlay:Put1Mercenary Support-foreachCardPlayed-onTriggerCard-typeMercenary_or_Bounty Hunter-isSilent-onlyforDummy$$TakeoverTarget-onAlly-isSilent
+whileInPlay:Put1Mercenary Support-foreachCardPlayed-onTriggerCard-typeMercenary_or_Bounty Hunter-isSilent-onlyforDummy$$TakeoverTarget-onTeam-isSilent$$DestroyMyself-isSilent
 +++++
 R0:Put1Focus-isCost$$CreateDummy-isSilent-doNotDiscard$$BringToPlayTarget-Targeted-atMercenary_or_Bounty Hunter-fromHand
 
@@ -4331,7 +4331,7 @@ Punishing One
 -----
 ff4fb461-8060-457a-9c16-000000000578
 -----
-afterDraw:CaptureTarget-onAnyAlliedObjective-Targeted-isCaptured-duringMyTurn-isReact
+afterDraw:CaptureTarget-onAnyAlliedObjective-Targeted-isCaptured-duringMyTurn-isReact-isSilent
 +++++
 
 .....
@@ -4355,7 +4355,7 @@ A Price on Their Heads
 -----
 ff4fb461-8060-457a-9c16-000000000581
 -----
-
+onPlay:CaptureMulti-Targeted-atUnit-targetOpponents
 +++++
 
 .....
@@ -4379,7 +4379,7 @@ Lemelisk's Ambition
 -----
 ff4fb461-8060-457a-9c16-000000000584
 -----
-
+onPlay:Gain1Reserves-perOpponent||onThwart:Lose1Reserves-perOpponent
 +++++
 
 .....
@@ -4387,7 +4387,7 @@ Along the Sanctuary Pipeline
 -----
 ff4fb461-8060-457a-9c16-000000000585
 -----
-
+afterCardRefreshing:Remove1Focus-AutoTargeted-atObjective-hasMarker{Focus}-targetMine-duringMyTurn-isReact
 +++++
 
 .....
@@ -4397,7 +4397,7 @@ ff4fb461-8060-457a-9c16-000000000586
 -----
 
 +++++
-
+R0:Remove1Damage-Targeted-atObjective-hasMarker{Damage}-targetMine-isCost-onlyOnce$$Refill1Shield-Targeted-atObjective-targetMine
 .....
 Jerjerrod's Task
 -----

@@ -460,7 +460,7 @@ def ObiWan_B91(card):
    debugNotify(">>> ObiWan_B91()") # Debug
    if len(me.piles['Discard Pile']) >= 1:
       topCard = me.piles['Discard Pile'].top()
-      cardTexts = makeChoiceListfromCardList(topCard, True, True)
+      cardTexts = makeChoiceListfromCardList([topCard], True, True)
       if confirm("Obi-Wan's guidance allows you to return the top card of your discard pile to your hand. Do so?\n\n{}".format(cardTexts[0])): 
          topCard.moveTo(me.hand)
          notify(":> {} receives {}'s Guidance.".format(me,card))
@@ -488,21 +488,21 @@ def MaraJade(card):
    mute()
    if len(myAllies) > 1 and confirm("Do you want to pass control of Mara Jade to another friendly player?"):
       targetAlly = ofwhom('-ofAllies', me)
-      giveCard(card,targetAlly)
-      remoteCall(targetAlly,'placeCard',[card])
-      notify(":> {} passed control of {} to {}.".format(me,card,targetAlly))
+      giveCard(card,targetAlly[0])
+      remoteCall(targetAlly[0],'placeCard',[card])
+      notify(":> {} passed control of {} to {}.".format(me,card,targetAlly[0]))
       #autoscriptOtherPlayers('{}:CardTakeover:{}'.format(targetAlly,me),card) # To allow Agent of the Hand to work
    debugNotify("<<< MaraJade()") # Debug      
 
 def RepairRefurbish(card):
    mute()
    debugNotify(">>> RepairRefurbish()") # Debug
-   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
-   damagedObjs = [Card(cID) for cID in currentObjectives if Card(cID).marker[mdict['Damage']]]
+   damagedObjs = [c for c in table if c.Type == 'Objective' and c.controller == me and c.markers[mdict['Damage']]]
+   debugNotify("{} damagedObjs gathered".format(len(damagedObjs)))
    if len(damagedObjs):
       choice = SingleChoice("Which of your objectives would you like to repair and refurbish?", makeChoiceListfromCardList(damagedObjs))
-      damagedObjs[choice].marker[mdict['Damage']] -= 1
-      notify(":> {} {}s {}.".format(me,card,damagedObjs[choice]))
+      damagedObjs[choice].markers[mdict['Damage']] -= 1
+      notify(":> {} {}es {}.".format(me,card,damagedObjs[choice]))
    debugNotify("<<< RepairRefurbish()") # Debug
 
    

@@ -7,6 +7,8 @@ Changelog - Star Wars LCG OCTGN Game Definition
   * Shistavanen Wolfman won't trigger from your discard pile. You have to play him manually when you win the force struggle accordingly.
   * Rapid Fire doesn't enforce the targets. Just make sure you select units from different opponents.
   * Arcona Rumor Monger: Not rules enforced
+  * Trandoshan Security Team: Not rules enforced.
+  * A Price on their heads doesn't enforce the targets. Just make sure you select units from different opponents.
 
 ### 2.6.3.x
 

@@ -272,6 +272,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
                debugNotify("!!! Failing because Edge Difference ({}) not equal to {}".format(count,edgeDiffRegex.group(2)),2)
                continue
          if not chkDummy(autoS, card): continue
+         if not chkParticipants(autoS, card): continue
          if not checkCardRestrictions(gatherCardProperties(origin_card), prepareRestrictions(autoS,'type')): continue #If we have the '-type' modulator in the script, then need ot check what type of property it's looking for
          else: debugNotify("Not Looking for specific type or type specified found.")
          if not checkOriginatorRestrictions(autoS,card): continue
@@ -1064,12 +1065,16 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
             executePlayScripts(targetCard, 'PLAY') # We execute the play scripts here only if the card is 0 cost.
             autoscriptOtherPlayers('CardPlayed',targetCard)            
          elif action.group(1) == 'Capture': 
-            if re.search("-captureOnMyself", Autoscript): capture(targetC = targetCard, silent = True, chosenObj = card)
+            if re.search("-captureOnMyself", Autoscript): capture(targetC = targetCard, chosenObj = card)
             if re.search("-onAnyAlliedObjective", Autoscript): # This allows the script runner to choose any objective to capture to, which might not even be one of theirs.
                objectiveList = [obj for obj in table if obj.Type == 'Objective' and obj.Side == 'Dark']
-               choice = SingleChoice("Select one objective to capture {}".format(targetC), makeChoiceListfromCardList(objectiveList, True))
-               capture(targetC = targetCard, silent = True, chosenObj = objectiveList[choice])
-            else: capture(targetC = targetCard, silent = True)
+               debugNotify("ObjectiveList prepared. len = {}".format(len(objectiveList)))
+               if len(objectiveList) > 1:
+                  choice = SingleChoice("Select an objective on which to capture {}".format(targetCard.Name), makeChoiceListfromCardList(objectiveList, True), cancelButton = False)
+                  capture(targetC = targetCard, chosenObj = objectiveList[choice])
+               elif len(objectiveList) == 1: capture(targetC = targetCard, silent = True, chosenObj = objectiveList[0])
+               else: capture(targetC = targetCard)
+            else: capture(targetC = targetCard)
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
          elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
@@ -1919,6 +1924,22 @@ def per(Autoscript, card = None, count = 0, targetCards = None, notification = N
          elif re.search(r'Property',per.group(3)):
             property = re.search(r'Property{([\w ]+)}',per.group(3))
             multiplier = card.properties[property.group(1)]
+         elif re.search(r'Opponent',per.group(3)): multiplier = len(fetchAllOpponents())
+         elif re.search(r'Ally',per.group(3)): multiplier = len(fetchAllAllies()) - 1 # -1 because we exclude ourselves.
+         elif re.search(r'Reserves',per.group(3)):
+            if not card: debugNotify("0 Reserves multiplier because card is Null")
+            else:
+               reservesTotal = 0
+               if re.search(r'ReservesTeam',per.group(3)):
+                  for player in fetchAllAllies(card.controller): reservesTotal += len(player.piles['Common Reserve'])
+               elif re.search(r'ReservesAllied',per.group(3)):
+                  for player in fetchAllAllies(card.controller): 
+                     if player != card.controller: reservesTotal += len(player.piles['Common Reserve'])
+               elif re.search(r'ReservesOpponents',per.group(3)):
+                  for player in fetchAllOpponents(card.controller): reservesTotal += len(player.piles['Common Reserve'])
+               elif re.search(r'ReservesMyself',per.group(3)):
+                  reservesTotal += len(card.controller.piles['Common Reserve'])
+               multiplier = reservesTotal
       debugNotify("Checking ignore") # Debug.            
       ignS = re.search(r'-ignore([0-9]+)',Autoscript)
       if ignS: ignore = num(ignS.group(1))

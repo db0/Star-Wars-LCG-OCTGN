@@ -267,7 +267,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          bonusForce = re.search(r'Force([0-9])Bonus',autoS)
          if bonusForce:
             targetCards = findTarget(autoS,card = c) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
-            multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
+            multiplier = per(autoS, card = c, targetCards = targetCards) # Then we calculate the multiplier with per()
             debugNotify("Found card with Bonus force") #Debug
             fBonus = (num(bonusForce.group(1)) * multiplier)
             if c.controller == me: myStruggleTotal += fBonus
@@ -663,6 +663,7 @@ def participate(card, x = 0, y = 0, silent = False):
          if card.owner == me: card.markers[mdict['Support']] += 1 # If we're the owner of the card, we're just giving the generic support marker to make things easily recognisable
          else: TokensX('Put1Support:{}'.format(me.name), '', card) # If not, we need to give a special marker, to point out to whom the card returns to afterwards
          giveCard(card,attacker) # We pass allied participating units to the main player in the attack, to allow cards like Jawa Scaveneger and Orbital Bombardment to work correctly.         
+         autoscriptOtherPlayers('{}:CardTakeover:{}'.format(attacker,me),card)
       if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       if not silent: notify("{} selects {} as an attacker.".format(me, card))
       executePlayScripts(card, 'ATTACK')   
@@ -671,6 +672,7 @@ def participate(card, x = 0, y = 0, silent = False):
          if card.owner == me: card.markers[mdict['Support']] += 1 # If we're the owner of the card, we're just giving the generic support marker to make things easily recognisable
          else: TokensX('Put1Support:{}'.format(me.name), '', card) # If not, we need to give a special marker, to point out to whom the card returns to afterwards
          giveCard(card,currentTarget.controller)
+         autoscriptOtherPlayers('{}:CardTakeover:{}'.format(currentTarget.controller,me),card)
       if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
       if not silent: notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
@@ -984,6 +986,9 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
       whisper(":::ERROR::: You need to target a command card in the table or your opponent's hand or deck before taking this action")
       return
    else: 
+      if targetC.highlight == CapturedColor: # If the card was already captured, we change the message a bit .
+         capturedCards = eval(getGlobalVariable('Captured Cards'))
+         captureTXT = ":> {} is transferring a captured card from {}".format(me,Card(capturedCards[targetC._id]))
       if not captureGroup: captureGroup = targetC.group
       if captureGroup == table and targetC.highlight != EdgeColor and targetC.highlight != FateColor and targetC.highlight != RevealedColor: # If the card was on the table, we also trigger "removed from play" effects
          if not Continuing and not cardsLeaving(targetC):
@@ -1031,7 +1036,8 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
             if choice + 1 > len(myObjectives): chosenObj = otherHosts[choice - len(myObjectives)]
             else: chosenObj = Card(myObjectives[choice])
          debugNotify("About to Announce")
-         captureTXT += " as part of their {} objective".format(chosenObj)
+         if re.search(r'transferring',captureTXT): captureTXT += " to {}".format(chosenObj)
+         else: captureTXT += " as part of the {} objective".format(chosenObj)
          if not silent: notify(captureTXT)
          rnd(1,10)
          debugNotify("About evaluate capture cards")
@@ -1153,8 +1159,12 @@ def play(card):
       playEdge(card)
       return # If the player double clicked on a Fate card, assume he wanted to play it as an edge card.
    elif card.Type == 'Objective': 
-      handDiscard(card)
-      return # If the player double clicked on an objective, we assume they were selecting one of their three objectives to to put at the bot. of their deck.
+      if card.name == "Jerjerrod's Task": 
+         storeObjective(card)      
+         notify("{} plays {} and needs to pay one resource (manually)".format(me,card))
+      else:
+         handDiscard(card)
+         return # If the player double clicked on an objective, we assume they were selecting one of their three objectives to to put at the bot. of their deck.
    if card.Type == 'Enhancement' or card.Type == 'Unit':
       phaseRegex = re.search(r'(Dark|Light):([0-6])',getGlobalVariable('Phase'))
       phase = num(phaseRegex.group(2))
@@ -1364,8 +1374,9 @@ def placeReserve(card):
       whisper(":::ERROR::: You can only place command cards in your common reserve.")
       return
    if len(me.piles['Common Reserve']) != 0:
-      notify(":> {} discarded {} card from their Common Reserve".format(me,len(me.piles['Common Reserve'])))
-      for c in me.piles['Common Reserve']: c.moveTo(me.piles['Discard Pile'])
+      for c in me.piles['Common Reserve']: 
+         notify(":> {} discarded {} from their Common Reserve".format(me,c))
+         c.moveTo(me.piles['Discard Pile'])
    card.moveTo(me.piles['Common Reserve'])
    notify("{} placed 1 new card in their Common Reserve".format(me,card))
    debugNotify("<<< placeReserve()") #Debug
