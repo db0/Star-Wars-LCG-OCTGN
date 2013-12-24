@@ -180,7 +180,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    else:
       for card in table:
          if card.controller in myAllies and card.highlight != CapturedColor:
-            debugNotify(" Removing Focus Tokens")
+            debugNotify("Removing Focus Tokens")
             if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
                card.markers[mdict['Focus']] -=1
                if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
@@ -244,21 +244,21 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       commitColor = DarkForceColor
       commitOpponent = LightForceColor
       opSide = 'Light'
-   debugNotify(" Counting my committed cards") #Debug
+   debugNotify("Counting my committed cards") #Debug
    commitedCards = [c for c in table if c.controller in myAllies and (c.highlight == commitColor or findMarker(c, "Unwavering Resolve"))]
-   debugNotify(" About to loop") #Debug
+   debugNotify("About to loop") #Debug
    for card in commitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): myStruggleTotal += num(card.Force)
          # We only include cards in the force struggle if they are not exausted and/or have a special ability on them
       except: myStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   debugNotify(" Counting my opponents cards") #Debug
+   debugNotify("Counting my opponents cards") #Debug
    opponentCommitedCards  = [c for c in table if c.highlight == commitOpponent]
    for card in opponentCommitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): opponentStruggleTotal += num(card.Force)
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   debugNotify(" About to check for bonus force cards") #Debug
+   debugNotify("About to check for bonus force cards") #Debug
    for c in table:
       debugNotify("Checking {}".format(c),4) #Debug
       Autoscripts = CardsAS.get(c.model,'').split('||')
@@ -268,7 +268,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          if bonusForce:
             targetCards = findTarget(autoS,card = c) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
             multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
-            debugNotify(" Found card with Bonus force") #Debug
+            debugNotify("Found card with Bonus force") #Debug
             fBonus = (num(bonusForce.group(1)) * multiplier)
             if c.controller == me: myStruggleTotal += fBonus
             else: opponentStruggleTotal += fBonus
@@ -330,7 +330,7 @@ def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = Fal
    rnd(1,10)
    autoscriptOtherPlayers('EngagedObjective',targetObjective)
    incrStat('attacks',me.name) # We store that the player has attacked an objective
-   debugNotify(" engageTarget()") #Debug
+   debugNotify("<<< engageTarget()") #Debug
    
 def finishEngagement(group = table, x=0, y=0, automated = False):
    mute()
@@ -357,9 +357,9 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
       cancel = False
       unopposedDamage = 1
       for c in table:
-         debugNotify(" Checking unopposed effects from {}".format(c), 4) # Debug
+         debugNotify("Checking unopposed effects from {}".format(c), 4) # Debug
          if c.name == 'Echo Base Defense' and re.search(r'Hoth',currentTarget.Traits) and currentTarget.controller == c.controller:
-            debugNotify(" Found Echo Base Defense")
+            debugNotify("Found Echo Base Defense")
             HothControllers = compareObjectiveTraits('Hoth')
             if len(HothControllers) == 1 and HothControllers[0] == c.controller:
                cancel = True
@@ -373,17 +373,17 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
                debugNotify("Found unopposed Raise: {}".format(raiseUnopposed.group(1)),4) #Debug
                targetCards = findTarget(autoS, card = c) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
                multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
-               debugNotify(" Found card which raises unopposed bonus") #Debug
+               debugNotify("Found card which raises unopposed bonus") #Debug
                uBonus = (num(raiseUnopposed.group(1)) * multiplier)
                if uBonus > unopposedDamage:
                   if uBonus: notify("-- {} raises Unopposed damage to {}".format(c,uBonus))
                   unopposedDamage = uBonus
       if not cancel:
-         debugNotify(" Unopposed Damage not cancelled")
+         debugNotify("Unopposed Damage not cancelled")
          if currentTarget.controller.getGlobalVariable('Side') == 'Dark': attackerSide = 'Light'
          else: attackerSide = 'Dark'
          debugNotify("Unopposed prolly Happens because debugVerbosity >= 1")
-         else: notify(":> The {} Side managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attackerSide,currentTarget,unopposedDamage))
+         notify(":> The {} Side managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attackerSide,currentTarget,unopposedDamage))
          addMarker(currentTarget, 'Damage',unopposedDamage, True)
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    autoscriptOtherPlayers('FinishedEngagement',currentTarget)
@@ -400,7 +400,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
    clearTargets() # We clear the targets in case they were forgotten.
    atTimedEffects('afterEngagement')
-   debugNotify(" finishEngagement()") #Debug 
+   debugNotify("<<< finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
@@ -457,7 +457,7 @@ def gameSetup(group, x = 0, y = 0):
          if me.getGlobalVariable('PLnumber') == '#1' or len(myAllies) == 1:
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
             BotD.moveToTable( MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
-            debugNotify(" BOTD alternate is : {}".format(BotD.alternate))
+            debugNotify("BOTD alternate is : {}".format(BotD.alternate))
             setGlobalVariable('Balance of the Force', str(BotD._id))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
@@ -571,11 +571,11 @@ def defaultAction(card, x = 0, y = 0):
          rnd(1,100)
       if card.alternate == 'DarkSide': card.switchTo() 
       else: card.switchTo('DarkSide')
-      debugNotify(" BOTD alternate is now : {}".format(card.alternate))
+      debugNotify("BOTD alternate is now : {}".format(card.alternate))
       notify(":::ATTENTION::: {} flipped the balance of the force manually".format(me))
    elif CardsAA.get(card.model,'') != '': useAbility(card)
    else: whisper(":::ERROR::: There is nothing to do with this card at this moment!")
-   debugNotify(" defaultAction()") #Debug
+   debugNotify("<<< defaultAction()") #Debug
      
 def strike(card, x = 0, y = 0, Continuing = False):
    debugNotify(">>> strike(){}".format(extraASDebug())) #Debug
@@ -678,7 +678,7 @@ def participate(card, x = 0, y = 0, silent = False):
    executePlayScripts(card, 'PARTICIPATION')
    autoscriptOtherPlayers('UnitParticipates',card)
    clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
-   debugNotify(" participate()") #Debug
+   debugNotify("<<< participate()") #Debug
 
 def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from participating in a battle, to undo mistakes
    mute()
@@ -733,7 +733,7 @@ def generate(card, x = 0, y = 0):
    if resResult == 'OK': purchaseCard(unpaidC, manual = False)
    elif resResult == 'USEOK': readyEffect(unpaidC)
    incrStat('resources',me.name) # We store that the player has played a unit
-   debugNotify(" generate()") #Debug
+   debugNotify("<<< generate()") #Debug
 
 def calcResources(card):
    debugNotify(">>> calcResources()") #Debug
@@ -752,7 +752,7 @@ def findUnpaidCard():
    else:
       for card in table:
          if (card.highlight == UnpaidColor or card.highlight == UnpaidAbilityColor) and (card.controller == me or (re.search(r'-allyPayable',CardsAA.get(card.model,'')) and card.controller in myAllies)): return card
-   debugNotify(" findUnpaidCard()") #Debug
+   debugNotify("<<< findUnpaidCard()") #Debug
    return None # If not unpaid card is found, return None
 
 def checkPaidResources(card):
@@ -780,24 +780,24 @@ def checkPaidResources(card):
       selectedAbility = eval(getGlobalVariable('Stored Effects'))
       reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
       if count >= selectedAbility[card._id][1] - reduction:
-         debugNotify(" checkPaidResources(). Return USEOK") #Debug
+         debugNotify("<<< checkPaidResources(). Return USEOK") #Debug
          reduceCost(card, 'USE', selectedAbility[card._id][1] - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'USEOK'
       else:
          if count >= selectedAbility[card._id][1] - reduction and not affiliationMatch:
             notify(":::WARNING::: Ability cost reached but there is no affiliation match!")
-         debugNotify(" checkPaidResources(). Return NOK") #Debug
+         debugNotify("<<< checkPaidResources(). Return NOK") #Debug
          return 'NOK'      
    else:
       reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
       if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (num(card.Cost) - reduction) == 0)):
-         debugNotify(" checkPaidResources(). Return OK") #Debug
+         debugNotify("<<< checkPaidResources(). Return OK") #Debug
          reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'OK'
       else:
          if count >= num(card.Cost) - reduction and not affiliationMatch:
             notify(":::WARNING::: Card cost reached but there is no affiliation match!")
-         debugNotify(" checkPaidResources(). Return NOK") #Debug
+         debugNotify("<<< checkPaidResources(). Return NOK") #Debug
          return 'NOK'
 
 def purchaseCard(card, x=0, y=0, manual = True):
@@ -818,7 +818,7 @@ def purchaseCard(card, x=0, y=0, manual = True):
       playEventSound(card)
       executePlayScripts(card, 'PLAY') 
       if card.Type != 'Event': autoscriptOtherPlayers('CardPlayed',card) # We script for playing events only after their events have finished resolving in the default action.
-   debugNotify(" purchaseCard()") #Debug
+   debugNotify("<<< purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
    debugNotify(">>> commit(){}".format(extraASDebug())) #Debug
@@ -836,18 +836,18 @@ def commit(card, x = 0, y = 0):
    card.highlight = commitColor
    executePlayScripts(card, 'COMMIT')
    autoscriptOtherPlayers('ForceCommit',card)
-   debugNotify(" commit()") #Debug
+   debugNotify("<<< commit()") #Debug
 
 def clearCommit(card, x=0, y=0): # Clears a unit from participating in a battle, to undo mistakes
    mute()
    debugNotify(">>> clearCommit(){}".format(extraASDebug())) #Debug
    if Side == 'Light': commitColor = LightForceColor
    else: commitColor = DarkForceColor
-   debugNotify(" Checking for commitColor: {}".format(commitColor)) #Debug
+   debugNotify("Checking for commitColor: {}".format(commitColor)) #Debug
    if card.highlight == commitColor:
-      debugNotify(" commitColor found!") #Debug
+      debugNotify("commitColor found!") #Debug
       card.highlight = None
-      debugNotify(" About to notify!") #Debug
+      debugNotify("About to notify!") #Debug
       notify(":::ATTENTION::: {} takes {} out of its commitment to the force.".format(me, card))
    else: whisper(":::ERROR::: Unit is not currently committed to the force.")
 
@@ -894,7 +894,7 @@ def discard(card, x = 0, y = 0, silent = False, Continuing = False, initPlayer =
          execution = executePlayScripts(card, 'THWART')
          if execution == 'POSTPONED': 
             return 'POSTPONED'# If the unit has a Ready Effect it means we're pausing our discard to allow the player to decide to use the react or not. 
-      debugNotify(" About to score objective")
+      debugNotify("About to score objective")
       currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
       currentObjectives.remove(card._id)
       rescuedCount = rescueFromObjective(card)
@@ -961,21 +961,21 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
    if not targetC:
       debugNotify("Don't have preset target. Seeking...")
       for card in table:
-         debugNotify(" Searching table") #Debug
+         debugNotify("Searching table") #Debug
          if card.targetedBy and card.targetedBy == me and card.Type != "Objective": 
             if card.highlight == CapturedColor and not confirm("Are you sure you want to move this captured card to a different objective?"): continue
             targetC = card
       if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
       else:
-         debugNotify(" Searching opponents' hand") #Debug
+         debugNotify("Searching opponents' hand") #Debug
          for opponentPL in fetchAllOpponents():
             for card in opponentPL.hand:
                if card.targetedBy and card.targetedBy == me: targetC = card
             if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner)
             else:
-               debugNotify(" Searching command deck") #Debug
+               debugNotify("Searching command deck") #Debug
                for card in opponentPL.piles['Command Deck'].top(3):
-                  debugNotify(" Checking {}".format(card), 3) #Debug
+                  debugNotify("Checking {}".format(card), 3) #Debug
                   if card.targetedBy and card.targetedBy == me: targetC = card
                if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
    else: captureTXT = ":> {} has captured one card from {}".format(me,targetC.owner)
@@ -1162,7 +1162,7 @@ def play(card):
    if card.Type == 'Enhancement':
       hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
       if hostType:
-         debugNotify(" hostType: {}.".format(hostType.group(1))) #Debug
+         debugNotify("hostType: {}.".format(hostType.group(1))) #Debug
          host = findTarget('Targeted-at{}'.format(hostType.group(1)))
          if host == []: 
             whisper("ABORTING!")
@@ -1276,13 +1276,13 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if card.highlight == FateColor: notify(":::WARNING::: {} has not yet resolved their {}".format(card.owner,card))
          bonusEdge = calcBonusEdge(card)
          if bonusEdge: # Card with edge need to be participating.
-            debugNotify(" Found card with Bonus edge") #Debug
+            debugNotify("Found card with Bonus edge") #Debug
             if card.controller in myAllies: myEdgeTotal += bonusEdge
             else: opponentEdgeTotal += bonusEdge
       currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find out what the current objective as we can use it to figure out if we're an attacker or defender.
       if myEdgeTotal > opponentEdgeTotal:
          winnerDifference = myEdgeTotal - opponentEdgeTotal
-         debugNotify(" I've got the edge") #Debug
+         debugNotify("I've got the edge") #Debug
          if currentTarget.controller in myAllies: allyPL = currentTarget.controller
          else: 
             try:
@@ -1321,8 +1321,8 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             incrStat('edgev',opponentPL.name) # We store that the player has won an edge battle
          elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
-         debugNotify(" Edge is a Tie") #Debug
-         debugNotify(" Finding defender's Affiliation card.") #Debug
+         debugNotify("Edge is a Tie") #Debug
+         debugNotify("Finding defender's Affiliation card.") #Debug
          defenderAffiliation = getSpecial('Affiliation',currentTarget.controller)
          unopposed = True
          for card in table:
@@ -1333,7 +1333,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             except: 
                notify(":::ERROR::: Nobody is currently attacking. Aborting!")
                return
-            debugNotify(" Unopposed Attacker") #Debug
+            debugNotify("Unopposed Attacker") #Debug
             if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                Affiliation.markers[mdict['Edge']] = 1
@@ -1342,7 +1342,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                incrStat('edgev',attacker.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
          else:
-            debugNotify(" Defender's Advantage") #Debug
+            debugNotify("Defender's Advantage") #Debug
             if not (defenderAffiliation.markers[mdict['Edge']] and defenderAffiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                defenderAffiliation.markers[mdict['Edge']] = 1
@@ -1350,7 +1350,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, 0)
                incrStat('edgev',currentTarget.controller.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
-      debugNotify(" revealEdge()") #Debug
+      debugNotify("<<< revealEdge()") #Debug
 
 def placeReserve(card):
    debugNotify(">>> placeReserve()") #Debug
@@ -1380,7 +1380,7 @@ def playReserve(group):
          claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
          play(fullReserves[choice])
          if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
-         else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),targetObjective)
+         else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),fullReserves[choice])
          
 def playEdgeReserve(group):
    mute()
@@ -1394,7 +1394,7 @@ def playEdgeReserve(group):
          claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
          playEdge(fullReserves[choice])
          if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
-         else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),targetObjective)
+         else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),fullReserves[choice])
       
 def grabFullReserves():
    debugNotify(">>> grabFullReserves()") #Debug
@@ -1412,7 +1412,7 @@ def groupToDeck (group = me.hand, player = me, silent = False):
    count = len(group)
    for c in group: c.moveTo(deck)
    if not silent: notify ("{} moves their whole {} to their {}.".format(player,pileName(group),pileName(deck)))
-   debugNotify(" groupToDeck() with return:\n{}\n{}\n{}".format(pileName(group),pileName(deck),count)) #Debug
+   debugNotify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(pileName(group),pileName(deck),count)) #Debug
    return(pileName(group),pileName(deck),count) # Return a tuple with the names of the groups.
    
 def mulligan(group):
@@ -1426,7 +1426,7 @@ def mulligan(group):
       rnd(1,10)
       whisper("Shuffling...")
    drawMany(count = 6)   
-   debugNotify(" mulligan()") #Debug
+   debugNotify("<<< mulligan()") #Debug
 
 def groupToDeck (group = me.hand, player = me, silent = False):
    debugNotify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
@@ -1436,7 +1436,7 @@ def groupToDeck (group = me.hand, player = me, silent = False):
    for c in group: c.moveTo(deck)
    debugNotify("About to announce")
    if not silent: notify ("{} moves their whole {} to their {}.".format(player,group.name,deck.name))
-   debugNotify(" groupToDeck() with return:\n{}\n{}\n{}".format(group.name,deck.name,count)) #Debug
+   debugNotify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(group.name,deck.name,count)) #Debug
    return(group.name,deck.name,count) # Return a tuple with the names of the groups.
 
 def handRandomDiscard(group, count = None, player = None, destination = None, silent = False):
@@ -1478,16 +1478,16 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
       delayed_whisper(":::ERROR::: There's no cards selected to send to the Bottom of your deck. Aborting!")
       return
    else:
-      debugNotify(" Card List = {}".format([c.name for c in cards])) #Debug
+      debugNotify("Card List = {}".format([c.name for c in cards])) #Debug
       mute()
       if len(cards) == 0: return
-      debugNotify(" Original List: {}".format([card.name for card in cards])) #Debug
+      debugNotify("Original List: {}".format([card.name for card in cards])) #Debug
       for iter in range(len(cards)):
          if iter % 5 == 0: notify("---PLEASE DO NOT MOVE ANY CARDS AROUND---")
          if iter % 2 == 0: notify("Randomizing({}/{} done)...".format(iter, len(cards)))
          swap = rnd(iter,len(cards) - 1)
          cards[iter], cards[swap] = cards[swap], cards[iter]
-      debugNotify(" Randomized List: {}".format([card.name for card in cards])) #Debug
+      debugNotify("Randomized List: {}".format([card.name for card in cards])) #Debug
       if cards[0].group == me.hand:
          if not silent: notify("{} sends {} cards from their hand to the bottom of their respective decks in random order.".format(me,len(cards)))
       else:
@@ -1596,7 +1596,7 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    for c in group.top(count): 
       c.moveTo(destination)
    if not silent: notify("{} draws {} cards.".format(me, count))
-   debugNotify(" drawMany() with return: {}".format(count))
+   debugNotify("<<< drawMany() with return: {}".format(count))
    return count
 
 def refillHand(group = me.hand): # Simply refills the player's hand to their reserve maximum
@@ -1607,7 +1607,7 @@ def refillHand(group = me.hand): # Simply refills the player's hand to their res
       drawMany(count = me.Reserves - len(me.hand) - len(me.piles['Common Reserve']))
    notify(":> {} Refills their hand to their reserve maximum".format(me))
    handRefillDone = True
-   debugNotify(" refillHand()")
+   debugNotify("<<< refillHand()")
         
 def drawBottom(group, x = 0, y = 0):
 	if len(group) == 0: return
@@ -1774,7 +1774,7 @@ def findCounterPrevention(count, counter, targetPL): # Find out if the player ha
             count -= 1 # We reduce how much counter we still need to add by 1
             card.markers[foundMarker] -= 1 # We reduce the specific counter prevention counters by 1
          if count == 0: break # If we've found enough protection to alleviate all counters, stop the search.
-   debugNotify(" findCounterPrevention() by returning: {}".format(preventionFound))
+   debugNotify("<<< findCounterPrevention() by returning: {}".format(preventionFound))
    return preventionFound   
  
 #------------------------------------------------------------------------------

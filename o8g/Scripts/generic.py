@@ -555,19 +555,19 @@ def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
    mute()
    if card.markers[mdict['Activation']] and card.markers[mdict['Activation']] >= 1:
       if act != 'manual' or re.search(r'-failSilently',CardsAS.get(card.model,'')): # If the card has the 'failsSilently' modulator for onlyOnce, then we don't want to ask the player if the ability has been used already. 
-         debugNotify(" oncePerTurn() exit NOK (not-manual)") #Debug
+         debugNotify("<<< oncePerTurn() exit NOK (not-manual)") #Debug
          return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
       elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): 
-         debugNotify(" oncePerTurn() exit NOK (manual confirm)") #Debug
+         debugNotify("<<< oncePerTurn() exit NOK (manual confirm)") #Debug
          return 'ABORT'
       else: 
          if not silent and act != 'dryRun': notify(':> {} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
       if not silent and act != 'dryRun': notify(':> {} activates the once-per-turn ability of {}'.format(me, card))
    if act != 'dryRun': 
-      debugNotify(" Adding Activation Marker.") #Debug
+      debugNotify("Adding Activation Marker.") #Debug
       card.markers[mdict['Activation']] += 1 # On dry runs we do not want to activate the once-per turn abilities. We just want to see if they're available.
-   debugNotify(" oncePerTurn() exit OK") #Debug
+   debugNotify("<<< oncePerTurn() exit OK") #Debug
 
 def clearTargets():
    for card in table:
@@ -597,7 +597,7 @@ def fetchProperty(card, property):
       card.isFaceUp = False
 #      rnd(1,10) # To give time to the card facedown automation to complete.
 #      cover.moveTo(shared.exile) # now destorying cover card
-   debugNotify(" fetchProperty() by returning: {}".format(currentValue))
+   debugNotify("<<< fetchProperty() by returning: {}".format(currentValue))
    return currentValue
       
 def loopChk(card,property = 'Type'):

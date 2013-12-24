@@ -75,11 +75,11 @@ def storeObjective(card, GameSetup = False):
          Objective.moveToTable( MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
          orgAttachments(Objective)
       update() # We put a delay here to allow the table to read the card autoscripts before we try to execute them.
-      debugNotify(" About to execure play Scripts") #Debug      
+      debugNotify("About to execure play Scripts") #Debug      
       executePlayScripts(card, 'PLAY')
-   debugNotify(" About to set currentObjectives") #Debug      
+   debugNotify("About to set currentObjectives") #Debug      
    me.setGlobalVariable('currentObjectives', str(currentObjectives))
-   debugNotify(" storeObjective()") #Debug
+   debugNotify("<<< storeObjective()") #Debug
 
 def getSpecial(cardType,player = me):
 # Functions takes as argument the name of a special card, and the player to whom it belongs, and returns the card object.
@@ -97,14 +97,14 @@ def checkUnique (card):
    debugNotify(">>> checkUnique(){}".format(extraASDebug())) #Debug
    mute()
    if not re.search(r'Unique', getKeywords(card)): 
-      debugNotify(" checkUnique() - Not a unique card") #Debug
+      debugNotify("<<< checkUnique() - Not a unique card") #Debug
       return True #If the played card isn't unique do nothing.
    ExistingUniques = [ c for c in table
          if c.owner == me and c.isFaceUp and fetchProperty(c, 'name') == fetchProperty(card, 'name') and re.search(r'Unique', getKeywords(c)) ]
    if len(ExistingUniques) != 0 and not confirm("This unique card is already in play. Are you sure you want to play {}?\n\n(If you do, your existing unique card will be Trashed at no cost)".format(fetchProperty(card, 'name'))) : return False
    else:
       for uniqueC in ExistingUniques: trashForFree(uniqueC)
-   debugNotify(" checkUnique() - Returning True") #Debug
+   debugNotify("<<< checkUnique() - Returning True") #Debug
    return True   
 
 def findOpponent(position = '#1', multiText = "Choose which opponent you're targeting with this effect."):
@@ -285,10 +285,10 @@ def placeCard(card):
             unitAmount = len([c for c in table if c.Type == 'Unit' and c.controller == me and c.highlight != UnpaidColor and c.highlight != EdgeColor and c.highlight != DummyColor]) - 1 # we reduce by 1, because it will always count the unit we're currently putting in the game
             debugNotify("my unitAmount is: {}.".format(unitAmount)) #Debug
             freePositions = eval(me.getGlobalVariable('freePositions')) # We store the currently released position
-            debugNotify(" my freePositions is: {}.".format(freePositions),2) #Debug
+            debugNotify("my freePositions is: {}.".format(freePositions),2) #Debug
             if freePositions != []: # We use this variable to see if there were any discarded units and we use their positions first.
                positionC = freePositions.pop() # This returns the last position in the list of positions and deletes it from the list.
-               debugNotify(" positionC is: {}.".format(positionC)) #Debug
+               debugNotify("positionC is: {}.".format(positionC)) #Debug
                card.moveToTable(positionC[0],positionC[1])
                me.setGlobalVariable('freePositions',str(freePositions))
             else:
@@ -301,24 +301,24 @@ def placeCard(card):
                if getSetting('Unit Placement', 'Center') == 'Center': # If the unit placement is the default center orientation, then we start placing units from the center outwards
                   if unitAmount == 0: xoffset = MPxOffset + (playerside * 20) - 25
                   else: xoffset = MPxOffset + (-playerside * ((2 * (unitAmount % 2)) - 1) * (((unitAmount - loopback) + 1) / 2) * cheight(card,0)) + (playerside * 20) - 25 # The -25 is an offset to help center the table.
-                  debugNotify(" xoffset is: {}.".format(xoffset)) #Debug
+                  debugNotify("xoffset is: {}.".format(xoffset)) #Debug
                   yoffset = MPyOffset + yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)
                else:                  
                   xoffset = MPxOffset + (playerside * (-325 + cheight(card,0))) + (playerside * cheight(card,0) * (unitAmount - loopback)) - 25
-                  debugNotify(" xoffset is: {}.".format(xoffset)) #Debug
+                  debugNotify("xoffset is: {}.".format(xoffset)) #Debug
                   yoffset = MPyOffset + yaxisMove(card) + (cheight(card,3) * (loopsNR) * playerside) + (10 * playerside)                  
                card.moveToTable(xoffset,yoffset)
             playUnitSound(card)
          if card.Type == 'Enhancement':
             hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
             if hostType:
-               debugNotify(" hostType: {}.".format(hostType.group(1))) #Debug
+               debugNotify("hostType: {}.".format(hostType.group(1))) #Debug
                host = findTarget('Targeted-at{}'.format(hostType.group(1)))
                if host == []: 
                   whisper(":::ABORTING!:::")
                   return
                else:
-                  debugNotify(" We have a host") #Debug
+                  debugNotify("We have a host") #Debug
                   hostCards = eval(getGlobalVariable('Host Cards'))
                   hostCards[card._id] = host[0]._id
                   setGlobalVariable('Host Cards',str(hostCards))
@@ -326,7 +326,7 @@ def placeCard(card):
             else: card.moveToTable(MPxOffset + 0, 0 + yaxisMove(card))
       else: debugNotify("No Placement Automations. Doing Nothing",2)
       if card.Type == 'Unit': incrStat('units',me.name) # We store that the player has played a unit
-      debugNotify(" placeCard()") #Debug
+      debugNotify("<<< placeCard()") #Debug
    except: notify("!!! ERROR !!! in placeCard()")
 
 def orgAttachments(card,facing = 'Same'):
@@ -334,7 +334,7 @@ def orgAttachments(card,facing = 'Same'):
 # xAlg, yAlg are the algorithsm which decide how the card is placed relative to its host and the other hosted cards. They are always multiplied by attNR
    debugNotify(">>> orgAttachments()") #Debug
    attNR = 1
-   debugNotify(" Card Name : {}".format(card.name), 4)
+   debugNotify("Card Name : {}".format(card.name), 4)
    update()
    x,y = card.position
    if card.controller in myAllies: sideOffset = playerside # If it's our card, we need to assign it towards our side
@@ -344,7 +344,7 @@ def orgAttachments(card,facing = 'Same'):
       xAlg = cwidth() / 2 * sideOffset
       yAlg = 0
       countCaptures = 0
-      debugNotify(" About to retrieve captured cards") #Debug      
+      debugNotify("About to retrieve captured cards") #Debug      
       capturedCards = eval(getGlobalVariable('Captured Cards'))
       for capturedC in capturedCards: # once we move our objectives around, we want to move their captured cards with them as well.
          if capturedCards[capturedC] == card._id:
@@ -413,7 +413,7 @@ def parseCombatIcons(STRING, dictReturn = False):
       if EEBD: parsedIcons += 'EE-BD:{}. '.format(EEBD.group(1))
       if T: parsedIcons += 'T:{}. '.format(T.group(1))
       if EET: parsedIcons += 'EE-T:{}.'.format(EET.group(1))
-      debugNotify(" parseCombatIcons() with return: {}".format(parsedIcons)) # Debug
+      debugNotify("<<< parseCombatIcons() with return: {}".format(parsedIcons)) # Debug
    else: # If we requested a dictReturn, the parsed icons will be returned in the form of a dictionary.
       parsedIcons = {}
       if UD: parsedIcons[UD] = num(UD.group(1))
@@ -428,32 +428,32 @@ def parseCombatIcons(STRING, dictReturn = False):
       else: parsedIcons[T] = 0
       if EET: parsedIcons[EE-T] = num(EET.group(1))
       else: parsedIcons[EE-T] = 0
-      debugNotify(" parseCombatIcons() with dictReturn: {}".format(parsedIcons)) # Debug      
+      debugNotify("<<< parseCombatIcons() with dictReturn: {}".format(parsedIcons)) # Debug      
    return parsedIcons
 
 def calculateCombatIcons(card = None, CIString = None):
    # This function calculates how many combat icons a unit is supposed to have in a battle by adding bonuses from attachments as well.
    debugNotify(">>> calculateCombatIcons()") #Debug
    if card: 
-      debugNotify(" card = {}".format(card)) #Debug
+      debugNotify("card = {}".format(card)) #Debug
       combatIcons = card.properties['Combat Icons']
    elif CIString: 
-      debugNotify(" CIString = {}".format(CIString)) #Debug
+      debugNotify("CIString = {}".format(CIString)) #Debug
       combatIcons = CIString
    else: return
-   debugNotify(" Setting Variables") #Debug
+   debugNotify("Setting Variables") #Debug
    LobotBlocked = False
    Unit_Damage = 0
    Blast_Damage = 0
    Tactics = 0
-   debugNotify(" About to process CI: {}".format(combatIcons)) #Debug
+   debugNotify("About to process CI: {}".format(combatIcons)) #Debug
    UD = re.search(r'(?<!-)UD:([1-9])',combatIcons)
    EEUD = re.search(r'EE-UD:([1-9])',combatIcons)
    BD = re.search(r'(?<!-)BD:([1-9])',combatIcons)
    EEBD = re.search(r'EE-BD:([1-9])',combatIcons)
    T = re.search(r'(?<!-)T:([1-9])',combatIcons)
    EET = re.search(r'EE-T:([1-9])',combatIcons)
-   debugNotify(" Icons Processed. Incrementing variables") #Debug
+   debugNotify("Icons Processed. Incrementing variables") #Debug
    if UD: Unit_Damage += num(UD.group(1))
    if EEUD and gotEdge(): Unit_Damage += num(EEUD.group(1))
    if BD: Blast_Damage += num(BD.group(1))
@@ -464,7 +464,7 @@ def calculateCombatIcons(card = None, CIString = None):
       whisper("Trigger automations disabled. Calculating only basic icons")
    else:
       if card: # We only check markers if we're checking a host's Combat Icons.
-         debugNotify(" Checking Markers") #Debug
+         debugNotify("Checking Markers") #Debug
          for marker in card.markers:
             if re.search(r':UD',marker[0]): Unit_Damage += card.markers[marker]
             if re.search(r':BD',marker[0]): Blast_Damage += card.markers[marker]
@@ -483,7 +483,7 @@ def calculateCombatIcons(card = None, CIString = None):
             for autoS in Autoscripts:
                extraRegex = re.search(r'ExtraIcon:(UD|BD|Tactics|EE-UD|EE-BD|EE-T):([0-9])',autoS)
                if extraRegex:
-                  debugNotify(" extraRegex = {}".format(extraRegex.groups())) #Debug
+                  debugNotify("extraRegex = {}".format(extraRegex.groups())) #Debug
                   if not chkSuperiority(autoS, card): continue
                   if not checkOriginatorRestrictions(autoS,card): continue
                   if re.search(r'-ifHaveForce', autoS) and not haveForce(): continue
@@ -497,8 +497,8 @@ def calculateCombatIcons(card = None, CIString = None):
                   if extraRegex.group(1) == 'EE-BD' and gotEdge(): Blast_Damage += num(extraRegex.group(2)) * multiplier
                   if extraRegex.group(1) == 'EE-T' and gotEdge(): Tactics += num(extraRegex.group(2)) * multiplier
                else:
-                  debugNotify(" No extra combat icons found in {}".format(card))
-      debugNotify(" Checking Constant Effects on table") #Debug
+                  debugNotify("No extra combat icons found in {}".format(card))
+      debugNotify("Checking Constant Effects on table") #Debug
       for c in table:
          Autoscripts = CardsAS.get(c.model,'').split('||')      
          for autoS in Autoscripts:
@@ -509,7 +509,7 @@ def calculateCombatIcons(card = None, CIString = None):
             if chkPlayer(autoS, c.controller, False): # If the effect is meant for our cards...
                increaseRegex = re.search(r'(Increase|Decrease)(UD|BD|Tactics):([0-9])',autoS)
                if increaseRegex:
-                  debugNotify(" increaseRegex = {}".format(increaseRegex.groups())) #Debug
+                  debugNotify("increaseRegex = {}".format(increaseRegex.groups())) #Debug
                   if checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,'type')) and checkSpecialRestrictions(autoS,card): # We check that the current card is a valid one for the constant ability.
                      if increaseRegex.group(1) == 'Increase': 
                         if increaseRegex.group(2) == 'UD': Unit_Damage += num(increaseRegex.group(3))
@@ -520,15 +520,15 @@ def calculateCombatIcons(card = None, CIString = None):
                         if increaseRegex.group(2) == 'BD': Blast_Damage -= num(increaseRegex.group(3))
                         if increaseRegex.group(2) == 'Tactics': Tactics -= num(increaseRegex.group(3))
                else:
-                  debugNotify(" No constant ability for combat icons found in {}".format(c))
+                  debugNotify("No constant ability for combat icons found in {}".format(c))
                if c.model == "ff4fb461-8060-457a-9c16-000000000386": # Lobot's ability is pretty unique.
                   LobotBlocked = True
       if card: # We only check attachments if we're checking a host's Combat Icons.
-         debugNotify(" Checking Attachments") #Debug
+         debugNotify("Checking Attachments") #Debug
          hostCards = eval(getGlobalVariable('Host Cards'))
          for attachment in hostCards:
             if hostCards[attachment] == card._id:
-               debugNotify(" Found Attachment: {}".format(Card(attachment))) #Debug
+               debugNotify("Found Attachment: {}".format(Card(attachment))) #Debug
                AS = CardsAS.get(Card(attachment).model,'')
                if AS == '': continue
                Autoscripts = AS.split('||')
@@ -543,7 +543,7 @@ def calculateCombatIcons(card = None, CIString = None):
                         Unit_Damage *= 2
                         Blast_Damage *= 2
                         Tactics *= 2
-   debugNotify(" calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
+   debugNotify("<<< calculateCombatIcons() with return: {}".format((Unit_Damage,Blast_Damage,Tactics))) # Debug
    if Unit_Damage < 0: Unit_Damage = 0 # We cannot have a negative combat icon.
    if Blast_Damage < 0: Blast_Damage = 0
    if Tactics < 0: Tactics = 0
@@ -707,7 +707,7 @@ def getKeywords(card): # A function which combines the existing card keywords, w
    for KW in keywordsList:
       keywords += '{}-'.format(KW)
    Stored_Keywords[card._id] = keywords[:-1] # We also update the global variable for this card, which is used by many functions.
-   debugNotify(" getKeywords() by returning: {}.".format(keywords[:-1]))
+   debugNotify("<<< getKeywords() by returning: {}.".format(keywords[:-1]))
    return keywords[:-1] # We need to remove the trailing dash '-'
 
 def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
@@ -720,13 +720,13 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
    costReducers = []
    ### First we check if the card has an innate reduction. 
    Autoscripts = CardsAS.get(card.model,'').split('||') 
-   debugNotify(" About to check if there's any onPay triggers on the card")
+   debugNotify("About to check if there's any onPay triggers on the card")
    if len(Autoscripts): 
       for autoS in Autoscripts:
          if not re.search(r'onPay', autoS): 
-            debugNotify(" No onPay trigger found in {}!".format(autoS))
+            debugNotify("No onPay trigger found in {}!".format(autoS))
             continue
-         eldebugNotify(" onPay trigger found in {}!".format(autoS))
+         eldebugNotify("onPay trigger found in {}!".format(autoS))
          reductionSearch = re.search(r'Reduce([0-9]+)Cost({}|All)'.format(type), autoS)
          if debugVerbosity >= 2: #Debug
             if reductionSearch: notify("!!! self-reduce regex groups: {}".format(reductionSearch.groups()))
@@ -739,7 +739,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
          if maxRegex and reduction > num(maxRegex.group(1)): reduction = num(maxRegex.group(1))
          fullCost -= reduction
          if reduction > 0 and not dryRun: notify("-- {}'s full cost is reduced by {}".format(card,reduction))
-   debugNotify(" About to gather cards on the table")
+   debugNotify("About to gather cards on the table")
    ### Now we check if any card on the table has an ability that reduces costs
    if not gatheredCardList: # A global variable that stores if we've scanned the tables for cards which reduce costs, so that we don't have to do it again.
       global costModifiers
@@ -750,7 +750,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
          Autoscripts = CardsAS.get(c.model,'').split('||')
          if len(Autoscripts) == 0: continue
          for autoS in Autoscripts:
-            debugNotify(" Checking {} with AS: {}".format(c, autoS)) #Debug
+            debugNotify("Checking {} with AS: {}".format(c, autoS)) #Debug
             if not chkPlayer(autoS, c.controller, False): continue
             reductionSearch = reductionRegex.search(autoS) 
             if debugVerbosity >= 2: #Debug
@@ -775,7 +775,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
       c = cTuple[0]
       reductionSearch = cTuple[1]
       autoS = cTuple[2]
-      debugNotify(" cTuple[0] (i.e. card) is: {}".format(c)) #Debug
+      debugNotify("cTuple[0] (i.e. card) is: {}".format(c)) #Debug
       if debugVerbosity >= 4: notify("### cTuple[2] (i.e. autoS) is: {}".format(autoS)) #Debug
       if reductionSearch.group(4) == 'All' or checkCardRestrictions(gatherCardProperties(card), prepareRestrictions(autoS,seek = 'reduce')):
          if not checkSpecialRestrictions(autoS,card): continue
@@ -789,7 +789,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
             markersCount = c.markers[mdict['Credits']]
             markersRemoved = 0
             while markersCount > 0:
-               debugNotify(" Reducing Cost with and Markers from {}".format(c)) # Debug
+               debugNotify("Reducing Cost with and Markers from {}".format(c)) # Debug
                if reductionSearch.group(1) == 'Reduce':
                   if fullCost > 0: 
                      reduction += 1
@@ -832,7 +832,7 @@ def reduceCost(card, action = 'PLAY', fullCost = 0, dryRun = False):
             if orig_reduction != reduction: # If the current card actually reduced or increased the cost, we want to announce it
                if reduction > 0 and not dryRun: notify(" -- {} reduces cost by {}".format(c,reduction - orig_reduction))
                elif reduction < 0 and dryRun: notify(" -- {} increases cost by {}".format(c,abs(reduction - orig_reduction)))
-   debugNotify(" reduceCost(). final reduction = {}".format(reduction)) #Debug
+   debugNotify("<<< reduceCost(). final reduction = {}".format(reduction)) #Debug
    return reduction
    
 def haveForce():
@@ -854,7 +854,7 @@ def compareObjectiveTraits(Trait):
    for player in getPlayers(): # We go through all the objectives of each player and count which of them have the relevant trait.
       playerTraitCounts[player.name] = 0
       Objectives = eval(player.getGlobalVariable('currentObjectives'))
-      debugNotify(" Checking {} Objectives".format(player.name)) # Debug
+      debugNotify("Checking {} Objectives".format(player.name)) # Debug
       for obj in [Card(obj_ID) for obj_ID in Objectives]:
          if re.search(r'{}'.format(Trait),obj.Traits): 
             playerTraitCounts[player.name] += 1
@@ -864,14 +864,14 @@ def compareObjectiveTraits(Trait):
             Autoscripts = CardsAS.get(card.model,'').split('||')
             if debugVerbosity >= 3: notify("### Autoscripts len = {}. Autoscripts = {}".format(len(Autoscripts),Autoscripts))
             for autoS in Autoscripts:
-               debugNotify(" Checking {} for Objective Trait boosting AS: {}".format(card,autoS)) # Debug
+               debugNotify("Checking {} for Objective Trait boosting AS: {}".format(card,autoS)) # Debug
                search = 'Trait{Objective_and_' + Trait + '}([0-9])Bonus' # Doing a concatenate because python b0rks if I try to do it with format.
                if debugVerbosity >= 3: notify("### Finished concatenating") # Debug
                TraitBonus = re.search(r'{}'.format(search),autoS)
                if TraitBonus: 
                   playerTraitCounts[player.name] += num(TraitBonus.group(1))
                   debugNotify("Found {} Trait Bonus in Autoscripts of {}. {}'s Counter now {}".format(Trait,card,player,playerTraitCounts[player.name]),2)
-   debugNotify(" Comparing Objectives count") # Debug
+   debugNotify("Comparing Objectives count") # Debug
    topPlayers = []
    currentMaxCount = 0
    for player in getPlayers():
@@ -882,7 +882,7 @@ def compareObjectiveTraits(Trait):
          currentMaxCount = playerTraitCounts[player.name]
       elif playerTraitCounts[player.name] == currentMaxCount:
          topPlayers.append(player)
-   debugNotify(" compareObjectiveTraits(). TopPlayers = {}".format([pl.name for pl in topPlayers])) #Debug
+   debugNotify("<<< compareObjectiveTraits(). TopPlayers = {}".format([pl.name for pl in topPlayers])) #Debug
    return topPlayers
 
 def chkSuperiority(Autoscript, card):
@@ -893,7 +893,7 @@ def chkSuperiority(Autoscript, card):
    if supRegex:
       supPlayers = compareObjectiveTraits(supRegex.group(1))
       if len(supPlayers) > 1 or supPlayers[0] != card.controller: haveSuperiority = False # If the controller of the card requiring superiority does not have the most objectives with that trait, we return False
-   debugNotify(" chkSuperiority(). Return: {}".format(haveSuperiority)) #Debug
+   debugNotify("<<< chkSuperiority(). Return: {}".format(haveSuperiority)) #Debug
    return haveSuperiority
    
 def calcBonusEdge(card): # This function calculated how much Edge bonus a card is providing
@@ -918,7 +918,7 @@ def calcBonusEdge(card): # This function calculated how much Edge bonus a card i
          bonus = num(edgeRegex.group(1))
          targetCards = findTarget(autoS,card = card)
          multiplier = per(autoS, card, 0, targetCards)
-         debugNotify(" Multiplier = {}. Bonus = {}".format(multiplier, bonus)) #Debug
+         debugNotify("Multiplier = {}. Bonus = {}".format(multiplier, bonus)) #Debug
          edgeBonus += (multiplier * bonus)
    if edgeBonus: notify("-- {} adds {} force to the edge total".format(card,edgeBonus))
    return edgeBonus
@@ -946,7 +946,7 @@ def hasDamageProtection(target,attacker): # A function which checks if the curre
          if re.search(r':Protection',marker[0]): 
             protected = True
             notify(":> {} is protected against {}'s damage".format(target,attacker))
-   debugNotify(" hasDamageProtection()") #Debug
+   debugNotify("<<< hasDamageProtection()") #Debug
    return protected
      
 def readyEffect(card,forced = False):
@@ -964,7 +964,7 @@ def readyEffect(card,forced = False):
    if (not hardcoreMode or card.type == 'Event' or forced) and card.owner == me and warnImminentEffects != 'Done':
       information(warnImminentEffects)
       setSetting('warnEffect', 'Done')
-   debugNotify(" readyEffect()") #Debug         
+   debugNotify("<<< readyEffect()") #Debug         
    
 def clrResourceMarkers(card):
    for cMarkerKey in card.markers: 
@@ -989,7 +989,7 @@ def clearAttachLinks(card):
                if attachedCard.controller == me: discard(attachedCard)
                else: remoteCall(attachedCard.controller, 'discard', [attachedCard,0,0,False,False,me])
             del hostCards[attachment]
-   debugNotify(" Checking if the card is attached to unlink.")      
+   debugNotify("Checking if the card is attached to unlink.")      
    if hostCards.has_key(card._id): del hostCards[card._id] # If the card was an attachment, delete the link
    setGlobalVariable('Host Cards',str(hostCards))
    debugNotify("<<< clearAttachLinks()") #Debug
@@ -1011,7 +1011,7 @@ def removeCapturedCard(card): # This function removes a captured card from the d
          rnd(1,10)
       setGlobalVariable('Captured Cards',str(capturedCards))
    except: notify("!!!ERROR!!! in removeCapturedCard()") # Debug
-   debugNotify(" removeCapturedCard() with return: {}".format(parentObjective)) #Debug
+   debugNotify("<<< removeCapturedCard() with return: {}".format(parentObjective)) #Debug
    return parentObjective
 
 def rescueFromObjective(obj): # THis function returns all captured cards from an objective to their owner's hand
@@ -1460,7 +1460,7 @@ def versionCheck():
    # if not startupMsg and (len(getPlayers()) > 1 or debugVerbosity == 0): # At debugverbosity 0 I want to try and download the version.
       # try: (url, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/current_version.txt',3000)
       # except: code = url = None
-      # debugNotify(" url:{}, code: {}".format(url,code)) #Debug
+      # debugNotify("url:{}, code: {}".format(url,code)) #Debug
       # if code != 200 or not url:
          # whisper(":::WARNING::: Cannot check version at the moment.")
          # return
@@ -1479,7 +1479,7 @@ def versionCheck():
                      # ".format(gameVersion, detailsplit[0],detailsplit[2],detailsplit[1])):
             # openUrl('http://octgn.gamersjudgement.com/viewtopic.php?f=55&t=581')
          # startupMsg = True
-   debugNotify(" versionCheck()") #Debug
+   debugNotify("<<< versionCheck()") #Debug
       
       
 def MOTD():
@@ -1500,7 +1500,7 @@ def MOTD():
          MOTDurl = '' # We don't want to spam the MOTD for the further notifications
          DYKrnd += 1
          if DYKrnd == len(DYKlist): DYKrnd = 0
-   debugNotify(" MOTD()") #Debug
+   debugNotify("<<< MOTD()") #Debug
    
 def MOTDdisplay(MOTD,DYK):
    debugNotify(">>> MOTDdisplay()") #Debug
@@ -1721,7 +1721,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
       if debugVerbosity >= 0: notify("Skipping Scripts Download for faster debug")
       code = 0
       ScriptsDownload = None
-   debugNotify(" code: {}, text: {}".format(code, ScriptsDownload)) #Debug
+   debugNotify("code: {}, text: {}".format(code, ScriptsDownload)) #Debug
    if code != 200 or not ScriptsDownload or (ScriptsDownload and not re.search(r'ANR CARD SCRIPTS', ScriptsDownload)): 
       whisper(":::WARNING::: Cannot download card scripts at the moment. Will use locally stored ones.")
       Split_Main = ScriptsLocal.split('=====') # Split_Main is separating the file description from the rest of the code
@@ -1753,7 +1753,7 @@ def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all
    if debugVerbosity >= 5: # Debug
       notify("CardsAS Dict:\n{}".format(str(CardsAS)))
       notify("CardsAA Dict:\n{}".format(str(CardsAA))) 
-   debugNotify(" fetchCardScripts()") #Debug
+   debugNotify("<<< fetchCardScripts()") #Debug
    
 #------------------------------------------------------------------------------
 # Debugging
