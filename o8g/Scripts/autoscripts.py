@@ -1071,10 +1071,8 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
          elif action.group(1) == 'Takeover':
             # I could theoretically add a modulator here to provide a different player to take control of the card. i.e. -handToAlly or -handToOpponent
-            prevController == targetCard.controller
             claimCard(targetCard)
             targetCard.moveToTable(MPxOffset, MPyOffset + yaxisMove(card))
-            autoscriptOtherPlayers('{}:CardTakeover:{}'.format(me,prevController),targetCard)
          elif action.group(1) == 'Rescue': rescue(targetCard,silent = True)
          elif action.group(1) == 'Uncommit':
             if targetCard.Side == 'Light': commitColor = LightForceColor

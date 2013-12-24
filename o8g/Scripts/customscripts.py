@@ -483,7 +483,7 @@ def MaraJade(card):
       giveCard(card,targetAlly)
       remoteCall(targetAlly,'placeCard',[card])
       notify(":> {} passed control of {} to {}.".format(me,card,targetAlly))
-      autoscriptOtherPlayers('{}:CardTakeover:{}'.format(targetAlly,me),card) # To allow Agent of the Hand to work
+      #autoscriptOtherPlayers('{}:CardTakeover:{}'.format(targetAlly,me),card) # To allow Agent of the Hand to work
    debugNotify("<<< MaraJade()") # Debug      
    
 def RemoteFunctionTemplate():

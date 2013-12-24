@@ -631,6 +631,7 @@ def giveTurn(targetPL): # Passes the turn to the requested player (used via remo
 def claimCard(card, player = me): # Requests the controller of a card to pass control to another player (script runner by default)
    debugNotify(">>> claimCard()") #Debug
    if card.controller != player: # If the card is already ours, we do not need to do anything.
+      prevController = card.controller
       remoteCall(card.controller,'giveCard', [card,player])
        # We make sure all network calls have completed before continuing.
       count = 0
@@ -642,6 +643,7 @@ def claimCard(card, player = me): # Requests the controller of a card to pass co
          if count >= 10:
             debugNotify(":::ERROR::: claimCard() failed. Card controller still {} instead of {}. Giving up".format(card.controller.name,player)) # This always seems to fail (https://github.com/kellyelton/OCTGN/issues/416#issuecomment-31157031)
             return
+      autoscriptOtherPlayers('{}:CardTakeover:{}'.format(player,prevController),card)
    debugNotify("<<< claimCard()") #Debug
    
 def giveCard(card,player,pile = None): # Passes control of a card to a given player.
