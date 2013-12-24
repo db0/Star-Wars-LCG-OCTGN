@@ -416,6 +416,8 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for player in myAllies: remoteCall(player,'ObiWan_B91',[card])
    elif card.name == "Blue Squadron Support" and action == 'USE':
       for player in myAllies: remoteCall(player,'BlueSquadronSupport',[card])
+   elif card.name == "Repair and Refurbish" and action == 'Start':
+      for player in myAllies: remoteCall(player,'RepairRefurbish',[card])
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 
 def chkLookupRestrictions(card,lookup,origin_card):
@@ -485,6 +487,18 @@ def MaraJade(card):
       notify(":> {} passed control of {} to {}.".format(me,card,targetAlly))
       #autoscriptOtherPlayers('{}:CardTakeover:{}'.format(targetAlly,me),card) # To allow Agent of the Hand to work
    debugNotify("<<< MaraJade()") # Debug      
+
+def RepairRefurbish(card):
+   mute()
+   debugNotify(">>> RepairRefurbish()") # Debug
+   currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+   damagedObjs = [Card(cID) for cID in currentObjectives if Card(cID).marker[mdict['Damage']]]
+   if len(damagedObjs):
+      choice = SingleChoice("Which of your objectives would you like to repair and refurbish?", makeChoiceListfromCardList(damagedObjs))
+      damagedObjs[choice].marker[mdict['Damage']] -= 1
+      notify(":> {} {}s {}.".format(me,card,damagedObjs[choice]))
+   debugNotify("<<< RepairRefurbish()") # Debug
+
    
 def RemoteFunctionTemplate():
 # Quick Copy this into a new Remote Function

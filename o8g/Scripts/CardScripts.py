@@ -978,7 +978,7 @@ Last Minute Rescue
 -----
 ff4fb461-8060-457a-9c16-000000000161
 -----
-afterCardRefreshing:Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-choose1-targetMine-noTargetingError-duringMyTurn-isReact
+afterCardRefreshing:Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-choose1-targetAllied-noTargetingError-duringMyTurn-isReact
 +++++
 
 .....
@@ -1106,7 +1106,7 @@ Questionable Contacts
 -----
 ff4fb461-8060-457a-9c16-000000000016
 -----
-afterCardRefreshing:Put1Damage-duringMyTurn-isReact$$Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-targetMine-choose1-isCost$$Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-choose1
+afterCardRefreshing:Put1Damage-duringMyTurn-isReact$$Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-targetAllied-choose1-isCost$$Deal1Damage-DemiAutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 .....
@@ -1212,7 +1212,7 @@ ff4fb461-8060-457a-9c16-000000000183
 -----
 
 +++++
-R0:Remove1Damage-DemiAutoTargeted-atVehicle-targetMine-choose1-onlyOnce
+R0:Remove1Damage-DemiAutoTargeted-atVehicle-targetAllied-choose1-onlyOnce
 .....
 Rescue Mission
 -----
@@ -1794,7 +1794,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000258
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -2346,7 +2346,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000300
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -2562,7 +2562,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000336
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -2570,7 +2570,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000342
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -2578,7 +2578,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000354
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -3722,7 +3722,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000504
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -3730,7 +3730,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000510
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -3882,7 +3882,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000521
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -3938,7 +3938,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000528
 -----
-onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetMine-noTargetingError
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -4258,7 +4258,7 @@ Join Me
 -----
 ff4fb461-8060-457a-9c16-000000000569
 -----
-
+onPlay:TakeoverTarget-Targeted-atUnit_and_Character_and_nonUnique
 +++++
 
 .....
@@ -4274,7 +4274,7 @@ Repair and Refurbish
 -----
 ff4fb461-8060-457a-9c16-000000000571
 -----
-
+atTurnStart:CustomScript-isReact-duringMyTurn
 +++++
 
 .....
@@ -4282,7 +4282,7 @@ Thunderflare
 -----
 ff4fb461-8060-457a-9c16-000000000572
 -----
-
+onStrike:Remove1Damage-DemiAutoTargeted-atObjective-hasMarker{Damage}-targetAllied-choose1-isCost-isReact$$Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1
 +++++
 
 .....
