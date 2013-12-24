@@ -126,7 +126,7 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       elif phase == 6: goToForce()
 
 def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
-   if debugVerbosity >= 1: notify(">>> goToBalance(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> goToBalance(){}".format(extraASDebug())) #Debug
    mute()
    atTimedEffects(Time = 'Start') # Scripted events at the start of the player's turn
    phaseRegex = re.search(r'(Dark|Light):([0-6])',getGlobalVariable('Phase'))
@@ -167,7 +167,7 @@ def goToBalance(group = table, x = 0, y = 0): # Go directly to the Balance phase
          incrStat('forceturns',me.name) # We store that the opponent has won a force struggle
          
 def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
-   if debugVerbosity >= 1: notify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> goToRefresh(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterBalance')   
    mute()
    setGlobalVariable('Phase','{}:2'.format(Side))
@@ -180,7 +180,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    else:
       for card in table:
          if card.controller in myAllies and card.highlight != CapturedColor:
-            if debugVerbosity >= 2: notify("### Removing Focus Tokens")
+            debugNotify(" Removing Focus Tokens")
             if card.markers[mdict['Focus']] and card.markers[mdict['Focus']] > 0: 
                card.markers[mdict['Focus']] -=1
                if re.search(r'Elite.', card.Text) and card.markers[mdict['Focus']] > 0: 
@@ -192,7 +192,7 @@ def goToRefresh(group = table, x = 0, y = 0): # Go directly to the Refresh phase
    atTimedEffects(Time = 'afterCardRefreshing') 
    
 def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
-   if debugVerbosity >= 1: notify(">>> goToDraw(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> goToDraw(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterRefresh') # We put "afterRefresh" in the refresh phase, as cards trigger immediately after refreshing. Not after the refresh phase as a whole.
    mute()
    for player in myAllies: remoteCall(player,'unsetRefillDone',[])
@@ -202,7 +202,7 @@ def goToDraw(group = table, x = 0, y = 0): # Go directly to the Draw phase
    if len(me.hand) == 0: refillHand() # If the player's hand is empty, there's no option to take. Just refill.
    
 def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment phase
-   if debugVerbosity >= 1: notify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> goToDeployment(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterDraw')
    mute()
    setGlobalVariable('Phase','{}:4'.format(Side))
@@ -210,7 +210,7 @@ def goToDeployment(group = table, x = 0, y = 0): # Go directly to the Deployment
    if not Automations['Start/End-of-Turn/Phase']: return
    
 def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict phase
-   if debugVerbosity >= 1: notify(">>> goToConflict(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> goToConflict(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterDeployment')   
    mute()
    setGlobalVariable('Phase','{}:5'.format(Side))
@@ -218,7 +218,7 @@ def goToConflict(group = table, x = 0, y = 0): # Go directly to the Conflict pha
    if not Automations['Start/End-of-Turn/Phase']: return
 
 def goToForce(group = table, x = 0, y = 0): # Go directly to the Force phase
-   if debugVerbosity >= 1: notify(">>> goToForce(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> goToForce(){}".format(extraASDebug())) #Debug
    atTimedEffects(Time = 'afterConflict')   
    mute()
    global forceStruggleDone
@@ -244,21 +244,21 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       commitColor = DarkForceColor
       commitOpponent = LightForceColor
       opSide = 'Light'
-   debugNotify("### Counting my committed cards") #Debug
+   debugNotify(" Counting my committed cards") #Debug
    commitedCards = [c for c in table if c.controller in myAllies and (c.highlight == commitColor or findMarker(c, "Unwavering Resolve"))]
-   debugNotify("### About to loop") #Debug
+   debugNotify(" About to loop") #Debug
    for card in commitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): myStruggleTotal += num(card.Force)
          # We only include cards in the force struggle if they are not exausted and/or have a special ability on them
       except: myStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   debugNotify("### Counting my opponents cards") #Debug
+   debugNotify(" Counting my opponents cards") #Debug
    opponentCommitedCards  = [c for c in table if c.highlight == commitOpponent]
    for card in opponentCommitedCards:
       try: 
          if card.markers[mdict['Focus']] == 0 or findMarker(card, "Unwavering Resolve") or re.search(r'ConstantEffect:Unwavering',CardsAS.get(card.model,'')): opponentStruggleTotal += num(card.Force)
       except: opponentStruggleTotal += num(card.Force) # If there's an exception, it means the card didn't ever have a focus marker
-   debugNotify("### About to check for bonus force cards") #Debug
+   debugNotify(" About to check for bonus force cards") #Debug
    for c in table:
       debugNotify("Checking {}".format(c),4) #Debug
       Autoscripts = CardsAS.get(c.model,'').split('||')
@@ -268,7 +268,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
          if bonusForce:
             targetCards = findTarget(autoS,card = c) # Some cards give a bonus according to other cards on the table (e.g. Self Preservation). So we gather those cards by an AutoTargeted search
             multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
-            debugNotify("### Found card with Bonus force") #Debug
+            debugNotify(" Found card with Bonus force") #Debug
             fBonus = (num(bonusForce.group(1)) * multiplier)
             if c.controller == me: myStruggleTotal += fBonus
             else: opponentStruggleTotal += fBonus
@@ -306,35 +306,35 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
    debugNotify("<<< resolveForceStruggle()") #Debug
          
 def engageTarget(group = table, x = 0, y = 0,targetObjective = None,silent = False): # Start an Engagement Phase
-   if debugVerbosity >= 1: notify(">>> engageTarget(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> engageTarget(){}".format(extraASDebug())) #Debug
    mute()
    if not re.search(r'5',getGlobalVariable('Phase')) and not confirm("You need to be in the conflict phase before you can engage an objective. Bypass?"):
       return
    if getGlobalVariable('Engaged Objective') != 'None': finishEngagement() 
-   if debugVerbosity >= 2: notify("About to find targeted objectives.") #Debug
+   debugNotify("About to find targeted objectives.") #Debug
    if not targetObjective:
       cardList = [c for c in table if (c.Type == 'Objective' or re.search(r'EngagedAsObjective',CardsAS.get(c.model,''))) and c.targetedBy and c.targetedBy == me and c.controller in fetchAllOpponents()]
-      if debugVerbosity >= 2: notify("About to count found objectives list. List is {}".format(cardList)) #Debug
+      debugNotify("About to count found objectives list. List is {}".format(cardList)) #Debug
       if len(cardList) == 0: 
          whisper("You need to target an opposing Objective to start an Engagement")
          return
       else: targetObjective = cardList[0]
    targetObjective.highlight = DefendColor
-   if debugVerbosity >= 2: notify("About set the global variable") #Debug
+   debugNotify("About set the global variable") #Debug
    setGlobalVariable('Engaged Objective',str(targetObjective._id))
    setGlobalVariable('Current Attacker',str(me._id))
    showCurrentPhase()
    #setGlobalVariable('Engagement Phase','1')
-   if debugVerbosity >= 2: notify("About to announce") #Debug
+   debugNotify("About to announce") #Debug
    if not silent: notify("{} forces have engaged {}'s {}".format(me,targetObjective.controller, targetObjective))
    rnd(1,10)
    autoscriptOtherPlayers('EngagedObjective',targetObjective)
    incrStat('attacks',me.name) # We store that the player has attacked an objective
-   if debugVerbosity >= 3: notify("<<< engageTarget()") #Debug
+   debugNotify(" engageTarget()") #Debug
    
 def finishEngagement(group = table, x=0, y=0, automated = False):
    mute()
-   if debugVerbosity >= 1: notify(">>> finishEngagement(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> finishEngagement(){}".format(extraASDebug())) #Debug
    # First we check for unopposed bonus
    if not automated and getGlobalVariable('Engaged Objective') == 'None': 
       whisper(":::ERROR::: You are not currently in an engagement")
@@ -357,9 +357,9 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
       cancel = False
       unopposedDamage = 1
       for c in table:
-         debugNotify("### Checking unopposed effects from {}".format(c), 4) # Debug
+         debugNotify(" Checking unopposed effects from {}".format(c), 4) # Debug
          if c.name == 'Echo Base Defense' and re.search(r'Hoth',currentTarget.Traits) and currentTarget.controller == c.controller:
-            if debugVerbosity >= 2: notify("### Found Echo Base Defense")
+            debugNotify(" Found Echo Base Defense")
             HothControllers = compareObjectiveTraits('Hoth')
             if len(HothControllers) == 1 and HothControllers[0] == c.controller:
                cancel = True
@@ -373,16 +373,16 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
                debugNotify("Found unopposed Raise: {}".format(raiseUnopposed.group(1)),4) #Debug
                targetCards = findTarget(autoS, card = c) # Some cards give a bonus according to other cards on the table. So we gather those cards by an AutoTargeted search
                multiplier = per(autoS, targetCards = targetCards) # Then we calculate the multiplier with per()
-               if debugVerbosity >= 2: notify("### Found card which raises unopposed bonus") #Debug
+               debugNotify(" Found card which raises unopposed bonus") #Debug
                uBonus = (num(raiseUnopposed.group(1)) * multiplier)
                if uBonus > unopposedDamage:
                   if uBonus: notify("-- {} raises Unopposed damage to {}".format(c,uBonus))
                   unopposedDamage = uBonus
       if not cancel:
-         debugNotify("### Unopposed Damage not cancelled")
+         debugNotify(" Unopposed Damage not cancelled")
          if currentTarget.controller.getGlobalVariable('Side') == 'Dark': attackerSide = 'Light'
          else: attackerSide = 'Dark'
-         if debugVerbosity >= 1: notify("Unopposed prolly Happens because debugVerbosity >= 1")
+         debugNotify("Unopposed prolly Happens because debugVerbosity >= 1")
          else: notify(":> The {} Side managed to finish the engagement at {} unopposed. They inflict {} extra damage to the objective.".format(attackerSide,currentTarget,unopposedDamage))
          addMarker(currentTarget, 'Damage',unopposedDamage, True)
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
@@ -400,13 +400,13 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
    clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
    clearTargets() # We clear the targets in case they were forgotten.
    atTimedEffects('afterEngagement')
-   if debugVerbosity >= 3: notify("<<< finishEngagement()") #Debug 
+   debugNotify(" finishEngagement()") #Debug 
 #---------------------------------------------------------------------------
 # Rest
 #---------------------------------------------------------------------------
 
 def gameSetup(group, x = 0, y = 0):
-   if debugVerbosity >= 1: notify(">>> gameSetup(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> gameSetup(){}".format(extraASDebug())) #Debug
    mute()
    global SetupPhase
    deck = me.piles['Command Deck']
@@ -457,7 +457,7 @@ def gameSetup(group, x = 0, y = 0):
          if me.getGlobalVariable('PLnumber') == '#1' or len(myAllies) == 1:
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
             BotD.moveToTable( MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
-            if debugVerbosity >= 2: notify("### BOTD alternate is : {}".format(BotD.alternate))
+            debugNotify(" BOTD alternate is : {}".format(BotD.alternate))
             setGlobalVariable('Balance of the Force', str(BotD._id))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.
       rnd(1,10)  # Allow time for the affiliation to be recognised
@@ -475,7 +475,7 @@ def gameSetup(group, x = 0, y = 0):
       debugNotify(str(Automations),4)
 
 def defaultAction(card, x = 0, y = 0):
-   if debugVerbosity >= 1: notify(">>> defaultAction(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> defaultAction(){}".format(extraASDebug())) #Debug
    mute()
    selectedAbility = eval(getGlobalVariable('Stored Effects'))
    if card.Type == 'Button': # The Special button cards.
@@ -559,10 +559,10 @@ def defaultAction(card, x = 0, y = 0):
          else: card.moveTo(card.owner.piles['Discard Pile']) # We discard events as soon as their effects are resolved.      
    elif card.highlight == UnpaidColor: purchaseCard(card) # If the player is double clicking on an unpaid card, we assume they just want to bypass complete payment.
    elif num(card.Resources) > 0 and findUnpaidCard(): 
-      if debugVerbosity >= 2: notify("Card has resources") # Debug
+      debugNotify("Card has resources") # Debug
       generate(card)
    elif card.Type == 'Unit' and getGlobalVariable('Engaged Objective') != 'None' and not findMarker(card, "isEnhancement"): 
-      if debugVerbosity >= 2: notify("Card is Unit and it's engagement time") # Debug
+      debugNotify("Card is Unit and it's engagement time") # Debug
       if card.orientation == Rot0: participate(card)
       else: strike(card)
    elif card.model == 'e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc': # If the players double click on the Balance of the Force, we assume they want to flip it.
@@ -571,14 +571,14 @@ def defaultAction(card, x = 0, y = 0):
          rnd(1,100)
       if card.alternate == 'DarkSide': card.switchTo() 
       else: card.switchTo('DarkSide')
-      if debugVerbosity >= 2: notify("### BOTD alternate is now : {}".format(card.alternate))
+      debugNotify(" BOTD alternate is now : {}".format(card.alternate))
       notify(":::ATTENTION::: {} flipped the balance of the force manually".format(me))
    elif CardsAA.get(card.model,'') != '': useAbility(card)
    else: whisper(":::ERROR::: There is nothing to do with this card at this moment!")
-   if debugVerbosity >= 3: notify("<<< defaultAction()") #Debug
+   debugNotify(" defaultAction()") #Debug
      
 def strike(card, x = 0, y = 0, Continuing = False):
-   if debugVerbosity >= 1: notify(">>> strike(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> strike(){}".format(extraASDebug())) #Debug
    mute()
    if not Continuing: # this variable is set when we pause a strike to allow a unit to trigger a react. If it is not set, it means it's a fresh react.
       if card.Type != 'Unit': 
@@ -596,13 +596,13 @@ def strike(card, x = 0, y = 0, Continuing = False):
       addMarker(card, 'Focus',1, True)
       #if card.highlight == LightForceColor or card.highlight == DarkForceColor: card.markers[mdict['Focus']] += 1
       if card.highlight == LightForceColor or card.highlight == DarkForceColor: addMarker(card, 'Focus',1, True)
-      if debugVerbosity >= 2: notify("Focus Added") #Debug
+      debugNotify("Focus Added") #Debug
       playStrikeSound(card)
       debugNotify("Executing Strike Scripts",2)      
       if executePlayScripts(card, 'STRIKE') == 'POSTPONED': 
          return # Strike effects almost universally happen after focus.
    autoscriptOtherPlayers('UnitStrike',card)
-   if debugVerbosity >= 2: notify("PlayScripts done. Calculating Icons") #Debug
+   debugNotify("PlayScripts done. Calculating Icons") #Debug
    Unit_DamageTXT = ''
    TacticsTXT = ''
    Unit_Damage, Blast_Damage, Tactics = calculateCombatIcons(card)
@@ -678,7 +678,7 @@ def participate(card, x = 0, y = 0, silent = False):
    executePlayScripts(card, 'PARTICIPATION')
    autoscriptOtherPlayers('UnitParticipates',card)
    clearTargets() # We clear the targets to make sure there's no random markers being put by mistake.
-   if debugVerbosity >= 3: notify("<<< participate()") #Debug
+   debugNotify(" participate()") #Debug
 
 def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from participating in a battle, to undo mistakes
    mute()
@@ -701,7 +701,7 @@ def ignoreTrigger(card,x=0,y=0):
    notify("{} chose not to activate {}'s ability".format(me,card))
 
 def generate(card, x = 0, y = 0):
-   if debugVerbosity >= 1: notify(">>> generate(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> generate(){}".format(extraASDebug())) #Debug
    mute()
    unpaidC = findUnpaidCard()
    if not unpaidC: 
@@ -733,7 +733,7 @@ def generate(card, x = 0, y = 0):
    if resResult == 'OK': purchaseCard(unpaidC, manual = False)
    elif resResult == 'USEOK': readyEffect(unpaidC)
    incrStat('resources',me.name) # We store that the player has played a unit
-   if debugVerbosity >= 3: notify("<<< generate()") #Debug
+   debugNotify(" generate()") #Debug
 
 def calcResources(card):
    debugNotify(">>> calcResources()") #Debug
@@ -752,19 +752,19 @@ def findUnpaidCard():
    else:
       for card in table:
          if (card.highlight == UnpaidColor or card.highlight == UnpaidAbilityColor) and (card.controller == me or (re.search(r'-allyPayable',CardsAA.get(card.model,'')) and card.controller in myAllies)): return card
-   if debugVerbosity >= 3: notify("<<< findUnpaidCard()") #Debug
+   debugNotify(" findUnpaidCard()") #Debug
    return None # If not unpaid card is found, return None
 
 def checkPaidResources(card):
-   if debugVerbosity >= 1: notify(">>> checkPaidResources()") #Debug
+   debugNotify(">>> checkPaidResources()") #Debug
    count = 0
    affiliationMatch = False
    for cMarkerKey in card.markers: #We check the key of each marker on the card
       for resdictKey in resdict:  #against each resource type available
-         if debugVerbosity >= 2: notify("About to compare marker keys: {} and {}".format(resdict[resdictKey],cMarkerKey)) #Debug
+         debugNotify("About to compare marker keys: {} and {}".format(resdict[resdictKey],cMarkerKey)) #Debug
          if resdict[resdictKey] == cMarkerKey: # If the marker is a resource
             count += card.markers[cMarkerKey]  # We increase the count of how many resources have been paid for this card
-            if debugVerbosity >= 2: notify("About to check found resource affiliaton") #Debug
+            debugNotify("About to check found resource affiliaton") #Debug
             if 'Resource:{}'.format(card.Affiliation) == resdictKey: # if the card's affiliation also matches the currently checked resource
                if debugVerbosity >= 3: notify("### Affiliation match. Affiliation = {}. Marker = {}.".format(card.Affiliation,resdictKey))
                affiliationMatch = True # We set that we've also got a matching resource affiliation
@@ -775,33 +775,33 @@ def checkPaidResources(card):
       if c.controller == me and re.search("IgnoreAffiliationMatch",CardsAS.get(c.model,'')) and chkDummy(CardsAS.get(c.model,''), c): 
          notify(":> Affiliation match ignored due to {}.".format(c))
          affiliationMatch = True
-   if debugVerbosity >= 2: notify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
+   debugNotify("About to check successful cost. Count: {}, Affiliation: {}".format(count,card.Affiliation)) #Debug
    if card.highlight == UnpaidAbilityColor:
       selectedAbility = eval(getGlobalVariable('Stored Effects'))
       reduction = reduceCost(card, 'USE', selectedAbility[card._id][1] - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
       if count >= selectedAbility[card._id][1] - reduction:
-         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return USEOK") #Debug
+         debugNotify(" checkPaidResources(). Return USEOK") #Debug
          reduceCost(card, 'USE', selectedAbility[card._id][1] - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'USEOK'
       else:
          if count >= selectedAbility[card._id][1] - reduction and not affiliationMatch:
             notify(":::WARNING::: Ability cost reached but there is no affiliation match!")
-         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
+         debugNotify(" checkPaidResources(). Return NOK") #Debug
          return 'NOK'      
    else:
       reduction = reduceCost(card, 'PLAY', num(card.Cost) - count, dryRun = True) # We do a dry run first. We do not want to trigger once-per turn abilities until the point where we've actually paid the cost.
       if count >= num(card.Cost) - reduction and (card.Affiliation == 'Neutral' or affiliationMatch or (not affiliationMatch and (num(card.Cost) - reduction) == 0)):
-         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return OK") #Debug
+         debugNotify(" checkPaidResources(). Return OK") #Debug
          reduceCost(card, 'PLAY', num(card.Cost) - count) # Now that we've actually made sure we've paid the cost, we use any ability that reduces costs.
          return 'OK'
       else:
          if count >= num(card.Cost) - reduction and not affiliationMatch:
             notify(":::WARNING::: Card cost reached but there is no affiliation match!")
-         if debugVerbosity >= 3: notify("<<< checkPaidResources(). Return NOK") #Debug
+         debugNotify(" checkPaidResources(). Return NOK") #Debug
          return 'NOK'
 
 def purchaseCard(card, x=0, y=0, manual = True):
-   if debugVerbosity >= 1: notify(">>> purchaseCard(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> purchaseCard(){}".format(extraASDebug())) #Debug
    global unpaidCard
    if manual and card.highlight != ReadyEffectColor: checkPaid = checkPaidResources(card)
    # If this is an attempt to manually pay for the card, we check that the player can afford it (e.g. it's zero cost or has cost reduction effects)
@@ -818,10 +818,10 @@ def purchaseCard(card, x=0, y=0, manual = True):
       playEventSound(card)
       executePlayScripts(card, 'PLAY') 
       if card.Type != 'Event': autoscriptOtherPlayers('CardPlayed',card) # We script for playing events only after their events have finished resolving in the default action.
-   if debugVerbosity >= 3: notify("<<< purchaseCard()") #Debug
+   debugNotify(" purchaseCard()") #Debug
 
 def commit(card, x = 0, y = 0):
-   if debugVerbosity >= 1: notify(">>> commit(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> commit(){}".format(extraASDebug())) #Debug
    mute()
    if Side == 'Light': commitColor = LightForceColor
    else: commitColor = DarkForceColor
@@ -836,18 +836,18 @@ def commit(card, x = 0, y = 0):
    card.highlight = commitColor
    executePlayScripts(card, 'COMMIT')
    autoscriptOtherPlayers('ForceCommit',card)
-   if debugVerbosity >= 3: notify("<<< commit()") #Debug
+   debugNotify(" commit()") #Debug
 
 def clearCommit(card, x=0, y=0): # Clears a unit from participating in a battle, to undo mistakes
    mute()
-   if debugVerbosity >= 1: notify(">>> clearCommit(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> clearCommit(){}".format(extraASDebug())) #Debug
    if Side == 'Light': commitColor = LightForceColor
    else: commitColor = DarkForceColor
-   if debugVerbosity >= 2: notify("### Checking for commitColor: {}".format(commitColor)) #Debug
+   debugNotify(" Checking for commitColor: {}".format(commitColor)) #Debug
    if card.highlight == commitColor:
-      if debugVerbosity >= 2: notify("### commitColor found!") #Debug
+      debugNotify(" commitColor found!") #Debug
       card.highlight = None
-      if debugVerbosity >= 2: notify("### About to notify!") #Debug
+      debugNotify(" About to notify!") #Debug
       notify(":::ATTENTION::: {} takes {} out of its commitment to the force.".format(me, card))
    else: whisper(":::ERROR::: Unit is not currently committed to the force.")
 
@@ -961,21 +961,21 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
    if not targetC:
       debugNotify("Don't have preset target. Seeking...")
       for card in table:
-         debugNotify("### Searching table") #Debug
+         debugNotify(" Searching table") #Debug
          if card.targetedBy and card.targetedBy == me and card.Type != "Objective": 
             if card.highlight == CapturedColor and not confirm("Are you sure you want to move this captured card to a different objective?"): continue
             targetC = card
       if targetC: captureTXT = "{} has captured {}'s {}".format(me,targetC.owner,targetC)
       else:
-         debugNotify("### Searching opponents' hand") #Debug
+         debugNotify(" Searching opponents' hand") #Debug
          for opponentPL in fetchAllOpponents():
             for card in opponentPL.hand:
                if card.targetedBy and card.targetedBy == me: targetC = card
             if targetC: captureTXT = "{} has captured one card from {}'s hand".format(me,targetC.owner)
             else:
-               debugNotify("### Searching command deck") #Debug
+               debugNotify(" Searching command deck") #Debug
                for card in opponentPL.piles['Command Deck'].top(3):
-                  debugNotify("### Checking {}".format(card), 3) #Debug
+                  debugNotify(" Checking {}".format(card), 3) #Debug
                   if card.targetedBy and card.targetedBy == me: targetC = card
                if targetC: captureTXT = "{} has captured one card from {}'s Command Deck".format(me,targetC.owner)
    else: captureTXT = ":> {} has captured one card from {}".format(me,targetC.owner)
@@ -1032,7 +1032,7 @@ def capture(group = table,x = 0,y = 0, chosenObj = None, targetC = None, silent 
          captureTXT += " as part of their {} objective".format(chosenObj)
          if not silent: notify(captureTXT)
          rnd(1,10)
-         if debugVerbosity >= 2: notify("About evaluate capture cards")
+         debugNotify("About evaluate capture cards")
          capturedCards = eval(getGlobalVariable('Captured Cards'))
          capturedCards[targetC._id] = chosenObj._id
          if captureGroup == table: clearAttachLinks(targetC) # If the card was in the table, we check if it had any attachments to discard
@@ -1111,7 +1111,7 @@ def exileCard(card, silent = False,Continuing = False):
    executePlayScripts(card, 'DISCARD')
  
 def inspectCard(card, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.
-   if debugVerbosity >= 1: notify(">>> inspectCard(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> inspectCard(){}".format(extraASDebug())) #Debug
    #if debugVerbosity > 0: finalTXT = 'AutoScript: {}\n\n AutoAction: {}'.format(CardsAS.get(card.model,''),CardsAA.get(card.model,''))
    if card.model == "e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc": 
       information("This is the Balance of the Force card.\
@@ -1127,7 +1127,7 @@ def inspectCard(card, x = 0, y = 0): # This function shows the player the card t
       information("{}".format(finalTXT))
 
 def inspectTargetCard(group, x = 0, y = 0): # This function shows the player the card text, to allow for easy reading until High Quality scans are procured.
-   if debugVerbosity >= 1: notify(">>> inspectTargetCard(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> inspectTargetCard(){}".format(extraASDebug())) #Debug
    for card in table:
       if card.targetedBy and card.targetedBy == me: inspectCard(card)
 
@@ -1136,14 +1136,14 @@ def concede(group,x=0,y=0):
    notify("=== {} Concedes the Game ===".format(me))
       
 def rulings(card, x = 0, y = 0):
-   if debugVerbosity >= 1: notify(">>> rulings(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> rulings(){}".format(extraASDebug())) #Debug
    mute()
    #if not card.isFaceUp: return
    #openUrl('http://www.netrunneronline.com/cards/{}/'.format(card.Errata))
    openUrl('http://www.cardgamedb.com/index.php/netrunner/star-wars-card-search?text={}&fTS=0'.format(card.name)) # Errata is not filled in most card so this works better until then
 
 def play(card):
-   if debugVerbosity >= 1: notify(">>> play(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> play(){}".format(extraASDebug())) #Debug
    global unpaidCard, limitedPlayed
    mute()
    extraTXT = ''
@@ -1162,7 +1162,7 @@ def play(card):
    if card.Type == 'Enhancement':
       hostType = re.search(r'Placement:([A-Za-z1-9:_ ]+)', CardsAS.get(card.model,''))
       if hostType:
-         if debugVerbosity >= 2: notify("### hostType: {}.".format(hostType.group(1))) #Debug
+         debugNotify(" hostType: {}.".format(hostType.group(1))) #Debug
          host = findTarget('Targeted-at{}'.format(hostType.group(1)))
          if host == []: 
             whisper("ABORTING!")
@@ -1237,13 +1237,13 @@ def playEdge(card, silent = False):
    
 def revealEdge(group = table, x=0, y=0, forceCalc = False):
    mute()
-   if debugVerbosity >= 1: notify(">>> revealEdge(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> revealEdge(){}".format(extraASDebug())) #Debug
    if num(getGlobalVariable('Engagement Phase')) < 3: nextPhase(setTo = 3)
    edgeRevealed = eval(getGlobalVariable('Revealed Edge'))
    if not edgeRevealed.get(me.name,False) and not forceCalc:
       fateNr = 0
       edgeNr = 0
-      if debugVerbosity >= 2: notify("Edge cards not revealed yet. About to do that") #Debug
+      debugNotify("Edge cards not revealed yet. About to do that") #Debug
       for card in table:
          if card.highlight == EdgeColor and not card.isFaceUp and card.controller in myAllies:
             card.isFaceUp = True
@@ -1259,7 +1259,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
       setGlobalVariable('Revealed Edge',str(edgeRevealed))
    else:
       winnerDifference = 0
-      if debugVerbosity >= 2: notify("Edge cards already revealed. Gonna calculate edge") #Debug
+      debugNotify("Edge cards already revealed. Gonna calculate edge") #Debug
       if forceCalc: # forceCalc is only used to make sure the edge has been assigned. If a player already has the edge, we don't change it
          for player in getPlayers(): # This is because they may have calculated the edge in the edge phase and discarded their edge cards laready.
             plAffiliation = getSpecial('Affiliation',player)
@@ -1276,13 +1276,13 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             if card.highlight == FateColor: notify(":::WARNING::: {} has not yet resolved their {}".format(card.owner,card))
          bonusEdge = calcBonusEdge(card)
          if bonusEdge: # Card with edge need to be participating.
-            if debugVerbosity >= 2: notify("### Found card with Bonus edge") #Debug
+            debugNotify(" Found card with Bonus edge") #Debug
             if card.controller in myAllies: myEdgeTotal += bonusEdge
             else: opponentEdgeTotal += bonusEdge
       currentTarget = Card(num(getGlobalVariable('Engaged Objective'))) # We find out what the current objective as we can use it to figure out if we're an attacker or defender.
       if myEdgeTotal > opponentEdgeTotal:
          winnerDifference = myEdgeTotal - opponentEdgeTotal
-         if debugVerbosity >= 2: notify("### I've got the edge") #Debug
+         debugNotify(" I've got the edge") #Debug
          if currentTarget.controller in myAllies: allyPL = currentTarget.controller
          else: 
             try:
@@ -1321,8 +1321,8 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             incrStat('edgev',opponentPL.name) # We store that the player has won an edge battle
          elif not forceCalc: whisper(":::NOTICE::: Your opponent already have the edge. Nothing else to do.")
       else: 
-         if debugVerbosity >= 2: notify("### Edge is a Tie") #Debug
-         if debugVerbosity >= 2: notify("### Finding defender's Affiliation card.") #Debug
+         debugNotify(" Edge is a Tie") #Debug
+         debugNotify(" Finding defender's Affiliation card.") #Debug
          defenderAffiliation = getSpecial('Affiliation',currentTarget.controller)
          unopposed = True
          for card in table:
@@ -1333,7 +1333,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
             except: 
                notify(":::ERROR::: Nobody is currently attacking. Aborting!")
                return
-            if debugVerbosity >= 2: notify("### Unopposed Attacker") #Debug
+            debugNotify(" Unopposed Attacker") #Debug
             if not (Affiliation.markers[mdict['Edge']] and Affiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                Affiliation.markers[mdict['Edge']] = 1
@@ -1342,7 +1342,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                incrStat('edgev',attacker.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The attacker already has the edge. Nothing else to do.")
          else:
-            if debugVerbosity >= 2: notify("### Defender's Advantage") #Debug
+            debugNotify(" Defender's Advantage") #Debug
             if not (defenderAffiliation.markers[mdict['Edge']] and defenderAffiliation.markers[mdict['Edge']] == 1): 
                clearEdgeMarker() # We clear the edge, in case another player's affiliation card had it
                defenderAffiliation.markers[mdict['Edge']] = 1
@@ -1350,7 +1350,7 @@ def revealEdge(group = table, x=0, y=0, forceCalc = False):
                autoscriptOtherPlayers('DefenderEdgeWin',currentTarget, 0)
                incrStat('edgev',currentTarget.controller.name) # We store that the player has won an edge battle
             elif not forceCalc: whisper(":::NOTICE::: The defender already has the edge. Nothing else to do.")
-      if debugVerbosity >= 3: notify("<<< revealEdge()") #Debug
+      debugNotify(" revealEdge()") #Debug
 
 def placeReserve(card):
    debugNotify(">>> placeReserve()") #Debug
@@ -1406,17 +1406,17 @@ def grabFullReserves():
    return fullReserves
       
 def groupToDeck (group = me.hand, player = me, silent = False):
-   if debugVerbosity >= 1: notify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
    mute()
    deck = player.piles['R&D/Stack']
    count = len(group)
    for c in group: c.moveTo(deck)
    if not silent: notify ("{} moves their whole {} to their {}.".format(player,pileName(group),pileName(deck)))
-   if debugVerbosity >= 3: notify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(pileName(group),pileName(deck),count)) #Debug
+   debugNotify(" groupToDeck() with return:\n{}\n{}\n{}".format(pileName(group),pileName(deck),count)) #Debug
    return(pileName(group),pileName(deck),count) # Return a tuple with the names of the groups.
    
 def mulligan(group):
-   if debugVerbosity >= 1: notify(">>> mulligan(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> mulligan(){}".format(extraASDebug())) #Debug
    if not confirm("Are you sure you want to take a mulligan?"): return
    notify("{} is taking a Mulligan...".format(me))
    groupToDeck(group,silent = True)
@@ -1426,21 +1426,21 @@ def mulligan(group):
       rnd(1,10)
       whisper("Shuffling...")
    drawMany(count = 6)   
-   if debugVerbosity >= 3: notify("<<< mulligan()") #Debug
+   debugNotify(" mulligan()") #Debug
 
 def groupToDeck (group = me.hand, player = me, silent = False):
-   if debugVerbosity >= 1: notify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> groupToDeck(){}".format(extraASDebug())) #Debug
    mute()
    deck = player.piles['Command Deck']
    count = len(group)
    for c in group: c.moveTo(deck)
-   if debugVerbosity >= 2: notify("About to announce")
+   debugNotify("About to announce")
    if not silent: notify ("{} moves their whole {} to their {}.".format(player,group.name,deck.name))
-   if debugVerbosity >= 3: notify("<<< groupToDeck() with return:\n{}\n{}\n{}".format(group.name,deck.name,count)) #Debug
+   debugNotify(" groupToDeck() with return:\n{}\n{}\n{}".format(group.name,deck.name,count)) #Debug
    return(group.name,deck.name,count) # Return a tuple with the names of the groups.
 
 def handRandomDiscard(group, count = None, player = None, destination = None, silent = False):
-   if debugVerbosity >= 1: notify(">>> handRandomDiscard(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> handRandomDiscard(){}".format(extraASDebug())) #Debug
    mute()
    if not player: player = me
    if not destination: destination = player.piles['Discard Pile']
@@ -1457,7 +1457,7 @@ def handRandomDiscard(group, count = None, player = None, destination = None, si
       if card == None: return iter + 1 # If we have no more cards, then return how many we managed to discard.
       card.moveTo(destination)
       if not silent: notify("{} discards {} at random.".format(player,card))
-   if debugVerbosity >= 2: notify("<<< handRandomDiscard() with return {}".format(iter + 1)) #Debug
+   debugNotify("<<< handRandomDiscard() with return {}".format(iter + 1)) #Debug
    return iter + 1 #We need to increase the iter by 1 because it starts iterating from 0
    
 def randomDiscard(group):
@@ -1478,16 +1478,16 @@ def sendToBottom(cards = None,x=0,y=0, Continuing = False,silent = False):
       delayed_whisper(":::ERROR::: There's no cards selected to send to the Bottom of your deck. Aborting!")
       return
    else:
-      if debugVerbosity >= 1: notify("### Card List = {}".format([c.name for c in cards])) #Debug
+      debugNotify(" Card List = {}".format([c.name for c in cards])) #Debug
       mute()
       if len(cards) == 0: return
-      if debugVerbosity >= 2: notify("### Original List: {}".format([card.name for card in cards])) #Debug
+      debugNotify(" Original List: {}".format([card.name for card in cards])) #Debug
       for iter in range(len(cards)):
          if iter % 5 == 0: notify("---PLEASE DO NOT MOVE ANY CARDS AROUND---")
          if iter % 2 == 0: notify("Randomizing({}/{} done)...".format(iter, len(cards)))
          swap = rnd(iter,len(cards) - 1)
          cards[iter], cards[swap] = cards[swap], cards[iter]
-      if debugVerbosity >= 2: notify("### Randomized List: {}".format([card.name for card in cards])) #Debug
+      debugNotify(" Randomized List: {}".format([card.name for card in cards])) #Debug
       if cards[0].group == me.hand:
          if not silent: notify("{} sends {} cards from their hand to the bottom of their respective decks in random order.".format(me,len(cards)))
       else:
@@ -1545,7 +1545,7 @@ def returnToHand(card,x = 0,y = 0,silent = False,Continuing = False):
    
    
 def drawCommand(group, silent = False):
-   if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> drawCommand(){}".format(extraASDebug())) #Debug
    mute()
    if len(group) == 0 and len(myAllies) == 1:
       notify(":::ATTENTION::: {} cannot draw another card. {} loses the game!".format(me,me))
@@ -1555,24 +1555,24 @@ def drawCommand(group, silent = False):
    if not silent: notify("{} Draws a command card.".format(me))
 
 def drawCommandCard(card):
-   if debugVerbosity >= 1: notify(">>> drawCommand(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> drawCommand(){}".format(extraASDebug())) #Debug
    mute()
    notify("{} Takes a command card from the {} position in their command deck to their hand.".format(me,numOrder(card.getIndex)))
    card.moveTo(me.hand)
 
 def drawObjective(group = me.piles['Objective Deck'], silent = False):
-   if debugVerbosity >= 1: notify(">>> drawObjective(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> drawObjective(){}".format(extraASDebug())) #Debug
    mute()
    if len(group) == 0: return
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
    if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
    card = group.top()
    storeObjective(card)
-   if debugVerbosity >= 2: notify(">>> About to announce()") #Debug
+   debugNotify(">>> About to announce()") #Debug
    if not silent: notify("{}'s new objective is {}.".format(me,card))
    
 def playObjectiveCard(card):
-   if debugVerbosity >= 1: notify(">>> drawObjective(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> drawObjective(){}".format(extraASDebug())) #Debug
    mute()
    currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
    if len(currentObjectives) >= 3 and not confirm("You already control the maximum of 3 objectives. Are you sure you want to play another?"): return
@@ -1580,8 +1580,8 @@ def playObjectiveCard(card):
    notify("{}'s new objective is {}.".format(me,card))
    
 def drawMany(group = me.piles['Command Deck'], count = None, destination = None, silent = False):
-   if debugVerbosity >= 1: notify(">>> drawMany(){}".format(extraASDebug())) #Debug
-   if debugVerbosity >= 2: notify("source: {}".format(group.name))
+   debugNotify(">>> drawMany(){}".format(extraASDebug())) #Debug
+   debugNotify("source: {}".format(group.name))
    if debugVerbosity >= 2 and destination: notify("destination: {}".format(destination.name))
    mute()
    if destination == None: destination = me.hand
@@ -1596,18 +1596,18 @@ def drawMany(group = me.piles['Command Deck'], count = None, destination = None,
    for c in group.top(count): 
       c.moveTo(destination)
    if not silent: notify("{} draws {} cards.".format(me, count))
-   if debugVerbosity >= 3: notify("<<< drawMany() with return: {}".format(count))
+   debugNotify(" drawMany() with return: {}".format(count))
    return count
 
 def refillHand(group = me.hand): # Simply refills the player's hand to their reserve maximum
-   if debugVerbosity >= 1: notify(">>> refillHand(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> refillHand(){}".format(extraASDebug())) #Debug
    mute()
    global handRefillDone
    if len(me.hand) < me.Reserves - len(me.piles['Common Reserve']): 
       drawMany(count = me.Reserves - len(me.hand) - len(me.piles['Common Reserve']))
    notify(":> {} Refills their hand to their reserve maximum".format(me))
    handRefillDone = True
-   if debugVerbosity >= 3: notify("<<< refillHand()")
+   debugNotify(" refillHand()")
         
 def drawBottom(group, x = 0, y = 0):
 	if len(group) == 0: return
@@ -1733,7 +1733,7 @@ def subMarker(card, tokenType,count = 1,silent = False):
    
     
 def addCustomMarker(cards, x = 0, y = 0): # A simple function to manually add any of the available markers.
-   if debugVerbosity >= 1: notify(">>> addMarker(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> addMarker(){}".format(extraASDebug())) #Debug
    mute()
    marker, quantity = askMarker() # Ask the player how many of the same type they want.
    if quantity == 0: return
@@ -1757,7 +1757,7 @@ def gainEdge(group, x = 0, y = 0):
    Affiliation.markers[mdict['Edge']] = 1             
    
 def findCounterPrevention(count, counter, targetPL): # Find out if the player has any markers preventing them form gaining specific counters (Credits, Agenda Points etc)
-   if debugVerbosity >= 1: notify(">>> findCounterPrevention(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> findCounterPrevention(){}".format(extraASDebug())) #Debug
    preventionFound = 0
    forfeit = None
    preventionType = 'preventCounter:{}'.format(counter)
@@ -1774,7 +1774,7 @@ def findCounterPrevention(count, counter, targetPL): # Find out if the player ha
             count -= 1 # We reduce how much counter we still need to add by 1
             card.markers[foundMarker] -= 1 # We reduce the specific counter prevention counters by 1
          if count == 0: break # If we've found enough protection to alleviate all counters, stop the search.
-   if debugVerbosity >= 3: notify("<<< findCounterPrevention() by returning: {}".format(preventionFound))
+   debugNotify(" findCounterPrevention() by returning: {}".format(preventionFound))
    return preventionFound   
  
 #------------------------------------------------------------------------------

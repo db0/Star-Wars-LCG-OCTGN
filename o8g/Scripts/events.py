@@ -58,7 +58,7 @@ def setupSide():
    return True
    
 def checkDeckLegality():
-   if debugVerbosity >= 1: notify(">>> checkDeckLegality()") #Debug
+   debugNotify(">>> checkDeckLegality()") #Debug
    mute()
    notify ("--> Checking deck of {} ...".format(me))
    ok = True
@@ -94,7 +94,7 @@ def checkDeckLegality():
          else: limitedBlocksFound.append(card.Block)
       limitedAffiliation = re.search(r'([A-Za-z ]+) affiliation only\.',card.Text)
       if limitedAffiliation:
-         if debugVerbosity >= 2: notify("#### Limited Affiliation ({}) card found: {}".format(limitedAffiliation.group(1),card))
+         debugNotify(" Limited Affiliation ({}) card found: {}".format(limitedAffiliation.group(1),card))
          if limitedAffiliation.group(1) != Affiliation.Affiliation:
             notify(":::ERROR::: Restricted Affiliation Objective found in {}'s deck: {}".format(me,card))
             ok = False
@@ -121,7 +121,7 @@ def checkDeckLegality():
    else: 
       notify(" -> Deck of {} is Illegal!".format(me))
       information("We have found illegal cards in your deck. Please load a legal deck!")
-   if debugVerbosity >= 3: notify("<<< checkDeckLegality() with return: {}".format(ok)) #Debug
+   debugNotify(" checkDeckLegality() with return: {}".format(ok)) #Debug
    debugNotify("pods = {}".format(str(podList).replace(" ", "")))
    me.setGlobalVariable('Pods',str(podList).replace(" ", ""))
    

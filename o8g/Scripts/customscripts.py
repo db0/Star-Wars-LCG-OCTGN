@@ -29,22 +29,22 @@ def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notific
    return announceString
 
 def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly unique to specific cards, not worth making a whole generic function for them.
-   if debugVerbosity >= 1: notify(">>> CustomScript() with action: {}".format(action)) #Debug
+   debugNotify(">>> CustomScript() with action: {}".format(action)) #Debug
    mute()
    discardPile = me.piles['Discard Pile']
    objectives = me.piles['Objective Deck']
    deck = me.piles['Command Deck']
    if card.name == 'A Journey to Dagobah' and action == 'THWART' and card.owner == me:
-      if debugVerbosity >= 2: notify("### Journey to Dagobath Script")
+      debugNotify(" Journey to Dagobath Script")
       objList = []
-      if debugVerbosity >= 2: notify("### Moving objectives to removed from game pile")
+      debugNotify(" Moving objectives to removed from game pile")
       for c in objectives:
          c.moveTo(me.ScriptingPile)
          objList.append(c._id)
       rnd(1,10)
       objNames = []
       objDetails = []
-      if debugVerbosity >= 2: notify("### Storing objective properties and moving them back")
+      debugNotify(" Storing objective properties and moving them back")
       for obj in objList:
          if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(obj).name))
          if Card(obj).name in objNames: 
@@ -63,7 +63,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if choice:
          storeObjective(Card(objList[choice]))
          shuffle(objectives)
-         if debugVerbosity >= 2: notify("#### About to announce")
+         debugNotify(" About to announce")
          notify("{} uses the ability of {} to replace it with {}".format(me,card,Card(objList[choice])))
    elif card.name == 'Black Squadron Pilot' and action == 'PLAY':
       if len(findTarget('AutoTargeted-atFighter_and_Unit-targetMine')) > 0 and confirm("This unit has an optional ability which allows it to be played as an enchantment on a fighter. Do so now?"):
@@ -73,7 +73,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          hostCards[card._id] = fighter[0]._id
          setGlobalVariable('Host Cards',str(hostCards))
          cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == fighter[0]._id])
-         if debugVerbosity >= 2: notify("### About to move into position") #Debug
+         debugNotify(" About to move into position") #Debug
          x,y = fighter[0].position
          card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
          card.sendToBack()
@@ -86,7 +86,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          hostCards[card._id] = fighter[0]._id
          setGlobalVariable('Host Cards',str(hostCards))
          cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == fighter[0]._id])
-         if debugVerbosity >= 2: notify("### About to move into position") #Debug
+         debugNotify(" About to move into position") #Debug
          x,y = fighter[0].position
          card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
          card.sendToBack()
@@ -111,7 +111,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             minCost = num(c.Cost)
          elif num(c.Cost) == minCost: currTargets.append(c)
          else: pass
-      if debugVerbosity >= 2: notify("### Finished currTargets") #Debug         
+      debugNotify(" Finished currTargets") #Debug         
       if debugVerbosity >= 4 and len(currTargets) > 0: notify("### Minimum Cost Targets = {}".format([c.name for c in currTargets])) #Debug
       if len(currTargets) == 1: finalTarget = currTargets[0]
       else: 
@@ -120,7 +120,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             notify(":::NOTICE::: {} has skipped Rancor's effects this turn".format(me))
             return
          finalTarget = currTargets[choice]
-      if debugVerbosity >= 2: notify("### finalTarget = {}".format(finalTarget)) #Debug
+      debugNotify(" finalTarget = {}".format(finalTarget)) #Debug
       if finalTarget.controller == me: discard(finalTarget,silent = True)
       else: remoteCall(finalTarget.controller, 'discard', [finalTarget,0,0,True,False,me])
       if finalTarget == card: notify("{}'s Rancor destroys itself in its wild rampage".format(me))
@@ -140,9 +140,9 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          targetC.moveTo(targetC.owner.hand)
          notify("{} has rescued a card".format(me))
    elif card.name == 'Return of the Jedi' and action == 'PLAY':
-      if debugVerbosity >= 2: notify("### Return of the Jedi")
+      debugNotify(" Return of the Jedi")
       discardList = []
-      if debugVerbosity >= 2: notify("### Moving Force Users to 'removed from game' pile from discard pile")
+      debugNotify(" Moving Force Users to 'removed from game' pile from discard pile")
       for c in discardPile:
          c.moveTo(me.ScriptingPile)
          discardList.append(c._id)
@@ -150,7 +150,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       unitNames = []
       unitDetails = []
       ForceUserList = []
-      if debugVerbosity >= 2: notify("### Storing unit properties and moving them back")
+      debugNotify(" Storing unit properties and moving them back")
       for unit in discardList:
          if debugVerbosity >= 3: notify("#### Card Name: {}".format(Card(unit).name))
          if not Card(unit).name in unitNames and re.search(r'Force User',Card(unit).Traits):
@@ -176,7 +176,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          choice = SingleChoice("Which Force User unit do you want to put into play from your discard pile?", unitChoices, type = 'button', default = 0)
       if choice:
          placeCard(Card(ForceUserList[choice]))
-         if debugVerbosity >= 2: notify("#### About to announce")
+         debugNotify(" About to announce")
          notify("{} returns into play".format(Card(ForceUserList[choice])))
    elif card.name == 'Superlaser Engineer' and action == 'PLAY': 
       cardList = []
@@ -215,7 +215,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
          debugNotify("Card Name: {}".format(Card(cid).name))
          cardNames.append(Card(cid).name)
          cardDetails.append((Card(cid).Type,Card(cid).properties['Damage Capacity'],Card(cid).Resources,Card(cid).Traits,parseCombatIcons(Card(cid).properties['Combat Icons']),Card(cid).Text)) # Creating a tuple with some details per objective
-         debugNotify("#### Finished Storing.")
+         debugNotify(" Finished Storing.")
       ChoiceTXT = []
       for iter in range(len(cardList)):
          ChoiceTXT.append("{}\
@@ -325,13 +325,13 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       if debugVerbosity >= 4: notify("### choiceC = {}".format(choiceC)) # Debug
       if debugVerbosity >= 4: notify("### currentTargets = {}".format([currentTarget.name for currentTarget in currentTargets])) # Debug
       sourceCard = currentTargets.pop(choiceC)
-      if debugVerbosity >= 2: notify("### sourceCard = {}".format(sourceCard)) # Debug
+      debugNotify(" sourceCard = {}".format(sourceCard)) # Debug
       targetCard = currentTargets[0] # After we pop() the choice card, whatever remains is the target card.
-      if debugVerbosity >= 2: notify("### targetCard = {}".format(targetCard)) # Debug
+      debugNotify(" targetCard = {}".format(targetCard)) # Debug
       printedIcons = parseCombatIcons(sourceCard.properties['Combat Icons'])
       IconChoiceList = ["Unit Damage","Edge-Enabled Unit Damage","Blast Damage","Edge-Enabled Blast Damage","Tactics","Edge-Enabled Tactics"] # This list is a human readable one for the user to choose an icon
       IconList = ["UD","EE-UD","BD","EE-BD","Tactics","EE-Tactics"] # This list has the same icons as the above, but uses the keywords that the game expects in a marker, so it makes it easier to figure out which icon the user selected.
-      if debugVerbosity >= 2: notify("### About to select combat icon to steal")
+      debugNotify(" About to select combat icon to steal")
       choiceIcons = SingleChoice("The card has the following printed Combat Icons: {}.\nChoose a combat icon to steal.\n(We leave the choice open, in case the card has received a combat icon from a card effect)".format(printedIcons), IconChoiceList, type = 'button', default = 0)
       #card.markers[mdict['Focus']] += 1
       addMarker(card, 'Focus',1, True)
@@ -380,7 +380,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             hostCards[card._id] = vehicle[0]._id
             setGlobalVariable('Host Cards',str(hostCards))
             cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == vehicle[0]._id])
-            if debugVerbosity >= 2: notify("### About to move into position") #Debug
+            debugNotify(" About to move into position") #Debug
             x,y = vehicle[0].position
             card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
             card.sendToBack()

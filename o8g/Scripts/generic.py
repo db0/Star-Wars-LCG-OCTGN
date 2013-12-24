@@ -126,7 +126,7 @@ class OKWindow(Form): # This is a WinForm which creates a simple window, with so
          self.timer_tries += 1
             
 def information(Message):
-   if debugVerbosity >= 1: notify(">>> information() with message: {}".format(Message))
+   debugNotify(">>> information() with message: {}".format(Message))
    if Automations['WinForms']:
       Application.EnableVisualStyles()
       form = OKWindow(Message)
@@ -484,7 +484,7 @@ def Pass(group, x = 0, y = 0): # Player says pass. A very common action.
    notify('{} Passes.'.format(me))
 
 def num (s):
-   #if debugVerbosity >= 1: notify(">>> num(){}".format(extraASDebug())) #Debug
+   #debugNotify(">>> num(){}".format(extraASDebug())) #Debug
    if not s: return 0
    try:
       return int(s)
@@ -513,7 +513,7 @@ def delayed_whisper(text): # Because whispers for some reason execute before not
    whisper(text)
    
 def chooseSide(): # Called from many functions to check if the player has chosen a side for this game.
-   if debugVerbosity >= 1: notify(">>> chooseSide(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> chooseSide(){}".format(extraASDebug())) #Debug
    mute()
    global playerside, playeraxis
    if playerside == None:  # Has the player selected a side yet? If not, then...
@@ -531,7 +531,7 @@ def displaymatch(match):
    return '<Match: {}, groups={}>'.format(match.group(), match.groups())
       
 def sortPriority(cardList):
-   if debugVerbosity >= 1: notify(">>> sortPriority() with cardList: {}".format([c.name for c in cardList])) #Debug
+   debugNotify(">>> sortPriority() with cardList: {}".format([c.name for c in cardList])) #Debug
    priority1 = []
    priority2 = []
    priority3 = []
@@ -551,23 +551,23 @@ def sortPriority(cardList):
    return sortedList
    
 def oncePerTurn(card, x = 0, y = 0, silent = False, act = 'manual'):
-   if debugVerbosity >= 1: notify(">>> oncePerTurn() with act = {}".format(act)) #Debug
+   debugNotify(">>> oncePerTurn() with act = {}".format(act)) #Debug
    mute()
    if card.markers[mdict['Activation']] and card.markers[mdict['Activation']] >= 1:
       if act != 'manual' or re.search(r'-failSilently',CardsAS.get(card.model,'')): # If the card has the 'failsSilently' modulator for onlyOnce, then we don't want to ask the player if the ability has been used already. 
-         if debugVerbosity >= 3: notify("<<< oncePerTurn() exit NOK (not-manual)") #Debug
+         debugNotify(" oncePerTurn() exit NOK (not-manual)") #Debug
          return 'ABORT' # If the player is not activating an effect manually, we always fail silently. So as not to spam the confirm.
       elif not confirm("The once-per-turn ability of {} has already been used this turn\nBypass restriction?.".format(card.name)): 
-         if debugVerbosity >= 3: notify("<<< oncePerTurn() exit NOK (manual confirm)") #Debug
+         debugNotify(" oncePerTurn() exit NOK (manual confirm)") #Debug
          return 'ABORT'
       else: 
          if not silent and act != 'dryRun': notify(':> {} activates the once-per-turn ability of {} another time'.format(me, card))
    else:
       if not silent and act != 'dryRun': notify(':> {} activates the once-per-turn ability of {}'.format(me, card))
    if act != 'dryRun': 
-      if debugVerbosity >= 2: notify("### Adding Activation Marker.") #Debug
+      debugNotify(" Adding Activation Marker.") #Debug
       card.markers[mdict['Activation']] += 1 # On dry runs we do not want to activate the once-per turn abilities. We just want to see if they're available.
-   if debugVerbosity >= 3: notify("<<< oncePerTurn() exit OK") #Debug
+   debugNotify(" oncePerTurn() exit OK") #Debug
 
 def clearTargets():
    for card in table:
@@ -576,7 +576,7 @@ def clearTargets():
 def fetchProperty(card, property): 
    mute()
    coverExists = False
-   if debugVerbosity >= 1: notify(">>> fetchProperty(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> fetchProperty(){}".format(extraASDebug())) #Debug
    if property == 'name': currentValue = card.name
    else: currentValue = card.properties[property]
    if currentValue == '?' or currentValue == 'Card':
@@ -597,11 +597,11 @@ def fetchProperty(card, property):
       card.isFaceUp = False
 #      rnd(1,10) # To give time to the card facedown automation to complete.
 #      cover.moveTo(shared.exile) # now destorying cover card
-   if debugVerbosity >= 3: notify("<<< fetchProperty() by returning: {}".format(currentValue))
+   debugNotify(" fetchProperty() by returning: {}".format(currentValue))
    return currentValue
       
 def loopChk(card,property = 'Type'):
-   if debugVerbosity >= 1: notify(">>> loopChk(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> loopChk(){}".format(extraASDebug())) #Debug
    loopcount = 0
    while card.properties[property] == '?':
       rnd(1,10)
@@ -659,7 +659,7 @@ def giveCard(card,player,pile = None): # Passes control of a card to a given pla
 #---------------------------------------------------------------------------
 
 def cwidth(card = None, divisor = 10):
-#if debugVerbosity >= 1: notify(">>> cwidth(){}".format(extraASDebug())) #Debug
+#debugNotify(">>> cwidth(){}".format(extraASDebug())) #Debug
 # This function is used to always return the width of the card plus an offset that is based on the percentage of the width of the card used.
 # The smaller the number given, the less the card is divided into pieces and thus the larger the offset added.
 # For example if a card is 80px wide, a divisor of 4 will means that we will offset the card's size by 80/4 = 20.
@@ -671,13 +671,13 @@ def cwidth(card = None, divisor = 10):
    return (CardWidth + offset)
 
 def cheight(card = None, divisor = 10):
-   #if debugVerbosity >= 1: notify(">>> cheight(){}".format(extraASDebug())) #Debug
+   #debugNotify(">>> cheight(){}".format(extraASDebug())) #Debug
    if divisor == 0: offset = 0
    else: offset = CardHeight / divisor
    return (CardHeight + offset)
 
 def yaxisMove(card):
-   #if debugVerbosity >= 1: notify(">>> yaxisMove(){}".format(extraASDebug())) #Debug
+   #debugNotify(">>> yaxisMove(){}".format(extraASDebug())) #Debug
 # Variable to move the cards played by player 2 on a 2-sided table, more towards their own side. 
 # Player's 2 axis will fall one extra card length towards their side.
 # This is because of bug #146 (https://github.com/kellyelton/OCTGN/issues/146)
