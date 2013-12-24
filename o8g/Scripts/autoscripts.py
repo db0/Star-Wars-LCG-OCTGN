@@ -570,7 +570,7 @@ def TokensX(Autoscript, announceText, card, targetCards = None, notification = N
       for targetCard in targetCards:
          targetCardlist += ' {},'.format(targetCard)
    foundKey = False # We use this to see if the marker used in the AutoAction is already defined.
-   action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal|Transfer)([0-9]+)([A-Za-z: ]+)-?', Autoscript)
+   action = re.search(r'\b(Put|Remove|Refill|Use|Infect|Deal|Transfer)([0-9]+)([\w: ]+)-?', Autoscript)
    debugNotify("action Regex = {}".format(action.groups()),3)
    if action.group(3) in mdict: token = mdict[action.group(3)]
    elif action.group(3) in resdict: token = resdict[action.group(3)]

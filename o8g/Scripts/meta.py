@@ -1300,33 +1300,37 @@ def chkRefillDone(): # A function that refills the hand of each player who has n
 def clearAllParticipations(remoted = False):
    mute()
    debugNotify(">>> clearAllParticipations()") #Debug
-   for card in table: returnSupportUnit(card)
    if not remoted:
       for player in getPlayers(): remoteCall(player,'clearAllParticipations',[True])
    else:
+      rnd(1,100) # A small wait to allow all our card controls to return to us.
       for card in table:
          if card.controller == me:
             if card.highlight == DefendColor: card.highlight = None
-            if card.orientation == Rot90: card.orientation = Rot0
+            if card.orientation == Rot90: 
+               card.orientation = Rot0
+               if card.owner != me: returnSupportUnit(card)
+
    debugNotify("<<< clearAllParticipations()") #Debug
 
 def returnSupportUnit(card):
    mute()
    debugNotify(">>> returnSupportUnit()") #Debug
-   if card.orientation == Rot90 and card.owner != card.controller: 
+   if card.owner != card.controller: 
       debugNotify("{} is supporting. Attempting to return".format(card))
-      if card.markers[mdict['Support']] and card.markers[mdict['Support']] == 1: # If the card has the default support marker, we simply return it to its owner
+      if card.markers[mdict['Support']]: # If the card has the default support marker, we simply return it to its owner
          debugNotify("Default Support marker found")
          card.markers[mdict['Support']] = 0
          claimCard(card, card.owner)
-      for player in getPlayers(): # If the card has a custom support marker, means its current permanent controller is not the owner (e.g. Mara Jade)
-         debugNotify("Checking markers for {}".format(player),4)
-         customSupportMarker = findMarker(card, "Support:{}".format(player.name)) # So we check each player, to see who's name matches the marker
-         if customSupportMarker: # If we find the player, we pass control of the card back to them after this engagement.
-            debugNotify("Custom Support marker found: {}".format(customSupportMarker[0]))
-            card.markers[customSupportMarker] = 0
-            claimCard(card, player)
-   elif card.orientation == Rot90: debugNotify("{} is not supporting.".format(card), 4)
+      else:
+         for player in getPlayers(): # If the card has a custom support marker, means its current permanent controller is not the owner (e.g. Mara Jade)
+            debugNotify("Checking markers for {}".format(player),4)
+            customSupportMarker = findMarker(card, "Support:{}".format(player.name)) # So we check each player, to see who's name matches the marker
+            if customSupportMarker: # If we find the player, we pass control of the card back to them after this engagement.
+               debugNotify("Custom Support marker found: {}".format(customSupportMarker[0]))
+               card.markers[customSupportMarker] = 0
+               claimCard(card, player)
+   else: debugNotify("{} is not supporting.".format(card), 4)
    debugNotify("<<< returnSupportUnit()") #Debug
 
 #------------------------------------------------------------------------------
@@ -1763,8 +1767,10 @@ def TrialError(group, x=0, y=0): # Debugging
    global Side, debugVerbosity
    mute()
    ######## Testing Corner ########
-   #findTarget('Targeted-atVehicle_and_Fighter_or_Character_and_nonWookie')
-   #BotD.moveToTable(0,0) 
+   # for i in range(4):
+      # time.sleep(1)
+      # update()
+      # notify("i = {}".format(i))
    ###### End Testing Corner ######
    #notify("### Setting Debug Verbosity")
    if debugVerbosity >=0: 
