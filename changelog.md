@@ -5,7 +5,8 @@ Changelog - Star Wars LCG OCTGN Game Definition
 
 * Balance of the Force now scripted. Some notes:
   * Shistavanen Wolfman won't trigger from your discard pile. You have to play him manually when you win the force struggle accordingly.
-
+  * Rapid Fire doesn't enforce the targets. Just make sure you select units from different opponents.
+  * Arcona Rumor Monger: Not rules enforced
 
 ### 2.6.3.x
 

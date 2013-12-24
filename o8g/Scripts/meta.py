@@ -168,7 +168,7 @@ def ofwhom(Autoscript, controller = me, multiText = None):
       else: 
          if debugVerbosity >= 1: whisper("There's no valid Opponents! Selecting myself.")
          targetPLs.append(me)
-   elif re.search(r'o[fn]Team', Autoscript) or re.search(r'o[fn]Ally', Autoscript) or re.search(r'o[fn]AllAllies', Autoscript):
+   elif re.search(r'o[fn]Team', Autoscript) or re.search(r'o[fn]Allies', Autoscript) or re.search(r'o[fn]AllAllies', Autoscript):
       if not multiText: multiText = "Choose which allied player you're targeting with this effect."
       if len(getPlayers()) > 1:
          for player in getPlayers():
@@ -176,7 +176,7 @@ def ofwhom(Autoscript, controller = me, multiText = None):
                debugNotify("ofwhom() -- rejecting {} because they are a spectator".format(player))
                continue # This is a spectator 
             elif player.getGlobalVariable('Side') == controller.getGlobalVariable('Side'):
-               if re.search(r'o[fn]Ally', Autoscript) and player == controller: 
+               if re.search(r'o[fn]Allies', Autoscript) and player == controller: 
                   debugNotify("ofwhom() -- rejecting {} because we're looking only for their allies".format(player, 4))
                else:
                   playerList.append(player) # Opponent needs to be not us, and of a different type. 
@@ -630,7 +630,7 @@ def resolveUD(card,Unit_Damage):
    elif len(targetUnitsList) == 1: 
       addMarker(targetUnitsList[0], 'Damage',Unit_Damage, True)
       targetUnits[targetUnitsList[0].name] = targetUnits.get(targetUnitsList[0].name,0) + Unit_Damage
-   else: delayed_whisper(":::WARNING::: No valid units selected as targets for Uunit Damage. Please add damage tokens manually as required.")
+   else: delayed_whisper(":::WARNING::: No valid units selected as targets for Unit Damage. Please add damage tokens manually as required.")
    debugNotify("<<< resolveUD() with targetUnits: {}".format([targetUnits])) #Debug
    if len(targetUnits): return [targetUnits]
    else: return []
@@ -1297,17 +1297,37 @@ def unsetRefillDone(): # A function that sets a global variable which tracks if 
 def chkRefillDone(): # A function that refills the hand of each player who has not done so until now
    if not handRefillDone and Automations['Start/End-of-Turn/Phase']: refillHand()
    
-def clearParticipations(remoted = False):
+def clearAllParticipations(remoted = False):
    mute()
-   for card in table:
-      if card.orientation == Rot90 and card.owner != card.controller: claimCard(card, card.owner)
+   debugNotify(">>> clearAllParticipations()") #Debug
+   for card in table: returnSupportUnit(card)
    if not remoted:
-      for player in getPlayers(): remoteCall(player,'clearParticipations',[True])
+      for player in getPlayers(): remoteCall(player,'clearAllParticipations',[True])
    else:
       for card in table:
          if card.controller == me:
             if card.highlight == DefendColor: card.highlight = None
             if card.orientation == Rot90: card.orientation = Rot0
+   debugNotify("<<< clearAllParticipations()") #Debug
+
+def returnSupportUnit(card):
+   mute()
+   debugNotify(">>> returnSupportUnit()") #Debug
+   if card.orientation == Rot90 and card.owner != card.controller: 
+      debugNotify("{} is supporting. Attempting to return".format(card))
+      if card.markers[mdict['Support']] and card.markers[mdict['Support']] == 1: # If the card has the default support marker, we simply return it to its owner
+         debugNotify("Default Support marker found")
+         card.markers[mdict['Support']] = 0
+         claimCard(card, card.owner)
+      for player in getPlayers(): # If the card has a custom support marker, means its current permanent controller is not the owner (e.g. Mara Jade)
+         debugNotify("Checking markers for {}".format(player),4)
+         customSupportMarker = findMarker(card, "Support:{}".format(player.name)) # So we check each player, to see who's name matches the marker
+         if customSupportMarker: # If we find the player, we pass control of the card back to them after this engagement.
+            debugNotify("Custom Support marker found: {}".format(customSupportMarker[0]))
+            card.markers[customSupportMarker] = 0
+            claimCard(card, player)
+   elif card.orientation == Rot90: debugNotify("{} is not supporting.".format(card), 4)
+   debugNotify("<<< returnSupportUnit()") #Debug
 
 #------------------------------------------------------------------------------
 # Switches
@@ -1781,31 +1801,19 @@ def TrialError(group, x=0, y=0): # Debugging
 def spawnTestCards():
    testcards = [  
                 "ff4fb461-8060-457a-9c16-000000000446",
-                "ff4fb461-8060-457a-9c16-000000000535",
-                "ff4fb461-8060-457a-9c16-000000000523",
-                "ff4fb461-8060-457a-9c16-000000000542",
-                "ff4fb461-8060-457a-9c16-000000000525",
-                "ff4fb461-8060-457a-9c16-000000000526",
-                "ff4fb461-8060-457a-9c16-000000000527",
-                "ff4fb461-8060-457a-9c16-000000000530",
-                "ff4fb461-8060-457a-9c16-000000000537",
-                "ff4fb461-8060-457a-9c16-000000000536",
-                "ff4fb461-8060-457a-9c16-000000000539",
-                "ff4fb461-8060-457a-9c16-000000000541",
                 "ff4fb461-8060-457a-9c16-000000000496"
                 ]
    for idx in range(len(testcards)):
       test = table.create(testcards[idx], (70 * idx) - 300, 0, 1, True)
       
 def spawnSetCards():
-   setCards = [ ### EoD Set ###
-                # "ff4fb461-8060-457a-9c16-000000000355", 
-                # "ff4fb461-8060-457a-9c16-000000000356",
-                # "ff4fb461-8060-457a-9c16-000000000486"
-                ]
-   for cID in setCards:
-      test = table.create(cID, 0, 0, 1, True)
-      test.moveTo(me.piles['Removed from Game'])
+   setCards = []    ### BOTF Set 547 - 636 ###
+   for signi in range(547,567 + 1): # We need the +1 in the end to get the last Card ID in the set.
+      cID = "ff4fb461-8060-457a-9c16-000000000{}".format(signi)
+      try:
+         test = table.create(cID, 0, 0, 1, True)
+         test.moveTo(me.piles['Removed from Game'])
+      except: notify(":::MISSING::: {}".format(cID))
 
 def flipcard(card,x,y):
    card.switchImage

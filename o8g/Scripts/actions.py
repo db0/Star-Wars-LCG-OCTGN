@@ -65,7 +65,9 @@ def nextPhase(group = table, x = 0, y = 0, setTo = None):
       phase = num(getGlobalVariable('Engagement Phase'))
       if setTo: phase = setTo
       else: phase += 1
-      if phase == 4: revealEdge(forceCalc = True) # Just to make sure it wasn't forgotten.
+      if phase == 2: autoscriptOtherPlayers('AttackersDeclared',Affiliation)
+      elif phase == 3: autoscriptOtherPlayers('DefendersDeclared',Affiliation)
+      elif phase == 4: revealEdge(forceCalc = True) # Just to make sure it wasn't forgotten.
       setGlobalVariable('Engagement Phase',str(phase))
       showCurrentPhase()
       if not setTo:
@@ -385,7 +387,7 @@ def finishEngagement(group = table, x=0, y=0, automated = False):
          addMarker(currentTarget, 'Damage',unopposedDamage, True)
          autoscriptOtherPlayers('UnopposedEngagement',currentTarget)
    autoscriptOtherPlayers('FinishedEngagement',currentTarget)
-   clearParticipations()
+   clearAllParticipations()
    notify("The engagement at {} is finished.".format(Card(num(getGlobalVariable('Engaged Objective')))))
    setGlobalVariable('Engaged Objective','None')
    setGlobalVariable('Current Attacker','None')
@@ -638,10 +640,10 @@ def strike(card, x = 0, y = 0, Continuing = False):
    AnnounceText += '.'
    notify(AnnounceText)
    markerEffects('afterStrike')
-   if debugVerbosity >= 3: notify("<<< strike()") #Debug    
+   debugNotify("<<< strike()") #Debug    
       
 def participate(card, x = 0, y = 0, silent = False):
-   if debugVerbosity >= 1: notify(">>> participate(){}".format(extraASDebug())) #Debug
+   debugNotify(">>> participate(){}".format(extraASDebug())) #Debug
    mute()
    if card.Type != 'Unit': 
       whisper(":::ERROR::: Only units may participate in engagements")
@@ -656,12 +658,18 @@ def participate(card, x = 0, y = 0, silent = False):
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))   
    if currentTarget.controller in fetchAllOpponents():
       attacker = Player(num(getGlobalVariable('Current Attacker')))
-      giveCard(card,attacker) # We pass allied participating units to the main player in the attack, to allow cards like Jawa Scaveneger and Orbital Bombardment to work correctly.
+      if attacker != me:
+         if card.owner == me: card.markers[mdict['Support']] += 1 # If we're the owner of the card, we're just giving the generic support marker to make things easily recognisable
+         else: TokensX('Put1Support:{}'.format(me.name), '', card) # If not, we need to give a special marker, to point out to whom the card returns to afterwards
+         giveCard(card,attacker) # We pass allied participating units to the main player in the attack, to allow cards like Jawa Scaveneger and Orbital Bombardment to work correctly.         
       if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       if not silent: notify("{} selects {} as an attacker.".format(me, card))
       executePlayScripts(card, 'ATTACK')   
    else:
-      giveCard(card,currentTarget.controller)
+      if currentTarget.controller != me:
+         if card.owner == me: card.markers[mdict['Support']] += 1 # If we're the owner of the card, we're just giving the generic support marker to make things easily recognisable
+         else: TokensX('Put1Support:{}'.format(me.name), '', card) # If not, we need to give a special marker, to point out to whom the card returns to afterwards
+         giveCard(card,currentTarget.controller)
       if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
       if not silent: notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
@@ -674,9 +682,9 @@ def participate(card, x = 0, y = 0, silent = False):
 
 def clearParticipation(card,x=0,y=0,silent = False): # Clears a unit from participating in a battle, to undo mistakes
    mute()
-   if card.orientation == Rot90: 
+   if card.orientation == Rot90:
       card.orientation = Rot0
-      if card.owner != me: giveCard(card,card.owner)
+      returnSupportUnit(card)
       if not silent: notify("{} takes {} out of the engagement.".format(me, card))
    else: whisper(":::ERROR::: Unit is not currently participating in battle")
 
@@ -743,7 +751,7 @@ def findUnpaidCard():
    if unpaidCard and unpaidCard.group == table: return unpaidCard
    else:
       for card in table:
-         if (card.highlight == UnpaidColor or card.highlight == UnpaidAbilityColor) and card.controller == me: return card
+         if (card.highlight == UnpaidColor or card.highlight == UnpaidAbilityColor) and (card.controller == me or (re.search(r'-allyPayable',CardsAA.get(card.model,'')) and card.controller in myAllies)): return card
    if debugVerbosity >= 3: notify("<<< findUnpaidCard()") #Debug
    return None # If not unpaid card is found, return None
 
@@ -1362,29 +1370,31 @@ def placeReserve(card):
    
 def playReserve(group):
    mute()
-   if len(myAllies) == 1 and len(getPlayers()) != 1: 
-      whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
-      return
    fullReserves = grabFullReserves()
-   choice = SingleChoice("Select one card from your common reserves to play", makeChoiceListfromCardList(fullReserves, True))
-   if choice != None: 
-      prevGroup = fullReserves[choice].group # We store its current group to return it to in case something goes wrong.
-      claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
-      play(fullReserves[choice])
-      if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+   if len(myAllies) == 1 and len(getPlayers()) != 1: whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
+   elif len(fullReserves) == 0: whisper(":::ERROR::: None of your Team has any common reserves for you to use")
+   else:
+      choice = SingleChoice("Select one card from your common reserves to play", makeChoiceListfromCardList(fullReserves, True))
+      if choice != None: 
+         prevGroup = fullReserves[choice].group # We store its current group to return it to in case something goes wrong.
+         claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
+         play(fullReserves[choice])
+         if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+         else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),targetObjective)
          
 def playEdgeReserve(group):
    mute()
-   if len(myAllies) == 1 and len(getPlayers()) != 1: 
-      whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
-      return
    fullReserves = grabFullReserves()
-   choice = SingleChoice("Select one card from your common reserves to place as edge", makeChoiceListfromCardList(fullReserves, True, True))
-   if choice != None:
-      prevGroup = fullReserves[choice].group
-      claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
-      playEdge(fullReserves[choice])
-      if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+   if len(myAllies) == 1 and len(getPlayers()) != 1: whisper(":::ERROR::: You can only use the common reserve if you have an ally.")
+   elif len(fullReserves) == 0: whisper(":::ERROR::: None of your Team has any common reserves for you to use")
+   else:
+      choice = SingleChoice("Select one card from your common reserves to place as edge", makeChoiceListfromCardList(fullReserves, True, True))
+      if choice != None:
+         prevGroup = fullReserves[choice].group
+         claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
+         playEdge(fullReserves[choice])
+         if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+         else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),targetObjective)
       
 def grabFullReserves():
    debugNotify(">>> grabFullReserves()") #Debug

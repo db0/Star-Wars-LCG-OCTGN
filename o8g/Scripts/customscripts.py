@@ -22,7 +22,10 @@
 ###=================================================================================================================###
 
 def UseCustomAbility(Autoscript, announceText, card, targetCards = None, notification = None, n = 0): # not used yet.
-   announceString = announceText 
+   card.name == "Mara Jade": 
+      remoteCall(card.controller,'MaraJade',[card])
+      announceString = ''
+   else: announceString = announceText 
    return announceString
 
 def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly unique to specific cards, not worth making a whole generic function for them.
@@ -412,6 +415,31 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
       for player in myAllies: remoteCall(player,'BlueSquadronSupport',[card])
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 
+def chkLookupRestrictions(card,lookup,origin_card):
+   debugNotify(">>> chkLookupRestrictions()") # Debug
+   validCard = True
+   if card.name == "Agent of the Hand": # This card check requires that we compare the variables in lookup before we proceed. 
+      takeoverRegex = re.search(r'(\w+):CardTakeover:(\w+)', lookup)
+      playedReserveRegex = re.search(r'(\w+):ReservesPlayed:(\w+)', lookup)
+      if takeoverRegex:
+         debugNotify("takeoverRegex = {}".format(takeoverRegex.groups()), 4)
+         if takeoverRegex.group(2) != card.controller.name or takeoverRegex.group(1) == card.controller.name: 
+            debugNotify("Failed {} chkLookupRestrictions() for {}".format(card,lookup))
+            validCard = False
+            # Agent of the hand only triggers if its controller took control of a unit from another player.  group(1) is the player who took control, group(2) is the player who had control before.
+            # So if the lookup was a takeover regex but the new controller (group(1)) is not the controller of AotH or the old controller (group(2)) was the same player, then it failed the check
+      elif playedReserveRegex: 
+         debugNotify("playedReserveRegex = {}".format(playedReserveRegex.groups()), 4)
+         if playedReserveRegex.group(2) != card.controller.name or playedReserveRegex.group(1) == card.controller.name: 
+            debugNotify("Failed {} chkLookupRestrictions() for {}".format(card,lookup))
+            validCard = False      
+            # Agent of the hand's ReservesPlayed only triggers if its controller is the reserves playing player (group(1)) and they played a common reserves card from another player (group(2))   
+      else: 
+         debugNotify("Failed {} chkLookupRestrictions() because there's no valid lookup".format(card))
+         validCard = False
+   debugNotify("<<< chkLookupRestrictions() with validCard == {}".format(validCard)) # Debug
+   return validCard
+
 #------------------------------------------------------------------------------
 # Remote Functions
 #------------------------------------------------------------------------------
@@ -437,17 +465,26 @@ def BlueSquadronSupport(card):
    elif len(me.piles['Command Deck']) == 0: notify(":> {} tried to resolve their {} but had no more cards in their deck.".format(me,card))
    else:
       topCards = me.piles['Command Deck'].top(2)
+      for c in topCards: c.moveTo(me.hand) # We move them to the hand to allow us to read their properties
       choice = None
-      while choice == None: choice = SingleChoice("== Blue Squadron Support == \n\nWhich card do you wish to add to your hand?", makeChoiceListfromCardList(topCards, True, True))
-      handCard = topCards.pop(choice) # We remove the hand card from the top 2 cards list
-      handCard.moveTo(me.hand) # And place it in our hand
-      topCards[0].moveToBottom(me.piles['Command Deck']) # Finally we place the remaining card at the bottom of our deck
+      while choice == None: choice = SingleChoice("== Blue Squadron Support == \n\nWhich card do you wish put at the bottom of your deck?", makeChoiceListfromCardList(topCards, True, True))
+      topCards[choice].moveToBottom(me.piles['Command Deck']) # Finally we place the remaining card at the bottom of our deck
       notify(":> {} resolved their {}.".format(me,card))
    debugNotify("<<< BlueSquadronSupport()") # Debug
+   
+def MaraJade(card):
+   debugNotify(">>> MaraJade()") # Debug
+   mute()
+   if len(myAllies) > 1 and confirm("Do you want to pass control of Mara Jade to another friendly player?"):
+      targetAlly = ofwhom('-ofAllies', me)
+      giveCard(card,targetAlly)
+      remoteCall(targetAlly,'placeCard',[card])
+      notify(":> {} passed control of {} to {}.".format(me,card,targetAlly))
+      autoscriptOtherPlayers('{}:CardTakeover:{}'.format(targetAlly,me),card) # To allow Agent of the Hand to work
+   debugNotify("<<< MaraJade()") # Debug      
    
 def RemoteFunctionTemplate():
 # Quick Copy this into a new Remote Function
    mute()
    debugNotify(">>> RemoteFunctionTemplate()") # Debug
-   debugNotify("<<< RemoteFunctionTemplate()") # Debug
-   
+   debugNotify("<<< RemoteFunctionTemplate()") # Debug   

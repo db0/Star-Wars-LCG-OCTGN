@@ -4122,7 +4122,7 @@ Supporting Fire
 -----
 ff4fb461-8060-457a-9c16-000000000552
 -----
-
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....
@@ -4146,7 +4146,7 @@ B-Wing
 -----
 ff4fb461-8060-457a-9c16-000000000555
 -----
-onStrike:Draw1Card-onAlly-isReact
+onStrike:Draw1Card-onAllies-isReact
 +++++
 
 .....
@@ -4154,7 +4154,7 @@ B-Wing
 -----
 ff4fb461-8060-457a-9c16-000000000556
 -----
-
+onStrike:Draw1Card-onAllies-isReact
 +++++
 
 .....
@@ -4162,7 +4162,7 @@ Rapid Fire
 -----
 ff4fb461-8060-457a-9c16-000000000557
 -----
-
+onPlay:Deal1Damage-Targeted-atUnit-targetOpponents
 +++++
 
 .....
@@ -4170,7 +4170,7 @@ Supporting Fire
 -----
 ff4fb461-8060-457a-9c16-000000000558
 -----
-
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....
@@ -4178,7 +4178,7 @@ Rendar's Wrath
 -----
 ff4fb461-8060-457a-9c16-000000000559
 -----
-
+whileInPlay:Deal1Damage-AutoTargeted-isDefending-isAlone-foreachDefendersDeclared-isReact
 +++++
 
 .....
@@ -4188,7 +4188,7 @@ ff4fb461-8060-457a-9c16-000000000560
 -----
 
 +++++
-
+R1:Put1Allied Boost:UD-allyPayable
 .....
 Arcona Rumor Monger
 -----
@@ -4210,7 +4210,7 @@ Smuggling Shipment
 -----
 ff4fb461-8060-457a-9c16-000000000563
 -----
-
+onPlay:Remove1Focus-Targeted-hasProperty{Resources}ge1-targetAllied
 +++++
 
 .....
@@ -4218,7 +4218,7 @@ Supporting Fire
 -----
 ff4fb461-8060-457a-9c16-000000000564
 -----
-
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....
@@ -4226,7 +4226,7 @@ The Emperor's Hand
 -----
 ff4fb461-8060-457a-9c16-000000000565
 -----
-
+ConstantEffect:Force1Bonus-AutoTargeted-fromCommonReserves-targetAllied-perEveryReserve
 +++++
 
 .....
@@ -4234,7 +4234,7 @@ Mara Jade
 -----
 ff4fb461-8060-457a-9c16-000000000566
 -----
-
+ConstantAbility:TargetStrike||atTurnEnd:Remove1Focus-isReact$$UseCustomAbility
 +++++
 
 .....
@@ -4242,7 +4242,7 @@ Agent of the Hand
 -----
 ff4fb461-8060-457a-9c16-000000000567
 -----
-
+whileInPlay:Remove1Focus-foreachCardTakeover-isReact||whileInPlay:Remove1Focus-foreachReservesPlayed-isReact
 +++++
 
 .....
@@ -4250,7 +4250,7 @@ Agent of the Hand
 -----
 ff4fb461-8060-457a-9c16-000000000568
 -----
-
+whileInPlay:Remove1Focus-foreachCardTakeover-isReact||whileInPlay:Remove1Focus-foreachReservesPlayed-isReact
 +++++
 
 .....
@@ -4266,7 +4266,7 @@ Supporting Fire
 -----
 ff4fb461-8060-457a-9c16-000000000570
 -----
-
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....
@@ -4314,7 +4314,7 @@ Supporting Fire
 -----
 ff4fb461-8060-457a-9c16-000000000576
 -----
-
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....
@@ -4362,7 +4362,7 @@ Supporting Fire
 -----
 ff4fb461-8060-457a-9c16-000000000582
 -----
-
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....

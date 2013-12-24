@@ -227,7 +227,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
 # This function is called from other functions in order to go through the table and see if other players have any cards which would be activated by it.
 # For example a card that would produce credits whenever a trace was attempted. 
    if not Automations['Triggers']: return # If automations have been disabled, do nothing.
-   if debugVerbosity >= 1: notify(">>> autoscriptOtherPlayers() with lookup: {} and origin_card: {}".format(lookup,origin_card)) #Debug
+   debugNotify(">>> autoscriptOtherPlayers() with lookup: {} and origin_card: {}".format(lookup,origin_card)) #Debug
    for card in table:
       if debugVerbosity >= 2: notify('### Checking {}'.format(card)) # Debug
       if not card.isFaceUp: 
@@ -252,6 +252,7 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
                                                                             # So if our instance's trigger is currently "UnitCardCapturedFromTable" then the trigger word "CardCaptured" is contained within and will match.
             debugNotify("Couldn't lookup the trigger: {} in autoscript. Ignoring".format(lookup),2)
             continue # Search if in the script of the card, the string that was sent to us exists. The sent string is decided by the function calling us, so for example the ProdX() function knows it only needs to send the 'GeneratedSpice' string.
+         elif not chkLookupRestrictions(card,lookup,origin_card): continue
          if re.search(r'-byOpposingOriginController', autoS) and chkPlayer('byOpponent', origin_card.controller,False, player = card.controller) == 0: continue
          # If we have the -byOpposingOriginController modulator, our scripts need to compare the controller of the card that triggered the script with the controller of the card that has the script.
          # See for example Renegade Squadron Mobilization, where we need to check that the controller of the card leaving play is the opponent of the player that controls Renegade Squadron Mobilization
@@ -363,6 +364,7 @@ def markerEffects(Time = 'Start'):
                  or re.search(r'Enhancement Bonus',marker[0])
                  or re.search(r'Cocky',marker[0])
                  or re.search(r'Heavy Fire',marker[0])
+                 or re.search(r'Allied Boost',marker[0])
                  or re.search(r'Ewok Scouted',marker[0]))):
             TokensX('Remove999'+marker[0], marker[0] + ':', card)
             notify("--> {} removes {} effect from {}".format(me,marker[0],card))
@@ -490,6 +492,9 @@ def redirect(Autoscript, card, action, X = 0,targetC = None):
    elif regexHooks['GameX'].search(Autoscript): 
       debugNotify("in GameX hook")
       if GameX(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
+   elif regexHooks['UseCustomAbility'].search(Autoscript): 
+      debugNotify("in UseCustomAbility hook")
+      if UseCustomAbility(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
    elif regexHooks['SimplyAnnounce'].search(Autoscript): 
       debugNotify("in SimplyAnnounce hook")
       if SimplyAnnounce(Autoscript, announceText, card, targetC, notification = 'Quick', n = X) == 'ABORT': return 'ABORT'
@@ -1064,9 +1069,12 @@ def ModifyStatus(Autoscript, announceText, card, targetCards = None, notificatio
          elif action.group(1) == 'Engage': participate(targetCard, silent = True)
          elif action.group(1) == 'Disengage': clearParticipation(targetCard, silent = True)
          elif action.group(1) == 'Attack': engageTarget(targetObjective = targetCard, silent = True)
-         elif action.group(1) == 'Takeover': 
-            targetCard.setController(me)
-            targetCard.moveToTable(0, 0 + yaxisMove(card))
+         elif action.group(1) == 'Takeover':
+            # I could theoretically add a modulator here to provide a different player to take control of the card. i.e. -handToAlly or -handToOpponent
+            prevController == targetCard.controller
+            claimCard(targetCard)
+            targetCard.moveToTable(MPxOffset, MPyOffset + yaxisMove(card))
+            autoscriptOtherPlayers('{}:CardTakeover:{}'.format(me,prevController),targetCard)
          elif action.group(1) == 'Rescue': rescue(targetCard,silent = True)
          elif action.group(1) == 'Uncommit':
             if targetCard.Side == 'Light': commitColor = LightForceColor
@@ -1421,7 +1429,7 @@ def checkSpecialRestrictions(Autoscript,card, playerChk = me):
    if re.search(r'isParticipating',Autoscript) and card.orientation != Rot90 and card.highlight != DefendColor: 
       debugNotify("!!! Failing because it's not participating", 2)
       validCard = False
-   if re.search(r'isAlone',Autoscript): # If OrigAlone means that the originator of the scipt needs to be alone in the engagement.
+   if re.search(r'isAlone',Autoscript): # isAlone means that the originator of the scipt needs to be alone in the engagement.
       for c in table:
          if c != card and c.orientation == Rot90 and c.controller in fetchAllAllies(card.controller): 
             debugNotify("!!! Failing because it's not participating alone", 2)

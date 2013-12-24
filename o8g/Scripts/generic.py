@@ -635,7 +635,7 @@ def claimCard(card, player = me): # Requests the controller of a card to pass co
        # We make sure all network calls have completed before continuing.
       count = 0
       while card.controller != me: 
-         update()
+         rnd(1,10)
          count += 1
          if count >= 10:
             debugNotify(":::ERROR::: claimCard() failed. Card controller still {}. Giving up".format(card.controller.name))

@@ -23,6 +23,7 @@
 		<marker id="fae80b84-88f5-46fe-9806-ed624265757f" name="Neutral" />
 		<marker id="6ca2a796-1023-4ccf-9946-2fe4d2252c0c" name="The Edge" />
 		<marker id="ea7418bc-6847-4e8a-9cc3-0230dc27d19b" name="Activated" />
+		<marker id="79818747-fe50-4f1e-937b-c71e737bf743" name="Support" />
 	</markers>
 	<cards>
 		<card id="e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc" name="Balance of the Force">
