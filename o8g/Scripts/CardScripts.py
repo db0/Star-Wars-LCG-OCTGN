@@ -3,6 +3,7 @@
 # 5 Dashes  (-) signifies a break between the card name, the GUID and the card scripts. The card name is ignored by the code, only the GUID and Scripts are used.
 # 5 Plus Signs (+) signifies a break between AutoActions and AutoScripts for the same card
 # 5 Dots (.) signifies a break between different cards.
+# Card names which start with * have special custom code just for them (cards which use CustomScript or useCustomAbility don't have *)
 # Do not edit below the line
 ScriptsLocal = '''
 =====
@@ -4238,7 +4239,7 @@ ConstantAbility:TargetStrike||atTurnEnd:Remove1Focus-isSilent-isReact$$UseCustom
 +++++
 
 .....
-Agent of the Hand
+*Agent of the Hand
 -----
 ff4fb461-8060-457a-9c16-000000000567
 -----
@@ -4246,7 +4247,7 @@ whileInPlay:Remove1Focus-foreachCardTakeover-isReact||whileInPlay:Remove1Focus-f
 +++++
 
 .....
-Agent of the Hand
+*Agent of the Hand
 -----
 ff4fb461-8060-457a-9c16-000000000568
 -----

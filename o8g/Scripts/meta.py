@@ -1116,16 +1116,18 @@ def storeCardEffects(card,Autoscript,cost,previousHighlight,actionType,preTarget
    debugNotify(">>> storeCardEffects()")
    # A function which store's a bunch of variables inside a shared dictionary
    # These variables are recalled later on, when the player clicks on a triggered card, to recall the script to execute and it's peripheral variables.
-   selectedAbility = eval(getGlobalVariable('Stored Effects'))   
-   selectedAbility[card._id] = (Autoscript,cost,previousHighlight,actionType,preTargetCard,count)
-   # We set a tuple of variables for when we come back to executre the scripts
-   # The first variable is tracking which script is going to be used
-   # The Second is the amount of resource payment 
-   # The third entry in the tuple is the card's previous highlight if it had any.
-   # The fourth entry in the tuple is the type of autoscript this is. In this case it's a 'USE' script, which means it was manually triggered by the player
-   # The fifth is used to parse pre-selected targets for the card effects. Primarily used in autoscriptOtherPlayers()
-   # The sixth entry is used to pass an amount some scripts require (e.g. the difference in edge ranks for Bounty)
-   setGlobalVariable('Stored Effects',str(selectedAbility))
+   selectedAbility = eval(getGlobalVariable('Stored Effects'))
+   if selectedAbility.has_key(card._id): whisper(":::WARNING::: {} already has a triggered ability waiting to be activated. Ignoring latest trigger".format(card))
+   else: 
+      selectedAbility[card._id] = (Autoscript,cost,previousHighlight,actionType,preTargetCard,count)
+      # We set a tuple of variables for when we come back to executre the scripts
+      # The first variable is tracking which script is going to be used
+      # The Second is the amount of resource payment 
+      # The third entry in the tuple is the card's previous highlight if it had any.
+      # The fourth entry in the tuple is the type of autoscript this is. In this case it's a 'USE' script, which means it was manually triggered by the player
+      # The fifth is used to parse pre-selected targets for the card effects. Primarily used in autoscriptOtherPlayers()
+      # The sixth entry is used to pass an amount some scripts require (e.g. the difference in edge ranks for Bounty)
+      setGlobalVariable('Stored Effects',str(selectedAbility))
    debugNotify("<<< storeCardEffects()")
    
 def freeUnitPlacement(card): # A function which stores a unit's position when it leaves play, so that it can be re-used by a different unit
@@ -1341,7 +1343,6 @@ def returnSupportUnit(card):
             debugNotify("Custom Support marker found: {}".format(customSupportMarker[0]))
             card.markers[customSupportMarker] = 0
             claimCard(card, player)
-   else: debugNotify("{} is not supporting.".format(card), 4)
    debugNotify("<<< returnSupportUnit()") #Debug
 
 #------------------------------------------------------------------------------

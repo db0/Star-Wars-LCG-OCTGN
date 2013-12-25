@@ -283,10 +283,11 @@ def autoscriptOtherPlayers(lookup, origin_card = Affiliation, count = 1, origin_
             targetCardID = origin_card._id # if we have the "-onTriggerCard" modulator, then the target of the script will be the original card
          else: targetCardID = None
          if re.search(r'-isReact', autoS): #If the effect -isReact, then the opponent has a chance to interrupt so we need to give them a window.
-            ### Setting card's selectedAbility Global Variable.
-            storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCardID,count) # We pass the special target's ID in our global variable to allow it to be retrieved by later scripts.
-            if re.search(r'-isForced', autoS): readyEffect(card,True)
-            else: readyEffect(card)
+            if card.highlight != ReadyEffectColor:
+               ### Setting card's selectedAbility Global Variable.
+               storeCardEffects(card,autoS,0,card.highlight,'Automatic',targetCardID,count) # We pass the special target's ID in our global variable to allow it to be retrieved by later scripts.
+               if re.search(r'-isForced', autoS): readyEffect(card,True)
+               else: readyEffect(card)
             continue
          ### Otherwise the automation is uninterruptible and we just go on with the scripting.
          if targetCardID: executeAutoscripts(card,autoS,count,action = 'Automatic',targetCards = [Card(targetCardID)])

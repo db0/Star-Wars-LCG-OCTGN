@@ -658,22 +658,22 @@ def participate(card, x = 0, y = 0, silent = False):
       return
    currentTarget = Card(num(getGlobalVariable('Engaged Objective')))   
    if currentTarget.controller in fetchAllOpponents():
+      if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
       attacker = Player(num(getGlobalVariable('Current Attacker')))
       if attacker != me:
          if card.owner == me: card.markers[mdict['Support']] += 1 # If we're the owner of the card, we're just giving the generic support marker to make things easily recognisable
          else: TokensX('Put1Support:{}'.format(me.name), '', card) # If not, we need to give a special marker, to point out to whom the card returns to afterwards
          giveCard(card,attacker) # We pass allied participating units to the main player in the attack, to allow cards like Jawa Scaveneger and Orbital Bombardment to work correctly.         
-         autoscriptOtherPlayers('{}:CardTakeover:{}'.format(attacker,me),card)
-      if num(getGlobalVariable('Engagement Phase')) < 1: nextPhase(setTo = 1)
+         #autoscriptOtherPlayers('{}:CardTakeover:{}'.format(attacker,me),card)
       if not silent: notify("{} selects {} as an attacker.".format(me, card))
       executePlayScripts(card, 'ATTACK')   
    else:
+      if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
       if currentTarget.controller != me:
          if card.owner == me: card.markers[mdict['Support']] += 1 # If we're the owner of the card, we're just giving the generic support marker to make things easily recognisable
          else: TokensX('Put1Support:{}'.format(me.name), '', card) # If not, we need to give a special marker, to point out to whom the card returns to afterwards
          giveCard(card,currentTarget.controller)
-         autoscriptOtherPlayers('{}:CardTakeover:{}'.format(currentTarget.controller,me),card)
-      if num(getGlobalVariable('Engagement Phase')) < 2: nextPhase(setTo = 2)
+         #autoscriptOtherPlayers('{}:CardTakeover:{}'.format(currentTarget.controller,me),card)
       if not silent: notify("{} selects {} as a defender.".format(me, card))
       executePlayScripts(card, 'DEFEND')   
    card.orientation = Rot90
@@ -1392,7 +1392,7 @@ def playReserve(group):
          prevGroup = fullReserves[choice].group # We store its current group to return it to in case something goes wrong.
          claimCard(fullReserves[choice]) # We make sure we're the controller before we proceed to manipulate the card.
          play(fullReserves[choice])
-         if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup)
+         if fullReserves[choice].group == me.ScriptingPile: fullReserves[choice].moveTo(prevGroup) # If the card is still in the scripting pile, it means the action was canceled, so we return it to its owner's reserves
          else: autoscriptOtherPlayers('{}:ReservesPlayed:{}'.format(me,prevGroup.controller),fullReserves[choice])
          
 def playEdgeReserve(group):

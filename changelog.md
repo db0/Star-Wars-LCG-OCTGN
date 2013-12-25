@@ -9,6 +9,8 @@ Changelog - Star Wars LCG OCTGN Game Definition
   * Arcona Rumor Monger: Not rules enforced
   * Trandoshan Security Team: Not rules enforced.
   * A Price on their heads doesn't enforce the targets. Just make sure you select units from different opponents.
+  * Dash Rendar cannot be triggered by a player who doesn't control him but once they are triggered any ally can play their cost normally.
+* Stopped cards from triggering their reacts while previous triggers are already waiting.  
 
 ### 2.6.3.x
 
