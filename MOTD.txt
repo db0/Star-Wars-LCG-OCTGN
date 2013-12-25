@@ -1,11 +1,10 @@
 =====Message of the Day======
 
-UPDATE: Ooops! Just fixed the nasty endless objectives refresh bug, Sorry about that :)
+The non-challenge cards from the Balance of the Force expansion have now been automated!
 
-2v2 is now available!
+Enjoy the 2v2!
 
-Do you want to read the details?
-
+Do you want to read details about 2v2?
 =============================
 &&
 http://octgn.gamersjudgement.com/wordpress/swlcg/game-now-2v2-compatible/

@@ -11,6 +11,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
   * A Price on their heads doesn't enforce the targets. Just make sure you select units from different opponents.
   * Dash Rendar cannot be triggered by a player who doesn't control him but once they are triggered any ally can play their cost normally.
 * Stopped cards from triggering their reacts while previous triggers are already waiting.  
+* Moving captured cards from one objective to another will properly mention that they're just being transferred and the objectives involved.
 
 ### 2.6.3.x
 
