@@ -434,14 +434,14 @@ def chkLookupRestrictions(card,lookup,origin_card):
       playedReserveRegex = re.search(r'(\w+):ReservesPlayed:(\w+)', lookup)
       if takeoverRegex:
          debugNotify("takeoverRegex = {}".format(takeoverRegex.groups()), 4)
-         if takeoverRegex.group(2) != card.controller.name or takeoverRegex.group(1) == card.controller.name: 
+         if takeoverRegex.group(1) != card.controller.name or takeoverRegex.group(2) == card.controller.name: 
             debugNotify("Failed {} chkLookupRestrictions() for {}".format(card,lookup))
             validCard = False
             # Agent of the hand only triggers if its controller took control of a unit from another player.  group(1) is the player who took control, group(2) is the player who had control before.
             # So if the lookup was a takeover regex but the new controller (group(1)) is not the controller of AotH or the old controller (group(2)) was the same player, then it failed the check
       elif playedReserveRegex: 
          debugNotify("playedReserveRegex = {}".format(playedReserveRegex.groups()), 4)
-         if playedReserveRegex.group(2) != card.controller.name or playedReserveRegex.group(1) == card.controller.name: 
+         if playedReserveRegex.group(1) != card.controller.name or playedReserveRegex.group(2) == card.controller.name: 
             debugNotify("Failed {} chkLookupRestrictions() for {}".format(card,lookup))
             validCard = False      
             # Agent of the hand's ReservesPlayed only triggers if its controller is the reserves playing player (group(1)) and they played a common reserves card from another player (group(2))   

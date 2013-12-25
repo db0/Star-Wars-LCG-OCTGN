@@ -515,7 +515,7 @@ def GainX(Autoscript, announceText, card, targetCards = None, notification = Non
    debugNotify("action groups: {}. Autoscript: {}".format(action.groups(0),Autoscript)) # Debug
    gain += num(action.group(2))
    targetPLs = ofwhom(Autoscript, card.controller)
-   if len(targetPLs) > 1 or targetPLs[0] != me and not notification: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
+   if len(targetPLs) > 1 or targetPLs[0] != me: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
    else: otherTXT = ''
    for targetPL in targetPLs:
       multiplier = per(Autoscript, card, n, targetCards) # We check if the card provides a gain based on something else, such as favour bought, or number of dune fiefs controlled by rivals.
@@ -713,7 +713,7 @@ def DrawX(Autoscript, announceText, card, targetCards = None, notification = Non
    destiVerb = 'draw'
    action = re.search(r'\bDraw([0-9]+)Card', Autoscript)
    targetPLs = ofwhom(Autoscript, card.controller)
-   if len(targetPLs) > 1 or targetPLs[0] != me and not notification: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
+   if len(targetPLs) > 1 or targetPLs[0] != me: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
    else: otherTXT = ''
    if len(targetPLs) > 1 or targetPLs[0] != me: destiVerb = 'move'
    for targetPL in targetPLs:
@@ -773,7 +773,7 @@ def DiscardX(Autoscript, announceText, card, targetCards = None, notification = 
    if targetCards is None: targetCards = []
    action = re.search(r'\bDiscard([0-9]+)Card', Autoscript)
    targetPLs = ofwhom(Autoscript, card.controller)
-   if len(targetPLs) > 1 or targetPLs[0] != me and not notification: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
+   if len(targetPLs) > 1 or targetPLs[0] != me: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
    else: otherTXT = ''
    for targetPL in targetPLs:
       discardNR = num(action.group(1))
@@ -811,7 +811,7 @@ def ReshuffleX(Autoscript, announceText, card, targetCards = None, notification 
    action = re.search(r'\bReshuffle([A-Za-z& ]+)', Autoscript)
    debugNotify("!!! regex: {}".format(action.groups())) # Debug
    targetPLs = ofwhom(Autoscript, card.controller)
-   if len(targetPLs) > 1 or targetPLs[0] != me and not notification: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
+   if len(targetPLs) > 1 or targetPLs[0] != me: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
    else: otherTXT = ''
    for targetPL in targetPLs:
       if action.group(1) == 'Hand':
@@ -836,7 +836,7 @@ def ShuffleX(Autoscript, announceText, card, targetCards = None, notification = 
    mute()
    action = re.search(r'\bShuffle([A-Za-z& ]+)', Autoscript)
    targetPLs = ofwhom(Autoscript, card.controller)
-   if len(targetPLs) > 1 or targetPLs[0] != me and not notification: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
+   if len(targetPLs) > 1 or targetPLs[0] != me: otherTXT = ' force {} to'.format([targetPL.name for targetPL in targetPLs])
    else: otherTXT = ''
    for targetPL in targetPLs: 
       if action.group(1) == 'Discard': pile = targetPL.piles['Discard Pile']

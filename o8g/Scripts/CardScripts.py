@@ -4082,7 +4082,7 @@ Watchers in the Wasteland
 -----
 ff4fb461-8060-457a-9c16-000000000547
 -----
-ConstantEffect:Force1Bonus-perReservesAllied
+ConstantEffect:Force1Bonus-perReservesTeam
 +++++
 
 .....
@@ -4178,7 +4178,7 @@ Rendar's Wrath
 -----
 ff4fb461-8060-457a-9c16-000000000559
 -----
-whileInPlay:Deal1Damage-AutoTargeted-atUnit-isDefending-isAlone-foreachDefendersDeclared-ifDefendersOpponenteq1-isReact
+whileInPlay:Deal1Damage-AutoTargeted-atUnit-isDefending-isAlone-foreachDefendersDeclared-ifDefendersOpponentseq1-isReact
 +++++
 
 .....
@@ -4226,7 +4226,7 @@ The Emperor's Hand
 -----
 ff4fb461-8060-457a-9c16-000000000565
 -----
-ConstantEffect:Force1Bonus-AutoTargeted-fromCommonReserves-targetAllied-perEveryReserve
+ConstantEffect:Force1Bonus-perReservesTeam
 +++++
 
 .....
