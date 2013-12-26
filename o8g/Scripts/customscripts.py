@@ -475,7 +475,7 @@ def BlueSquadronSupport(card):
       notify(":> {} resolved their {} to draw their last card from their deck.".format(me,card))
    elif len(me.piles['Command Deck']) == 0: notify(":> {} tried to resolve their {} but had no more cards in their deck.".format(me,card))
    else:
-      topCards = me.piles['Command Deck'].top(2)
+      topCards = list(me.piles['Command Deck'].top(2))
       for c in topCards: c.moveTo(me.hand) # We move them to the hand to allow us to read their properties
       choice = None
       while choice == None: choice = SingleChoice("== Blue Squadron Support == \n\nWhich card do you wish put at the bottom of your deck?", makeChoiceListfromCardList(topCards, True, True))
