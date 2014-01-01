@@ -298,6 +298,7 @@ def resolveForceStruggle(group = table, x = 0, y = 0): # Calculate Force Struggl
       if BotD.alternate == 'DarkSide': BotDside = 'Dark'
       else: BotDside = 'Light'
       notify(":> The force struggle is tied. The Balance remains tiped to the {} Side. ({}: {} - {}: {})".format(BotDside,Side,myStruggleTotal,opSide,opponentStruggleTotal))
+      autoscriptOtherPlayers('ForceStruggle{}'.format(BotDside),BotD) # The one who holds the force at the tie is the "winner"
       if debugVerbosity >= 0:
          if confirm("Debug Force Win/Loss?"):
             if confirm("Light Win Force?"): autoscriptOtherPlayers('ForceStruggleLight',BotD)
