@@ -1,10 +1,12 @@
 =====Message of the Day======
 
-The non-challenge cards from the Balance of the Force expansion have now been automated!
+Do you like playing SW LCG on OCTGN? If so, please consider supporting the developer's efforts.
 
-Enjoy the 2v2!
+You can not become a patron for the development of this game definition on Patreon and in the process claim some nice rewards like alt-art for your cards or even customized art for a card of your choosing!
 
-Do you want to read details about 2v2?
+And most important of all, you'll be part of helping make SW LCG on OCTGN even better.
+
+Would you like to learn more (Will open in a new window)?
 =============================
 &&
-http://octgn.gamersjudgement.com/wordpress/swlcg/game-now-2v2-compatible/
+http://www.patreon.com/db0
