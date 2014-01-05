@@ -100,5 +100,5 @@ regexHooks = dict( # A dictionary which holds the regex that then trigger each c
                   CustomScript =       re.compile(r'\bCustomScript'),
                   UseCustomAbility =   re.compile(r'\bUseCustomAbility'))
 
-knownLeagues = {'LeagueTag'        : 'Some League Name' # The known leagues. Now the game will confirm this was a league match before submitting.
+knownLeagues = {'TopTier2014-1'        : 'Top Tier League - 2014, Season 1' # The known leagues. Now the game will confirm this was a league match before submitting.
                }    
