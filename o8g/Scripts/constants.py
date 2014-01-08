@@ -102,3 +102,23 @@ regexHooks = dict( # A dictionary which holds the regex that then trigger each c
 
 knownLeagues = {'TopTier2014-1'        : 'Top Tier League - 2014, Season 1' # The known leagues. Now the game will confirm this was a league match before submitting.
                }    
+               
+#---------------------------------------------------------------------------
+# Patreon stuff (http://www.patreon.com/db0)
+#---------------------------------------------------------------------------
+
+# All names need to be lowercase as I convert the player's name to lowercase in order to do a case-insensitive search.
+
+SuperchargedSubs = ['hoopjones'          # Brian Kupcheck     - http://www.patreon.com/user?u=66678
+                   ] # 3$ Tier
+
+CustomSubs = [             
+             ] # $5 Tier
+
+CardSubs = ['db0',            
+            'dbzer0'
+           ] # $10 Tier
+
+CustomMsgs = dict( # Dictionary holding the messages requested by people on the 5$ tier and above
+                 db0             = "Please consider supporting A:NR development via Patreon - http://www.patreon.com/db0"
+                  )               

@@ -26,6 +26,11 @@ import re
 playerside = None # Variable to keep track on which side each player is
 playeraxis = None # Variable to keep track on which axis the player is
 
+### Subscriber lists.
+
+supercharged = []
+customized = []
+
 #---------------------------------------------------------------------------
 # Custom Windows Forms
 #---------------------------------------------------------------------------
@@ -693,3 +698,31 @@ def yaxisMove(card):
    else: cardmove = 0
    return cardmove
 
+#---------------------------------------------------------------------------
+# Patron Functions
+#---------------------------------------------------------------------------   
+
+def prepPatronLists():
+   global supercharged,customized
+   supercharged = SuperchargedSubs + CustomSubs + CardSubs
+   customized = CustomSubs + CardSubs
+   debugNotify("supercharged = {}".format(supercharged))
+   
+def superCharge(card):
+   if me.name.lower() in supercharged: card.switchTo('Supercharged')
+   if me.name.lower() in CardSubs: card.switchTo(me.name.lower())
+      
+def announceSupercharge():
+   if me.name.lower() in supercharged:
+      notify("\n+=+ {}\n".format(CustomMsgs.get(me.name.lower(),superchargedMsg()))) # We either announce a player's custom message, or the generic supercharged one
+      
+def superchargedMsg():
+   if Affiliation.name == 'Sith': msg = "{} has embraced their rage!".format(me)
+   if Affiliation.name == 'Imperial Navy': msg = "{}'s weapons are at full power!".format(me)
+   if Affiliation.name == 'Scum and Villainy': msg = "There's a price on your head and {} aims to collect.".format(me)
+   if Affiliation.name == 'Jedi': msg = "{} has become one with the force...".format(me)
+   if Affiliation.name == 'Rebel Alliance': msg = "{} is accelerating to attack speed".format(me)
+   if Affiliation.name == 'Smugglers and Spies': msg = "{} is going in against all odds.".format(me)
+   return msg
+           
+      

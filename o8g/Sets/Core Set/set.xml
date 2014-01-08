@@ -2025,7 +2025,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Imperial Navy" type="FullBleed">
+         <alternate name="Imperial Navy" type="Supercharged">
             <property name="Cost" value="0" />
             <property name="Type" value="Affiliation" />	
             <property name="Force" value="0" />	
@@ -2265,7 +2265,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Jedi" type="FullBleed">
+         <alternate name="Jedi" type="Supercharged">
             <property name="Cost" value="0" />
             <property name="Type" value="Affiliation" />	
             <property name="Force" value="0" />	
@@ -2865,7 +2865,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Rebel Alliance" type="FullBleed" >
+         <alternate name="Rebel Alliance" type="Supercharged" >
             <property name="Cost" value="0" />
             <property name="Type" value="Affiliation" />	
             <property name="Force" value="0" />	
@@ -3185,7 +3185,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Scum and Villainy" type="FullBleed">
+         <alternate name="Scum and Villainy" type="Supercharged">
             <property name="Cost" value="0" />
             <property name="Type" value="Affiliation" />	
             <property name="Force" value="0" />	
@@ -3305,7 +3305,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Sith" type="FullBleed">
+         <alternate name="Sith" type="Supercharged">
             <property name="Cost" value="0" />
             <property name="Type" value="Affiliation" />	
             <property name="Force" value="0" />	
@@ -3405,7 +3405,7 @@
          <property name="Instructions" value="" />
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
-         <alternate name="Smugglers and Spies" type="FullBleed">
+         <alternate name="Smugglers and Spies" type="Supercharged">
             <property name="Cost" value="0" />
             <property name="Type" value="Affiliation" />	
             <property name="Force" value="0" />	

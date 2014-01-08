@@ -474,6 +474,7 @@ def gameSetup(group, x = 0, y = 0):
       shuffle(objectives) # And another one just to be sure
       shuffle(deck)
       initGame()
+      announceSupercharge()
       debugNotify(str(Automations),4)
 
 def defaultAction(card, x = 0, y = 0):
@@ -501,14 +502,6 @@ def defaultAction(card, x = 0, y = 0):
          loopChk(c,'Type') # We make sure we can read the card's properties first
          executePlayScripts(c, 'PLAY')
       notify("{} of the {} has revealed their starting objectives".format(me,Affiliation))
-      if rnd(1,10) == 10 or me.name == 'db0': # Finally, we do some randomness :) 
-         Affiliation.switchTo('FullBleed')
-         if Affiliation.name == 'Sith': notify("{} has embraced their rage!".format(me))
-         if Affiliation.name == 'Imperial Navy': notify("{}'s weapons are at full power!".format(me))
-         if Affiliation.name == 'Scum and Villainy': notify("There's a price on your head and {} aims to collect.".format(me))
-         if Affiliation.name == 'Jedi': notify("{} has become one with the force...".format(me))
-         if Affiliation.name == 'Rebel Alliance': notify("{} is accelerating to attack speed".format(me))
-         if Affiliation.name == 'Smugglers and Spies': notify("{} is going in against all odds.".format(me))
       if Side == 'Dark': 
          me.setGlobalVariable('Phase','0') # We now allow the dark side to start
          notify("--> {} of the Dark Side has the initiative".format(me))

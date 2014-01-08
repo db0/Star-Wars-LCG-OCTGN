@@ -1652,6 +1652,7 @@ def reportGame(result = 'DialVictory'): # This submits the game results online.
       (EreportTXT, EreportCode) = webRead(E_reportURL,10000)
    setGlobalVariable('gameEnded','True')
    notify("Thanks for playing. Please submit any bugs or feature requests on github.\n-- https://github.com/db0/Star-Wars-LCG-OCTGN/issues")
+   notify("\n =+= Please consider supporting the development of this plugin\n =+= http://www.patreon.com/db0\n")
    debugNotify("<<< reportGame()", 3) #Debug
 
 def setleague(group = table, x=0,y=0, manual = True):
