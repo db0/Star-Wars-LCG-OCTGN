@@ -134,7 +134,7 @@ def parseNewCounters(player,counter,oldValue):
          if player.counters['Death Star Dial'].value != counter.value: player.counters['Death Star Dial'].value = counter.value
    debugNotify("<<< parseNewCounters()")
 
-def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove):
+def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove,highlight = None, markers = None):
    mute()
    global unpaidCard
    if toGroup != me.piles['Command Deck'] and toGroup != me.piles['Objective Deck'] and card.owner == me: superCharge(card) # First we check if we should supercharge the card, but only if the card is still on the same group at the time of execution.  
