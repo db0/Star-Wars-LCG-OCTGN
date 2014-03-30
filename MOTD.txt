@@ -1,12 +1,6 @@
 =====Message of the Day======
 
-Do you like playing SW LCG on OCTGN? If so, please consider supporting the developer's efforts.
+Heroes and Legends is now available.
 
-You can not become a patron for the development of this game definition on Patreon and in the process claim some nice rewards like alt-art for your cards or even customized art for a card of your choosing!
-
-And most important of all, you'll be part of helping make SW LCG on OCTGN even better.
-
-Would you like to learn more (Will open in a new window)?
+It's still unscripted but you should at least be able to play with the new cards.
 =============================
-&&
-http://www.patreon.com/db0

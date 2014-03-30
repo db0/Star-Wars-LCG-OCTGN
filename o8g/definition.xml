@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.6.4.7"
+      version="2.7.0.0"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -186,7 +186,7 @@
       <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
       <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
 	</card>
-	<table name="Table" visibility="undefined" ordered="False" width="800" height="450" background="Table/background1.png" backgroundStyle="uniformToFill">
+	<table name="Table" visibility="undefined" ordered="False" width="800" height="450" background="Table/background1.png" board="Table/board.png" backgroundStyle="uniformToFill">
       <groupactions menu="Game...">
          <groupaction menu="Set up" default="False" shortcut="Ctrl+Shift+S" execute="gameSetup" />
          <groupaction menu="Concede" default="False" shortcut="Ctrl+Shift+C" execute="concede" />

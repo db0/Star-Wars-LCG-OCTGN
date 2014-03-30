@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.7.0.x
+
+* Heroes and Legends added unscripted
+
 ### 2.6.5.x
 
 * Tying in BOTD now scripts as if the current holder is the winner
