@@ -500,7 +500,7 @@
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
   <property name="Block" value="101" />
-  <property name="Block Number" value="" />
+  <property name="Block Number" value="1" />
   <property name="Number" value="" />
   <property name="Instructions" value="" />
   <property name="AutoScript" value="" />
@@ -577,7 +577,7 @@
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance your play area. Limited.&#xD;&#xA;Reaction: After you win a Force struggle, remove 1 focus token from this enhancement." />
   <property name="Flavor" value="" />
-  <property name="Side" value="Light" />
+  <property name="Side" value="Dark" />
   <property name="Affiliation" value="Neutral" />
   <property name="Block" value="101" />
   <property name="Block Number" value="5" />
