@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.7.2.x
+
+Fixed some bad blocks and traits
+
 ### 2.7.0.x
 
 * Heroes and Legends added unscripted
