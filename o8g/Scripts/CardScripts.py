@@ -4812,7 +4812,7 @@ Kyle Katarn
 -----
 ff4fb461-8060-457a-9c16-000000000638
 -----
-onPlay:Put1Focus-DemiAutoTargeted-atUnit-isCommited||onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited
+onPlay:Put1Focus-DemiAutoTargeted-atUnit-isCommited||onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited-isReact
 +++++
 
 .....
@@ -4820,7 +4820,7 @@ Kyle Katarn
 -----
 ff4fb461-8060-457a-9c16-000000000639
 -----
-onPlay:Put1Focus-DemiAutoTargeted-atUnit-isCommited||onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited
+onPlay:Put1Focus-DemiAutoTargeted-atUnit-isCommited||onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited-isReact
 +++++
 
 .....
@@ -4828,7 +4828,7 @@ Ataru Training
 -----
 ff4fb461-8060-457a-9c16-000000000640
 -----
-Placement:Force User||whileInPlay:DestroyTarget-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-foreachDefenderEdgeWin-ifOrigDefending-ifEdgeDiffge2||whileInPlay:DestroyTarget-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-foreachAttackerEdgeWin-ifOrigAttacking-ifEdgeDiffge2
+Placement:Force User||whileInPlay:DestroyTarget-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-foreachDefenderEdgeWin-ifOrigDefending-ifEdgeDiffge2-isReact||whileInPlay:DestroyTarget-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-foreachAttackerEdgeWin-ifOrigAttacking-ifEdgeDiffge2-isReact
 +++++
 
 .....
@@ -4844,7 +4844,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000642
 -----
-onResolveFate:CommitTarget-Targeted-atCharacter-isCommited$$UncommitTarget-Targeted-atCharacter-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
@@ -4860,7 +4860,7 @@ Jan Ors
 -----
 ff4fb461-8060-457a-9c16-000000000644
 -----
-
+onStrike:ReturnTarget-Targeted-atUnit-targetAllied-onlyOnce-isReact$$Remove1Focus
 +++++
 
 .....
@@ -4868,7 +4868,7 @@ Intel Operative
 -----
 ff4fb461-8060-457a-9c16-000000000645
 -----
-
+onLeaving:Draw1Card-isReact
 +++++
 
 .....
@@ -4876,7 +4876,7 @@ Intel Operative
 -----
 ff4fb461-8060-457a-9c16-000000000646
 -----
-
+onLeaving:Draw1Card-isReact
 +++++
 
 .....
@@ -4884,7 +4884,7 @@ Safe House
 -----
 ff4fb461-8060-457a-9c16-000000000647
 -----
-
+whileInPlay:Remove1Focus-foreachForceStruggleLight-duringOpponentTurn-isReact
 +++++
 
 .....
@@ -4892,7 +4892,7 @@ Twist of Fate
 -----
 ff4fb461-8060-457a-9c16-000000000648
 -----
-
+onResolveFate:CustomScript
 +++++
 
 .....
@@ -4900,7 +4900,7 @@ The False Report
 -----
 ff4fb461-8060-457a-9c16-000000000649
 -----
-
+onPlay:ReturnMulti-AutoTargeted-atUnit-isReact
 +++++
 
 .....
@@ -4926,13 +4926,13 @@ ff4fb461-8060-457a-9c16-000000000652
 -----
 
 +++++
-
+R0:Draw1Card
 .....
 Outmaneuver
 -----
 ff4fb461-8060-457a-9c16-000000000653
 -----
-
+onPlay:ReturnTarget-Targeted-atUnit-targetMine$$ReturnTarget-Targeted-atUnit-targetOpponents
 +++++
 
 .....
@@ -4956,7 +4956,7 @@ Jerec
 -----
 ff4fb461-8060-457a-9c16-000000000656
 -----
-
+onStrike:UncommitTarget-DemiAutoTargeted-atUnit-isCommited-isReact
 +++++
 
 .....
@@ -4966,7 +4966,7 @@ ff4fb461-8060-457a-9c16-000000000657
 -----
 
 +++++
-
+R0:Remove1Focus
 .....
 Imperial Inquisitor
 -----
@@ -4974,7 +4974,7 @@ ff4fb461-8060-457a-9c16-000000000658
 -----
 
 +++++
-
+R0:Remove1Focus
 .....
 Force Storm
 -----
@@ -4982,13 +4982,13 @@ ff4fb461-8060-457a-9c16-000000000659
 -----
 
 +++++
-
+onPlay:Put2Damage-AutoTargeted-atUnit-isNotCommited
 .....
 Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000660
 -----
-onResolveFate:CommitTarget-Targeted-atCharacter-isCommited$$UncommitTarget-Targeted-atCharacter-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
@@ -5012,7 +5012,7 @@ Phase I Dark Trooper
 -----
 ff4fb461-8060-457a-9c16-000000000663
 -----
-
+onPlay:CommitMyself
 +++++
 
 .....
@@ -5020,7 +5020,7 @@ Phase I Dark Trooper
 -----
 ff4fb461-8060-457a-9c16-000000000664
 -----
-
+onPlay:CommitMyself
 +++++
 
 .....
@@ -5028,7 +5028,7 @@ Experimental Tech Lab
 -----
 ff4fb461-8060-457a-9c16-000000000665
 -----
-
+whileInPlay:Remove1Focus-foreachForceStruggleDark-duringOpponentTurn-isReact
 +++++
 
 .....
@@ -5036,7 +5036,7 @@ Heat of Battle
 -----
 ff4fb461-8060-457a-9c16-000000000666
 -----
-
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
 +++++
 
 .....
@@ -5054,7 +5054,7 @@ ff4fb461-8060-457a-9c16-000000000668
 -----
 
 +++++
-
+R0:Remove1Focus
 .....
 Rebel Commando
 -----
@@ -5076,7 +5076,7 @@ Adaptive Strategy
 -----
 ff4fb461-8060-457a-9c16-000000000671
 -----
-
+onPlay:SimplyAnnounce{resolve that fate effect again as if that card were in their edge stack}
 +++++
 
 .....
@@ -5084,7 +5084,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000672
 -----
-
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
 +++++
 
 .....
@@ -5124,7 +5124,7 @@ Holding All the Cards
 -----
 ff4fb461-8060-457a-9c16-000000000677
 -----
-
+onPlay:Draw2Cards$$Draw2Cards-onOpponent
 +++++
 
 .....
@@ -5132,7 +5132,7 @@ Target of Opportunity
 -----
 ff4fb461-8060-457a-9c16-000000000678
 -----
-
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
@@ -5142,7 +5142,7 @@ ff4fb461-8060-457a-9c16-000000000679
 -----
 
 +++++
-
+R0:Put1Focus-Targetet-atUnit-targetOpponents
 .....
 Mara Jade
 -----
@@ -5158,13 +5158,13 @@ ff4fb461-8060-457a-9c16-000000000681
 -----
 
 +++++
-
+R0:Remove1Damage-DemiAutoTargeted-atUnit-hasMarker{Damage}-isCommited-choose1-isCost$$Put1Damage
 .....
 Mara Jade's Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000682
 -----
-
+Placement:Force User_or_Force Sensitive||BonusIcons:UD:1
 +++++
 
 .....
@@ -5180,7 +5180,7 @@ Rage
 -----
 ff4fb461-8060-457a-9c16-000000000684
 -----
-
+onPlay:Remove2Focus-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5212,7 +5212,7 @@ Political Reliability Observer
 -----
 ff4fb461-8060-457a-9c16-000000000688
 -----
-
+onPlay:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
@@ -5228,7 +5228,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000690
 -----
-onResolveFate:CommitTarget-Targeted-atCharacter-isCommited$$UncommitTarget-Targeted-atCharacter-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
@@ -5268,7 +5268,7 @@ Springing the Ambush
 -----
 ff4fb461-8060-457a-9c16-000000000695
 -----
-
+onPlay:CaptureTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5278,7 +5278,7 @@ ff4fb461-8060-457a-9c16-000000000696
 -----
 
 +++++
-
+R0:Remove1Focus-AutoTargeted-atObjective_and_Scum and Villainy-targetMine
 .....
 ENDSCRIPTS
 =====
