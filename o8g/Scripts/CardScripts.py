@@ -4800,6 +4800,486 @@ ff4fb461-8060-457a-9c16-000000000636
 +++++
 
 .....
+Heroes and Legends
+-----
+ff4fb461-8060-457a-9c16-000000000637
+-----
+
++++++
+
+.....
+Kyle Katarn
+-----
+ff4fb461-8060-457a-9c16-000000000638
+-----
+onPlay:Put1Focus-DemiAutoTargeted-atUnit-isCommited||onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited
++++++
+
+.....
+Kyle Katarn
+-----
+ff4fb461-8060-457a-9c16-000000000639
+-----
+onPlay:Put1Focus-DemiAutoTargeted-atUnit-isCommited||onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited
++++++
+
+.....
+Ataru Training
+-----
+ff4fb461-8060-457a-9c16-000000000640
+-----
+Placement:Force User||whileInPlay:DestroyTarget-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-foreachDefenderEdgeWin-ifOrigDefending-ifEdgeDiffge2||whileInPlay:DestroyTarget-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-foreachAttackerEdgeWin-ifOrigAttacking-ifEdgeDiffge2
++++++
+
+.....
+Rahn's Guidance
+-----
+ff4fb461-8060-457a-9c16-000000000641
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000000642
+-----
+onResolveFate:CommitTarget-Targeted-atCharacter-isCommited$$UncommitTarget-Targeted-atCharacter-isNotCommited
++++++
+
+.....
+Forward Reconnaissance
+-----
+ff4fb461-8060-457a-9c16-000000000643
+-----
+
++++++
+
+.....
+Jan Ors
+-----
+ff4fb461-8060-457a-9c16-000000000644
+-----
+
++++++
+
+.....
+Intel Operative
+-----
+ff4fb461-8060-457a-9c16-000000000645
+-----
+
++++++
+
+.....
+Intel Operative
+-----
+ff4fb461-8060-457a-9c16-000000000646
+-----
+
++++++
+
+.....
+Safe House
+-----
+ff4fb461-8060-457a-9c16-000000000647
+-----
+
++++++
+
+.....
+Twist of Fate
+-----
+ff4fb461-8060-457a-9c16-000000000648
+-----
+
++++++
+
+.....
+The False Report
+-----
+ff4fb461-8060-457a-9c16-000000000649
+-----
+
++++++
+
+.....
+Aquaris Freeholders
+-----
+ff4fb461-8060-457a-9c16-000000000650
+-----
+
++++++
+
+.....
+Aquaris Freeholders
+-----
+ff4fb461-8060-457a-9c16-000000000651
+-----
+
++++++
+
+.....
+Clearing House
+-----
+ff4fb461-8060-457a-9c16-000000000652
+-----
+
++++++
+
+.....
+Outmaneuver
+-----
+ff4fb461-8060-457a-9c16-000000000653
+-----
+
++++++
+
+.....
+Slicing In
+-----
+ff4fb461-8060-457a-9c16-000000000654
+-----
+
++++++
+
+.....
+Scouring the Empire
+-----
+ff4fb461-8060-457a-9c16-000000000655
+-----
+
++++++
+
+.....
+Jerec
+-----
+ff4fb461-8060-457a-9c16-000000000656
+-----
+
++++++
+
+.....
+Imperial Inquisitor
+-----
+ff4fb461-8060-457a-9c16-000000000657
+-----
+
++++++
+
+.....
+Imperial Inquisitor
+-----
+ff4fb461-8060-457a-9c16-000000000658
+-----
+
++++++
+
+.....
+Force Storm
+-----
+ff4fb461-8060-457a-9c16-000000000659
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000000660
+-----
+onResolveFate:CommitTarget-Targeted-atCharacter-isCommited$$UncommitTarget-Targeted-atCharacter-isNotCommited
++++++
+
+.....
+The Dark Trooper Project
+-----
+ff4fb461-8060-457a-9c16-000000000661
+-----
+
++++++
+
+.....
+General Mohc
+-----
+ff4fb461-8060-457a-9c16-000000000662
+-----
+
++++++
+
+.....
+Phase I Dark Trooper
+-----
+ff4fb461-8060-457a-9c16-000000000663
+-----
+
++++++
+
+.....
+Phase I Dark Trooper
+-----
+ff4fb461-8060-457a-9c16-000000000664
+-----
+
++++++
+
+.....
+Experimental Tech Lab
+-----
+ff4fb461-8060-457a-9c16-000000000665
+-----
+
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000666
+-----
+
++++++
+
+.....
+Commando Operations
+-----
+ff4fb461-8060-457a-9c16-000000000667
+-----
+
++++++
+
+.....
+General Crix Madine
+-----
+ff4fb461-8060-457a-9c16-000000000668
+-----
+
++++++
+
+.....
+Rebel Commando
+-----
+ff4fb461-8060-457a-9c16-000000000669
+-----
+
++++++
+
+.....
+Rebel Commando
+-----
+ff4fb461-8060-457a-9c16-000000000670
+-----
+
++++++
+
+.....
+Adaptive Strategy
+-----
+ff4fb461-8060-457a-9c16-000000000671
+-----
+
++++++
+
+.....
+Seeds of Decay
+-----
+ff4fb461-8060-457a-9c16-000000000672
+-----
+
++++++
+
+.....
+Against All Odds
+-----
+ff4fb461-8060-457a-9c16-000000000673
+-----
+
++++++
+
+.....
+Dash Rendar
+-----
+ff4fb461-8060-457a-9c16-000000000674
+-----
+
++++++
+
+.....
+Shifty Lookout
+-----
+ff4fb461-8060-457a-9c16-000000000675
+-----
+
++++++
+
+.....
+Holding All the Cards
+-----
+ff4fb461-8060-457a-9c16-000000000676
+-----
+
++++++
+
+.....
+Holding All the Cards
+-----
+ff4fb461-8060-457a-9c16-000000000677
+-----
+
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000678
+-----
+
++++++
+
+.....
+Agent of the Emperor
+-----
+ff4fb461-8060-457a-9c16-000000000679
+-----
+
++++++
+
+.....
+Mara Jade
+-----
+ff4fb461-8060-457a-9c16-000000000680
+-----
+
++++++
+
+.....
+Imperial Shadow Guard
+-----
+ff4fb461-8060-457a-9c16-000000000681
+-----
+
++++++
+
+.....
+Mara Jade's Lightsaber
+-----
+ff4fb461-8060-457a-9c16-000000000682
+-----
+
++++++
+
+.....
+Sith Library
+-----
+ff4fb461-8060-457a-9c16-000000000683
+-----
+
++++++
+
+.....
+Rage
+-----
+ff4fb461-8060-457a-9c16-000000000684
+-----
+
++++++
+
+.....
+Victory or Death
+-----
+ff4fb461-8060-457a-9c16-000000000685
+-----
+
++++++
+
+.....
+Victory-class Star Destroyer
+-----
+ff4fb461-8060-457a-9c16-000000000686
+-----
+
++++++
+
+.....
+Victory-class Star Destroyer
+-----
+ff4fb461-8060-457a-9c16-000000000687
+-----
+
++++++
+
+.....
+Political Reliability Observer
+-----
+ff4fb461-8060-457a-9c16-000000000688
+-----
+
++++++
+
+.....
+Control Room
+-----
+ff4fb461-8060-457a-9c16-000000000689
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000000690
+-----
+onResolveFate:CommitTarget-Targeted-atCharacter-isCommited$$UncommitTarget-Targeted-atCharacter-isNotCommited
++++++
+
+.....
+The Findsman's Intuition
+-----
+ff4fb461-8060-457a-9c16-000000000691
+-----
+
++++++
+
+.....
+Zuckuss
+-----
+ff4fb461-8060-457a-9c16-000000000692
+-----
+
++++++
+
+.....
+4-LOM
+-----
+ff4fb461-8060-457a-9c16-000000000693
+-----
+
++++++
+
+.....
+Containment Field
+-----
+ff4fb461-8060-457a-9c16-000000000694
+-----
+
++++++
+
+.....
+Springing the Ambush
+-----
+ff4fb461-8060-457a-9c16-000000000695
+-----
+
++++++
+
+.....
+Pay Out
+-----
+ff4fb461-8060-457a-9c16-000000000696
+-----
+
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''

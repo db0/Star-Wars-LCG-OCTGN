@@ -42,7 +42,7 @@
 		<property name="Block" value="97" />
 		<property name="Block Number" value="2" />
 		<property name="Number" value="497" />
-		<property name="Instructions" value="" />
+		<property name="Instructions" value="Place 1 Focus Token on a unit that is committed to the force||Remove 1 Focus Token on a unit that is committed to the force" />
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
@@ -62,7 +62,7 @@
 		<property name="Block" value="97" />
 		<property name="Block Number" value="3" />
 		<property name="Number" value="497" />
-		<property name="Instructions" value="" />
+		<property name="Instructions" value="Place 1 Focus Token on a unit that is committed to the force||Remove 1 Focus Token on a unit that is committed to the force" />
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
