@@ -1,6 +1,10 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.7.3.x
+
+Lure of The Dark Side added unscripted
+
 ### 2.7.2.x
 
 Fixed some bad blocks and traits
