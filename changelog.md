@@ -1,6 +1,11 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.7.5.x
+
+* Implemented Reconnections
+
+
 ### 2.7.4.x
 
 Added some basic automations for H&L and LotDS

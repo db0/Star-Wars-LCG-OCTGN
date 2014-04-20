@@ -1,6 +1,16 @@
 =====Message of the Day======
 
-Heroes and Legends is now available.
+Lure of the Dark Side now available 
 
-It's still unscripted but you should at least be able to play with the new cards.
+Basic scripting added to H&L and LotDS
+
+Getting a disconnect now should also not completely break all scripts. Lemme know how it works.
+If it doesn't work, try pressing Ctrl+Shift+Q after a disconnect to attempt to fix your variables and continue the game
+
+--- Important ---
+I don't have the time to properly maintain the SW LCG anymore. If anyone has any experience in Python and would like to take over development, please contact me.
+
+Would you like to learn more?
 =============================
+&&
+http://octgn.gamersjudgement.com/wordpress/swlcg/request-assistancehandover/

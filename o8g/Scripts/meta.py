@@ -236,6 +236,10 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    global Side, Affiliation, limite1dPlayed, myAllies, MPxOffset
    debugNotify(">>> resetAll(){}".format(extraASDebug())) #Debug
    mute()
+   if len(table) > 0: 
+      for c in table: 
+         if c.Type == 'Affiliation' and c.owner == me: reconnect() # Attempting to catch a game reconnecting
+      return # This function should only ever run after game start or reset. We abort in case it's a reconnect.
    Side = None
    Affiliation = None
    unpaidCard = None 
@@ -268,6 +272,9 @@ def resetAll(): # Clears all the global variables in order to start a new game.
    me.setGlobalVariable('freePositions',str([]))
    me.setGlobalVariable('currentObjectives', '[]')
    me.setGlobalVariable('PLnumber', '') 
+   me.setGlobalVariable('MPxOffset', '0')    
+   me.setGlobalVariable('MPyOffset', '0')    
+   me.setGlobalVariable('myAllies', '[]')    
    resetGameStats()
    debugNotify("<<< resetAll()") #Debug
    
@@ -1249,6 +1256,9 @@ def setupMultiPlayer():
          me.setGlobalVariable('PLnumber', availablePos[0]) 
          MPxOffset = playerside * ThreePlayerPos[availablePos[0]]
       if MPxOffset == 0: MPyOffset = playerside * 250
+   me.setGlobalVariable('MPxOffset', str(MPxOffset))    
+   me.setGlobalVariable('MPyOffset', str(MPyOffset))    
+   if len(myAllies) > 0: me.setGlobalVariable('myAllies', str([player._id for player in myAllies]))    
    debugNotify("<<< setupMultiPlayer() with MPxOffset = {}".format(MPxOffset)) #Debug
    
 def findAvailablePos(myAllies):
@@ -1724,11 +1734,11 @@ def resetGameStats():
    debugNotify("<<< resetGameStats()") #Debug
    
    
-def fetchCardScripts(group = table, x=0, y=0): # Creates 2 dictionaries with all scripts for all cards stored, based on a web URL or the local version if that doesn't exist.
+def fetchCardScripts(group = table, x=0, y=0, silent = False): # Creates 2 dictionaries with all scripts for all cards stored, based on a web URL or the local version if that doesn't exist.
    debugNotify(">>> fetchCardScripts()") #Debug
    ### Note to self. Switching on Debug Verbosity here tends to crash the game.probably because of bug #596
    global CardsAA, CardsAS # Global dictionaries holding Card AutoActions and Card autoScripts for all cards.
-   whisper("+++ Fetching fresh scripts. Please Wait...")
+   if not silent: whisper("+++ Fetching fresh scripts. Please Wait...")
    if len(getPlayers()) > 1 and debugVerbosity < 0:
       try: (ScriptsDownload, code) = webRead('https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/o8g/Scripts/CardScripts.py',5000)
       except: 

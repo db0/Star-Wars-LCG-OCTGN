@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.7.4.0"
+      version="2.7.5.0"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -201,6 +201,7 @@
          <groupaction menu="Switch All Automations ON/OFF" default="False" execute="switchAll" />  
          <groupaction menu="Switch Custom Forms ON/OFF" default="False" execute="switchWinForms" />  
          <groupaction menu="Re-Download all card automations" default="False" execute="fetchCardScripts" />
+         <groupaction menu="ReConnect" default="False" shortcut="Ctrl+Shift+Q" execute="reconnectMe" />
          <groupaction menu="Debug" default="False" shortcut="Ctrl+Shift+D" execute="TrialError" /> 
 <!--         <groupaction menu="Debug PL Pos" default="False" execute="debugPLPos" />   
          <groupaction menu="Change PL Pos" default="False" shortcut="Ctrl+Shift+P" execute="switchPLPos" />  -->
@@ -287,6 +288,9 @@
       <globalvariable name="Pods" value="" /> 
       <globalvariable name="freePositions" value="[]" /> 
       <globalvariable name="PLnumber" value="" /> 
+      <globalvariable name="MPxOffset" value="0" /> 
+      <globalvariable name="MPyOffset" value="0" /> 
+      <globalvariable name="myAllies" value="[]" /> 
       <globalvariable name="Switches" value="{'Placement': True, 'Triggers': True, 'WinForms': True, 'HARDCORE': False, 'Play': True, 'Start/End-of-Turn/Phase': True}" /> 
 		<hand name="Hand" visibility="me" ordered="False" width="63" height="88" icon="Groups/hand.png">
 			<cardaction menu="Play Card" default="True" execute="play" />

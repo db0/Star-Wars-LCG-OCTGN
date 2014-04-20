@@ -28,7 +28,6 @@ def chkTwoSided():
    if not table.isTwoSided(): information(":::WARNING::: This game is designed to be played on a two-sided table. Things will be extremely uncomfortable otherwise!! Please start a new game and make sure  the appropriate button is checked")
    versionCheck()
    fetchCardScripts() # We only download the scripts at the very first setup of each play session.
-   chooseSide()
    hardcoreMode = getSetting('HARDCORE', False) #We check what the stored value for HARDCORE more is, so that we can restore it if true
    if hardcoreMode: 
       Automations['HARDCORE'] = True
@@ -39,6 +38,7 @@ def chkTwoSided():
 def loadDeck(player,groups):   
    if player == me:
       if setupSide(): checkDeckLegality()
+   chooseSide()
    
 def setupSide():
    global Side, Affiliation
@@ -160,3 +160,25 @@ def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,is
       if unpaidCard == card: unpaidCard = None
       clearAttachLinks(card)      
       removeCapturedCard(card)
+      
+def reconnectMe(group=table, x=0,y=0):
+   reconnect()
+   
+def reconnect():
+# An event which takes care to properly reset all the player variables after they reconnect to the game.
+   global Affiliation, Side, firstTurn
+   global MPxOffset, MPyOffset, myAllies
+   fetchCardScripts(silent = True)
+   chooseSide()
+   firstTurn = False
+   for card in table:
+      if card.Type == 'Affiliation' and card.owner == me:
+         Side = card.Side
+         storeSpecial(card)
+         me.setGlobalVariable('Side', Side)
+         Affiliation = card
+   MPxOffset = num(me.getGlobalVariable('MPxOffset'))
+   MPyOffset = num(me.getGlobalVariable('MPyOffset'))
+   myAllies = [Player(ID) for ID in eval(me.getGlobalVariable('myAllies'))]
+   notify("::> {} has reconnected to the session!".format(me))
+   
