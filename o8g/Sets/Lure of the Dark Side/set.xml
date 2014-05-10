@@ -338,7 +338,7 @@
   <property name="Text" value="Enhance your play area.&#xD;&#xA;Limited. (You cannot play more than one limited card each turn.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
-  <property name="Affiliation" value="Sith" />
+  <property name="Affiliation" value="Neutral" />
   <property name="Block" value="104" />
   <property name="Block Number" value="5" />
   <property name="Number" value="72" />
