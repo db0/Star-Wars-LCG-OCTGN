@@ -5164,7 +5164,7 @@ Mara Jade's Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000682
 -----
-Placement:Force User_or_Force Sensitive||BonusIcons:UD:1
+Placement:Force User_or_Force Sensitive||BonusIcons:UD:1||onPlay:SimplyAnnounce{if play on mara jade, commit manualy mara to the force}
 +++++
 
 .....
