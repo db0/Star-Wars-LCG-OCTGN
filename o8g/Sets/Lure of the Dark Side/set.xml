@@ -31,7 +31,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
-  <property name="Traits" value="Character. Leader." />
+  <property name="Traits" value="Character-Leader" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="3" />
   <property name="Edge Priority" value="" />
@@ -51,7 +51,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character. Trooper." />
+  <property name="Traits" value="Character-Trooper" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -71,7 +71,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character. Trooper." />
+  <property name="Traits" value="Character-Trooper" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -151,7 +151,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
   <property name="Combat Icons" value="UD:1, BD:0, T:1, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character. Smuggler. Mercenary." />
+  <property name="Traits" value="Character-Smuggler-Mercenary" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -171,7 +171,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character." />
+  <property name="Traits" value="Character" />
   <property name="Damage Capacity" value="1" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -271,7 +271,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:1, EE-T:0" />
-  <property name="Traits" value="Character. Force User." />
+  <property name="Traits" value="Character-Force User" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -291,7 +291,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character. Force Sensitive." />
+  <property name="Traits" value="Character-Force Sensitive" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -391,7 +391,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
   <property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Vehicle. Capital Ship." />
+  <property name="Traits" value="Vehicle-Capital Ship" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -411,7 +411,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
   <property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Vehicle. Capital Ship." />
+  <property name="Traits" value="Vehicle-Capital Ship" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -511,7 +511,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:1" />
-  <property name="Traits" value="Character. Bounty Hunter. Force Sensitive." />
+  <property name="Traits" value="Character-Bounty Hunter-Force Sensitive" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -531,7 +531,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Droid. Bounty Hunter." />
+  <property name="Traits" value="Droid-Bounty Hunter" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />

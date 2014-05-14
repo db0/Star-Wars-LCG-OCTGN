@@ -4806,7 +4806,7 @@ ff4fb461-8060-457a-9c16-000000000637
 -----
 
 +++++
-
+R0:BringToPlayTarget-Targeted-fromHand$$ReturnTarget-Targeted
 .....
 Kyle Katarn
 -----
@@ -4884,7 +4884,7 @@ Safe House
 -----
 ff4fb461-8060-457a-9c16-000000000647
 -----
-whileInPlay:Remove1Focus-foreachForceStruggleLight-duringOpponentTurn-isReact
+whileInPlay:Remove1Focus-foreachForceStruggleLight-isReact
 +++++
 
 .....
@@ -4926,7 +4926,7 @@ ff4fb461-8060-457a-9c16-000000000652
 -----
 
 +++++
-R0:Draw1Card
+
 .....
 Outmaneuver
 -----
@@ -5028,7 +5028,7 @@ Experimental Tech Lab
 -----
 ff4fb461-8060-457a-9c16-000000000665
 -----
-whileInPlay:Remove1Focus-foreachForceStruggleDark-duringOpponentTurn-isReact
+whileInPlay:Remove1Focus-foreachForceStruggleDark-isReact
 +++++
 
 .....
@@ -5116,7 +5116,7 @@ Holding All the Cards
 -----
 ff4fb461-8060-457a-9c16-000000000676
 -----
-
+onPlay:Draw2Cards$$Draw2Cards-onOpponent
 +++++
 
 .....
@@ -5196,7 +5196,7 @@ Victory-class Star Destroyer
 -----
 ff4fb461-8060-457a-9c16-000000000686
 -----
-
+ExtraIcon:BD:2-ifHaveForce
 +++++
 
 .....
@@ -5204,7 +5204,7 @@ Victory-class Star Destroyer
 -----
 ff4fb461-8060-457a-9c16-000000000687
 -----
-
+ExtraIcon:BD:2-ifHaveForce
 +++++
 
 .....
