@@ -826,7 +826,7 @@ def commit(card, x = 0, y = 0):
       whisper(":::ERROR::: You can only commit units to the force.")
       return      
    commitedCards = [c for c in table if c.controller == me and c.highlight == commitColor]
-   if len(commitedCards) >= 3:
+   if len(commitedCards) >= 100:
       whisper(":::ERROR::: You already have 3 cards committed to the source. You cannot commit any more without losing on of those. ABORTING!")
       return
    notify("{} commits {} to the force.".format(me, card))
