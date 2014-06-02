@@ -5280,6 +5280,246 @@ ff4fb461-8060-457a-9c16-000000000696
 +++++
 R0:Remove1Focus-AutoTargeted-atObjective_and_Scum and Villainy-targetMine
 .....
+The Flight of the Crow
+-----
+ff4fb461-8060-457a-9c16-000000000697
+-----
+
++++++
+
+....
+Moldy Crow
+-----
+ff4fb461-8060-457a-9c16-000000000698
+-----
+
++++++
+
+....
+Ruusan Colonist
+-----
+ff4fb461-8060-457a-9c16-000000000699
+-----
+
++++++
+
+....
+Ruusan Colonist
+-----
+ff4fb461-8060-457a-9c16-000000000700
+-----
+
++++++
+
+....
+Valley of the Jedi
+-----
+ff4fb461-8060-457a-9c16-000000000701
+-----
+
++++++
+
+....
+My Ally Is the Force
+-----
+ff4fb461-8060-457a-9c16-000000000702
+-----
+
++++++
+
+....
+The Hoth Gambit
+-----
+ff4fb461-8060-457a-9c16-000000000703
+-----
+
++++++
+
+....
+General Carlist Rieekan
+-----
+ff4fb461-8060-457a-9c16-000000000704
+-----
+
++++++
+
+....
+Echo Base Technician
+-----
+ff4fb461-8060-457a-9c16-000000000705
+-----
+
++++++
+
+....
+Tauntaun
+-----
+ff4fb461-8060-457a-9c16-000000000706
+-----
+
++++++
+
+....
+Snowspeeder Counterattack
+-----
+ff4fb461-8060-457a-9c16-000000000677
+-----
+
++++++
+
+....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000678
+-----
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
++++++
+
+....
+Along the Gamor Run
+-----
+ff4fb461-8060-457a-9c16-000000000709
+-----
+
++++++
+
+....
+Hyperspace Marauder
+-----
+ff4fb461-8060-457a-9c16-000000000710
+-----
+
++++++
+
+....
+Hired Hands
+-----
+ff4fb461-8060-457a-9c16-000000000711
+-----
+
++++++
+
+....
+Hired Hands
+-----
+ff4fb461-8060-457a-9c16-000000000712
+-----
+
++++++
+
+....
+Deneba Refueling Station
+-----
+ff4fb461-8060-457a-9c16-000000000713
+-----
+
++++++
+
+....
+Make Your Own Luck
+-----
+ff4fb461-8060-457a-9c16-000000000714
+-----
+
++++++
+
+....
+The Plan of the Prophetess
+-----
+ff4fb461-8060-457a-9c16-000000000715
+-----
+
++++++
+
+....
+Sariss
+-----
+ff4fb461-8060-457a-9c16-000000000716
+-----
+
++++++
+
+....
+Servant of the Dark Side
+-----
+ff4fb461-8060-457a-9c16-000000000717
+-----
+
++++++
+
+....
+Dark Temple
+-----
+ff4fb461-8060-457a-9c16-000000000718
+-----
+
++++++
+
+....
+Deadly Sight
+-----
+ff4fb461-8060-457a-9c16-000000000719
+-----
+
++++++
+
+....
+Seeds of Decay
+-----
+ff4fb461-8060-457a-9c16-000000000720
+-----
+
++++++
+
+....
+The Slave Trade
+-----
+ff4fb461-8060-457a-9c16-000000000721
+-----
+
++++++
+
+....
+Zygerrian Slaver
+-----
+ff4fb461-8060-457a-9c16-000000000722
+-----
+
++++++
+
+....
+Galactic Scum
+-----
+ff4fb461-8060-457a-9c16-000000000723
+-----
+
++++++
+
+....
+Galactic Scum
+-----
+ff4fb461-8060-457a-9c16-000000000724
+-----
+
++++++
+
+....
+Slaver Holding Cells
+-----
+ff4fb461-8060-457a-9c16-000000000725
+-----
+
++++++
+
+....
+Relentless Pursuit
+-----
+ff4fb461-8060-457a-9c16-000000000726
+-----
+
++++++
+
+....
 ENDSCRIPTS
 =====
 '''

@@ -1,11 +1,6 @@
 =====Message of the Day======
 
-Lure of the Dark Side now available 
-
-Basic scripting added to H&L and LotDS
-
-Getting a disconnect now should also not completely break all scripts. Lemme know how it works.
-If it doesn't work, try pressing Ctrl+Shift+Q after a disconnect to attempt to fix your variables and continue the game
+Knowledge and Defense now available 
 
 --- Important ---
 I don't have the time to properly maintain the SW LCG anymore. If anyone has any experience in Python and would like to take over development, please contact me.
