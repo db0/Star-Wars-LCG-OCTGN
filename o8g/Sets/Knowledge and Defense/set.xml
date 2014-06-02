@@ -206,7 +206,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000677" name="Snowspeeder Counterattack">
+    <card id="ff4fb461-8060-457a-9c16-000000000707" name="Snowspeeder Counterattack">
   <property name="Cost" value="1" />
   <property name="Type" value="Event" />
   <property name="Force" value="2" />
@@ -226,7 +226,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000678" name="Battle of Hoth">
+   <card id="ff4fb461-8060-457a-9c16-000000000708" name="Battle of Hoth">
   <property name="Cost" value="" />
   <property name="Type" value="Fate" />
   <property name="Force" value="3" />
