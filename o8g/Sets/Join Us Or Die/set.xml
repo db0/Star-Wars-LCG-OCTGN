@@ -51,7 +51,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Creature-Dagobah" />
+  <property name="Traits" value="Creature" />
   <property name="Damage Capacity" value="1" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -95,7 +95,7 @@
   <property name="Damage Capacity" value="" />
   <property name="Resources" value="" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Increase the Death Star dial by 1 to search your deck for Yoda, and put him into play." />
+  <property name="Text" value="Action: Increase the Death Star dial by 1 to search your deck for Yoda, and put him into play, if able." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
