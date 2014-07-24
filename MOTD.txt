@@ -1,6 +1,8 @@
 =====Message of the Day======
 
-Join Us or Die now available!
+It Binds All Things Now Available
+
+Some basic automations added.
 
 --- Important ---
 I don't have the time to properly maintain the SW LCG anymore. If anyone has any experience in Python and would like to take over development, please contact me.

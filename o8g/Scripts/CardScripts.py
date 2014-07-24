@@ -5760,6 +5760,246 @@ onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
 +++++
 
 .....
+Ties of Blood
+-----
+ff4fb461-8060-457a-9c16-000000000757
+-----
+
++++++
+
+.....
+Leia Organa
+-----
+ff4fb461-8060-457a-9c16-000000000758
+-----
+
++++++
+
+.....
+Ewok Companion
+-----
+ff4fb461-8060-457a-9c16-000000000759
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+Native Support
+-----
+ff4fb461-8060-457a-9c16-000000000760
+-----
+
++++++
+
+.....
+Leia's Command
+-----
+ff4fb461-8060-457a-9c16-000000000761
+-----
+
++++++
+
+.....
+Protection
+-----
+ff4fb461-8060-457a-9c16-000000000762
+-----
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
++++++
+
+.....
+Green Squadron Deployment
+-----
+ff4fb461-8060-457a-9c16-000000000763
+-----
+
++++++
+
+.....
+Liberty
+-----
+ff4fb461-8060-457a-9c16-000000000764
+-----
+
++++++
+
+.....
+Green Squadron A-Wing
+-----
+ff4fb461-8060-457a-9c16-000000000765
+-----
+
++++++
+
+.....
+Rebel Fighter Bay
+-----
+ff4fb461-8060-457a-9c16-000000000766
+-----
+
++++++
+
+.....
+Evasive Maneuvers
+-----
+ff4fb461-8060-457a-9c16-000000000767
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000000768
+-----
+
++++++
+
+.....
+A Wookiee's Journey
+-----
+ff4fb461-8060-457a-9c16-000000000769
+-----
+
++++++
+
+.....
+Lowhhrick
+-----
+ff4fb461-8060-457a-9c16-000000000770
+-----
+whileInPlay:IncreaseBD:1-forMe-typeWookiee
++++++
+
+.....
+Loyal Wookiee
+-----
+ff4fb461-8060-457a-9c16-000000000771
+-----
+
++++++
+
+.....
+Heart of a Wookiee
+-----
+ff4fb461-8060-457a-9c16-000000000772
+-----
+Placement:Wookiee_and_Unit
++++++
+
+.....
+Faithful Companion
+-----
+ff4fb461-8060-457a-9c16-000000000773
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000000774
+-----
+
++++++
+
+.....
+The Admiral's Assault
+-----
+ff4fb461-8060-457a-9c16-000000000775
+-----
+
++++++
+
+.....
+Admiral Piett
+-----
+ff4fb461-8060-457a-9c16-000000000776
+-----
+
++++++
+
+.....
+Hoth Reinforcements
+-----
+ff4fb461-8060-457a-9c16-000000000777
+-----
+
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000778
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+Battle of Hoth
+-----
+ff4fb461-8060-457a-9c16-000000000779
+-----
+
++++++
+
+.....
+Seeds of Decay
+-----
+ff4fb461-8060-457a-9c16-000000000780
+-----
+
++++++
+
+.....
+The Droid's Task
+-----
+ff4fb461-8060-457a-9c16-000000000781
+-----
+
++++++
+
+.....
+IG-88
+-----
+ff4fb461-8060-457a-9c16-000000000782
+-----
+
++++++
+
+.....
+Reprogrammed DRK-1 Droid
+-----
+ff4fb461-8060-457a-9c16-000000000783
+-----
+
++++++
+
+.....
+Reprogrammed DRK-1 Droid
+-----
+ff4fb461-8060-457a-9c16-000000000784
+-----
+
++++++
+
+.....
+Sonic Detonation
+-----
+ff4fb461-8060-457a-9c16-000000000785
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000000786
+-----
+
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''

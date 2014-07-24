@@ -1,6 +1,14 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 
+### 2.10.0.x
+
+* Added **It Binds All Things**. Some basic automations included
+
+### 2.9.0.x
+
+* Added Join Us or Die
+
 ### 2.7.6.x
 
 Fixed LotDS keywords
