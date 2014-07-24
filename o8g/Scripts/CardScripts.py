@@ -5468,7 +5468,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000720
 -----
-
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
 +++++
 
 ....
@@ -5852,7 +5852,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000768
 -----
-
+onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
@@ -5900,7 +5900,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000774
 -----
-
+onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
@@ -5940,7 +5940,7 @@ Battle of Hoth
 -----
 ff4fb461-8060-457a-9c16-000000000779
 -----
-
+onResolveFate:Deal1Damage-Targeted-atObjective_and_Hoth-targetOpponents-noTargetingError||onResolveFate:Remove1Damage-Targeted-atObjective_and_Hoth-targetAllied-noTargetingError
 +++++
 
 .....
@@ -5948,7 +5948,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000780
 -----
-
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
 +++++
 
 .....
@@ -5996,7 +5996,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000786
 -----
-
+onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
 +++++
 
 .....
