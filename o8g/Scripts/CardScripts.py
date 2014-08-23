@@ -6000,6 +6000,227 @@ onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-a
 +++++
 
 .....
+A Deep Commitment
+-----
+ff4fb461-8060-457a-9c16-000000000787
+-----
++++++
+
+.....
+Feris Olin
+-----
+ff4fb461-8060-457a-9c16-000000000788
+-----
+# onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+ET-74 Communications Droid
+-----
+ff4fb461-8060-457a-9c16-000000000789
+-----
++++++
+
+.....
+ET-74 Communications Droid
+-----
+ff4fb461-8060-457a-9c16-000000000790
+-----
++++++
+
+.....
+Asteroid Base
+-----
+ff4fb461-8060-457a-9c16-000000000791
+-----
++++++
+
+.....
+Force Barrier
+-----
+ff4fb461-8060-457a-9c16-000000000792
+-----
++++++
+
+.....
+Impersonating a Deity
+-----
+ff4fb461-8060-457a-9c16-000000000793
+-----
++++++
+
+.....
+C-3PO
+-----
+ff4fb461-8060-457a-9c16-000000000794
+-----
+# whileInPlay:Draw1Card-foreachEdgeWin-ifOrigEdgeWinner-isReact
++++++
+
+.....
+Ewok Lookout
+-----
+ff4fb461-8060-457a-9c16-000000000795
+-----
++++++
+
+.....
+Ewok Lookout
+-----
+ff4fb461-8060-457a-9c16-000000000796
+-----
++++++
+
+.....
+Rash Action
+-----
+ff4fb461-8060-457a-9c16-000000000797
+-----
++++++
+
+.....
+Seeds of Decay
+-----
+ff4fb461-8060-457a-9c16-000000000798
+-----
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
++++++
+
+.....
+The Call of the Cult
+-----
+ff4fb461-8060-457a-9c16-000000000799
+-----
++++++
+
+.....
+Cularin Cultist
+-----
+ff4fb461-8060-457a-9c16-000000000800
+-----
++++++
+
+.....
+Believer Initiate
+-----
+ff4fb461-8060-457a-9c16-000000000801
+-----
++++++
+
+.....
+Believer Initiate
+-----
+ff4fb461-8060-457a-9c16-000000000802
+-----
++++++
+
+.....
+Hate
+-----
+ff4fb461-8060-457a-9c16-000000000803
+-----
++++++
+
+.....
+Hate
+-----
+ff4fb461-8060-457a-9c16-000000000804
+-----
++++++
+
+.....
+Superior Numbers
+-----
+ff4fb461-8060-457a-9c16-000000000805
+-----
++++++
+
+.....
+Escort Carrier
+-----
+ff4fb461-8060-457a-9c16-000000000806
+-----
++++++
+
+.....
+TIE Scout
+-----
+ff4fb461-8060-457a-9c16-000000000807
+-----
+# onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
++++++
+
+.....
+TIE Scout
+-----
+ff4fb461-8060-457a-9c16-000000000808
+-----
+# onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
++++++
+
+.....
+Precision Flying
+-----
+ff4fb461-8060-457a-9c16-000000000809
+-----
+# Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
++++++
+
+.....
+Precision Flying
+-----
+ff4fb461-8060-457a-9c16-000000000810
+-----
+# Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
++++++
+
+.....
+The Slimiest Scheme
+-----
+ff4fb461-8060-457a-9c16-000000000811
+-----
+# R0:Put1Focus-isCost$$returnToHand-Targeted-atUnit
++++++
+
+.....
+Salacious B. Crumb
+-----
+ff4fb461-8060-457a-9c16-000000000812
+-----
+
++++++
+
+.....
+Palace Security
+-----
+ff4fb461-8060-457a-9c16-000000000813
+-----
+# onPlay:Remove1Damage-Targeted-atObjective-targetMine
++++++
+
+.....
+Palace Security
+-----
+ff4fb461-8060-457a-9c16-000000000814
+-----
+# onPlay:Remove1Damage-Targeted-atObjective-targetMine
++++++
+
+.....
+Prized Possession
+-----
+ff4fb461-8060-457a-9c16-000000000815
+-----
++++++
+
+.....
+Chain Reaction
+-----
+ff4fb461-8060-457a-9c16-000000000816
+-----
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''
