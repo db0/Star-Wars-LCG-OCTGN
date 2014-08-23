@@ -6195,7 +6195,7 @@ Palace Security
 -----
 ff4fb461-8060-457a-9c16-000000000813
 -----
-onPlay:Remove1Damage-Targeted-atObjective-targetMine
+onPlay:Remove1Damage-Targeted-atObjective-targetMine-isReact
 +++++
 
 .....
@@ -6203,7 +6203,7 @@ Palace Security
 -----
 ff4fb461-8060-457a-9c16-000000000814
 -----
-onPlay:Remove1Damage-Targeted-atObjective-targetMine
+onPlay:Remove1Damage-Targeted-atObjective-targetMine-isReact
 +++++
 
 .....
