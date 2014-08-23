@@ -6011,7 +6011,7 @@ Feris Olin
 -----
 ff4fb461-8060-457a-9c16-000000000788
 -----
-# onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -6054,7 +6054,7 @@ C-3PO
 -----
 ff4fb461-8060-457a-9c16-000000000794
 -----
-# whileInPlay:Draw1Card-foreachEdgeWin-ifOrigEdgeWinner-isReact
+whileInPlay:Draw1Card-foreachEdgeWin-ifOrigEdgeWinner-isReact
 +++++
 
 .....
@@ -6147,7 +6147,7 @@ TIE Scout
 -----
 ff4fb461-8060-457a-9c16-000000000807
 -----
-# onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
+onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
 +++++
 
 .....
@@ -6155,7 +6155,7 @@ TIE Scout
 -----
 ff4fb461-8060-457a-9c16-000000000808
 -----
-# onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
+onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
 +++++
 
 .....
@@ -6163,7 +6163,7 @@ Precision Flying
 -----
 ff4fb461-8060-457a-9c16-000000000809
 -----
-# Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
+Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
 +++++
 
 .....
@@ -6171,7 +6171,7 @@ Precision Flying
 -----
 ff4fb461-8060-457a-9c16-000000000810
 -----
-# Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
+Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
 +++++
 
 .....
@@ -6179,7 +6179,7 @@ The Slimiest Scheme
 -----
 ff4fb461-8060-457a-9c16-000000000811
 -----
-# R0:Put1Focus-isCost$$returnToHand-Targeted-atUnit
+R0:Put1Focus-isCost$$returnToHand-Targeted-atUnit
 +++++
 
 .....
@@ -6195,7 +6195,7 @@ Palace Security
 -----
 ff4fb461-8060-457a-9c16-000000000813
 -----
-# onPlay:Remove1Damage-Targeted-atObjective-targetMine
+onPlay:Remove1Damage-Targeted-atObjective-targetMine
 +++++
 
 .....
@@ -6203,7 +6203,7 @@ Palace Security
 -----
 ff4fb461-8060-457a-9c16-000000000814
 -----
-# onPlay:Remove1Damage-Targeted-atObjective-targetMine
+onPlay:Remove1Damage-Targeted-atObjective-targetMine
 +++++
 
 .....
