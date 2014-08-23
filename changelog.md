@@ -3,7 +3,7 @@ Changelog - Star Wars LCG OCTGN Game Definition
 
 ### 2.10.0.x
 
-* Added **Darkness and light**. Some basic automations included from Jeremy Sheiko
+* Added **Darkness and light**. Some basic automations included from SmokeyJ
 
 ### 2.10.0.x
 
