@@ -3,6 +3,10 @@ Changelog - Star Wars LCG OCTGN Game Definition
 
 ### 2.10.0.x
 
+* Added **Darkness and light**. Some basic automations included from Jeremy Sheiko
+
+### 2.10.0.x
+
 * Added **It Binds All Things**. Some basic automations included
 
 ### 2.9.0.x
