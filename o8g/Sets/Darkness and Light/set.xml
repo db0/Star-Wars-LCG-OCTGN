@@ -26,7 +26,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000788" name="Feris Olin">
+   <card id="ff4fb461-8060-457a-9c16-000000000788" name="Ferus Olin">
   <property name="Cost" value="4" />
   <property name="Type" value="Unit" />
   <property name="Force" value="3" />
@@ -102,7 +102,7 @@
   <property name="Block" value="122" />
   <property name="Block Number" value="5" />
   <property name="Number" value="614" />
-  <property name="Instructions" value="" />
+  <property name="Instructions" value="Remove 1 shield to add one Blast Damage||Remove 1 shield to add one Unit Damage" />
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
@@ -522,7 +522,7 @@
   <property name="Block" value="126" />
   <property name="Block Number" value="2" />
   <property name="Number" value="630" />
-  <property name="Instructions" value="" />
+  <property name="Instructions" value="onPlay[Remove Two Focus token from Jabba the Hutt|-|Remove One Focus tokens from Character]" />
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
