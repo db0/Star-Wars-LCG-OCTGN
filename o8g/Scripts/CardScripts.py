@@ -4844,7 +4844,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000642
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -4988,7 +4988,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000660
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5004,7 +5004,7 @@ General Mohc
 -----
 ff4fb461-8060-457a-9c16-000000000662
 -----
-
+whileInPlay:IncreaseBD:1-forMe-typeUnit-isCommited
 +++++
 
 .....
@@ -5084,7 +5084,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000672
 -----
-onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}-choose1
 +++++
 
 .....
@@ -5228,7 +5228,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000690
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5236,7 +5236,7 @@ The Findsman's Intuition
 -----
 ff4fb461-8060-457a-9c16-000000000691
 -----
-
+whileInPlay:Force1Bonus-foreachCardCaptured-ifCapturingObjective
 +++++
 
 .....
@@ -5244,7 +5244,7 @@ Zuckuss
 -----
 ff4fb461-8060-457a-9c16-000000000692
 -----
-
+onStrike:CaptureTarget-AutoTargeted-fromDeckOpponents-onTop3Cards-choose1-isReact
 +++++
 
 .....
@@ -5284,7 +5284,7 @@ The Flight of the Crow
 -----
 ff4fb461-8060-457a-9c16-000000000697
 -----
-
+ConstantEffect:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit_and_Jedi_and_Unique-targetMine-isParticipating-isDistributedEffect
 +++++
 
 ....
@@ -5316,7 +5316,7 @@ Valley of the Jedi
 -----
 ff4fb461-8060-457a-9c16-000000000701
 -----
-
+whileInPlay:Remove1Focus-foreachForceStruggleLight-isReact
 +++++
 
 ....
@@ -5324,7 +5324,7 @@ My Ally Is the Force
 -----
 ff4fb461-8060-457a-9c16-000000000702
 -----
-
+onPlay:DestroyMultiple-AutoTargeted-atUnit-isNotCommited
 +++++
 
 ....
@@ -5332,7 +5332,7 @@ The Hoth Gambit
 -----
 ff4fb461-8060-457a-9c16-000000000703
 -----
-
+whileInPlay:Force1Bonus-perEveryHoth-AutoTargeted-atObjective_and_Hoth-hasntMarker{Damage}
 +++++
 
 ....
@@ -5340,7 +5340,7 @@ General Carlist Rieekan
 -----
 ff4fb461-8060-457a-9c16-000000000704
 -----
-
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough||afterRefresh:Remove1Damage-DemiAutoTargeted-atObjective_and_Hoth-hasMarker{Damage}-choose1-isReact
 +++++
 
 ....
@@ -5364,7 +5364,7 @@ Snowspeeder Counterattack
 -----
 ff4fb461-8060-457a-9c16-000000000707
 -----
-
+onPlay:Put1Damage-AutoTargeted-atObjective_and_Hoth-targetMine-isCost$$Put1Damage-perEveryHoth_and_Objective-DemiAutoTargeted-atUnit-targetOpponents-choose1
 +++++
 
 ....
@@ -5388,7 +5388,7 @@ Hyperspace Marauder
 -----
 ff4fb461-8060-457a-9c16-000000000710
 -----
-
+whileInPlay:Retrieve1Card-grabUnit-hasProperty{Cost}le1-toTable-foreachForceStruggleLight-isReact
 +++++
 
 ....
@@ -5396,7 +5396,7 @@ Hired Hands
 -----
 ff4fb461-8060-457a-9c16-000000000711
 -----
-
+whileInPlay:SacrificeMyself-foreachForceStruggleDark-isReact-isForced
 +++++
 
 ....
@@ -5404,7 +5404,7 @@ Hired Hands
 -----
 ff4fb461-8060-457a-9c16-000000000712
 -----
-
+whileInPlay:SacrificeMyself-foreachForceStruggleDark-isReact-isForced
 +++++
 
 ....
@@ -5412,7 +5412,7 @@ Deneba Refueling Station
 -----
 ff4fb461-8060-457a-9c16-000000000713
 -----
-
+whileInPlay:Remove1Focus-foreachForceStruggleLight-isReact
 +++++
 
 ....
@@ -5420,7 +5420,7 @@ Make Your Own Luck
 -----
 ff4fb461-8060-457a-9c16-000000000714
 -----
-
+onPlay:RequestInt-Msg{How many Force icons does target unit currently have?}&&CreateDummy||whileInPlay:Force1Bonus-perX-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
 +++++
 
 ....
@@ -5436,7 +5436,7 @@ Sariss
 -----
 ff4fb461-8060-457a-9c16-000000000716
 -----
-
+onCommit:CommitTarget-DemiAutoTargeted-atUnit-isNotCommited-targetOpponents-choose1-isReact
 +++++
 
 ....
@@ -5452,7 +5452,7 @@ Dark Temple
 -----
 ff4fb461-8060-457a-9c16-000000000718
 -----
-
+whileInPlay:Remove1Focus-foreachForceStruggleDark-isReact
 +++++
 
 ....
@@ -5468,7 +5468,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000720
 -----
-onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}-choose1
 +++++
 
 ....
@@ -5476,7 +5476,7 @@ The Slave Trade
 -----
 ff4fb461-8060-457a-9c16-000000000721
 -----
-
+whileInPlay:CaptureTarget-AutoTargeted-fromTopDeckOpponents-captureOnMyself-foreachForceStruggleDark-isReact||whileInPlay:RescueTarget-Targeted-isCapturedCurrentObjective-isRandom-foreachForceStruggleLight-isReact-isForced
 +++++
 
 ....
@@ -5492,7 +5492,7 @@ Galactic Scum
 -----
 ff4fb461-8060-457a-9c16-000000000723
 -----
-
+whileInPlay:Put1Damage-foreachForceStruggleLight-isReact-isForced
 +++++
 
 ....
@@ -5500,7 +5500,7 @@ Galactic Scum
 -----
 ff4fb461-8060-457a-9c16-000000000724
 -----
-
+whileInPlay:Put1Damage-foreachForceStruggleLight-isReact-isForced
 +++++
 
 ....
@@ -5508,7 +5508,7 @@ Slaver Holding Cells
 -----
 ff4fb461-8060-457a-9c16-000000000725
 -----
-
+whileInPlay:Remove1Focus-foreachForceStruggleDark-isReact
 +++++
 
 ....
@@ -5516,7 +5516,7 @@ Relentless Pursuit
 -----
 ff4fb461-8060-457a-9c16-000000000726
 -----
-
+onPlay:SimplyAnnounce{look at opponent's deck and capture copy of revealed captured card}
 +++++
 
 ....
@@ -5526,13 +5526,13 @@ ff4fb461-8060-457a-9c16-000000000727
 -----
 
 +++++
-
+R0:Remove999Focus-Targeted-targetMine
 .....
 Yoda
 -----
 ff4fb461-8060-457a-9c16-000000000728
 -----
-
+onStrike:RequestInt-Msg{What is the value of the Death Star Dial?}$$Put1Weapon Mastery:UD-perX-AutoTargeted-atYoda-isSilent||afterConflict:Remove999Weapon Mastery:UD-AutoTargeted-hasMarker{Weapon Mastery:UD}-isSilent
 +++++
 
 .....
@@ -5540,7 +5540,7 @@ Dagobah Nudj
 -----
 ff4fb461-8060-457a-9c16-000000000729
 -----
-
+onPlay:Lose1Dial-isReact||onLeaving:Gain1Dial-isReact-isForced
 +++++
 
 .....
@@ -5556,7 +5556,7 @@ Yoda, You Seek Yoda
 -----
 ff4fb461-8060-457a-9c16-000000000731
 -----
-
+onPlay:Retrieve1Card-grabYoda-toTable$$Gain1Dial$$ShuffleDeck
 +++++
 
 .....
@@ -5564,7 +5564,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000732
 -----
-onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}-choose1
 +++++
 
 .....
@@ -5580,7 +5580,7 @@ Winter
 -----
 ff4fb461-8060-457a-9c16-000000000734
 -----
-
+whileInPlay:Put1Destination:Command Deck-DemiAutoTargeted-atEnhancement-targetOpponents-choose1-foreachForceStruggleLight-isReact-isSilent
 +++++
 
 .....
@@ -5588,7 +5588,7 @@ Tactical Genius
 -----
 ff4fb461-8060-457a-9c16-000000000735
 -----
-
+onPlay:Remove1Focus-DemiAutoTargeted-atUnit-isCommited-targetMine-isReact
 +++++
 
 .....
@@ -5612,7 +5612,7 @@ Infiltration
 -----
 ff4fb461-8060-457a-9c16-000000000738
 -----
-
+onPlay:BringToPlayTarget-Targeted-atCharacter-fromHand||whileInPlay:Put1Secret Guardian-foreachCardPlayed-onTriggerCard-typeCharacter-isSilent
 +++++
 
 .....
@@ -5620,9 +5620,9 @@ The Second Phase
 -----
 ff4fb461-8060-457a-9c16-000000000739
 -----
-
+whileInPlay:Reduce1CostPlay-affectsUnit_and_Sith-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeCapital Ship-onlyforDummy-isSilent
 +++++
-
+R0:SimplyAnnounce{damage it in order to reduce the cost of the next Sith unit they play this phase by 1}$$CreateDummy-nonUnique-isSilent-doNotDiscard$$Deal1Damage-isSilent-onlyOnce
 .....
 Dark Trooper Legion
 -----
@@ -5644,7 +5644,7 @@ Force Shield
 -----
 ff4fb461-8060-457a-9c16-000000000742
 -----
-
+Placement:Objective_and_Sith||onHostObjectiveThwarted-Draw2Cards-isReact
 +++++
 
 .....
@@ -5652,7 +5652,7 @@ Facility Repair
 -----
 ff4fb461-8060-457a-9c16-000000000743
 -----
-
+onPlay:Remove1Damage-Targeted-atObjective_and_Sith-hasMarker{Damage}-isReact$$Put1Shield-Targeted-atObjective_and_Sith
 +++++
 
 .....
@@ -5660,7 +5660,7 @@ Consumed by the Dark Side
 -----
 ff4fb461-8060-457a-9c16-000000000744
 -----
-
+onPlay:Remove1Damage-AutoTargeted-atObjective-hasMarker{Damage}-targetMine-isReact
 +++++
 
 .....
@@ -5668,7 +5668,7 @@ Reinforcements
 -----
 ff4fb461-8060-457a-9c16-000000000745
 -----
-
+onPlay:Retrieve1Card-grabUnit_and_Imperial Navy-fromDiscard-isTopmost-toTable-isReact
 +++++
 
 .....
@@ -5692,7 +5692,7 @@ Security Checkpoint
 -----
 ff4fb461-8060-457a-9c16-000000000748
 -----
-
+whileInPlay:Edge1Bonus-perEveryUnit-AutoTargeted-atUnit-isCommited-targetMine-isParticipating-isDistributedEffect
 +++++
 
 .....
@@ -5700,7 +5700,7 @@ Award Ceremony
 -----
 ff4fb461-8060-457a-9c16-000000000749
 -----
-
+onPlay:BringtoPlayTarget-DemiAutoTargeted-atCharacter_andI_Imperial Navy-fromHand-isReact
 +++++
 
 .....
@@ -5708,7 +5708,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000750
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5716,7 +5716,7 @@ The Scavengers
 -----
 ff4fb461-8060-457a-9c16-000000000751
 -----
-
+onPlay:DestroyMultiple-AutoTargeted-atUnit-isReact
 +++++
 
 .....
@@ -5756,7 +5756,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000756
 -----
-onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}-choose1
 +++++
 
 .....
@@ -5772,7 +5772,7 @@ Leia Organa
 -----
 ff4fb461-8060-457a-9c16-000000000758
 -----
-
+afterConflict:Deal1Damage-DemiAutoTargeted-atUnit-isReady||afterConflict:Deal1Damage-DemiAutoTargeted-atUnit-isReady
 +++++
 
 .....
@@ -5796,7 +5796,7 @@ Leia's Command
 -----
 ff4fb461-8060-457a-9c16-000000000761
 -----
-
+onPlay:Deal1Damage-AutoTargeted-atObjective_or_Unit-isReady-targetOpponents-isReact
 +++++
 
 .....
@@ -5828,7 +5828,7 @@ Green Squadron A-Wing
 -----
 ff4fb461-8060-457a-9c16-000000000765
 -----
-
+onLeaving:Put1Destination:Command Deck-DemiAutoTargeted-atEvent-fromDiscard-isReact$$ShuffleDeck
 +++++
 
 .....
@@ -5844,7 +5844,7 @@ Evasive Maneuvers
 -----
 ff4fb461-8060-457a-9c16-000000000767
 -----
-
+onPlay:ReturnTarget-Targeted-atVehicle-isReact
 +++++
 
 .....
@@ -5852,7 +5852,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000768
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5900,7 +5900,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000774
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -5908,7 +5908,7 @@ The Admiral's Assault
 -----
 ff4fb461-8060-457a-9c16-000000000775
 -----
-
+onPlay:Retrieve1Card-grabFate-fromDiscard-isTopmost
 +++++
 
 .....
@@ -5948,7 +5948,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000780
 -----
-onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}-choose1
 +++++
 
 .....
@@ -5956,7 +5956,7 @@ The Droid's Task
 -----
 ff4fb461-8060-457a-9c16-000000000781
 -----
-
+afterRefresh:Lose1Reserves-duringMyTurn-isReact$$Put1Activation-isSilent$$Deal1Damage-AutoTargeted-atUnit-isCommited-choose1-targetOpponents||afterDraw:Remove1Activation-duringMyTurn-isCost-isSilent$$Gain1Reserves
 +++++
 
 .....
@@ -5996,7 +5996,7 @@ Echoes of the Force
 -----
 ff4fb461-8060-457a-9c16-000000000786
 -----
-onResolveFate:CommitTarget-Targeted-atUnit-isCommited$$UncommitTarget-Targeted-atUnit-isNotCommited
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
 +++++
 
 .....
@@ -6007,13 +6007,13 @@ ff4fb461-8060-457a-9c16-000000000787
 +++++
 
 .....
-Feris Olin
+Ferus Olin
 -----
 ff4fb461-8060-457a-9c16-000000000788
 -----
 onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
-
+R0:Remove1Shield-isCost$$SimplyAnnounce{cancel the effects of the event card}$$Put1Effects Cancelled-DemiAutoTargeted-atEvent-isReady-choose1-isSilent
 .....
 ET-74 Communications Droid
 -----
@@ -6033,13 +6033,15 @@ Asteroid Base
 -----
 ff4fb461-8060-457a-9c16-000000000791
 -----
-+++++
 
++++++
+R0:Remove1Shield-Targeted$$Put1Crossfire:UD-Targeted-atUnit||R0:Remove1Shield-Targeted$$Put1Crossfire:BD-Targeted-atUnit
 .....
 Force Barrier
 -----
 ff4fb461-8060-457a-9c16-000000000792
 -----
+onPlay:Put1Shield-AutoTargeted-atUnit_or_Objective-isMine-hasntMarker{Shield}
 +++++
 
 .....
@@ -6047,6 +6049,7 @@ Impersonating a Deity
 -----
 ff4fb461-8060-457a-9c16-000000000793
 -----
+onPlay:Retrieve1Card-grabUnit_and_Ewok-hasProperty{Cost}le3-toTable$$ShuffleDeck
 +++++
 
 .....
@@ -6083,7 +6086,7 @@ Seeds of Decay
 -----
 ff4fb461-8060-457a-9c16-000000000798
 -----
-onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}
+onResolveFate:Put1Focus-DemiAutoTargeted-atUnit-isCommited-hasntMarker{Focus}-choose1
 +++++
 
 .....
@@ -6105,6 +6108,7 @@ Believer Initiate
 -----
 ff4fb461-8060-457a-9c16-000000000801
 -----
+whileInPlay:SacrificeMyself-foreachForceStruggleLight-isReact-isForced
 +++++
 
 .....
@@ -6112,6 +6116,7 @@ Believer Initiate
 -----
 ff4fb461-8060-457a-9c16-000000000802
 -----
+whileInPlay:SacrificeMyself-foreachForceStruggleLight-isReact-isForced
 +++++
 
 .....
@@ -6119,6 +6124,7 @@ Hate
 -----
 ff4fb461-8060-457a-9c16-000000000803
 -----
+Placement:Character||onPlay:Put1Effects Cancelled-AutoTargeted-onHost
 +++++
 
 .....
@@ -6126,6 +6132,7 @@ Hate
 -----
 ff4fb461-8060-457a-9c16-000000000804
 -----
+Placement:Character||onPlay:Put1Effects Cancelled-AutoTargeted-onHost
 +++++
 
 .....
@@ -6133,6 +6140,7 @@ Superior Numbers
 -----
 ff4fb461-8060-457a-9c16-000000000805
 -----
+onPlay:Retrieve1Card-grabUnit_and_Fighter-hasProperty{Cost}le2-toTable$$ShuffleDeck
 +++++
 
 .....
@@ -6140,6 +6148,7 @@ Escort Carrier
 -----
 ff4fb461-8060-457a-9c16-000000000806
 -----
+
 +++++
 
 .....
@@ -6147,7 +6156,7 @@ TIE Scout
 -----
 ff4fb461-8060-457a-9c16-000000000807
 -----
-onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
+onStrike:Remove1Shield-DemiAutoTargeted-sourceAny-hasMarker{Shield}-targetOpponents-choose1-isReact
 +++++
 
 .....
@@ -6155,7 +6164,7 @@ TIE Scout
 -----
 ff4fb461-8060-457a-9c16-000000000808
 -----
-onStrike:Remove1Shield-Targeted-sourceAny-hasMarker{Shield}-targetOpponents-isReact
+onStrike:Remove1Shield-DemiAutoTargeted-sourceAny-hasMarker{Shield}-targetOpponents-choose1-isReact
 +++++
 
 .....
@@ -6163,7 +6172,7 @@ Precision Flying
 -----
 ff4fb461-8060-457a-9c16-000000000809
 -----
-Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
+Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus-perEveryUnit-AutoTargeted-onHost-isDistributedEffect
 +++++
 
 .....
@@ -6171,7 +6180,7 @@ Precision Flying
 -----
 ff4fb461-8060-457a-9c16-000000000810
 -----
-Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus
+Placement:Fighter_and_Unit||ConstantEffect:Edge2Bonus-perEveryUnit-AutoTargeted-onHost-isDistributedEffect
 +++++
 
 .....
@@ -6179,15 +6188,15 @@ The Slimiest Scheme
 -----
 ff4fb461-8060-457a-9c16-000000000811
 -----
-R0:Put1Focus-isCost$$returnToHand-Targeted-atUnit
-+++++
 
++++++
+R0:Put1Focus-isCost$$ReturnTarget-DemiAutoTargeted-atScum and Villainy_and_Unit-targetMine-choose1
 .....
 Salacious B. Crumb
 -----
 ff4fb461-8060-457a-9c16-000000000812
 -----
-
+onPlay:Remove1Focus-DemiAutoTargeted-atCharacter-targetMine-hasMarker{Focus}-choose1-isReact
 +++++
 
 .....
@@ -6195,7 +6204,7 @@ Palace Security
 -----
 ff4fb461-8060-457a-9c16-000000000813
 -----
-onPlay:Remove1Damage-Targeted-atObjective-targetMine-isReact
+onPlay:Remove1Damage-DemiAutoTargeted-atObjective_and_Scum and Villainy-targetMine-choose1-isReact
 +++++
 
 .....
@@ -6203,7 +6212,7 @@ Palace Security
 -----
 ff4fb461-8060-457a-9c16-000000000814
 -----
-onPlay:Remove1Damage-Targeted-atObjective-targetMine-isReact
+onPlay:Remove1Damage-DemiAutoTargeted-atObjective_and_Scum and Villainy-targetMine-choose1-isReact
 +++++
 
 .....

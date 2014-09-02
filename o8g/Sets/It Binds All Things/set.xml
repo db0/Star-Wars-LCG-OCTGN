@@ -42,7 +42,7 @@
   <property name="Block" value="117" />
   <property name="Block Number" value="2" />
   <property name="Number" value="590" />
-  <property name="Instructions" value="" />
+  <property name="Instructions" value="afterConflict[Deal 1 Damage if Balance with Dark Side|-|Deal 2 Damage if Balance with Light Side]" />
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
