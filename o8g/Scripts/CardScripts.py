@@ -6230,6 +6230,604 @@ ff4fb461-8060-457a-9c16-000000000816
 +++++
 
 .....
+A Hero&#39;s Trial
+-----
+ff4fb461-8060-457a-9c16-000000000817
+-----
++++++
+
+.....
+Luke Skywalker
+-----
+ff4fb461-8060-457a-9c16-000000000818
+-----
++++++
+
+.....
+Speeder Bike
+-----
+ff4fb461-8060-457a-9c16-000000000819
+-----
++++++
+
+.....
+Luke&#39;s Lightsaber
+-----
+ff4fb461-8060-457a-9c16-000000000820
+-----
++++++
+
+.....
+I Am a Jedi
+-----
+ff4fb461-8060-457a-9c16-000000000821
+-----
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000822
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+The Home of the Master
+-----
+ff4fb461-8060-457a-9c16-000000000823
+-----
++++++
+
+.....
+Yoda
+-----
+ff4fb461-8060-457a-9c16-000000000824
+-----
++++++
+
+.....
+Bogwing
+-----
+ff4fb461-8060-457a-9c16-000000000825
+-----
++++++
+
+.....
+Yoda&#39;s Hut
+-----
+ff4fb461-8060-457a-9c16-000000000826
+-----
++++++
+
+.....
+Lightsaber Deflection
+-----
+ff4fb461-8060-457a-9c16-000000000827
+-----
+onPlay:Transfer1Damage-Targeted-atUnit-sourceUnit_and_nonVehicle-targetMine-hasMarker{Damage}-destinationUnit
++++++
+
+.....
+The Jedi&#39;s Resolve
+-----
+ff4fb461-8060-457a-9c16-000000000828
+-----
++++++
+
+.....
+Following Fate
+-----
+ff4fb461-8060-457a-9c16-000000000829
+-----
++++++
+
+.....
+Obi&#151;Wan Kenobi
+-----
+ff4fb461-8060-457a-9c16-000000000830
+-----
++++++
+
+.....
+R2&#151;D2
+-----
+ff4fb461-8060-457a-9c16-000000000831
+-----
++++++
+
+.....
+Obi&#151;Wan&#39;s Lightsaber
+-----
+ff4fb461-8060-457a-9c16-000000000832
+-----
++++++
+
+.....
+Noble Sacrifice
+-----
+ff4fb461-8060-457a-9c16-000000000833
+-----
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000834
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
++++++
+
+.....
+Journey Through the Swamp
+-----
+ff4fb461-8060-457a-9c16-000000000835
+-----
++++++
+
+.....
+Jubba Bird
+-----
+ff4fb461-8060-457a-9c16-000000000836
+-----
++++++
+
+.....
+Jubba Bird
+-----
+ff4fb461-8060-457a-9c16-000000000837
+-----
++++++
+
+.....
+Knobby White Spider
+-----
+ff4fb461-8060-457a-9c16-000000000838
+-----
++++++
+
+.....
+Life Creates It
+-----
+ff4fb461-8060-457a-9c16-000000000839
+-----
++++++
+
+.....
+Size Matters Not
+-----
+ff4fb461-8060-457a-9c16-000000000840
+-----
++++++
+
+.....
+Sacrifice on Endor
+-----
+ff4fb461-8060-457a-9c16-000000000841
+-----
++++++
+
+.....
+Ewok Hunter
+-----
+ff4fb461-8060-457a-9c16-000000000842
+-----
++++++
+
+.....
+Ewok Hunter
+-----
+ff4fb461-8060-457a-9c16-000000000843
+-----
++++++
+
+.....
+Funeral Pyre
+-----
+ff4fb461-8060-457a-9c16-000000000844
+-----
++++++
+
+.....
+Unexpected Help
+-----
+ff4fb461-8060-457a-9c16-000000000845
+-----
++++++
+
+.....
+Retreat into the Forest
+-----
+ff4fb461-8060-457a-9c16-000000000846
+-----
++++++
+
+.....
+Raiding Party
+-----
+ff4fb461-8060-457a-9c16-000000000847
+-----
++++++
+
+.....
+Lieutenant Judder Page
+-----
+ff4fb461-8060-457a-9c16-000000000848
+-----
++++++
+
+.....
+Page&#39;s Commandos
+-----
+ff4fb461-8060-457a-9c16-000000000849
+-----
++++++
+
+.....
+Page&#39;s Commandos
+-----
+ff4fb461-8060-457a-9c16-000000000850
+-----
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000851
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000852
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
++++++
+
+.....
+Calling in Favors
+-----
+ff4fb461-8060-457a-9c16-000000000853
+-----
++++++
+
+.....
+Talon Karrde
+-----
+ff4fb461-8060-457a-9c16-000000000854
+-----
++++++
+
+.....
+Skipray Blastboat
+-----
+ff4fb461-8060-457a-9c16-000000000855
+-----
++++++
+
+.....
+Skipray Blastboat
+-----
+ff4fb461-8060-457a-9c16-000000000856
+-----
++++++
+
+.....
+Dirty Secrets
+-----
+ff4fb461-8060-457a-9c16-000000000857
+-----
++++++
+
+.....
+Cunning Ploy
+-----
+ff4fb461-8060-457a-9c16-000000000858
+-----
++++++
+
+.....
+&#34;No Disintegrations&#34;
+-----
+ff4fb461-8060-457a-9c16-000000000859
+-----
++++++
+
+.....
+Boba Fett
+-----
+ff4fb461-8060-457a-9c16-000000000860
+-----
++++++
+
+.....
+Freelance Hunter
+-----
+ff4fb461-8060-457a-9c16-000000000861
+-----
++++++
+
+.....
+Flamethrower
+-----
+ff4fb461-8060-457a-9c16-000000000862
+-----
++++++
+
+.....
+Prized Possesion
+-----
+ff4fb461-8060-457a-9c16-000000000863
+-----
++++++
+
+.....
+Entangled
+-----
+ff4fb461-8060-457a-9c16-000000000864
+-----
++++++
+
+.....
+Masterful Manipulation
+-----
+ff4fb461-8060-457a-9c16-000000000865
+-----
++++++
+
+.....
+Prince Xizor
+-----
+ff4fb461-8060-457a-9c16-000000000866
+-----
++++++
+
+.....
+Black Sun Headhunter
+-----
+ff4fb461-8060-457a-9c16-000000000867
+-----
++++++
+
+.....
+Debt Collector
+-----
+ff4fb461-8060-457a-9c16-000000000868
+-----
++++++
+
+.....
+Shadows of the Empire
+-----
+ff4fb461-8060-457a-9c16-000000000869
+-----
++++++
+
+.....
+The Prince&#39;s Scheme
+-----
+ff4fb461-8060-457a-9c16-000000000870
+-----
++++++
+
+.....
+All Out Brawl
+-----
+ff4fb461-8060-457a-9c16-000000000871
+-----
++++++
+
+.....
+Zekka Thyne
+-----
+ff4fb461-8060-457a-9c16-000000000872
+-----
++++++
+
+.....
+Debt Collector
+-----
+ff4fb461-8060-457a-9c16-000000000873
+-----
++++++
+
+.....
+Armed to the Teeth
+-----
+ff4fb461-8060-457a-9c16-000000000874
+-----
++++++
+
+.....
+Entangled
+-----
+ff4fb461-8060-457a-9c16-000000000875
+-----
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000876
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+The Best That Credits Can Buy
+-----
+ff4fb461-8060-457a-9c16-000000000877
+-----
++++++
+
+.....
+Virago
+-----
+ff4fb461-8060-457a-9c16-000000000878
+-----
++++++
+
+.....
+Black Sun Headhunter
+-----
+ff4fb461-8060-457a-9c16-000000000879
+-----
++++++
+
+.....
+Rise of the Black Sun
+-----
+ff4fb461-8060-457a-9c16-000000000880
+-----
++++++
+
+.....
+Warning Shot
+-----
+ff4fb461-8060-457a-9c16-000000000881
+-----
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000882
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
++++++
+
+.....
+The Hunters
+-----
+ff4fb461-8060-457a-9c16-000000000883
+-----
++++++
+
+.....
+Boushh
+-----
+ff4fb461-8060-457a-9c16-000000000884
+-----
++++++
+
+.....
+Snoova
+-----
+ff4fb461-8060-457a-9c16-000000000885
+-----
++++++
+
+.....
+A Better Offer
+-----
+ff4fb461-8060-457a-9c16-000000000886
+-----
++++++
+
+.....
+Pay Out
+-----
+ff4fb461-8060-457a-9c16-000000000887
+-----
++++++
+R0:Remove1Focus-AutoTargeted-atObjective_and_Scum and Villainy-targetMine
+
+.....
+Show of Force
+-----
+ff4fb461-8060-457a-9c16-000000000888
+-----
++++++
+
+.....
+The Investigation
+-----
+ff4fb461-8060-457a-9c16-000000000889
+-----
++++++
+
+.....
+Ysanne Isard
+-----
+ff4fb461-8060-457a-9c16-000000000890
+-----
++++++
+
+.....
+Imperial Intelligence Officer
+-----
+ff4fb461-8060-457a-9c16-000000000891
+-----
++++++
+
+.....
+Imperial Intelligence Officer
+-----
+ff4fb461-8060-457a-9c16-000000000892
+-----
++++++
+
+.....
+Confiscate
+-----
+ff4fb461-8060-457a-9c16-000000000893
+-----
++++++
+
+.....
+Official Investigation
+-----
+ff4fb461-8060-457a-9c16-000000000894
+-----
++++++
+
+.....
+Family Connections
+-----
+ff4fb461-8060-457a-9c16-000000000895
+-----
++++++
+
+.....
+General Tagge
+-----
+ff4fb461-8060-457a-9c16-000000000896
+-----
++++++
+
+.....
+Security Task Force
+-----
+ff4fb461-8060-457a-9c16-000000000897
+-----
++++++
+R0:Remove1Damage-DemiAutoTargeted-atTrooper-hasMarker{Damage}-choose1-isCost$$Put1Damage
+
+.....
+Security Task Force
+-----
+ff4fb461-8060-457a-9c16-000000000898
+-----
++++++
+R0:Remove1Damage-DemiAutoTargeted-atTrooper-hasMarker{Damage}-choose1-isCost$$Put1Damage
+
+.....
+Imperial Discipline
+-----
+ff4fb461-8060-457a-9c16-000000000899
+-----
++++++
+
+.....
+Precision Fire
+-----
+ff4fb461-8060-457a-9c16-000000000900
+-----
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''
