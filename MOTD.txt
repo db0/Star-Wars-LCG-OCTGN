@@ -1,29 +1,10 @@
 =====Message of the Day======
 
-Darkness and Light now Available
+Between the Shadows now available
 
-Large batch of Echoes cycle script added by BolivarShagnasty; roughly half have been tested. Take special note of the following:
+Set added by BolivarShagnasty; old fate cards (Heat, ToO) are scripted, Pay Out, and Security Task Force should protect properly.
+No other cards are currently scripted.
 
-All Echoes of the Force should now work
-All Seeds of Decay should now work
-All Force Struggle Resources should work
-Believer Initiate is not a constant effect, only on Force Struggle resolve
-Hate works, but token it places to cancel text must be manually removed if Hate is moved
-Salacious Crumb only works for 1 Focus on any Character; if Jabba you need to manually remove the second Focus
-
-The following scripts are untested; if they do not work, please file an issue here: https://github.com/BolivarShagnasty/Star-Wars-LCG-OCTGN/issues :
-Zuckuss                     Flight of the Crow
-My Ally is the Force        The Hoth Gambit
-Carlist Rieekan             Snowspeeder Counterattack
-Hyperspace Marauder         Hired Hands
-Make Your Own Luck          Sariss
-Slave Trade                 Galactic Scum
-May the Force Be With You   Winter
-Tactical Genius             Infiltration - must manually engage card
-Force Shield                Facility Repair
-Consumed by the Dark Side   Green Squadron A-Wing
-Reinforcements - must manually commit card
-Security Checkpoint         Award Ceremony - must manually commit card
 
 --- Important ---
 I don't have the time to properly maintain the SW LCG anymore. If anyone has any experience in Python and would like to take over development, please contact me.
