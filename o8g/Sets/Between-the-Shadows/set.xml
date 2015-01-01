@@ -1619,7 +1619,7 @@
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
-  <property name="Block" value="139" />
+  <property name="Block" value="140" />
   <property name="Block Number" value="3" />
   <property name="Number" value="695" />
   <property name="Instructions" value="" />
@@ -1639,7 +1639,7 @@
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
-  <property name="Block" value="139" />
+  <property name="Block" value="140" />
   <property name="Block Number" value="4" />
   <property name="Number" value="695" />
   <property name="Instructions" value="" />
