@@ -1486,7 +1486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000891" name="Officer of Imperial Intelligence">
+   <card id="ff4fb461-8060-457a-9c16-000000000891" name="Imperial Intelligence Officer">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
@@ -1506,7 +1506,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000892" name="Officer of Imperial Intelligence">
+   <card id="ff4fb461-8060-457a-9c16-000000000892" name="Imperial Intelligence Officer">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
