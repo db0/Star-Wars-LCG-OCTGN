@@ -1,5 +1,8 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.13.0.x
+
+Between the Shadows set added; Old fate cards (Heat, ToO) have been scripted, as has Pay Out and the Security Task Force cards.
 
 ### 2.12.0.x
 
