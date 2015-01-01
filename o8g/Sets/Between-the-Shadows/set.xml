@@ -315,7 +315,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance a Force User unit. Enhanced Unit gains shielding.&#xD;&#xA;If enhanced unit is Obi&#151Wan Kenobi, he also gains protect unit." />
+  <property name="Text" value="Enhance a Force User unit. Enhanced Unit gains shielding.&#xD;&#xA;If enhanced unit is Obi&#151;Wan Kenobi, he also gains protect unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
