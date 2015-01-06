@@ -30,7 +30,7 @@
   <property name="Cost" value="4" />
   <property name="Type" value="Unit" />
   <property name="Force" value="4" />
-  <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:1, EE-T:0" />
+  <property name="Combat Icons" value="UD:2, BD:1, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Force User-Unique" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
