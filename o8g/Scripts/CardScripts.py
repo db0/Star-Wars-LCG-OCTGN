@@ -6273,7 +6273,7 @@ onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponent
 +++++
 
 .....
-The Home of the Master
+The Master's Domain
 -----
 ff4fb461-8060-457a-9c16-000000000823
 -----
@@ -6323,21 +6323,21 @@ ff4fb461-8060-457a-9c16-000000000829
 +++++
 
 .....
-Obi&#151;Wan Kenobi
+Obi-Wan Kenobi
 -----
 ff4fb461-8060-457a-9c16-000000000830
 -----
 +++++
 
 .....
-R2&#151;D2
+R2-D2
 -----
 ff4fb461-8060-457a-9c16-000000000831
 -----
 +++++
 
 .....
-Obi&#151;Wan&#39;s Lightsaber
+Obi-Wan&#39;s Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000832
 -----
@@ -6401,7 +6401,7 @@ ff4fb461-8060-457a-9c16-000000000840
 +++++
 
 .....
-Sacrifice on Endor
+Sacrifice at Endor
 -----
 ff4fb461-8060-457a-9c16-000000000841
 -----
@@ -6429,21 +6429,21 @@ ff4fb461-8060-457a-9c16-000000000844
 +++++
 
 .....
-Unexpected Help
+Unexpected Assistance
 -----
 ff4fb461-8060-457a-9c16-000000000845
 -----
 +++++
 
 .....
-Retreat into the Forest
+Retreat to the Forest
 -----
 ff4fb461-8060-457a-9c16-000000000846
 -----
 +++++
 
 .....
-Raiding Party
+Commando Raid
 -----
 ff4fb461-8060-457a-9c16-000000000847
 -----
@@ -6522,7 +6522,7 @@ ff4fb461-8060-457a-9c16-000000000857
 +++++
 
 .....
-Cunning Ploy
+Clever Ruse
 -----
 ff4fb461-8060-457a-9c16-000000000858
 -----
@@ -6777,7 +6777,7 @@ ff4fb461-8060-457a-9c16-000000000893
 +++++
 
 .....
-Official Investigation
+Official Inquiry
 -----
 ff4fb461-8060-457a-9c16-000000000894
 -----
