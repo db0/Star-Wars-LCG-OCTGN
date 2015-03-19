@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="Ready for Takeoff" 
+     id="36181e99-e067-4132-8347-747afc5602e4"
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
+     version="2.0.0.0">
+<cards>
+<card id="ff4fb461-8060-457a-9c16-000000000901" name="Rogue Squadron Assault">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Objective" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="5" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After a Fighter or Pilot card you control enters play, draw 1 card. (Limit once per turn.)" />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Rebel Alliance" />
+  <property name="Block" value="141" />
+  <property name="Block Number" value="1" />
+  <property name="Number" value="698" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000902" name="Derek &#34;Hobbie&#34; Klivian">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="3" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Pilot-Unique" />
+  <property name="Damage Capacity" value="1" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Pilot(1).&#xD;&#xA;Interrupt: When this card leaves play, return it to your hand instead." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Rebel Alliance" />
+  <property name="Block" value="141" />
+  <property name="Block Number" value="2" />
+  <property name="Number" value="699" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000903" name="Rogue Squadron X-Wing">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Vehicle-Fighter" />
+  <property name="Damage Capacity" value="3" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Action: Discard attached pilot enhancement to remove all damage and focus tokens from this unit." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Rebel Alliance" />
+  <property name="Block" value="141" />
+  <property name="Block Number" value="3" />
+  <property name="Number" value="700" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000904" name="Rogue Squadron X-Wing">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Vehicle-Fighter" />
+  <property name="Damage Capacity" value="3" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Action: Discard attached pilot enhancement to remove all damage and focus tokens from this unit." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Rebel Alliance" />
+  <property name="Block" value="141" />
+  <property name="Block Number" value="4" />
+  <property name="Number" value="700" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000905" name="Pilot Ready Room">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Enhancement" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Location" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Rebel Alliance" />
+  <property name="Block" value="141" />
+  <property name="Block Number" value="5" />
+  <property name="Number" value="701" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000906" name="Stay on Target">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Fate" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="7" />
+  <property name="Text" value="You may put a Pilot card into play from your hand or discard pile as an enhancement on a target friendly Vehicle unit." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Jedi" />
+  <property name="Block" value="141" />
+  <property name="Block Number" value="6" />
+  <property name="Number" value="702" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000907" name="Memories of Taanab">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Objective" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Taanab" />
+  <property name="Damage Capacity" value="5" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After a target enemy unit with 1 or more edge enabled combat icons is focused to strike, focus a Pilot card to place 1 focus token on the striking unit." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Smugglers and Spies" />
+  <property name="Block" value="142" />
+  <property name="Block Number" value="1" />
+  <property name="Number" value="703" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000908" name="Lando Calrissian">
+  <property name="Cost" value="3" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:0, BD:1, T:1, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Scoundrel-Pilot-Unique" />
+  <property name="Damage Capacity" value="2" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Pilot (2)&#xD;&#xA;While enhanced unit is participating in an engagement and you have the edge, each enemy unit loses all combat icons." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Smugglers and Spies" />
+  <property name="Block" value="142" />
+  <property name="Block Number" value="2" />
+  <property name="Number" value="704" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000909" name="System Patrol Craft">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Vehicle-Transport" />
+  <property name="Damage Capacity" value="2" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Protect [Smugglers and Spies] objective." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Neutral" />
+  <property name="Block" value="142" />
+  <property name="Block Number" value="3" />
+  <property name="Number" value="705" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000910" name="System Patrol Craft">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Vehicle-Transport" />
+  <property name="Damage Capacity" value="2" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Protect [Smugglers and Spies] objective." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Neutral" />
+  <property name="Block" value="142" />
+  <property name="Block Number" value="4" />
+  <property name="Number" value="705" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000911" name="Conner Net">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Enhancement" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Weapon" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Enhance an enemy Vehicle unit.&#xD;&#xA;Treat enhanced units combat icons as if they are edge-enabled." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Neutral" />
+  <property name="Block" value="142" />
+  <property name="Block Number" value="5" />
+  <property name="Number" value="706" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000912" name="A Little Maneuver">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Event" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Maneuver" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After you lose an edge battle, end the engagement without further resolution. Discard all cards in the edge stacks." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Light" />
+  <property name="Affiliation" value="Smugglers and Spies" />
+  <property name="Block" value="142" />
+  <property name="Block Number" value="6" />
+  <property name="Number" value="707" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000913" name="Black Squadron Formation">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Objective" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Death Star" />
+  <property name="Damage Capacity" value="5" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Action: Focus this objective to return a target Black Squadron card from your discard pile to your hand." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Sith" />
+  <property name="Block" value="143" />
+  <property name="Block Number" value="1" />
+  <property name="Number" value="708" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000914" name="&#34;Mauler&#34; Mithel">
+  <property name="Cost" value="3" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Pilot-Black Squadron-Unique" />
+  <property name="Damage Capacity" value="2" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Pilot(1)&#xD;&#xA;Action: Focus this enhancement to remove a target friendly Fighter unit from the engagement." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Sith" />
+  <property name="Block" value="143" />
+  <property name="Block Number" value="2" />
+  <property name="Number" value="709" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000915" name="Black Two">
+  <property name="Cost" value="3" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:1, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Vehicle-Fighter-Black Squadron-Unique" />
+  <property name="Damage Capacity" value="3" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Protect Vehicle.&#xD;&#xA;While this unit is piloted, prevent the first point of damage this unit would take each phase." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Sith" />
+  <property name="Block" value="143" />
+  <property name="Block Number" value="3" />
+  <property name="Number" value="710" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000916" name="TIE Advanced">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Vehicle-Fighter-Black Squadron" />
+  <property name="Damage Capacity" value="2" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After this unit survives an unopposed engagement as an attacker, deal 1 damage to the engaged objective." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Neutral" />
+  <property name="Block" value="143" />
+  <property name="Block Number" value="4" />
+  <property name="Number" value="146" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000917" name="Death Star Ready Room">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Enhancement" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Sith" />
+  <property name="Block" value="143" />
+  <property name="Block Number" value="5" />
+  <property name="Number" value="711" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000918" name="Stay on Target">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Fate" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="8" />
+  <property name="Text" value="You may put a Pilot card into play from your hand or discard pile as an enhancement on a target friendly Vehicle unit." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Sith" />
+  <property name="Block" value="143" />
+  <property name="Block Number" value="6" />
+  <property name="Number" value="712" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000919" name="The Empire&#39;s Elite">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Objective" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="5" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Interrupt: When a piloted Fighter unit you control leaves play, return it and the attached Pilot enhancement to your hand. (Limit once per turn.)" />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Imperial Navy" />
+  <property name="Block" value="144" />
+  <property name="Block Number" value="1" />
+  <property name="Number" value="713" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000920" name="Baron Fel">
+  <property name="Cost" value="4" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="3" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:1, EE-UD:1, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Pilot-Unique" />
+  <property name="Damage Capacity" value="3" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Pilot(2)&#xD;&#xA;While this card is piloting a Fighter unit, each friendly Fighter unit gains elite and edge(1)." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Imperial Navy" />
+  <property name="Block" value="144" />
+  <property name="Block Number" value="2" />
+  <property name="Number" value="714" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000921" name="181st TIE Interceptor">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+  <property name="Traits" value="Vehicle-Fighter" />
+  <property name="Damage Capacity" value="3" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="While this unit piloted, its Pilot enhancement contributes its Force icons to your side during the Force struggle." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Imperial Navy" />
+  <property name="Block" value="144" />
+  <property name="Block Number" value="3" />
+  <property name="Number" value="715" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000922" name="181st TIE Interceptor">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
+  <property name="Traits" value="Vehicle-Fighter" />
+  <property name="Damage Capacity" value="3" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="While this unit piloted, its Pilot enhancement contributes its Force icons to your side during the Force struggle." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Imperial Navy" />
+  <property name="Block" value="144" />
+  <property name="Block Number" value="4" />
+  <property name="Number" value="715" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000923" name="Flight Academy">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Enhancement" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Imperial Navy" />
+  <property name="Block" value="144" />
+  <property name="Block Number" value="5" />
+  <property name="Number" value="716" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000924" name="Stay on Target">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Fate" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="8" />
+  <property name="Text" value="You may put a Pilot card into play from your hand or discard pile as an enhancement on a target friendly Vehicle unit." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Sith" />
+  <property name="Block" value="144" />
+  <property name="Block Number" value="6" />
+  <property name="Number" value="712" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000925" name="The Grand Heist">
+  <property name="Cost" value="0" />
+  <property name="Type" value="Objective" />
+  <property name="Force" value="0" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="5" />
+  <property name="Resources" value="1" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Scum and Villainy affiliation only.&#xD;&#xA;Each light side Vehicle unit you control gains [Tactics]." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Scum and Villainy" />
+  <property name="Block" value="145" />
+  <property name="Block Number" value="1" />
+  <property name="Number" value="717" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000926" name="Niles Ferrier">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:1, BD:0, T:1, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Pilot-Thief-Unique" />
+  <property name="Damage Capacity" value="2" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Pilot(3)&#xD;&#xA;You may play this card as a Pilot enhancement on an unpiloted enemy Fighter or Transport unit. Take control of enhanced unit while piloted by this card." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Scum and Villainy" />
+  <property name="Block" value="145" />
+  <property name="Block Number" value="2" />
+  <property name="Number" value="718" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000927" name="Novice Starship Thief">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Thief" />
+  <property name="Damage Capacity" value="1" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After this unit enters play, destroy a target unpiloted Vehicle unit with printed cost 2 or lower." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Neutral" />
+  <property name="Block" value="145" />
+  <property name="Block Number" value="3" />
+  <property name="Number" value="719" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000928" name="Novice Starship Thief">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Unit" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="Character-Thief" />
+  <property name="Damage Capacity" value="1" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After this unit enters play, destroy a target unpiloted Vehicle unit with printed cost 2 or lower." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Neutral" />
+  <property name="Block" value="145" />
+  <property name="Block Number" value="4" />
+  <property name="Number" value="719" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000929" name="Pirate Hideout">
+  <property name="Cost" value="1" />
+  <property name="Type" value="Enhancement" />
+  <property name="Force" value="1" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Interrupt: When a Vehicle unit is dealt damage, place 1 of that damage on this enhancement. Then, if this enhancement has 4 or more damage on it, discard it." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Scum and Villainy" />
+  <property name="Block" value="145" />
+  <property name="Block Number" value="5" />
+  <property name="Number" value="720" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+<card id="ff4fb461-8060-457a-9c16-000000000930" name="Salvage Operation">
+  <property name="Cost" value="2" />
+  <property name="Type" value="Event" />
+  <property name="Force" value="2" />
+  <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
+  <property name="Traits" value="" />
+  <property name="Damage Capacity" value="0" />
+  <property name="Resources" value="0" />
+  <property name="Edge Priority" value="" />
+  <property name="Text" value="Reaction: After a Vehicle unit is destroyed or captured, put that unit into play (from its owners discard pile or from its captured state) under your control." />
+  <property name="Flavor" value="" />
+  <property name="Side" value="Dark" />
+  <property name="Affiliation" value="Scum and Villainy" />
+  <property name="Block" value="145" />
+  <property name="Block Number" value="6" />
+  <property name="Number" value="721" />
+  <property name="Instructions" value="" />
+  <property name="AutoScript" value="" />
+  <property name="AutoAction" value="" />
+</card>
+</cards>
+</set>
