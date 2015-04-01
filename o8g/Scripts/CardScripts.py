@@ -6231,7 +6231,7 @@ ff4fb461-8060-457a-9c16-000000000816
 +++++
 
 .....
-A Hero&#39;s Trial
+A Hero's Trial
 -----
 ff4fb461-8060-457a-9c16-000000000817
 -----
@@ -6256,7 +6256,7 @@ ConstantEffect:Edge1Bonus||DestroyMyself-foreachEdgeWin-ifOrigEdgeLoser-ifOrigPa
 +++++
 
 .....
-Luke&#39;s Lightsaber
+Luke's Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000820
 -----
@@ -6304,7 +6304,7 @@ ff4fb461-8060-457a-9c16-000000000825
 +++++
 
 .....
-Yoda&#39;s Hut
+Yoda';s Hut
 -----
 ff4fb461-8060-457a-9c16-000000000826
 -----
@@ -6320,7 +6320,7 @@ onPlay:Transfer1Damage-Targeted-atUnit-sourceUnit_and_nonVehicle-targetMine-hasM
 +++++
 
 .....
-The Jedi&#39;s Resolve
+The Jedi's Resolve
 -----
 ff4fb461-8060-457a-9c16-000000000828
 -----
@@ -6336,7 +6336,7 @@ ff4fb461-8060-457a-9c16-000000000829
 +++++
 
 .....
-Obi&#151;Wan Kenobi
+Obi-Wan Kenobi
 -----
 ff4fb461-8060-457a-9c16-000000000830
 -----
@@ -6344,7 +6344,7 @@ ff4fb461-8060-457a-9c16-000000000830
 +++++
 
 .....
-R2&#151;D2
+R2-D2
 -----
 ff4fb461-8060-457a-9c16-000000000831
 -----
@@ -6352,11 +6352,11 @@ ff4fb461-8060-457a-9c16-000000000831
 +++++
 
 .....
-Obi&#151;Wan&#39;s Lightsaber
+Obi-Wan's Lightsaber
 -----
 ff4fb461-8060-457a-9c16-000000000832
 -----
-
+Placement:Force User||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -6488,7 +6488,7 @@ ff4fb461-8060-457a-9c16-000000000848
 +++++
 
 .....
-Page&#39;s Commandos
+Page's Commandos
 -----
 ff4fb461-8060-457a-9c16-000000000849
 -----
@@ -6496,7 +6496,7 @@ ff4fb461-8060-457a-9c16-000000000849
 +++++
 
 .....
-Page&#39;s Commandos
+Page's Commandos
 -----
 ff4fb461-8060-457a-9c16-000000000850
 -----
@@ -6907,7 +6907,9 @@ Rogue Squadron Assault
 -----
 ff4fb461-8060-457a-9c16-000000000901
 -----
+whileInPlay:Draw1Card-foreachCardPlayed-typeFighter_or_Pilot-onlyOnce-forMe-isReact
 +++++
+
 
 .....
 Derek "Hobbie" Klivian
@@ -6938,6 +6940,7 @@ Pilot Ready Room
 -----
 ff4fb461-8060-457a-9c16-000000000905
 -----
+whileInPlay:Reduce1CostPlay-affectsPilot-onlyOnce-forMe
 +++++
 
 .....
@@ -6998,6 +7001,7 @@ Black Squadron Formation
 ff4fb461-8060-457a-9c16-000000000913
 -----
 +++++
+R0:Put1Focus-isCost$$Retrieve1Card-grabBlack Squadron-fromDiscard
 
 .....
 "Mauler" Mithel
@@ -7028,6 +7032,7 @@ Death Star Ready Room
 -----
 ff4fb461-8060-457a-9c16-000000000917
 -----
+whileInPlay:Reduce1CostPlay-affectsPilot-onlyOnce-forMe
 +++++
 
 .....
@@ -7049,7 +7054,7 @@ Baron Fel
 -----
 ff4fb461-8060-457a-9c16-000000000920
 -----
-onPlay:CustomScript||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce2
+onPlay:CustomScript||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce2||ConstantEffect:Edge1Bonus-perEveryUnit_and_Fighter-AutoTargeted-onHost-atFighter-isDistributedEffect
 +++++
 
 .....
@@ -7071,6 +7076,7 @@ Flight Academy
 -----
 ff4fb461-8060-457a-9c16-000000000923
 -----
+whileInPlay:Reduce1CostPlay-affectsPilot-onlyOnce-forMe
 +++++
 
 .....
@@ -7092,7 +7098,7 @@ Niles Ferrier
 -----
 ff4fb461-8060-457a-9c16-000000000926
 -----
-onPlay:CustomScript$$TakeoverTarget-Targeted-atUnit_and_Vehicle||onPay:Increase1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxIncrease1
+onPlay:CustomScriptonPay:Increase1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxIncrease1
 +++++
 
 .....
