@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero&#39;s Trial">
+<card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero's Trial">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -66,7 +66,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000820" name="Luke&#39;s Lightsaber">
+    <card id="ff4fb461-8060-457a-9c16-000000000820" name="Luke's Lightsaber">
   <property name="Cost" value="1" />
   <property name="Type" value="Enhancement" />
   <property name="Force" value="2" />
@@ -186,7 +186,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000826" name="Yoda&#39;s Hut">
+    <card id="ff4fb461-8060-457a-9c16-000000000826" name="Yoda's Hut">
   <property name="Cost" value="2" />
   <property name="Type" value="Enhancement" />
   <property name="Force" value="1" />
@@ -226,7 +226,7 @@
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000828" name="The Jedi&#39;s Resolve">
+    <card id="ff4fb461-8060-457a-9c16-000000000828" name="The Jedi's Resolve">
   <property name="Cost" value="0" />
   <property name="Type" value="Fate" />
   <property name="Force" value="2" />
@@ -306,7 +306,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000832" name="Obi-Wan&#39;s Lightsaber">
+    <card id="ff4fb461-8060-457a-9c16-000000000832" name="Obi-Wan's Lightsaber">
   <property name="Cost" value="1" />
   <property name="Type" value="Enhancement" />
   <property name="Force" value="1" />
@@ -646,7 +646,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000849" name="Page&#39;s Commandos">
+   <card id="ff4fb461-8060-457a-9c16-000000000849" name="Page's Commandos">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
@@ -666,7 +666,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000850" name="Page&#39;s Commandos">
+   <card id="ff4fb461-8060-457a-9c16-000000000850" name="Page's Commandos">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
