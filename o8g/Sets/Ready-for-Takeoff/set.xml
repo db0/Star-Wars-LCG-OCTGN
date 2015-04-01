@@ -118,7 +118,7 @@
   <property name="Text" value="You may put a Pilot card into play from your hand or discard pile as an enhancement on a target friendly Vehicle unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
-  <property name="Affiliation" value="Jedi" />
+  <property name="Affiliation" value="Neutral" />
   <property name="Block" value="141" />
   <property name="Block Number" value="6" />
   <property name="Number" value="702" />
@@ -155,7 +155,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Pilot (2)&#xD;&#xA;While enhanced unit is participating in an engagement and you have the edge, each enemy unit loses all combat icons." />
+  <property name="Text" value="Pilot (2) (While enhanced unit is participating in an engagement and you have the edge, each enemy unit loses all combat icons.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -235,7 +235,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After you lose an edge battle, end the engagement without further resolution. Discard all cards in the edge stacks." />
+  <property name="Text" value="Reaction: After you lose an edge battle, end the engagement without further resolution. Discard all cards in edge stacks." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -275,7 +275,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Pilot(1)&#xD;&#xA;Action: Focus this enhancement to remove a target friendly Fighter unit from the engagement." />
+  <property name="Text" value="Pilot(1) (Action: Focus this enhancement to remove a target friendly Fighter unit from the engagement.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
@@ -331,7 +331,7 @@
   <property name="Type" value="Enhancement" />
   <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Death Star-Location" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
@@ -358,7 +358,7 @@
   <property name="Text" value="You may put a Pilot card into play from your hand or discard pile as an enhancement on a target friendly Vehicle unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
-  <property name="Affiliation" value="Sith" />
+  <property name="Affiliation" value="Neutral" />
   <property name="Block" value="143" />
   <property name="Block Number" value="6" />
   <property name="Number" value="712" />
@@ -395,7 +395,7 @@
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Pilot(2)&#xD;&#xA;While this card is piloting a Fighter unit, each friendly Fighter unit gains elite and edge(1)." />
+  <property name="Text" value="Pilot(2) (While this card is piloting a Fighter unit, each friendly Fighter unit gains elite and edge(1).)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -451,7 +451,7 @@
   <property name="Type" value="Enhancement" />
   <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Prefsbelt-Location" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
@@ -478,7 +478,7 @@
   <property name="Text" value="You may put a Pilot card into play from your hand or discard pile as an enhancement on a target friendly Vehicle unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
-  <property name="Affiliation" value="Sith" />
+  <property name="Affiliation" value="Neutral" />
   <property name="Block" value="144" />
   <property name="Block Number" value="6" />
   <property name="Number" value="712" />
@@ -515,7 +515,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Pilot(3)&#xD;&#xA;You may play this card as a Pilot enhancement on an unpiloted enemy Fighter or Transport unit. Take control of enhanced unit while piloted by this card." />
+  <property name="Text" value="Pilot(3) (You may play this card as a Pilot enhancement on an unpiloted enemy Fighter or Transport unit. Take control of enhanced unit while piloted by this card.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
