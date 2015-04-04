@@ -1,9 +1,11 @@
 =====Message of the Day======
 
-Between the Shadows now available
+Ready for Takeoff now available
 
-Set added by BolivarShagnasty; old fate cards (Heat, ToO) are scripted, Pay Out, and Security Task Force should protect properly.
-No other cards are currently scripted.
+Set added by BolivarShagnasty; any cards that are reprints from previous sets are scripted. Pilots should be able to be deployed on vehicles.
+Rogue Squadron Assault, Hobbie, Rogue Squad X-Wings, the pilot resources, System Patrol Craft, Black Squadron Formation, Black Two's protect only,
+Baron Fel, and Novice Starship Thieves have automations, though testing has been limited. Please report any issues to:
+https://github.com/BolivarShagnasty/Star-Wars-LCG-OCTGN/issues
 
 
 --- Important ---

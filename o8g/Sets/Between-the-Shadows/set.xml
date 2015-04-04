@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero&#39;s Trial">
+<card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero's Trial">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -66,7 +66,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000820" name="Luke&#39;s Lightsaber">
+    <card id="ff4fb461-8060-457a-9c16-000000000820" name="Luke's Lightsaber">
   <property name="Cost" value="1" />
   <property name="Type" value="Enhancement" />
   <property name="Force" value="2" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000823" name="The Home of the Master">
+   <card id="ff4fb461-8060-457a-9c16-000000000823" name="The Master's Domain">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -186,7 +186,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000826" name="Yoda&#39;s Hut">
+    <card id="ff4fb461-8060-457a-9c16-000000000826" name="Yoda's Hut">
   <property name="Cost" value="2" />
   <property name="Type" value="Enhancement" />
   <property name="Force" value="1" />
@@ -226,7 +226,7 @@
          <property name="AutoScript" value="" />
          <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000828" name="The Jedi&#39;s Resolve">
+    <card id="ff4fb461-8060-457a-9c16-000000000828" name="The Jedi's Resolve">
   <property name="Cost" value="0" />
   <property name="Type" value="Fate" />
   <property name="Force" value="2" />
@@ -266,7 +266,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000830" name="Obi&#151;Wan Kenobi">
+    <card id="ff4fb461-8060-457a-9c16-000000000830" name="Obi-Wan Kenobi">
   <property name="Cost" value="5" />
   <property name="Type" value="Unit" />
   <property name="Force" value="4" />
@@ -286,7 +286,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000831" name="R2&#151;D2">
+    <card id="ff4fb461-8060-457a-9c16-000000000831" name="R2-D2">
   <property name="Cost" value="0" />
   <property name="Type" value="Unit" />
   <property name="Force" value="0" />
@@ -306,7 +306,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000832" name="Obi&#151;Wan&#39;s Lightsaber">
+    <card id="ff4fb461-8060-457a-9c16-000000000832" name="Obi-Wan's Lightsaber">
   <property name="Cost" value="1" />
   <property name="Type" value="Enhancement" />
   <property name="Force" value="1" />
@@ -315,7 +315,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance a Force User unit. Enhanced Unit gains shielding.&#xD;&#xA;If enhanced unit is Obi&#151;Wan Kenobi, he also gains protect unit." />
+  <property name="Text" value="Enhance a Force User unit. Enhanced Unit gains shielding.&#xD;&#xA;If enhanced unit is Obi-Wan Kenobi, he also gains protect unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000841" name="Sacrifice on Endor">
+    <card id="ff4fb461-8060-457a-9c16-000000000841" name="Sacrifice at Endor">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -515,7 +515,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this unit enters play, draw a card.&#xD;&#xA;Interrupt: When this unit leaves play, draw a card." />
+  <property name="Text" value="Reaction: After this unit enters play, draw 1 card.&#xD;&#xA;Interrupt: When this unit leaves play, draw 1 card." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -535,7 +535,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this unit enters play, draw a card.&#xD;&#xA;Interrupt: When this unit leaves play, draw a card." />
+  <property name="Text" value="Reaction: After this unit enters play, draw 1 card.&#xD;&#xA;Interrupt: When this unit leaves play, draw 1 card." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -555,7 +555,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Focus this Enhancement and sacrifice a unit you control to place 1 focus token on a target enemy character unit." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Focus this Enhancement and sacrifice a unit you control to place a focus token on a target enemy character unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -566,7 +566,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000845" name="Unexpected Help">
+    <card id="ff4fb461-8060-457a-9c16-000000000845" name="Unexpected Assistance">
   <property name="Cost" value="1" />
   <property name="Type" value="Event" />
   <property name="Force" value="1" />
@@ -575,7 +575,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Move 1 focus token from a unique unit you control to a ready Ewok unit you control." />
+  <property name="Text" value="Action: Move a focus token from a unique unit you control to a ready Ewok unit you control." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -586,7 +586,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000846" name="Retreat into the Forest">
+    <card id="ff4fb461-8060-457a-9c16-000000000846" name="Retreat to the Forest">
   <property name="Cost" value="0" />
   <property name="Type" value="Event" />
   <property name="Force" value="1" />
@@ -595,7 +595,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Interrupt: When an Ewok unit you control is destroyed or sacrificed, instead of putting into the discard pile send it back to its owner&#39;s hand" />
+  <property name="Text" value="Interrupt: When an Ewok unit you control is destroyed or sacrificed, return it to its owner&#39;s hand instead of placing it in your discard pile." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -606,7 +606,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000847" name="Raiding Party">
+    <card id="ff4fb461-8060-457a-9c16-000000000847" name="Commando Raid">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -615,7 +615,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Put a Fate card from your hand into your discard pile to resolve its effect, if able. (Limit once per turn.)" />
+  <property name="Text" value="Limit 1 per objective deck.&#xD;&#xA;Action: Discard a fate card from your hand to resolve its ability, if able. (Limit once per turn.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />
@@ -635,7 +635,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="While this unit is participating in an engagement, it gains: &#34;Interrupt: When you discard your edge stack, return 1 fate card from the edge stack which is not named Twist of Fate back to its owner&#39;s hand.&#34;" />
+  <property name="Text" value="While this unit is participating in an engagement, it gains: &#34;Interrupt: When you discard your edge stack, return 1 fate card not named Twist of Fate from that edge stack back to its owner&#39;s hand.&#34;" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />
@@ -646,7 +646,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000849" name="Page&#39;s Commandos">
+   <card id="ff4fb461-8060-457a-9c16-000000000849" name="Page's Commandos">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
@@ -655,7 +655,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this unit enters play, return the topmost fate card in your discard pile to your hand." />
+  <property name="Text" value="Reaction: After this unit enters play, return the topmost fate card from your discard pile to your hand." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />
@@ -666,7 +666,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000850" name="Page&#39;s Commandos">
+   <card id="ff4fb461-8060-457a-9c16-000000000850" name="Page's Commandos">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
@@ -675,7 +675,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this unit enters play, return the topmost fate card in your discard pile to your hand." />
+  <property name="Text" value="Reaction: After this unit enters play, return the topmost fate card from your discard pile to your hand." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />
@@ -731,7 +731,7 @@
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Myrkr" />
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="4" />
   <property name="Edge Priority" value="" />
@@ -755,7 +755,7 @@
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After you remove 1 focus token from this unit, remove 1 focus token from a target objective, a target Fighter unit, or a target Transport unit. (Limit once per phase.)" />
+  <property name="Text" value="Reaction: After you remove a focus token from this unit, remove 1 focus token from a target objective, Fighter unit, or Transport unit. (Limit once per phase.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -826,7 +826,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000858" name="Cunning Ploy">
+    <card id="ff4fb461-8060-457a-9c16-000000000858" name="Clever Ruse">
   <property name="Cost" value="1" />
   <property name="Type" value="Event" />
   <property name="Force" value="2" />
@@ -835,7 +835,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Can only be played during your Conflict phase.&#xD;&#xA;Action: Move any number of focus tokens from one objective to another objective which is controlled by the same player." />
+  <property name="Text" value="Play only during the conflict phase.&#xD;&#xA;Action: Move any number of focus tokens from an objective to a target objective controlled by the same player." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -1235,7 +1235,7 @@
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Pay 1 [Scum and Villainy] resource to have a target enemy unit losesa keyword until the end of the phase. Then this unit gains that keyword until the end of the phase." />
+  <property name="Text" value="Action: Pay 1 [Scum and Villainy] resource to have a target enemy unit lose a keyword until the end of the phase. Then, this unit gains that keyword until the end of the phase." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
@@ -1535,7 +1535,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance an enemy character unit.&#xD;&#xA;Action: Capture a Light Side card that is attached to this unit." />
+  <property name="Text" value="Enhance an enemy character unit.&#xD;&#xA;Action: Capture a light side card that is attached to enhanced unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
@@ -1546,7 +1546,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000894" name="Official Investigation">
+    <card id="ff4fb461-8060-457a-9c16-000000000894" name="Official Inquiry">
   <property name="Cost" value="1" />
   <property name="Type" value="Event" />
   <property name="Force" value="1" />
@@ -1555,7 +1555,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Look at the top 3 cards of your opponent&#39;s deck. Capture 1 of those cards and return the other cards to the top of his deck in any order." />
+  <property name="Text" value="Action: Look at the top 3 cards of your opponent&#39;s deck. Capture 1 of those cards and place the others back on top of the deck in any order." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
