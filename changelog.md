@@ -1,5 +1,9 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.15.0.x
+
+Draw Their Fire set added; limited automations on some cards.
+
 ### 2.14.0.x
 
 Ready for Takeoff set added; limited automations on some cards.

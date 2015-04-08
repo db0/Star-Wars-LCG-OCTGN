@@ -1,10 +1,10 @@
 =====Message of the Day======
 
-Ready for Takeoff now available
+Draw Their Fire now available
 
 Set added by BolivarShagnasty; any cards that are reprints from previous sets are scripted. Pilots should be able to be deployed on vehicles.
-Rogue Squadron Assault, Hobbie, Rogue Squad X-Wings, the pilot resources, System Patrol Craft, Black Squadron Formation, Black Two's protect only,
-Baron Fel, and Novice Starship Thieves have automations, though testing has been limited. Please report any issues to:
+The Survivors, Qu Rahn, Advanced Proton Torpedoes, LE-B02D9, Outrider, Advanced Concussion Missiles, Hand of the Emperor, and DS-61-3 have automations,
+though testing has been extremely limited. Please report any issues to:
 https://github.com/BolivarShagnasty/Star-Wars-LCG-OCTGN/issues
 
 
