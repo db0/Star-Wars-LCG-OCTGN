@@ -7159,8 +7159,9 @@ Shien Training
 -----
 ff4fb461-8060-457a-9c16-000000000934
 -----
-Placement:Force User||onDamage:Put1Focus-isCost$$SimplyAnnounce{transfers damage to target unit}-isReact
+Placement:Force User
 +++++
+R0:Put1Focus-isCost$$SimplyAnnounce{transfers damage to target unit}-isReact
 
 .....
 Force Rejuvenation
