@@ -7106,6 +7106,7 @@ Novice Starship Thief
 -----
 ff4fb461-8060-457a-9c16-000000000927
 -----
+onPlay:DestroyTarget-Targeted-atUnit_and_Vehicle-targetOpponents-hasProperty{Cost}le2
 +++++
 
 .....
@@ -7113,6 +7114,7 @@ Novice Starship Thief
 -----
 ff4fb461-8060-457a-9c16-000000000928
 -----
+onPlay:DestroyTarget-Targeted-atUnit_and_Vehicle-targetOpponents-hasProperty{Cost}le2
 +++++
 
 .....
@@ -7127,6 +7129,238 @@ Salvage Operation
 -----
 ff4fb461-8060-457a-9c16-000000000930
 -----
++++++
+
+.....
+The Survivors
+-----
+ff4fb461-8060-457a-9c16-000000000931
+-----
++++++
+R0:Remove1Damage-Targeted-atUnit_and_Character_and_Jedi_Unique
+
+.....
+Qu Rahn
+-----
+ff4fb461-8060-457a-9c16-000000000932
+-----
++++++
+R0:Remove1Damage-DemiAutoTargeted-atCharacter-hasMarker{Damage}-choose1-isCost$$Put1Damage$$Deal1Damage-DemiAutoTargeted-atObjective-targetOpponents-choose1
+
+.....
+Sulon Sympathizer
+-----
+ff4fb461-8060-457a-9c16-000000000933
+-----
++++++
+
+.....
+Shien Training
+-----
+ff4fb461-8060-457a-9c16-000000000934
+-----
+Placement:Force User||onDamage:Put1Focus-isCost$$SimplyAnnounce{transfers damage to target unit}-isReact
++++++
+
+.....
+Force Rejuvenation
+-----
+ff4fb461-8060-457a-9c16-000000000935
+-----
+onPlay:Remove999Focus$$Remove999Damage-Targeted-atCharacter-targetAllied
++++++
+
+.....
+Protection
+-----
+ff4fb461-8060-457a-9c16-000000000936
+-----
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
++++++
+
+.....
+Called to Arms
+-----
+ff4fb461-8060-457a-9c16-000000000937
+-----
++++++
+
+.....
+Gray Squadron Gunner
+-----
+ff4fb461-8060-457a-9c16-000000000938
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Gray Squadron Y-Wing
+-----
+ff4fb461-8060-457a-9c16-000000000939
+-----
++++++
+
+.....
+Advanced Proton Torpedoes
+-----
+ff4fb461-8060-457a-9c16-000000000940
+-----
+Placement:Fighter_and_Unit||BonusIcons:BD:1-perEveryUnit-AutoTargeted-atUnit-targetAllied-isParticipating
++++++
+
+.....
+Desperation
+-----
+ff4fb461-8060-457a-9c16-000000000941
+-----
+
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000942
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
++++++
+
+.....
+The Daring Escape
+-----
+ff4fb461-8060-457a-9c16-000000000943
+-----
++++++
+
+
+.....
+LE-B02D9
+-----
+ff4fb461-8060-457a-9c16-000000000944
+-----
+onPlay:CustomScript||onStrike:DisengageTarget-AutoTargeted-onHost-isReact
++++++
+
+.....
+Outrider
+-----
+ff4fb461-8060-457a-9c16-000000000945
+-----
+R0:EngageMyself
++++++
+
+
+.....
+Spacer Cantina
+-----
+ff4fb461-8060-457a-9c16-000000000946
+-----
+whileInPlay:Reduce1CostPlay-affectsPilot-onlyOnce-forMe
++++++
+
+.....
+Punch It
+-----
+ff4fb461-8060-457a-9c16-000000000947
+-----
+onPlay:SimplyAnnounce{choose a new target for the effect}
++++++
+
+.....
+Stay on Target
+-----
+ff4fb461-8060-457a-9c16-000000000948
+-----
++++++
+
+.....
+The Emperor's Sword
+-----
+ff4fb461-8060-457a-9c16-000000000949
+-----
++++++
+
+.....
+Maarek Stele
+-----
+ff4fb461-8060-457a-9c16-000000000950
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Delta One
+-----
+ff4fb461-8060-457a-9c16-000000000951
+-----
+onStrike:SimplyAnnounce{place 1 focus token on each participating unpiloted enemy Vehicle unit}-isReact
++++++
+
+.....
+Advanced Concussion Missiles
+-----
+ff4fb461-8060-457a-9c16-000000000952
+-----
+Placement:Fighter_and_Unit||BonusIcons:BD:1-perEveryUnit-AutoTargeted-atUnit-targetOpponents-isParticipating
++++++
+
+.....
+Hand of the Emperor
+-----
+ff4fb461-8060-457a-9c16-000000000953
+-----
+onPlay:Put1Focus-DemiAutoTargted-atUnit-targetOpponents-isParticipating-choose1||onPay:Reduce1CostPlay-ifDialle4
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000000954
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+Guarding the Wing
+-----
+ff4fb461-8060-457a-9c16-000000000955
+-----
++++++
+
+.....
+DS-61-3
+-----
+ff4fb461-8060-457a-9c16-000000000956
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1||onPlay:Deal2Damage-DemiAutoTargeted-atUnit-targetOpponents-isParticipating-choose1-onlyDuringEngagement-isReact||DeployAllowance:Conflict
++++++
+
+.....
+Black Squadron Fighter
+-----
+ff4fb461-8060-457a-9c16-000000000957
+-----
++++++
+
+.....
+Black Squadron Fighter
+-----
+ff4fb461-8060-457a-9c16-000000000958
+-----
++++++
+
+.....
+Elite Pilot Training
+-----
+ff4fb461-8060-457a-9c16-000000000959
+-----
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000000960
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
 +++++
 
 .....
