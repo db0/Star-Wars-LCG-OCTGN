@@ -1,5 +1,9 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.15.1.x
+
+Objective and button sizes have been fixes (thank to killerangel1863)
+
 ### 2.15.0.x
 
 Draw Their Fire set added; limited automations on some cards.

@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.15.0.0"
+      version="2.15.1.0"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -185,7 +185,7 @@
 
       <property name="AutoScript" type="String" hidden="True" ignoreText="True" />
       <property name="AutoAction" type="String" hidden="True" ignoreText="True" />
-	  <size name="BalanceSize" width="60" height="40" cornerRaduis="2" back="Card/back.png" front="Card/front.jpg"/>
+	  <size name="BalanceSize" width="60" height="40" cornerRadius="2" back="Card/back.png" front="Card/front.jpg"/>
 	  <size name="MarkerSize" width="60" height="60" cornerRadius="2" back="Card/back.png" front="Card/front.jpg"/>
 	  <size name="ObjectiveSize" width="88" height="63" cornerRadius="2" back="Card/rotatedback.png" front="Card/front.jpg"/>
 	</card>
