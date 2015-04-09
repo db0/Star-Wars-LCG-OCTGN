@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 	<cards>
-      <card id="ff4fb461-8060-457a-9c16-000000000223" name="A Message from Beyond">
+      <card id="ff4fb461-8060-457a-9c16-000000000223" name="A Message from Beyond" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -106,7 +106,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000229" name="Echo Base Defense">
+	<card id="ff4fb461-8060-457a-9c16-000000000229" name="Echo Base Defense" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -166,7 +166,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000235" name="Hoth Operations">
+	<card id="ff4fb461-8060-457a-9c16-000000000235" name="Hoth Operations" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -266,7 +266,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000247" name="Lord Vader&#39;s Command">
+	<card id="ff4fb461-8060-457a-9c16-000000000247" name="Lord Vader&#39;s Command" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -386,7 +386,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000253" name="Shadows on the Ice">
+	<card id="ff4fb461-8060-457a-9c16-000000000253" name="Shadows on the Ice" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -546,7 +546,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000241" name="The Killing Cold">
+	<card id="ff4fb461-8060-457a-9c16-000000000241" name="The Killing Cold" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	

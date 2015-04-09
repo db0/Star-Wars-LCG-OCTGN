@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000787" name="A Deep Commitment">
+<card id="ff4fb461-8060-457a-9c16-000000000787" name="A Deep Commitment" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000793" name="Impersonating a Deity">
+   <card id="ff4fb461-8060-457a-9c16-000000000793" name="Impersonating a Deity" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000799" name="The Call of the Cult">
+    <card id="ff4fb461-8060-457a-9c16-000000000799" name="The Call of the Cult" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000805" name="Superior Numbers">
+    <card id="ff4fb461-8060-457a-9c16-000000000805" name="Superior Numbers" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000811" name="The Slimiest Scheme">
+    <card id="ff4fb461-8060-457a-9c16-000000000811" name="The Slimiest Scheme" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />

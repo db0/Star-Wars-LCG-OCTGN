@@ -146,7 +146,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000487" name="Attack Pattern Delta">
+	<card id="ff4fb461-8060-457a-9c16-000000000487" name="Attack Pattern Delta" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -266,7 +266,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000499" name="Hold the Line&#33;">
+	<card id="ff4fb461-8060-457a-9c16-000000000499" name="Hold the Line&#33;" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -546,7 +546,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000493" name="Undercover Dealings">
+	<card id="ff4fb461-8060-457a-9c16-000000000493" name="Undercover Dealings" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -566,7 +566,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000511" name="Unstoppable Advance">
+	<card id="ff4fb461-8060-457a-9c16-000000000511" name="Unstoppable Advance" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -586,7 +586,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000505" name="Vader&#39;s Fist">
+	<card id="ff4fb461-8060-457a-9c16-000000000505" name="Vader&#39;s Fist" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	

@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-	<card id="ff4fb461-8060-457a-9c16-000000000517" name="A Hero&#39;s Resolve">
+	<card id="ff4fb461-8060-457a-9c16-000000000517" name="A Hero&#39;s Resolve" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -126,7 +126,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000523" name="Evacuation Procedure">
+	<card id="ff4fb461-8060-457a-9c16-000000000523" name="Evacuation Procedure" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -246,7 +246,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000529" name="The Executor Arrives">
+	<card id="ff4fb461-8060-457a-9c16-000000000529" name="The Executor Arrives" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -366,7 +366,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000535" name="Hunt Them Down">
+	<card id="ff4fb461-8060-457a-9c16-000000000535" name="Hunt Them Down" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -486,7 +486,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000541" name="Endless Reserves">
+	<card id="ff4fb461-8060-457a-9c16-000000000541" name="Endless Reserves" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	

@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000931" name="The Survivors">
+<card id="ff4fb461-8060-457a-9c16-000000000931" name="The Survivors" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000937" name="Called to Arms">
+<card id="ff4fb461-8060-457a-9c16-000000000937" name="Called to Arms" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000943" name="The Daring Escape">
+<card id="ff4fb461-8060-457a-9c16-000000000943" name="The Daring Escape" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000949" name="The Emperor's Sword">
+<card id="ff4fb461-8060-457a-9c16-000000000949" name="The Emperor's Sword" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000955" name="Guarding the Wing">
+<card id="ff4fb461-8060-457a-9c16-000000000955" name="Guarding the Wing" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />

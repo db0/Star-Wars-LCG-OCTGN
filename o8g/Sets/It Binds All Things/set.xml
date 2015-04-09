@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000757" name="Ties of Blood">
+<card id="ff4fb461-8060-457a-9c16-000000000757" name="Ties of Blood" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000763" name="Green Squadron Deployment">
+   <card id="ff4fb461-8060-457a-9c16-000000000763" name="Green Squadron Deployment" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000769" name="A Wookiee&#39;s Journey">
+    <card id="ff4fb461-8060-457a-9c16-000000000769" name="A Wookiee&#39;s Journey" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000775" name="The Admiral&#39;s Assault">
+    <card id="ff4fb461-8060-457a-9c16-000000000775" name="The Admiral&#39;s Assault" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000781" name="The Droid&#39;s Task">
+    <card id="ff4fb461-8060-457a-9c16-000000000781" name="The Droid&#39;s Task" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />

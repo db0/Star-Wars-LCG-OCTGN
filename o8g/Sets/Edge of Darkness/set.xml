@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
-	<card id="ff4fb461-8060-457a-9c16-000000000355" name="Wookiee Life Debt">
+	<card id="ff4fb461-8060-457a-9c16-000000000355" name="Wookiee Life Debt" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -126,7 +126,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000361" name="Raise the Stakes">
+	<card id="ff4fb461-8060-457a-9c16-000000000361" name="Raise the Stakes" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -246,7 +246,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000367" name="Trust Me">
+	<card id="ff4fb461-8060-457a-9c16-000000000367" name="Trust Me" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -366,7 +366,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000373" name="Asteroid Sanctuary">
+	<card id="ff4fb461-8060-457a-9c16-000000000373" name="Asteroid Sanctuary" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -486,7 +486,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000379" name="Escape from Ord Mantell">
+	<card id="ff4fb461-8060-457a-9c16-000000000379" name="Escape from Ord Mantell" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -606,7 +606,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000385" name="The Defense of Cloud City">
+	<card id="ff4fb461-8060-457a-9c16-000000000385" name="The Defense of Cloud City" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -726,7 +726,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000391" name="Across the Anoat Sector">
+	<card id="ff4fb461-8060-457a-9c16-000000000391" name="Across the Anoat Sector" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -846,7 +846,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000397" name="Embers of Hope">
+	<card id="ff4fb461-8060-457a-9c16-000000000397" name="Embers of Hope" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -966,7 +966,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000403" name="Alderaan&#39;s Promise">
+	<card id="ff4fb461-8060-457a-9c16-000000000403" name="Alderaan&#39;s Promise" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1086,7 +1086,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000409" name="To Arms&#33;">
+	<card id="ff4fb461-8060-457a-9c16-000000000409" name="To Arms&#33;" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1206,7 +1206,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000415" name="Opening Moves">
+	<card id="ff4fb461-8060-457a-9c16-000000000415" name="Opening Moves" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1326,7 +1326,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000421" name="Hive of Scum and Villainy">
+	<card id="ff4fb461-8060-457a-9c16-000000000421" name="Hive of Scum and Villainy" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1446,7 +1446,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000427" name="Jabba&#39;s Reach">
+	<card id="ff4fb461-8060-457a-9c16-000000000427" name="Jabba&#39;s Reach" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1566,7 +1566,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000433" name="The Tatooine Crash">
+	<card id="ff4fb461-8060-457a-9c16-000000000433" name="The Tatooine Crash" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1686,7 +1686,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000439" name="The Shadow of Nar Shaddaa">
+	<card id="ff4fb461-8060-457a-9c16-000000000439" name="The Shadow of Nar Shaddaa" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1806,7 +1806,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000445" name="Carbonite Transport">
+	<card id="ff4fb461-8060-457a-9c16-000000000445" name="Carbonite Transport" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -1926,7 +1926,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000451" name="Trandoshan Terror">
+	<card id="ff4fb461-8060-457a-9c16-000000000451" name="Trandoshan Terror" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -2046,7 +2046,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000457" name="Feeding the Pit">
+	<card id="ff4fb461-8060-457a-9c16-000000000457" name="Feeding the Pit" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -2166,7 +2166,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000463" name="The Ghosts of the Dark Side">
+	<card id="ff4fb461-8060-457a-9c16-000000000463" name="The Ghosts of the Dark Side" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -2286,7 +2286,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000469" name="Imperial Blockade">
+	<card id="ff4fb461-8060-457a-9c16-000000000469" name="Imperial Blockade" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -2406,7 +2406,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000475" name="Across the Jundland Wastes">
+	<card id="ff4fb461-8060-457a-9c16-000000000475" name="Across the Jundland Wastes" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />
@@ -2526,7 +2526,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000481" name="Asteroid Pursuit">
+	<card id="ff4fb461-8060-457a-9c16-000000000481" name="Asteroid Pursuit" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />
 		<property name="Force" value="0" />

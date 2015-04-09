@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-   <card id="ff4fb461-8060-457a-9c16-000000000637" name="Heroes and Legends">
+   <card id="ff4fb461-8060-457a-9c16-000000000637" name="Heroes and Legends" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -126,7 +126,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000643" name="Forward Reconnaissance">
+	<card id="ff4fb461-8060-457a-9c16-000000000643" name="Forward Reconnaissance" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -246,7 +246,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000649" name="The False Report">
+	<card id="ff4fb461-8060-457a-9c16-000000000649" name="The False Report" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -366,7 +366,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000655" name="Scouring the Empire">
+	<card id="ff4fb461-8060-457a-9c16-000000000655" name="Scouring the Empire" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -486,7 +486,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000661" name="The Dark Trooper Project">
+	<card id="ff4fb461-8060-457a-9c16-000000000661" name="The Dark Trooper Project" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
