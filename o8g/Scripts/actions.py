@@ -458,7 +458,7 @@ def gameSetup(group, x = 0, y = 0):
                                                # We also create it if there's only one player for debug purposes
          if me.getGlobalVariable('PLnumber') == '#1' or len(myAllies) == 1:
             BotD = table.create("e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc", 0, 0, 1, True)
-            BotD.moveToTable( MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 95) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
+            BotD.moveToTable( MPxOffset + (playerside * -380) - 25, MPyOffset + (playerside * 115) + yaxisMove(Affiliation)) # move it next to the affiliation card for now.
             debugNotify("BOTD alternate is : {}".format(BotD.alternate))
             setGlobalVariable('Balance of the Force', str(BotD._id))
       #else: setGlobalVariable('Active Player', me.name) # If we're DS, set ourselves as the current player, since the Dark Side goes first.

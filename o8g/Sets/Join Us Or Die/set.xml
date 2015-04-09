@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000727" name="May the Force Be With You">
+<card id="ff4fb461-8060-457a-9c16-000000000727" name="May the Force Be With You" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000733" name="Behind Enemy Lines">
+   <card id="ff4fb461-8060-457a-9c16-000000000733" name="Behind Enemy Lines" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000739" name="The Second Phase">
+    <card id="ff4fb461-8060-457a-9c16-000000000739" name="The Second Phase" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000745" name="Reinforcements">
+    <card id="ff4fb461-8060-457a-9c16-000000000745" name="Reinforcements" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000751" name="The Scavengers">
+    <card id="ff4fb461-8060-457a-9c16-000000000751" name="The Scavengers" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />

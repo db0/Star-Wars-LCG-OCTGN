@@ -6,7 +6,7 @@
      gameVersion="2.1.0.0" 
      version="2.1.0.0">
    <cards>	
-   <card id="ff4fb461-8060-457a-9c16-000000000307" name="A Dark Time for the Rebellion">
+   <card id="ff4fb461-8060-457a-9c16-000000000307" name="A Dark Time for the Rebellion" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -326,7 +326,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000295" name="Prepare for Evacuation">
+	<card id="ff4fb461-8060-457a-9c16-000000000295" name="Prepare for Evacuation" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -426,7 +426,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000289" name="Self Preservation">
+	<card id="ff4fb461-8060-457a-9c16-000000000289" name="Self Preservation" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -446,7 +446,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000301" name="Serve the Emperor">
+	<card id="ff4fb461-8060-457a-9c16-000000000301" name="Serve the Emperor" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -486,7 +486,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000313" name="The Hunt for Han Solo">
+	<card id="ff4fb461-8060-457a-9c16-000000000313" name="The Hunt for Han Solo" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	

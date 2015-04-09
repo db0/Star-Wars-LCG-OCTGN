@@ -26,7 +26,7 @@
 		<marker id="79818747-fe50-4f1e-937b-c71e737bf743" name="Support" />
 	</markers>
 	<cards>
-		<card id="e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc" name="Balance of the Force">
+		<card id="e31c2ba8-3ffc-4029-94fd-5f98ee0d78cc" name="Balance of the Force" size="BalanceSize">
 			<property name="Number" value="" />
 			<property name="Block" value="" />
 			<property name="Block Number" value="" />
@@ -171,7 +171,7 @@
 			<property name="AutoScript" value="" />
 			<property name="AutoAction" value="" />
 		</card>
-		<card id="eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc" name="OK">
+		<card id="eeb4f11c-3bb0-4e84-bc4e-97f51bf2dbdc" name="OK" size="MarkerSize">
 			<property name="Number" value="" />
 			<property name="Block" value="" />
 			<property name="Block Number" value="" />
@@ -189,7 +189,7 @@
 			<property name="AutoScript" value="" />
 			<property name="AutoAction" value="" />
 		</card>
-		<card id="92df7072-0613-4e76-9fb0-e1b2b6d46473" name="Wait!">
+		<card id="92df7072-0613-4e76-9fb0-e1b2b6d46473" name="Wait!" size="MarkerSize">
 			<property name="Number" value="" />
 			<property name="Block" value="" />
 			<property name="Block Number" value="" />
@@ -207,7 +207,7 @@
 			<property name="AutoScript" value="" />
 			<property name="AutoAction" value="" />
 		</card>
-		<card id="ef1f6e91-4d7f-4a10-963c-832953f985b8" name="Actions?">
+		<card id="ef1f6e91-4d7f-4a10-963c-832953f985b8" name="Actions?" size="MarkerSize">
 			<property name="Number" value="" />
 			<property name="Block" value="" />
 			<property name="Block Number" value="" />

@@ -66,13 +66,13 @@ def storeObjective(card, GameSetup = False):
    if GameSetup:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable(MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective), True)
+         Objective.moveToTable(MPxOffset + (playerside * -310) - 25, MPyOffset + (playerside * 10) + (70 * iter * playerside) + yaxisMove(Objective), True)
          Objective.highlight = ObjectiveSetupColor # During game setup, we put the objectives face down so that the players can draw their hands before we reveal them.
-         Objective.orientation = Rot90
+         Objective.orientation = Rot0
    else:
       for iter in range(len(currentObjectives)):
          Objective = Card(currentObjectives[iter])
-         Objective.moveToTable( MPxOffset + (playerside * -315) - 25, MPyOffset + (playerside * -10) + (70 * iter * playerside) + yaxisMove(Objective))
+         Objective.moveToTable( MPxOffset + (playerside * -310) - 25, MPyOffset + (playerside * 10) + (70 * iter * playerside) + yaxisMove(Objective))
          orgAttachments(Objective)
       update() # We put a delay here to allow the table to read the card autoscripts before we try to execute them.
       debugNotify("About to execure play Scripts") #Debug      
