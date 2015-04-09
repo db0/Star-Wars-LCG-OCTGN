@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000697" name="The Flight of the Crow">
+<card id="ff4fb461-8060-457a-9c16-000000000697" name="The Flight of the Crow" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000703" name="The Hoth Gambit">
+   <card id="ff4fb461-8060-457a-9c16-000000000703" name="The Hoth Gambit" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000709" name="Along the Gamor Run">
+    <card id="ff4fb461-8060-457a-9c16-000000000709" name="Along the Gamor Run" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000715" name="The Plan of the Prophetess">
+    <card id="ff4fb461-8060-457a-9c16-000000000715" name="The Plan of the Prophetess" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000721" name="The Slave Trade">
+    <card id="ff4fb461-8060-457a-9c16-000000000721" name="The Slave Trade" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />

@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000901" name="Rogue Squadron Assault">
+<card id="ff4fb461-8060-457a-9c16-000000000901" name="Rogue Squadron Assault" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000907" name="Memories of Taanab">
+<card id="ff4fb461-8060-457a-9c16-000000000907" name="Memories of Taanab" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000913" name="Black Squadron Formation">
+<card id="ff4fb461-8060-457a-9c16-000000000913" name="Black Squadron Formation" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000919" name="The Empire&#39;s Elite">
+<card id="ff4fb461-8060-457a-9c16-000000000919" name="The Empire&#39;s Elite" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000000925" name="The Grand Heist">
+<card id="ff4fb461-8060-457a-9c16-000000000925" name="The Grand Heist" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />

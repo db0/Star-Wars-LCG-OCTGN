@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero's Trial">
+<card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero's Trial" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000823" name="The Master's Domain">
+   <card id="ff4fb461-8060-457a-9c16-000000000823" name="The Master's Domain" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000829" name="Following Fate">
+    <card id="ff4fb461-8060-457a-9c16-000000000829" name="Following Fate" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000835" name="Journey Through the Swamp">
+    <card id="ff4fb461-8060-457a-9c16-000000000835" name="Journey Through the Swamp" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000841" name="Sacrifice at Endor">
+    <card id="ff4fb461-8060-457a-9c16-000000000841" name="Sacrifice at Endor" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -606,7 +606,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000847" name="Commando Raid">
+    <card id="ff4fb461-8060-457a-9c16-000000000847" name="Commando Raid" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -726,7 +726,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000853" name="Calling in Favors">
+    <card id="ff4fb461-8060-457a-9c16-000000000853" name="Calling in Favors" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -846,7 +846,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000859" name="&#34;No Disintegrations&#34;">
+    <card id="ff4fb461-8060-457a-9c16-000000000859" name="&#34;No Disintegrations&#34;" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -966,7 +966,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000865" name="Masterful Manipulation">
+    <card id="ff4fb461-8060-457a-9c16-000000000865" name="Masterful Manipulation" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -1066,7 +1066,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000870" name="The Prince&#39;s Scheme">
+    <card id="ff4fb461-8060-457a-9c16-000000000870" name="The Prince&#39;s Scheme" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Fate" />
   <property name="Force" value="1" />
@@ -1086,7 +1086,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000871" name="All Out Brawl">
+    <card id="ff4fb461-8060-457a-9c16-000000000871" name="All Out Brawl" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -1206,7 +1206,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000877" name="The Best That Credits Can Buy">
+    <card id="ff4fb461-8060-457a-9c16-000000000877" name="The Best That Credits Can Buy" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -1326,7 +1326,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000883" name="The Hunters">
+    <card id="ff4fb461-8060-457a-9c16-000000000883" name="The Hunters" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -1446,7 +1446,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000889" name="The Investigation">
+    <card id="ff4fb461-8060-457a-9c16-000000000889" name="The Investigation" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -1566,7 +1566,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000895" name="Family Connections">
+    <card id="ff4fb461-8060-457a-9c16-000000000895" name="Family Connections" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />

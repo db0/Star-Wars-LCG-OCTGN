@@ -126,7 +126,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000283" name="Deploy the Fleet">
+	<card id="ff4fb461-8060-457a-9c16-000000000283" name="Deploy the Fleet" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -326,7 +326,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000271" name="Jabba&#39;s Orders">
+	<card id="ff4fb461-8060-457a-9c16-000000000271" name="Jabba&#39;s Orders" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -406,7 +406,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000277" name="Preparation for Battle">
+	<card id="ff4fb461-8060-457a-9c16-000000000277" name="Preparation for Battle" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -446,7 +446,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000265" name="Renegade Squadron Mobilization">
+	<card id="ff4fb461-8060-457a-9c16-000000000265" name="Renegade Squadron Mobilization" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	
@@ -486,7 +486,7 @@
 		<property name="AutoScript" value="" />
 		<property name="AutoAction" value="" />
 	</card>
-	<card id="ff4fb461-8060-457a-9c16-000000000259" name="Sensors Are Placed">
+	<card id="ff4fb461-8060-457a-9c16-000000000259" name="Sensors Are Placed" size="ObjectiveSize">
 		<property name="Cost" value="0" />
 		<property name="Type" value="Objective" />	
 		<property name="Force" value="0" />	

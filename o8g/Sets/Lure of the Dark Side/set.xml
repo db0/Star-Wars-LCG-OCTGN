@@ -6,7 +6,7 @@
      gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
-<card id="ff4fb461-8060-457a-9c16-000000000667" name="Commando Operations">
+<card id="ff4fb461-8060-457a-9c16-000000000667" name="Commando Operations" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -126,7 +126,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-   <card id="ff4fb461-8060-457a-9c16-000000000673" name="Against All Odds">
+   <card id="ff4fb461-8060-457a-9c16-000000000673" name="Against All Odds" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -246,7 +246,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000679" name="Agent of the Emperor">
+    <card id="ff4fb461-8060-457a-9c16-000000000679" name="Agent of the Emperor" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -366,7 +366,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000685" name="Victory or Death">
+    <card id="ff4fb461-8060-457a-9c16-000000000685" name="Victory or Death" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
@@ -486,7 +486,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000691" name="The Findsman&#39;s Intuition">
+    <card id="ff4fb461-8060-457a-9c16-000000000691" name="The Findsman&#39;s Intuition" size="ObjectiveSize">
   <property name="Cost" value="" />
   <property name="Type" value="Objective" />
   <property name="Force" value="" />
