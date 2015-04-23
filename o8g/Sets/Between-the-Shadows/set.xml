@@ -133,7 +133,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Dagobah" />
   <property name="Damage Capacity" value="4" />
-  <property name="Resources" value="X" />
+  <property name="Resources" value="3" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="X is the number of [Jedi] objectives you control." />
   <property name="Flavor" value="" />
