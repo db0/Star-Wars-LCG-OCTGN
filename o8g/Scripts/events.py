@@ -134,33 +134,62 @@ def parseNewCounters(player,counter,oldValue):
          if player.counters['Death Star Dial'].value != counter.value: player.counters['Death Star Dial'].value = counter.value
    debugNotify("<<< parseNewCounters()")
 
-def checkMovedCard(player,card,fromGroup,toGroup,oldIndex,index,oldX,oldY,x,y,isScriptMove,highlight = None, markers = None):
+def checkMovedCards(player,cards,fromGroups,toGroups,oldIndexs,indexs,oldXs,oldYs,xs,ys,faceups,highlights,markers):
    mute()
-   global unpaidCard
-   if toGroup != me.piles['Command Deck'] and toGroup != me.piles['Objective Deck'] and card.owner == me: superCharge(card) # First we check if we should supercharge the card, but only if the card is still on the same group at the time of execution.  
-   if isScriptMove: return # If the card move happened via a script, then all automations should have happened already.
-   if fromGroup == me.hand and toGroup == table: 
-      return # Not implemented yet
-   if toGroup == me.piles['Common Reserve']:
-      if card.Type == "Objective":
-         whisper(":::ERROR::: You cannot put objectives in your common reserve")
-         card.moveTo(fromGroup)
-         return # We forcefully quit so that we don't clear attachments yet
-      if len(toGroup) > 1: # If they moved a card into the common reserve while another was already in, then we clear the common reserve as well.
-         for c in toGroup:
-            if c != card: 
-               c.moveTo(me.piles['Discard Pile'])
-               notify(":> {} discarded 1 card from their Common Reserve".format(me))
-   elif fromGroup == table and toGroup == table and card.controller == me: # If the player dragged a card manually to a different location on the table, we want to re-arrange the attachments
-      if card.Type == 'Objective' or card.Type == 'Unit': 
-         update()
-         orgAttachments(card) 
-   if fromGroup == table and toGroup != table and card.owner == me: # If the player dragged a card manually from the table to their discard pile...
-      debugNotify("Clearing card attachments")
-      if unpaidCard == card: unpaidCard = None
-      clearAttachLinks(card)      
-      removeCapturedCard(card)
-      
+   for iter in range(len(cards)):
+      card = cards[iter]
+      fromGroup = fromGroups[iter]
+      toGroup = toGroups[iter]
+      oldIndex = oldIndexs[iter]
+      index = indexs[iter]
+      oldX = oldXs[iter]
+      oldY = oldYs[iter]
+      x = xs[iter]
+      y = ys[iter]
+      faceup = faceups[iter]
+      highlight = highlights[iter]
+      marker = markers[iter]
+      global unpaidCard
+      if toGroup != me.piles['Command Deck'] and toGroup != me.piles['Objective Deck'] and card.owner == me: superCharge(card) # First we check if we should supercharge the card, but only if the card is still on the same group at the time of execution.  
+      if fromGroup == me.hand and toGroup == table: 
+         return # Not implemented yet
+      if toGroup == me.piles['Common Reserve']:
+         if card.Type == "Objective":
+            whisper(":::ERROR::: You cannot put objectives in your common reserve")
+            card.moveTo(fromGroup)
+            return # We forcefully quit so that we don't clear attachments yet
+         if len(toGroup) > 1: # If they moved a card into the common reserve while another was already in, then we clear the common reserve as well.
+            for c in toGroup:
+               if c != card: 
+                  c.moveTo(me.piles['Discard Pile'])
+                  notify(":> {} discarded 1 card from their Common Reserve".format(me))
+      elif fromGroup == table and toGroup == table and card.controller == me: # If the player dragged a card manually to a different location on the table, we want to re-arrange the attachments
+         if card.Type == 'Objective' or card.Type == 'Unit': 
+            update()
+            orgAttachments(card) 
+      if fromGroup == table and toGroup != table and card.owner == me: # If the player dragged a card manually from the table to their discard pile...
+         debugNotify("Clearing card attachments")
+         if unpaidCard == card: unpaidCard = None
+         clearAttachLinks(card)      
+         removeCapturedCard(card)
+
+def checkScriptedMovedCards(player,cards,fromGroups,toGroups,oldIndexs,indexs,oldXs,oldYs,xs,ys,faceups,highlights,markersList):
+   mute()
+   for iter in range(len(cards)):
+      card = cards[iter]
+      fromGroup = fromGroups[iter]
+      toGroup = toGroups[iter]
+      oldIndex = oldIndexs[iter]
+      index = indexs[iter]
+      oldX = oldXs[iter]
+      oldY = oldYs[iter]
+      x = xs[iter]
+      y = ys[iter]
+      faceup = faceups[iter]
+      highlight = highlights[iter]
+      markers = markersList[iter]
+      if toGroup != me.piles['Command Deck'] and toGroup != me.piles['Objective Deck'] and card.owner == me: superCharge(card) # First we check if we should supercharge the card, but only if the card is still on the same group at the time of execution.  
+         
 def reconnectMe(group=table, x=0,y=0):
    reconnect()
    
