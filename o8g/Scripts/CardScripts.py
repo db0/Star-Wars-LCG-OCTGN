@@ -7365,6 +7365,246 @@ onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacki
 +++++
 
 .....
+Hidden from the Empire
+-----
+ff4fb461-8060-457a-9c16-000000000961
+-----
+
++++++
+
+.....
+Vima-Da-Boda
+-----
+ff4fb461-8060-457a-9c16-000000000962
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+Undercover Urchin
+-----
+ff4fb461-8060-457a-9c16-000000000963
+-----
+
++++++
+
+.....
+Hidden in the Shadows
+-----
+ff4fb461-8060-457a-9c16-000000000964
+-----
+Placement:Character
++++++
+
+.....
+Hidden in the Shadows
+-----
+ff4fb461-8060-457a-9c16-000000000965
+-----
+Placement:Character
++++++
+
+.....
+Harassment
+-----
+ff4fb461-8060-457a-9c16-000000000966
+-----
+onPlay:SimplyAnnounce{increase the cost of the next unit they play this phase by 1}$$CreateDummy-isSilent-nonUnique-doNotDiscard||Increase1CostPlay-affectsUnit-byOpponent-onlyOnce-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
++++++
+
+.....
+Command and Control
+-----
+ff4fb461-8060-457a-9c16-000000000967
+-----
+
++++++
+
+.....
+Independence
+-----
+ff4fb461-8060-457a-9c16-000000000968
+-----
+whileInPlay:Reduce1CostPlay-affectsCapital Ship-forMe||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+Corellian Corvette
+-----
+ff4fb461-8060-457a-9c16-000000000969
+-----
+onPlay:Draw1Card-isReact
++++++
+
+.....
+Corellian Corvette
+-----
+ff4fb461-8060-457a-9c16-000000000970
+-----
+onPlay:Draw1Card-isReact
++++++
+
+.....
+Resupply Depot
+-----
+ff4fb461-8060-457a-9c16-000000000971
+-----
+
++++++
+
+.....
+Supporting Fire
+-----
+ff4fb461-8060-457a-9c16-000000000972
+-----
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
++++++
+
+.....
+The Questioning
+-----
+ff4fb461-8060-457a-9c16-000000000973
+-----
+
++++++
+
+.....
+Antinnis Tremayne
+-----
+ff4fb461-8060-457a-9c16-000000000974
+-----
+
++++++
+
+.....
+Imperial Enforcers
+-----
+ff4fb461-8060-457a-9c16-000000000975
+-----
+
++++++
+
+.....
+Imperial Enforcers
+-----
+ff4fb461-8060-457a-9c16-000000000976
+-----
+
++++++
+
+.....
+Citadel Inquisitorious
+-----
+ff4fb461-8060-457a-9c16-000000000977
+-----
+
++++++
+R0:Put1Focus-isCost$$Discard1Card-ofAllOpponents-isRandom
+.....
+Put to the Question
+-----
+ff4fb461-8060-457a-9c16-000000000978
+-----
+onPlay:SimplyAnnounce{cancel the effects of the event card}$$Put1Effects Cancelled-Targeted-atEvent-isReady-isSilent
++++++
+
+.....
+Training Procedures
+-----
+ff4fb461-8060-457a-9c16-000000000979
+-----
+
++++++
+
+.....
+Academy Pilot
+-----
+ff4fb461-8060-457a-9c16-000000000980
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Academy Pilot
+-----
+ff4fb461-8060-457a-9c16-000000000981
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+TIE Fighter Patrol
+-----
+ff4fb461-8060-457a-9c16-000000000982
+-----
+
++++++
+
+.....
+TIE Fighter Patrol
+-----
+ff4fb461-8060-457a-9c16-000000000983
+-----
+
++++++
+
+.....
+Koiogran Turn
+-----
+ff4fb461-8060-457a-9c16-000000000984
+-----
+onPlay:SimplyAnnounce{choose a new target for the effect}
++++++
+
+.....
+The Eater of Luck
+-----
+ff4fb461-8060-457a-9c16-000000000985
+-----
+whileInPlay:-foreachEdgeWin-ifOrigEdgeLoser-CaptureTarget-AutoTargeted-fromTopDeckOpponents-captureOnMyself-isReact
++++++
+
+.....
+Dannik Jerriko
+-----
+ff4fb461-8060-457a-9c16-000000000986
+-----
+
++++++
+
+.....
+Advozse Mercenary
+-----
+ff4fb461-8060-457a-9c16-000000000987
+-----
+
++++++
+
+.....
+Advozse Mercenary
+-----
+ff4fb461-8060-457a-9c16-000000000988
+-----
+
++++++
+
+.....
+Calculated Wager
+-----
+ff4fb461-8060-457a-9c16-000000000989
+-----
+
++++++
+
+.....
+Supporting Fire
+-----
+ff4fb461-8060-457a-9c16-000000000990
+-----
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''
