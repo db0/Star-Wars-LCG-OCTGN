@@ -550,7 +550,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
    elif card.model == 'ff4fb461-8060-457a-9c16-000000000980': # Academy Pilot B154/2
       if action == 'PLAY': # In this scenario, Academy Pilot is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
@@ -565,8 +564,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
-      elif card.model == 'ff4fb461-8060-457a-9c16-000000000981': # Academy Pilot B154/3
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000000981': # Academy Pilot B154/3
       if action == 'PLAY': # In this scenario, Academy Pilot is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put DS-61-3 in it.

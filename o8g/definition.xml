@@ -4,7 +4,7 @@
       name="Star Wars - The Card Game" 
       id="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
       octgnVersion="3.1.0.0" 
-      version="2.15.1.0"
+      version="2.16.0.0"
       markersize="20"
       tags="star_wars LCG quick duel"
       description="In Star Wars: The Card Game, light side and dark side players duel for the fate of the galaxy.
@@ -14,6 +14,7 @@
       setsurl="http://octgn.gamersjudgement.com/wordpress/swlcg/sets"
       gameurl="http://octgn.gamersjudgement.com/wordpress/swlcg/"
       authors="Db0"
+      scriptVersion="3.1.0.1"
       iconurl="https://raw.github.com/db0/Star-Wars-LCG-OCTGN/master/box_art.jpg">
 	<scripts>
       <script src="Scripts/actions.py" />
@@ -31,7 +32,8 @@
        <event name="OnGameStart" action="resetAll" />
        <event name="OnLoadDeck" action="loadDeck" />
        <event name="OnChangeCounter" action="parseNewCounters" />
-       <event name="OnMoveCard" action="checkMovedCard" />
+       <event name="OnMoveCards" action="checkMovedCards" />
+       <event name="OnScriptedMoveCards" action="checkScriptedMovedCards" />
    </events>
    <sounds>
       <!-- Destroy Sounds -->

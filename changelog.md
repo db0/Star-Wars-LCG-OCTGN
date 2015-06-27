@@ -1,8 +1,16 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.16.0.x
+
+Evasive Maneuvers have been added
+
+### 2.15.3.x
+
+* Moved to API 3.1.0.1
+
 ### 2.15.1.x
 
-Objective and button sizes have been fixes (thank to killerangel1863)
+Objective and button sizes have been fixed (thank to killerangel1863)
 
 ### 2.15.0.x
 

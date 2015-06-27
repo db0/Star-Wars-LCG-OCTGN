@@ -120,5 +120,5 @@ CardSubs = ['db0',
            ] # $10 Tier
 
 CustomMsgs = dict( # Dictionary holding the messages requested by people on the 5$ tier and above
-                 db0             = "Please consider supporting A:NR development via Patreon - http://www.patreon.com/db0"
+                 db0             = "Please consider supporting future development via Patreon - http://www.patreon.com/db0"
                   )               
