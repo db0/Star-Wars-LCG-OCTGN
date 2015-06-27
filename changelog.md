@@ -1,5 +1,9 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.17.0.x
+
+Attack Run has been added
+
 ### 2.16.0.x
 
 Evasive Maneuvers have been added
