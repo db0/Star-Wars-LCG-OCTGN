@@ -586,7 +586,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000001020" ame="Stay on Target">
+<card id="ff4fb461-8060-457a-9c16-000000001020" name="Stay on Target">
   <property name="Cost" value="0" />
   <property name="Type" value="Fate" />
   <property name="Force" value="2" />
