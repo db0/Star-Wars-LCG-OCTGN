@@ -7604,6 +7604,224 @@ onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card f
 +++++
 
 .....
+The Secret of Shantipole
+-----
+ff4fb461-8060-457a-9c16-000000000991
+-----
++++++
+
+.....
+Keeyan Farlander
+-----
+ff4fb461-8060-457a-9c16-000000000992
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Blue Nine
+-----
+ff4fb461-8060-457a-9c16-000000000993
+-----
++++++
+
+
+.....
+Temple Hangar
+-----
+ff4fb461-8060-457a-9c16-000000000994
+-----
+whileInPlay:Reduce1CostPlay-affectsPilot-onlyOnce-forMe
++++++
+
+.....
+Reassignment
+-----
+ff4fb461-8060-457a-9c16-000000000995
+-----
++++++
+
+.....
+Stay on Target
+-----
+ff4fb461-8060-457a-9c16-000000000996
+-----
++++++
+
+.....
+Running the Trench
+-----
+ff4fb461-8060-457a-9c16-000000000997
+-----
++++++
+
+.....
+Luke Skywalker
+-----
+ff4fb461-8060-457a-9c16-000000000998
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Red Five
+-----
+ff4fb461-8060-457a-9c16-000000000999
+-----
++++++
+
+.....
+R2-D2
+-----
+ff4fb461-8060-457a-9c16-000000001000
+-----
++++++
+
+.....
+Use the Force, Luke
+-----
+ff4fb461-8060-457a-9c16-000000001001
+-----
++++++
+
+.....
+I Have You Now
+-----
+ff4fb461-8060-457a-9c16-000000001002
+-----
++++++
+
+.....
+The Smuggler's Gambit
+-----
+ff4fb461-8060-457a-9c16-000000001003
+-----
++++++
+
+.....
+Platt Okeefe
+-----
+ff4fb461-8060-457a-9c16-000000001004
+-----
++++++
+
+.....
+Information Broker
+-----
+ff4fb461-8060-457a-9c16-000000001005
+-----
++++++
+
+.....
+Smuggler's Handbook
+-----
+ff4fb461-8060-457a-9c16-000000001006
+-----
++++++
+
+.....
+Evading Authority
+-----
+ff4fb461-8060-457a-9c16-000000001007
+-----
++++++
+
+.....
+Supporting Fire
+-----
+ff4fb461-8060-457a-9c16-000000001008
+-----
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
++++++
+
+.....
+Defending the Trench
+-----
+ff4fb461-8060-457a-9c16-000000001009
+-----
++++++
+
+.....
+Darth Vader
+-----
+ff4fb461-8060-457a-9c16-000000001010
+-----
+onPlay:CustomScript||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce2
++++++
+
+.....
+Vader's TIE Advanced
+-----
+ff4fb461-8060-457a-9c16-000000001011
+-----
++++++
+
+.....
+Black Squadron Fighter
+-----
+ff4fb461-8060-457a-9c16-000000001012
+-----
++++++
+
+.....
+Closed Formation
+-----
+ff4fb461-8060-457a-9c16-000000001013
+-----
++++++
+
+.....
+I Have You Now
+-----
+ff4fb461-8060-457a-9c16-000000001014
+-----
++++++
+
+.....
+The Hunter's Flight
+-----
+ff4fb461-8060-457a-9c16-000000001015
+-----
++++++
+
+.....
+Boba Fett
+-----
+ff4fb461-8060-457a-9c16-000000001016
+-----
+onPlay:CustomScript||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce2
++++++
+
+.....
+Slave 1
+-----
+ff4fb461-8060-457a-9c16-000000001017
+-----
++++++
+
+.....
+Den of Thieves
+-----
+ff4fb461-8060-457a-9c16-000000001018
+-----
+whileInPlay:Reduce1CostPlay-affectsPilot-onlyOnce-forMe
++++++
+
+.....
+Bail Out
+-----
+ff4fb461-8060-457a-9c16-000000001019
+-----
++++++
+
+.....
+Stay on Target
+-----
+ff4fb461-8060-457a-9c16-000000001020
+-----
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''
