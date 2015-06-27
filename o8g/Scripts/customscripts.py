@@ -550,7 +550,6 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
    elif card.model == 'ff4fb461-8060-457a-9c16-000000000980': # Academy Pilot B154/2
       if action == 'PLAY': # In this scenario, Academy Pilot is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
@@ -565,8 +564,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
-      elif card.model == 'ff4fb461-8060-457a-9c16-000000000981': # Academy Pilot B154/3
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000000981': # Academy Pilot B154/3
       if action == 'PLAY': # In this scenario, Academy Pilot is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Academy Pilot in it.
@@ -580,8 +578,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
-         elif card.model == 'ff4fb461-8060-457a-9c16-000000000992': # Keeyan Farlander B156/2
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000000992': # Keeyan Farlander B156/2
       if action == 'PLAY': # In this scenario, Keeyan is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Keeyan in it.
@@ -595,8 +592,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
-         elif card.model == 'ff4fb461-8060-457a-9c16-000000000998': # Luke Skywalker B157/2
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000000998': # Luke Skywalker B157/2
       if action == 'PLAY': # In this scenario, Luke Skywalker is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Luke Skywalker in it.
@@ -610,8 +606,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
-         elif card.model == 'ff4fb461-8060-457a-9c16-000000001010': # Darth Vader B159/2
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000001010': # Darth Vader B159/2
       if action == 'PLAY': # In this scenario, Darth Vader is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Darth Vader in it.
@@ -625,8 +620,7 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
             notify("{} climbs into {}".format(card,vehicle[0]))			
-   else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
-         elif card.model == 'ff4fb461-8060-457a-9c16-000000001016': # Boba Fett B160/2
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000001016': # Boba Fett B160/2
       if action == 'PLAY': # In this scenario, Boba Fett is attaching to a vehicle the player had targeted before they played him.
          vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
          if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Boba Fett in it.
