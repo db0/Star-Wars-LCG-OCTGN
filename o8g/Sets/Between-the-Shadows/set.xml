@@ -1066,7 +1066,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-    <card id="ff4fb461-8060-457a-9c16-000000000870" name="The Prince&#39;s Scheme" size="ObjectiveSize">
+    <card id="ff4fb461-8060-457a-9c16-000000000870" name="The Prince&#39;s Scheme">
   <property name="Cost" value="0" />
   <property name="Type" value="Fate" />
   <property name="Force" value="1" />
