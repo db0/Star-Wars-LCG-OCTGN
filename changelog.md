@@ -1,5 +1,9 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.17.1.x
+
+* Fixed WinForms Lag
+
 ### 2.17.0.x
 
 Attack Run has been added

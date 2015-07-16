@@ -136,7 +136,7 @@ def information(Message):
       Application.EnableVisualStyles()
       form = OKWindow(Message)
       form.BringToFront()
-      form.ShowDialog()
+      showWinForm(form)
    else: 
       confirm(Message)
    
@@ -279,7 +279,7 @@ def SingleChoice(title, options, type = 'button', default = 0, cancelButton = Tr
          # Application.EnableVisualStyles()
          # form = SingleChoiceWindow(title, optChunks[optCurrent], type, default, pages = len(optChunks), cancelButtonBool = cancelButton, cancelName = cancelName)
          # form.BringToFront()
-         # form.ShowDialog()
+         # showWinForm(form)
          # choice = form.getIndex()
          # debugNotify("choice is: {}".format(choice), 2)
          # if choice == "Next Page": 
@@ -452,7 +452,7 @@ def multiChoice(title, options): # This displays a choice where the player can s
          if choices == "Next Page": nextPageBool = True
          else: nextPageBool = False
          form = MultiChoiceWindow(title, optChunks[optCurrent], CPType, pages = len(optChunks), currPage = optCurrent, existingChoices = currChoices) # We create an object called "form" which contains an instance of the MultiChoice windows form.
-         form.ShowDialog() # We bring the form to the front to allow the user to make their choices
+         showWinForm(form) # We bring the form to the front to allow the user to make their choices
          choices = form.getIndex() # Once the form is closed, we check an internal variable within the form object to grab what choices they made
          debugNotify("choices = {}".format(choices))
          if choices == "Next Page": 
