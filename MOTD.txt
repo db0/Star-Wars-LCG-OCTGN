@@ -1,6 +1,6 @@
 =====Message of the Day======
 
-Attack Run now available
+Chain of Command now available
 
 Set added by BolivarShagnasty; any cards that are reprints from previous sets are scripted. Pilots should be able to be deployed on vehicles. Please report any issues to:
 https://github.com/BolivarShagnasty/Star-Wars-LCG-OCTGN/issues
