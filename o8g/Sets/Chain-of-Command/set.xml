@@ -15,7 +15,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this objective enters play, look at and place the top 3 cards of your deck facedown here. When a friendly player would place a card in an edge stack , he may choose one of these cards and place it in the edge stack instead." />
+  <property name="Text" value="Reaction: After this objective enters play, look at and place the top 3 cards of your deck facedown here. When a friendly player would place a card in an edge stack, he may choose one of these cards and place it in the edge stack instead." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -55,7 +55,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Shuffle this unit back into your deck to reduce the cost of the next Jedi card you play this phase by 3." />
+  <property name="Text" value="Limited.&#xD;&#xA;Action: Shuffle this unit back into your deck to reduce the cost of the next Jedi card you play this phase by 3." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -75,7 +75,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Focus this enhancement to have each player draw 1 card." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Focus this enhancement to have each player draw 1 card." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -255,7 +255,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this objective enters play, look at and place the top 3 cards of your deck facedown here. When a friendly player would place a card in an edge stack , he may choose one of these cards and place it in the edge stack instead." />
+  <property name="Text" value="Reaction: After this objective enters play, look at and place the top 3 cards of your deck facedown here. When a friendly player would place a card in an edge stack, he may choose one of these cards and place it in the edge stack instead." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
@@ -335,7 +335,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Shuffle the top card of a target friendly players discard pile back into your deck.&#xD;&#xA;Reaction: After an objective leaves play, return this card from your discard pile to your hand." />
+  <property name="Text" value="Action: Shuffle the top card of a target friendly player&#39;s discard pile back into your deck.&#xD;&#xA;Reaction: After an objective leaves play, return this card from your discard pile to your hand." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
@@ -595,7 +595,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After a vehicle unit you control readies, place 1 focus token on a target unit." />
+  <property name="Text" value="Reaction: After a Vehicle unit you control readies, place 1 focus token on a target unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
