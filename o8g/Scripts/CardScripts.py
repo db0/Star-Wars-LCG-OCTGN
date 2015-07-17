@@ -7822,6 +7822,229 @@ ff4fb461-8060-457a-9c16-000000001020
 +++++
 
 .....
+A Hero's Beginning
+-----
+ff4fb461-8060-457a-9c16-000000001021
+-----
++++++
+
+.....
+Luke's X-34 Landspeeder
+-----
+ff4fb461-8060-457a-9c16-000000001022
+-----
++++++
+
+.....
+Owen Lars
+-----
+ff4fb461-8060-457a-9c16-000000001023
+-----
+whileInPlay:Reduce3CostPlay-affectsJedi-onlyforDummy||whileInPlay:DestroyMyself-foreachCardPlayed-typeJedi-onlyforDummy-isSilent
++++++
+R0:Put1Destination:Command Deck$$ShuffleDeck$$SimplyAnnounce{reduce the cost of the next Jedi card they play this phase by 3}$$CreateDummy-nonUnique-isSilent-doNotDiscard
+
+.....
+Moisture Vaporator
+-----
+ff4fb461-8060-457a-9c16-000000001024
+-----
++++++
+
+.....
+Unfinished Business
+-----
+ff4fb461-8060-457a-9c16-000000001025
+-----
++++++
+
+.....
+Supporting Fire
+-----
+ff4fb461-8060-457a-9c16-000000001026
+-----
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
++++++
+
+.....
+Breaking the Blockade
+-----
+ff4fb461-8060-457a-9c16-000000001027
+-----
++++++
+
+.....
+Smuggling Freighter
+-----
+ff4fb461-8060-457a-9c16-000000001028
+-----
++++++
+
+.....
+Smuggling Freighter
+-----
+ff4fb461-8060-457a-9c16-000000001029
+-----
++++++
+
+.....
+Duros Smuggler
+-----
+ff4fb461-8060-457a-9c16-000000001030
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Duros Smuggler
+-----
+ff4fb461-8060-457a-9c16-000000001031
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Surprising Maneuver
+-----
+ff4fb461-8060-457a-9c16-000000001032
+-----
++++++
+
+.....
+The Imperial Bureaucracy
+-----
+ff4fb461-8060-457a-9c16-000000001033
+-----
++++++
+
+.....
+Sate Pestage
+-----
+ff4fb461-8060-457a-9c16-000000001034
+-----
+onPlay:Retrieve1Card-grabUnit_or_Event_or_Fate-fromDiscard-isReact||onLeaving:Retrieve1Card-grabUnit_or_Event_or_Fate-fromDiscard-isReact
++++++
+
+.....
+Advisor to the Emperor
+-----
+ff4fb461-8060-457a-9c16-000000001035
+-----
++++++
+
+.....
+Quarren Bureaucrat
+-----
+ff4fb461-8060-457a-9c16-000000001036
+-----
++++++
+
+.....
+Endless Bureaucracy
+-----
+ff4fb461-8060-457a-9c16-000000001037
+-----
++++++
+
+.....
+Supporting Fire
+-----
+ff4fb461-8060-457a-9c16-000000001038
+-----
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
++++++
+
+.....
+The Last Grand Admiral
+-----
+ff4fb461-8060-457a-9c16-000000001039
+-----
++++++
+
+.....
+Grand Admiral Thrawn
+-----
+ff4fb461-8060-457a-9c16-000000001040
+-----
++++++
+R0:Put1Focus-isCost$$Put1Focus-Targeted-atUnit-targetOpponents-onlyDuringEngagement
+
+.....
+Noghri Bodyguard
+-----
+ff4fb461-8060-457a-9c16-000000001041
+-----
++++++
+R0:Remove1Damage-DemiAutoTargeted-atOfficer-hasMarker{Damage}-choose1-isCost$$Put1Damage
+
+.....
+Noghri Bodyguard
+-----
+ff4fb461-8060-457a-9c16-000000001042
+-----
++++++
+R0:Remove1Damage-DemiAutoTargeted-atOfficer-hasMarker{Damage}-choose1-isCost$$Put1Damage
+
+.....
+Chain of Command
+-----
+ff4fb461-8060-457a-9c16-000000001043
+-----
++++++
+
+.....
+Supporting Fire
+-----
+ff4fb461-8060-457a-9c16-000000001044
+-----
+onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
++++++
+
+.....
+Nar Shaddaa Drift
+-----
+ff4fb461-8060-457a-9c16-000000001045
+-----
+afterCardRefreshing:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetAllied-isReact
++++++
+
+.....
+Race Circuit Champion
+-----
+ff4fb461-8060-457a-9c16-000000001046
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Racing Swoop
+-----
+ff4fb461-8060-457a-9c16-000000001047
+-----
++++++
+
+.....
+Racing Swoop
+-----
+ff4fb461-8060-457a-9c16-000000001048
+-----
++++++
+
+.....
+Black Market Exchange
+-----
+ff4fb461-8060-457a-9c16-000000001049
+-----
++++++
+
+.....
+Cut Off
+-----
+ff4fb461-8060-457a-9c16-000000001050
+-----
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''
