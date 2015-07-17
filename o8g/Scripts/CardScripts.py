@@ -6049,7 +6049,7 @@ Impersonating a Deity
 -----
 ff4fb461-8060-457a-9c16-000000000793
 -----
-onPlay:Retrieve1Card-grabUnit_and_Ewok-hasProperty{Cost}le3-toTable$$ShuffleDeck
+onPlay:Retrieve1Card-grabUnit_and_Ewok-hasProperty{Cost}le3-toTable$$ShuffleDeck$$Put1Focus-isCost
 +++++
 
 .....
@@ -6300,7 +6300,7 @@ Bogwing
 -----
 ff4fb461-8060-457a-9c16-000000000825
 -----
-
+ExtraIcon:UD:1-perEveryObjective-AutoTargeted-atObjective_and_Jedi-div3
 +++++
 
 .....
@@ -6308,7 +6308,7 @@ Yoda';s Hut
 -----
 ff4fb461-8060-457a-9c16-000000000826
 -----
-
+ConstantEffect:Force2Bonus-perEveryObjective-AutoTargeted-atObjective_and_Jedi-div3
 +++++
 
 .....
@@ -6380,7 +6380,7 @@ Journey Through the Swamp
 -----
 ff4fb461-8060-457a-9c16-000000000835
 -----
-
+onPlay:Retrieve1Card-grabCreature-hasProperty{Cost}le3-toTable$$ShuffleDeck$$Put1Focus-isCost
 +++++
 
 .....
@@ -6436,7 +6436,7 @@ Ewok Hunter
 -----
 ff4fb461-8060-457a-9c16-000000000842
 -----
-
+onPlay:Draw1Card-isReact||onLeaving:Draw1Card-isReact
 +++++
 
 .....
@@ -6444,7 +6444,7 @@ Ewok Hunter
 -----
 ff4fb461-8060-457a-9c16-000000000843
 -----
-
+onPlay:Draw1Card-isReact||onLeaving:Draw1Card-isReact
 +++++
 
 .....
@@ -6600,7 +6600,7 @@ ff4fb461-8060-457a-9c16-000000000862
 +++++
 
 .....
-Prized Possesion
+Prized Possession
 -----
 ff4fb461-8060-457a-9c16-000000000863
 -----
@@ -6636,7 +6636,7 @@ Black Sun Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000867
 -----
-
+afterDraw:SimplyAnnounce{Pay 1 Scum resource or destroy it}-isReact||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -6732,7 +6732,7 @@ Black Sun Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000879
 -----
-
+afterDraw:SimplyAnnounce{Pay 1 Scum resource or destroy it}-isReact||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -6748,7 +6748,7 @@ Warning Shot
 -----
 ff4fb461-8060-457a-9c16-000000000881
 -----
-
+onPlay:Deal1Damage-Targeted-atVehicle
 +++++
 
 .....
@@ -7331,7 +7331,7 @@ DS-61-3
 -----
 ff4fb461-8060-457a-9c16-000000000956
 -----
-onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1||onPlay:Deal2Damage-DemiAutoTargeted-atUnit-targetOpponents-isParticipating-choose1-onlyDuringEngagement-isReact||DeployAllowance:Conflict
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1||DeployAllowance:Conflict
 +++++
 
 .....
