@@ -6049,7 +6049,7 @@ Impersonating a Deity
 -----
 ff4fb461-8060-457a-9c16-000000000793
 -----
-onPlay:Retrieve1Card-grabUnit_and_Ewok-hasProperty{Cost}le3-toTable$$ShuffleDeck$$Put1Focus-isCost
+onPlay:Retrieve1Card-grabUnit_and_Ewok-hasProperty{Cost}le3-toTable-isReact$$Put1Focus-isCost$$ShuffleDeck
 +++++
 
 .....
@@ -6380,7 +6380,7 @@ Journey Through the Swamp
 -----
 ff4fb461-8060-457a-9c16-000000000835
 -----
-onPlay:Retrieve1Card-grabCreature-hasProperty{Cost}le3-toTable$$ShuffleDeck$$Put1Focus-isCost
+onPlay:Retrieve1Card-grabCreature-hasProperty{Cost}le3-toTable-isReact$$Put1Focus-isCost$$ShuffleDeck
 +++++
 
 .....
