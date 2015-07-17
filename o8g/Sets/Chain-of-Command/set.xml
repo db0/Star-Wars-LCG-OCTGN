@@ -59,6 +59,7 @@
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
+  <property name="Block" value="161" />  
   <property name="Block Number" value="3" />
   <property name="Number" value="795" />
   <property name="Instructions" value="" />

@@ -297,7 +297,7 @@
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After the Force phase begins, this unit gains a Force icon for each card in each opponent&#39;s hand until the end of the phase." />
   <property name="Flavor" value="" />
-  <property name="Side" value="Dark" />
+  <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
   <property name="Block" value="158" />
   <property name="Block Number" value="3" />
