@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
-     name="Attack Run" 
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
+     name="Attack Run"
      id="9601571c-51fe-44b7-91fd-284d20c07c8e"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
-     gameVersion="2.0.0.0" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
+     gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000991" name="The Secret of Shantipole" size="ObjectiveSize">
@@ -228,8 +228,8 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001002" name="I Have You Now">
   <property name="Cost" value="0" />
-  <property name="Type" value="Fate" />	
-  <property name="Force" value="1" />	
+  <property name="Type" value="Fate" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
@@ -348,8 +348,8 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001008" name="Supporting Fire">
   <property name="Cost" value="0" />
-  <property name="Type" value="Fate" />	
-  <property name="Force" value="1" />	
+  <property name="Type" value="Fate" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
@@ -468,8 +468,8 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001014" name="I Have You Now">
   <property name="Cost" value="0" />
-  <property name="Type" value="Fate" />	
-  <property name="Force" value="1" />	
+  <property name="Type" value="Fate" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
@@ -555,7 +555,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />

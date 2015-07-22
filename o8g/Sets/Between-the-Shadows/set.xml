@@ -255,7 +255,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="While you control 3 or more [Jedi] objectives and this objective is undamaged, increase the cost of each event card palyed by an opponent by 1." />
+  <property name="Text" value="While you control 3 or more [Jedi] objectives and this objective is undamaged, increase the cost of each event card played by an opponent by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -1335,7 +1335,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Each objective you control gainst +1 damage capacity while you control 3 or more [Scum and Villainy] objectives." />
+  <property name="Text" value="Each objective you control gains +1 damage capacity while you control 3 or more [Scum and Villainy] objectives." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
