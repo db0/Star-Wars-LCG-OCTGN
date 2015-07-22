@@ -1371,7 +1371,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character-Black Sun-Bounty Hunter-Wookie-Unique" />
+  <property name="Traits" value="Character-Black Sun-Bounty Hunter-Wookiee-Unique" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
