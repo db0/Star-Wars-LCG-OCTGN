@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
-     name="Between the Shadows"
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
+     name="Between the Shadows" 
      id="cdd3a8bd-76a9-4ed6-b237-316a3631b0f9"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
-     gameVersion="2.0.0.0"
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
+     gameVersion="2.0.0.0" 
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero's Trial" size="ObjectiveSize">
@@ -133,7 +133,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Dagobah" />
   <property name="Damage Capacity" value="4" />
-  <property name="Resources" value="X" />
+  <property name="Resources" value="3" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="X is the number of [Jedi] objectives you control." />
   <property name="Flavor" value="" />
@@ -208,8 +208,8 @@
 </card>
    <card id="ff4fb461-8060-457a-9c16-000000000827" name="Lightsaber Deflection">
   <property name="Cost" value="0" />
-         <property name="Type" value="Event" />
-         <property name="Force" value="2" />
+         <property name="Type" value="Event" />	
+         <property name="Force" value="2" />	
          <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
          <property name="Traits" value="" />
          <property name="Damage Capacity" value="0" />
