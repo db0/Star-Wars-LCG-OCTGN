@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
-     name="Between the Shadows" 
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
+     name="Between the Shadows"
      id="cdd3a8bd-76a9-4ed6-b237-316a3631b0f9"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
-     gameVersion="2.0.0.0" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
+     gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000817" name="A Hero's Trial" size="ObjectiveSize">
@@ -133,7 +133,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Dagobah" />
   <property name="Damage Capacity" value="4" />
-  <property name="Resources" value="3" />
+  <property name="Resources" value="X" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="X is the number of [Jedi] objectives you control." />
   <property name="Flavor" value="" />
@@ -208,8 +208,8 @@
 </card>
    <card id="ff4fb461-8060-457a-9c16-000000000827" name="Lightsaber Deflection">
   <property name="Cost" value="0" />
-         <property name="Type" value="Event" />	
-         <property name="Force" value="2" />	
+         <property name="Type" value="Event" />
+         <property name="Force" value="2" />
          <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
          <property name="Traits" value="" />
          <property name="Damage Capacity" value="0" />
@@ -255,7 +255,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="While you control 3 or more [Jedi] objectives and this objective is undamaged, increase the cost of each event card palyed by an opponent by 1." />
+  <property name="Text" value="While you control 3 or more [Jedi] objectives and this objective is undamaged, increase the cost of each event card played by an opponent by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -1335,7 +1335,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Each objective you control gainst +1 damage capacity while you control 3 or more [Scum and Villainy] objectives." />
+  <property name="Text" value="Each objective you control gains +1 damage capacity while you control 3 or more [Scum and Villainy] objectives." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
@@ -1371,7 +1371,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character-Black Sun-Bounty Hunter-Wookie-Unique" />
+  <property name="Traits" value="Character-Black Sun-Bounty Hunter-Wookiee-Unique" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />

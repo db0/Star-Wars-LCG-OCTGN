@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
-     name="Darkness and Light" 
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
+     name="Darkness and Light"
      id="14e52f83-352e-44ab-9505-8c996d66addc"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
-     gameVersion="2.0.0.0" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
+     gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000787" name="A Deep Commitment" size="ObjectiveSize">
@@ -95,7 +95,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance you play area. &#xD;&#xA;Action: Remove a shield from a unit you control to give that unit [Unit Damage] or [Blast Damage] until the end of the phase." />
+  <property name="Text" value="Enhance your play area. &#xD;&#xA;Action: Remove a shield from a unit you control to give that unit [Unit Damage] or [Blast Damage] until the end of the phase." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />

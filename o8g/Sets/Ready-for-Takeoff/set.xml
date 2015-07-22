@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
-     name="Ready for Takeoff" 
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
+     name="Ready for Takeoff"
      id="36181e99-e067-4132-8347-747afc5602e4"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
-     gameVersion="2.0.0.0" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
+     gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000901" name="Rogue Squadron Assault" size="ObjectiveSize">
@@ -95,7 +95,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />
@@ -335,7 +335,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
@@ -455,7 +455,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance you play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Reduce the cost and pilot cost of the first Pilot card you play each turn by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
