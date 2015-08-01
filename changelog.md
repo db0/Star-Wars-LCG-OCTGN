@@ -2,6 +2,10 @@ Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
 ### 2.18.0.x
 
+Imperial Entanglements has been added
+
+### 2.18.0.x
+
 Chain of Command has been added
 
 ### 2.17.1.x
