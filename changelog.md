@@ -1,6 +1,6 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
-### 2.18.0.x
+### 2.19.0.x
 
 Imperial Entanglements has been added
 
