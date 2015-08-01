@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
-     name="Join Us or Die" 
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
+     name="Join Us or Die"
      id="89bf09ff-f039-4b2d-a1f9-d584b2808db2"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
-     gameVersion="2.0.0.0" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
+     gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000727" name="May the Force Be With You" size="ObjectiveSize">
@@ -115,7 +115,7 @@
   <property name="Damage Capacity" value="" />
   <property name="Resources" value="" />
   <property name="Edge Priority" value="7" />
-  <property name="Text" value="You may place 1 focus token on a target ready unit that is commmitted to the Force." />
+  <property name="Text" value="You may place 1 focus token on a target ready unit that is committed to the Force." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -195,7 +195,7 @@
   <property name="Damage Capacity" value="" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance you play area.&#xD;&#xA;Action: Focus this enhancement to look at the top card of each player&#39;s deck. Then you may discard 1 of those cards." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Focus this enhancement to look at the top card of each player&#39;s deck. Then you may discard 1 of those cards." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />

@@ -255,7 +255,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="While you control 3 or more [Jedi] objectives and this objective is undamaged, increase the cost of each event card palyed by an opponent by 1." />
+  <property name="Text" value="While you control 3 or more [Jedi] objectives and this objective is undamaged, increase the cost of each event card played by an opponent by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -1335,7 +1335,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Each objective you control gainst +1 damage capacity while you control 3 or more [Scum and Villainy] objectives." />
+  <property name="Text" value="Each objective you control gains +1 damage capacity while you control 3 or more [Scum and Villainy] objectives." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
@@ -1371,7 +1371,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character-Black Sun-Bounty Hunter-Wookie-Unique" />
+  <property name="Traits" value="Character-Black Sun-Bounty Hunter-Wookiee-Unique" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />

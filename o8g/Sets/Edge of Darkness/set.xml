@@ -2055,7 +2055,7 @@
 		<property name="Damage Capacity" value="5" />
 		<property name="Resources" value="2" />
 		<property name="Edge Priority" value="" />
-		<property name="Text" value="Scum and Villainy affiliation only.&#xD;&#xA;&#xD;&#xA;Action: Discard a captured card from this objective to remove 1 damge from this objective. Then, draw 1 card." />
+		<property name="Text" value="Scum and Villainy affiliation only.&#xD;&#xA;&#xD;&#xA;Action: Discard a captured card from this objective to remove 1 damage from this objective. Then, draw 1 card." />
 		<property name="Flavor" value="" />
 		<property name="Side" value="Dark" />
 		<property name="Affiliation" value="Scum and Villainy" />

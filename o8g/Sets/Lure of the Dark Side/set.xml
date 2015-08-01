@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<set xmlns:noNamespaceSchemaLocation="CardSet.xsd" 
-     name="Lure of the Dark Side" 
+<set xmlns:noNamespaceSchemaLocation="CardSet.xsd"
+     name="Lure of the Dark Side"
      id="922e111f-2281-4b20-b98a-249ad7bf5938"
-     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3" 
-     gameVersion="2.0.0.0" 
+     gameId="d5cf89e5-1984-4873-8ae0-f06eea411bb3"
+     gameVersion="2.0.0.0"
      version="2.0.0.0">
 <cards>
 <card id="ff4fb461-8060-457a-9c16-000000000667" name="Commando Operations" size="ObjectiveSize">
@@ -115,7 +115,7 @@
   <property name="Damage Capacity" value="" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="7" />
-  <property name="Text" value="You may place 1 focus token on a target ready unit that is commmitted to the Force." />
+  <property name="Text" value="You may place 1 focus token on a target ready unit that is committed to the Force." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
