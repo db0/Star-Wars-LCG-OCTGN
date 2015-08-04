@@ -5724,7 +5724,7 @@ Wittin
 -----
 ff4fb461-8060-457a-9c16-000000000752
 -----
-
+whileInPlay:SimplyAnnounce{remove Wittin from the force}-foreachForceStruggleLight-isReact-isForced
 +++++
 
 .....
@@ -6540,7 +6540,7 @@ Skipray Blastboat
 -----
 ff4fb461-8060-457a-9c16-000000000855
 -----
-
+onStrike:Put1Focus-isForced
 +++++
 
 .....
@@ -6548,7 +6548,7 @@ Skipray Blastboat
 -----
 ff4fb461-8060-457a-9c16-000000000856
 -----
-
+onStrike:Put1Focus-isForced
 +++++
 
 .....
@@ -6636,7 +6636,7 @@ Black Sun Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000867
 -----
-afterDraw:SimplyAnnounce{Pay 1 Scum resource or destroy it}-isReact||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
+afterDraw:SimplyAnnounce{Pay 1 Scum resource or destroy it}-duringMyTurn-isReact-isForced||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
@@ -6652,7 +6652,7 @@ Shadows of the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000869
 -----
-
+onPlay:CustomScript-isReact-duringMyTurn
 +++++
 
 .....
@@ -6676,7 +6676,7 @@ Zekka Thyne
 -----
 ff4fb461-8060-457a-9c16-000000000872
 -----
-
+onLeaving:SimplyAnnounce{Destroy each other unit in play}-isReact-isForced
 +++++
 
 .....
@@ -6732,7 +6732,7 @@ Black Sun Headhunter
 -----
 ff4fb461-8060-457a-9c16-000000000879
 -----
-afterDraw:SimplyAnnounce{Pay 1 Scum resource or destroy it}-isReact||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
+afterDraw:SimplyAnnounce{Pay 1 Scum resource or destroy it}-duringMyTurn-isReact-isForced||onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
 +++++
 
 .....
