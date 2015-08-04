@@ -1,8 +1,8 @@
 =====Message of the Day======
 
-Chain of Command now available
+Imperial Entanglements now available
 
-Set added by BolivarShagnasty; any cards that are reprints from previous sets are scripted. Pilots should be able to be deployed on vehicles. Please report any issues to:
+Set added by BolivarShagnasty; any cards that are reprints from previous sets or have functions identical/similar to previously scipted cards are scripted. Please report any issues to:
 https://github.com/BolivarShagnasty/Star-Wars-LCG-OCTGN/issues
 
 

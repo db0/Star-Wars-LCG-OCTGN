@@ -8045,6 +8045,680 @@ ff4fb461-8060-457a-9c16-000000001050
 +++++
 
 .....
+House Edge
+-----
+ff4fb461-8060-457a-9c16-000000001081
+-----
+
++++++
+
+.....
+Lando Calrissian
+-----
+ff4fb461-8060-457a-9c16-000000001082
+-----
+
++++++
+
+
+.....
+Herglic Sabacc Addict
+-----
+ff4fb461-8060-457a-9c16-000000001083
+-----
+
++++++
+
+.....
+Cloud City Casino
+-----
+ff4fb461-8060-457a-9c16-000000001084
+-----
+
++++++
+
+.....
+Sabacc Shift
+-----
+ff4fb461-8060-457a-9c16-000000001085
+-----
+
++++++
+
+.....
+The Gambler's Trick
+-----
+ff4fb461-8060-457a-9c16-000000001086
+-----
+
++++++
+
+.....
+Debt of Honor
+-----
+ff4fb461-8060-457a-9c16-000000001087
+-----
+
++++++
+
+.....
+Chewbacca
+-----
+ff4fb461-8060-457a-9c16-000000001088
+-----
++++++
+R0:Put1Shield-DemiAutoTargeted-atUnit-choose2-targetAllied-onlyOnce
+
+.....
+Wookie Defender
+-----
+ff4fb461-8060-457a-9c16-000000001089
+-----
+
++++++
+
+.....
+Kashyyyk Resistance Hideout
+-----
+ff4fb461-8060-457a-9c16-000000001090
+-----
+
++++++
+
+.....
+Wookie Rage
+-----
+ff4fb461-8060-457a-9c16-000000001091
+-----
+
++++++
+
+.....
+Protection
+-----
+ff4fb461-8060-457a-9c16-000000001092
+-----
+onResolveFate:Put1Shield-Targeted-atUnit_or_Objective
++++++
+
+.....
+Fortune and Fate
+-----
+ff4fb461-8060-457a-9c16-000000001093
+-----
+
++++++
+
+.....
+Lady Luck
+-----
+ff4fb461-8060-457a-9c16-000000001094
+-----
+
++++++
+
+.....
+Cloud City Technician
+-----
+ff4fb461-8060-457a-9c16-000000001095
+-----
+
++++++
+
+.....
+Cloud City Technician
+-----
+ff4fb461-8060-457a-9c16-000000001096
+-----
+Placement:Force User||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+Central Computer
+-----
+ff4fb461-8060-457a-9c16-000000001097
+-----
+
++++++
+
+.....
+Target of Opportunity
+-----
+ff4fb461-8060-457a-9c16-000000001098
+-----
+onResolveFate:Deal1Damage-AutoTargeted-atObjective-isParticipating-ifOrigAttacking
++++++
+
+.....
+Honor Among Thieves
+-----
+ff4fb461-8060-457a-9c16-000000001099
+-----
+
++++++
+
+.....
+Mirax Terrik
+-----
+ff4fb461-8060-457a-9c16-000000001100
+-----
+whileInPlay:Reduce1CostPlay-affectsEvent-onlyOnce
++++++
+
+.....
+Fringer Captain
+-----
+ff4fb461-8060-457a-9c16-000000001101
+-----
+
++++++
+
+.....
+Fringer Captain
+-----
+ff4fb461-8060-457a-9c16-000000001102
+-----
+
++++++
+
+.....
+Special Discount
+-----
+ff4fb461-8060-457a-9c16-000000001103
+-----
+
++++++
+
+.....
+One Last Trick
+-----
+ff4fb461-8060-457a-9c16-000000001104
+-----
+
++++++
+
+.....
+Renegade Reinforcements
+-----
+ff4fb461-8060-457a-9c16-000000001105
+-----
+
++++++
+
+.....
+Corporal Dansra Beezer
+-----
+ff4fb461-8060-457a-9c16-000000001106
+-----
+
++++++
+
+.....
+Renegade Squadron Operative
+-----
+ff4fb461-8060-457a-9c16-000000001107
+-----
+
++++++
+
+.....
+Hidden Backup
+-----
+ff4fb461-8060-457a-9c16-000000001108
+-----
+
++++++
+
+.....
+Directed Fire
+-----
+ff4fb461-8060-457a-9c16-000000001109
+-----
+
++++++
+
+.....
+Last Minute Reinforcements
+-----
+ff4fb461-8060-457a-9c16-000000001110
+-----
+
++++++
+
+.....
+Mysteries of the Rim
+-----
+ff4fb461-8060-457a-9c16-000000001111
+-----
+
++++++
+
+.....
+Outer Rim Mystic
+-----
+ff4fb461-8060-457a-9c16-000000001112
+-----
+
++++++
+
+.....
+Outer Rim Mystic
+-----
+ff4fb461-8060-457a-9c16-000000001113
+-----
+
++++++
+
+.....
+Niman Training
+-----
+ff4fb461-8060-457a-9c16-000000001114
+-----
+
++++++
+
+.....
+Niman Training
+-----
+ff4fb461-8060-457a-9c16-000000001115
+-----
+
++++++
+
+.....
+Force Illusion
+-----
+ff4fb461-8060-457a-9c16-000000001116
+-----
+
++++++
+
+.....
+Planning the Rescue
+-----
+ff4fb461-8060-457a-9c16-000000001117
+-----
+
++++++
+
+.....
+General Airen Cracken
+-----
+ff4fb461-8060-457a-9c16-000000001118
+-----
+
++++++
+
+.....
+Alliance Infiltrator
+-----
+ff4fb461-8060-457a-9c16-000000001119
+-----
+
++++++
+
+.....
+Superior Intelligence
+-----
+ff4fb461-8060-457a-9c16-000000001120
+-----
+
++++++
+
+.....
+Undercover
+-----
+ff4fb461-8060-457a-9c16-000000001121
+-----
+
++++++
+
+.....
+Rescue Mission
+-----
+ff4fb461-8060-457a-9c16-000000001122
+-----
+
++++++
+
+.....
+The Tarkin Doctrine
+-----
+ff4fb461-8060-457a-9c16-000000001123
+-----
+
++++++
+
+.....
+Grand Moff Tarkin
+-----
+ff4fb461-8060-457a-9c16-000000001124
+-----
+
++++++
+
+.....
+Stormtrooper Assault Team
+-----
+ff4fb461-8060-457a-9c16-000000001125
+-----
+
++++++
+
+.....
+Rule by Fear
+-----
+ff4fb461-8060-457a-9c16-000000001126
+-----
+
++++++
+
+.....
+Moment of Triumph
+-----
+ff4fb461-8060-457a-9c16-000000001127
+-----
+
++++++
+
+.....
+Twist of Fate
+-----
+ff4fb461-8060-457a-9c16-000000001128
+-----
+onResolveFate:CustomScript
++++++
+
+.....
+Might of the Empire
+-----
+ff4fb461-8060-457a-9c16-000000001129
+-----
+
++++++
+
+.....
+Chimaera
+-----
+ff4fb461-8060-457a-9c16-000000001130
+-----
+
++++++
+
+.....
+DP20 Corellian Gunship
+-----
+ff4fb461-8060-457a-9c16-000000001131
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+Fleet Staging Area
+-----
+ff4fb461-8060-457a-9c16-000000001132
+-----
+
++++++
+
+.....
+Tractor Beam
+-----
+ff4fb461-8060-457a-9c16-000000001133
+-----
+onPlay:Transfer1Focus-Targeted-atVehicle-sourceVehicle-hasMarker{Focus}-destinationVehicle
++++++
+
+.....
+The Empire Strikes Back
+-----
+ff4fb461-8060-457a-9c16-000000001134
+-----
+onPlay:Gain1Dial
++++++
+
+.....
+Enforced Loyalty
+-----
+ff4fb461-8060-457a-9c16-000000001135
+-----
+
++++++
+
+.....
+Colonel Yularen
+-----
+ff4fb461-8060-457a-9c16-000000001136
+-----
+
++++++
+
+.....
+Lieutenant Mithel
+-----
+ff4fb461-8060-457a-9c16-000000001137
+-----
+
++++++
+
+.....
+MSE-6 "Mouse" Droid
+-----
+ff4fb461-8060-457a-9c16-000000001138
+-----
+
++++++
+
+.....
+Control Room
+-----
+ff4fb461-8060-457a-9c16-000000001139
+-----
+
++++++
+
+.....
+The Imperial Fist
+-----
+ff4fb461-8060-457a-9c16-000000001140
+-----
+
++++++
+
+.....
+Imperial Entanglements
+-----
+ff4fb461-8060-457a-9c16-000000001141
+-----
+
++++++
+
+.....
+Imperial Raider
+-----
+ff4fb461-8060-457a-9c16-000000001142
+-----
+onParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
++++++
+
+.....
+VT-49 Decimator
+-----
+ff4fb461-8060-457a-9c16-000000001143
+-----
+
++++++
+
+.....
+VT-49 Decimator
+-----
+ff4fb461-8060-457a-9c16-000000001144
+-----
+
++++++
+
+.....
+Customs Blockade
+-----
+ff4fb461-8060-457a-9c16-000000001145
+-----
+
++++++
+
+.....
+Ion Cannon
+-----
+ff4fb461-8060-457a-9c16-000000001146
+-----
+Placement:Capital Ship_or_Transport||BonusIcons:T:1
++++++
+
+.....
+Phantoms of Imdaar
+-----
+ff4fb461-8060-457a-9c16-000000001147
+-----
+
++++++
+
+.....
+TIE Phantom
+-----
+ff4fb461-8060-457a-9c16-000000001148
+-----
+
++++++
+
+.....
+TIE Phantom
+-----
+ff4fb461-8060-457a-9c16-000000001149
+-----
+
++++++
+
+.....
+Enhanced Laser Cannon
+-----
+ff4fb461-8060-457a-9c16-000000001150
+-----
+Placement:Fighter||BonusIcons:UD:1
++++++
+
+.....
+Fighters Coming In!
+-----
+ff4fb461-8060-457a-9c16-000000001151
+-----
+
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000001152
+-----
+
++++++
+
+.....
+Brothers of the Sith
+-----
+ff4fb461-8060-457a-9c16-000000001153
+-----
+
++++++
+
+.....
+Gorc
+-----
+ff4fb461-8060-457a-9c16-000000001154
+-----
+
++++++
+
+.....
+Pic
+-----
+ff4fb461-8060-457a-9c16-000000001155
+-----
+
++++++
+
+.....
+Telepathic Connection
+-----
+ff4fb461-8060-457a-9c16-000000001156
+-----
+
++++++
+
+.....
+Force Stasis
+-----
+ff4fb461-8060-457a-9c16-000000001157
+-----
+onPlay:Put1Force Stasis-Targeted-atCharacter_or_Creature
++++++
+
+.....
+Force Invisibility
+-----
+ff4fb461-8060-457a-9c16-000000001158
+-----
+
++++++
+
+.....
+The Hutt's Menagerie
+-----
+ff4fb461-8060-457a-9c16-000000001159
+-----
+
++++++
+
+.....
+Malakili
+-----
+ff4fb461-8060-457a-9c16-000000001160
+-----
+
++++++
+
+.....
+Jabba's Rancor
+-----
+ff4fb461-8060-457a-9c16-000000001161
+-----
+
++++++
+
+
+.....
+Bubo
+-----
+ff4fb461-8060-457a-9c16-000000001162
+-----
++++++
+R0:Remove1Damage-DemiAutoTargeted-atUnit_and_Scum and Villainy-hasMarker{Damage}-choose1-isCost$$Put1Damage
+
+.....
+Underground Entertainment
+-----
+ff4fb461-8060-457a-9c16-000000001163
+-----
+
++++++
+
+.....
+Jabba's Summons
+-----
+ff4fb461-8060-457a-9c16-000000001164
+-----
+onPlay:Retrieve1Card-grabBounty Hunter_or_Mercenary-isReact$$ShuffleDeck
++++++
+
+.....
 ENDSCRIPTS
 =====
 '''
