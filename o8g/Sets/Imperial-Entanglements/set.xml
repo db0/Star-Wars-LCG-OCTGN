@@ -611,7 +611,7 @@
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Spintir" />
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
@@ -714,7 +714,7 @@
   <property name="Traits" value="Force-Sense-Alter" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
-  <property name="Edge Priority" value="0" />
+  <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After you declare a lone attacker, target up to X ready enemy units. X is the number of focus tokens on a Force User unit you control. Targeted units cannot be declared as defenders this engagement." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
@@ -855,7 +855,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Imperial Navy affiliation only.&#xD;&#xA;While you control 3 or more [Imperial Navy] objectives, this objective gains: &#34;Reaction: After an opponent declared attackers, he must either spend 2 resources or end the engagement without further resolution. (Limit once per turn.)&#34;" />
+  <property name="Text" value="Imperial Navy affiliation only.&#xD;&#xA;While you control 3 or more [Imperial Navy] objectives, this objective gains: &#34;Reaction: After an opponent declares attackers, he must either spend 2 resources or end the engagement without further resolution. (Limit once per turn.)&#34;" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -1415,7 +1415,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: During an engagement, a target non-participating Fighter unit you control is now participating on your side." />
+  <property name="Text" value="Action: During an engagement, a target non-participating ready Fighter unit you control is now participating on your side." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
