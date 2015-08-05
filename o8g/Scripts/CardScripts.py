@@ -6652,7 +6652,7 @@ Shadows of the Empire
 -----
 ff4fb461-8060-457a-9c16-000000000869
 -----
-onPlay:CustomScript-isReact-duringMyTurn
+
 +++++
 
 .....
@@ -8170,7 +8170,7 @@ Cloud City Technician
 -----
 ff4fb461-8060-457a-9c16-000000001096
 -----
-Placement:Force User||onHostParticipation:Put1Shield-AutoTargeted-atUnit_or_Objective-isParticipating-targetMine-choose1-hasntMarker{Shield}-notHARDCOREenough
+
 +++++
 
 .....
