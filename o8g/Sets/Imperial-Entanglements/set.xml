@@ -33,7 +33,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:1, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Gambler-Scoundrel-Unique" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: If you and your opponent each have 1 or more cards in hand, each chooses 1 card from hand. Reveal those cards simultaneously. The player that revealed more printed Force icons may remove a focus token from a card he controls. Discard both revealed cards. (Limit once per turn.)" />
   <property name="Flavor" value="" />
@@ -53,7 +53,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Gambler" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit enters play, name a card. Your opponent must reveal his hand and discard all copies of that card from his hand." />
   <property name="Flavor" value="" />
@@ -93,7 +93,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Play only during your turn.&#xD;&#xA;Action: Your opponent shuffles his hand back into his deck and draws X cards. X is the number of cards he shuffled into his deck." />
   <property name="Flavor" value="" />
@@ -113,7 +113,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="3" />
   <property name="Text" value="If you control a participating unique [Smugglers and Spies] unit, cancel the card effects of all enemy fate cards with priority 4 or higher revealed during this edge battle." />
   <property name="Flavor" value="" />
@@ -153,7 +153,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Wookiee-Unique" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: If you control fewer units than each opponent, target up to 2 friendly units. Place 1 shield on each targeted unit. (Limit once per turn.)" />
   <property name="Flavor" value="" />
@@ -173,7 +173,7 @@
   <property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Wookiee" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="This unit gains [Unit Damage] while it is shielded." />
   <property name="Flavor" value="" />
@@ -213,7 +213,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: During an engagement, sacrifice a participating Wookiee unit to deal X damage divided among participating enemy units. X is the remaining damage capacity of the sacrificed unit." />
   <property name="Flavor" value="" />
@@ -233,7 +233,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="3" />
   <property name="Text" value="Place 1 shield on a target unit or objective." />
   <property name="Flavor" value="" />
@@ -273,7 +273,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Vehicle-Transport-Unique" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit is focused to strike, reveal the top 3 cards of your deck. Discard one of those cards, place one on the bottom of your deck, and place one into your hand." />
   <property name="Flavor" value="" />
@@ -293,7 +293,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Engineer" />
   <property name="Damage Capacity" value="1" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit enters your discard pile, draw 1 card." />
   <property name="Flavor" value="" />
@@ -313,7 +313,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Engineer" />
   <property name="Damage Capacity" value="1" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit enters your discard pile, draw 1 card." />
   <property name="Flavor" value="" />
@@ -353,7 +353,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="9" />
   <property name="Text" value="If you are the attacking player, deal 1 damage to the engaged objective." />
   <property name="Flavor" value="" />
@@ -393,7 +393,7 @@
   <property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
   <property name="Traits" value="Character-Rogue-Unique" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reduce the cost of the first event card you play each turn by 1." />
   <property name="Flavor" value="" />
@@ -413,7 +413,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Rogue" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="This unit cannot be targeted by enemy events." />
   <property name="Flavor" value="" />
@@ -433,7 +433,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Rogue" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="This unit cannot be targeted by enemy events." />
   <property name="Flavor" value="" />
@@ -453,7 +453,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: Sacrifice a unit to reduce the cost of the next card you play this phase by the sacrificed card&#39;s printed cost." />
   <property name="Flavor" value="" />
@@ -473,7 +473,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Maneuver" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Interrupt: When a unit you control leaves play, place 1 focus token on a target unit with equal or lower printed cost." />
   <property name="Flavor" value="" />
@@ -513,7 +513,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Renegade Squadron-Unique" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit is focused to strike, this unit gains 1 combat icon that another participating unit has, until the end of the phase." />
   <property name="Flavor" value="" />
@@ -533,7 +533,7 @@
   <property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Renegade Squadron" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="" />
   <property name="Flavor" value="" />
@@ -553,7 +553,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance your play area.&#xD;&#xA;While you are the defending player and have no ready defenders, this enhancement gains: &#34;Action: Focus this enhancement to have a target ready unit you control participate on your side.&#34;" />
   <property name="Flavor" value="" />
@@ -573,7 +573,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Tactic" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Interrupt: When you would choose a unit to strike during an engagement, choose a target ready unit you control not participating in the engagement instead. That unit strikes as if it were participating." />
   <property name="Flavor" value="" />
@@ -593,7 +593,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Tactic" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After you declare defenders, search your deck for a non-Vehicle unit and put it into play as a participating unit on your side. Shuffle your deck. If that unit is still in play at the end of the engagement, place it on the bottom of your deck." />
   <property name="Flavor" value="" />
@@ -633,7 +633,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:1, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Force User" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After a focus token is placed on a friendly unit by an enemy card effect or combat icon, move that focus token to this unit. (Limit once per turn.)" />
   <property name="Flavor" value="" />
@@ -653,7 +653,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:1, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Force User" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After a focus token is placed on a friendly unit by an enemy card effect or combat icon, move that focus token to this unit. (Limit once per turn.)" />
   <property name="Flavor" value="" />
@@ -673,7 +673,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Skill-Lightsaber Form" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance a Force User or Force Sensitive unit.&#xD;&#xA;Enhanced unit gains elite." />
   <property name="Flavor" value="" />
@@ -693,7 +693,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Skill-Lightsaber Form" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance a Force User or Force Sensitive unit.&#xD;&#xA;Enhanced unit gains elite." />
   <property name="Flavor" value="" />
@@ -713,7 +713,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Force-Sense-Alter" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="0" />
   <property name="Text" value="Reaction: After you declare a lone attacker, target up to X ready enemy units. X is the number of focus tokens on a Force User unit you control. Targeted units cannot be declared as defenders this engagement." />
   <property name="Flavor" value="" />
@@ -753,7 +753,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:1, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Leader-Spy-Unique" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="While this unit is attacking, it gains [EE Blast Damage] for each captured card at the engaged objective and: &#34;Reaction: After a unit or enhancement is rescued from the engaged objective, put it into play. (Limit once per turn.)&#34;" />
   <property name="Flavor" value="" />
@@ -773,7 +773,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Character-Spy" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit enters play, move 1 target captured card to a different enemy objective. Then, draw 1 card." />
   <property name="Flavor" value="" />
@@ -813,7 +813,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Mission" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: Target up to 2 cards in your discard pile. Shuffle the targeted cards back into your deck. Then, place this card at an enemy objective as a captured card." />
   <property name="Flavor" value="" />
@@ -833,7 +833,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Mission" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: Rescue 1 captured card. If it is a unit, you may put it into play under its owner&#39;s control." />
   <property name="Flavor" value="" />
@@ -893,7 +893,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Trooper" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Targeted Strike.&#xD;&#xA;This unit gains [EE Unit Damage] for each [Imperial Navy] objective you control." />
   <property name="Flavor" value="" />
@@ -913,7 +913,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Doctrine" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance your play area.&#xD;&#xA;Reaction: After an enemy unit enters play, sacrifice this enhancement to return that unit to its owner&#39;s hand." />
   <property name="Flavor" value="" />
@@ -933,7 +933,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Play only during your turn.&#xD;&#xA;Action: Destroy each unit with printed cost 2 or lower." />
   <property name="Flavor" value="" />
@@ -953,7 +953,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="2" />
   <property name="Text" value="Cancel this edge battle and the card effects of all other fate cards just revealed. Discard both edge stacks and start a new edge battle." />
   <property name="Flavor" value="" />
@@ -993,7 +993,7 @@
   <property name="Combat Icons" value="UD:2, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
   <property name="Traits" value="Vehicle-Capital Ship-Death Squadron-Unique" />
   <property name="Damage Capacity" value="4" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Elite.&#xD;&#xA;Reaction: After this unit is focused to strike, it gains [Unit Damage] or [Blast Damage] until the end of the phase." />
   <property name="Flavor" value="" />
@@ -1013,7 +1013,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:1, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Vehicle-Capital Ship" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Shielding.&#xD;&#xA;Reaction: After this unit is declared as an attacker or defender, place 1 shield on a target unit or objective." />
   <property name="Flavor" value="" />
@@ -1053,7 +1053,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: Move 1 focus token from a Vehicle unit you control to a target Vehicle unit with lower printed cost." />
   <property name="Flavor" value="" />
@@ -1073,7 +1073,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After an enemy objective is destroyed, increase the Death Star dial by 1." />
   <property name="Flavor" value="" />
@@ -1113,7 +1113,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Officer-Unique" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit enters play, move up to 2 damage from an objective you control to a target enemy objective." />
   <property name="Flavor" value="" />
@@ -1133,7 +1133,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
   <property name="Traits" value="Character-Officer-Unique" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="While this unit is defending it gains: &#34;Reaction: After the first enemy Vehicle unit is focused to strike this engagement, it loses [Blast Damage] and [EE Blast Damage] for that strike.&#34;" />
   <property name="Flavor" value="" />
@@ -1153,7 +1153,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Droid" />
   <property name="Damage Capacity" value="1" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: During the deployment phase, focus this unit to draw 1 card. Any opponent may focus a unit he controls to cancel this effect." />
   <property name="Flavor" value="" />
@@ -1193,7 +1193,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="10" />
   <property name="Text" value="If you control a participating unique [Imperial Navy] unit, move up to 2 damage from a friendly objective to a target enemy objective." />
   <property name="Flavor" value="" />
@@ -1233,7 +1233,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Vehicle-Capital Ship" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Shielding.&#xD;&#xA;Reaction: After you lose an edge battle as the defender, declare this unit as a participating unit on your side. (Limit once per turn.)" />
   <property name="Flavor" value="" />
@@ -1253,7 +1253,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Vehicle-Transport" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="While this unit is defending alone, you strike first this engagement." />
   <property name="Flavor" value="" />
@@ -1273,7 +1273,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Vehicle-Transport" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="While this unit is defending alone, you strike first this engagement." />
   <property name="Flavor" value="" />
@@ -1293,7 +1293,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Outer Rim" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance your play area.&#xD;&#xA;Forced Interrupt: When the first enemy event card is played this turn, focus this enhancement with 2 focus tokens to cancel its effects." />
   <property name="Flavor" value="" />
@@ -1313,7 +1313,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Weapon" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance a Capital Ship or Transport unit.&#xD;&#xA;Enhanced unit gains [Tactics]." />
   <property name="Flavor" value="" />
@@ -1353,7 +1353,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
   <property name="Traits" value="Vehicle-Fighter" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="While this unit is ready and participating in an engagement, it cannot be targeted by enemy card effects or affected by enemy combat icons." />
   <property name="Flavor" value="" />
@@ -1373,7 +1373,7 @@
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
   <property name="Traits" value="Vehicle-Fighter" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="While this unit is ready and participating in an engagement, it cannot be targeted by enemy card effects or affected by enemy combat icons." />
   <property name="Flavor" value="" />
@@ -1393,7 +1393,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Weapon" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance a Fighter unit.&#xD;&#xA;Enhanced unit gains [Unit Damage].&#xD;&#xA;Damage dealt by enhanced unit cannot be prevented by shields." />
   <property name="Flavor" value="" />
@@ -1413,7 +1413,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Maneuver" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: During an engagement, a target non-participating Fighter unit you control is now participating on your side." />
   <property name="Flavor" value="" />
@@ -1433,7 +1433,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="6" />
   <property name="Text" value="Deal 1 damage to a target participating enemy unit." />
   <property name="Flavor" value="" />
@@ -1473,7 +1473,7 @@
   <property name="Combat Icons" value="UD:2, BD:0, T:0, EE-UD:0, EE-BD:2, EE-T:0" />
   <property name="Traits" value="Character-Force User-Sithspawn-Unique" />
   <property name="Damage Capacity" value="5" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Elite. Protect Pic.&#xD;&#xA;Reaction: After this unit takes damage, return Pic to your hand." />
   <property name="Flavor" value="" />
@@ -1493,7 +1493,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:1" />
   <property name="Traits" value="Character-Force User-Sithspawn-Unique" />
   <property name="Damage Capacity" value="2" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: During an engagement in which Gorc is participating, put this unit into play from your hand as a participating unit on your side." />
   <property name="Flavor" value="" />
@@ -1513,7 +1513,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Sithspawn" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance your play area.&#xD;&#xA;Pic gains targeted strike.&#xD;&#xA;Gorc gains: &#34;Reaction: After this unit is declared as an attacker, target an enemy unit. That unit must defend this engagement, if able.&#34;" />
   <property name="Flavor" value="" />
@@ -1533,7 +1533,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Force-Control-Alter" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: Target an enemy Character or Creature unit. That unit cannot be declared as an attacker or defender until the end of the phase." />
   <property name="Flavor" value="" />
@@ -1553,7 +1553,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Force-Control" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After an enemy unit is focused to strike, target a [Sith] unit you control. The targeted unit cannot be affected by enemy combat icons this strike." />
   <property name="Flavor" value="" />
@@ -1593,7 +1593,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Character-Unique" />
   <property name="Damage Capacity" value="1" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Reaction: After this unit enters play, search your deck for a Creature unit, reveal it, and add it to your hand. Shuffle your deck." />
   <property name="Flavor" value="" />
@@ -1613,7 +1613,7 @@
   <property name="Combat Icons" value="UD:3, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Creature-Unique" />
   <property name="Damage Capacity" value="4" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="No enhancements.&#xD;&#xA;Reaction: After you win an edge battle, if this unit is participating in the engagement, destroy 1 target participating enemy non-Vehicle unit." />
   <property name="Flavor" value="" />
@@ -1633,7 +1633,7 @@
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Creature-Unique" />
   <property name="Damage Capacity" value="3" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="No enhancements.&#xD;&#xA;Protect [Scum and Villainy] unit." />
   <property name="Flavor" value="" />
@@ -1653,7 +1653,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Trap" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Shuffle this enhancement into its owner&#39;s deck to remove a target enemy non-Vehicle unit from an engagement. Then, deal that unit 1 damage." />
   <property name="Flavor" value="" />
@@ -1673,7 +1673,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Action: Search your deck for a Bounty Hunter or Mercenary unit, reveal it, and add it to your hand. Shuffle your deck." />
   <property name="Flavor" value="" />
