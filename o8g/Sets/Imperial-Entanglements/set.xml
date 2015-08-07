@@ -55,7 +55,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this unit enters play, name a card. Your opponent must reveal his hand and discard all copies of that card frmo his hand." />
+  <property name="Text" value="Reaction: After this unit enters play, name a card. Your opponent must reveal his hand and discard all copies of that card from his hand." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -72,10 +72,10 @@
   <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Cloud City-Location" />
-  <property name="Damage Capacity" value="" />
+  <property name="Damage Capacity" value="0" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance your play area.&#xD;&#xA;Limited. (You cannot play more than one limited card each turn.)" />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Limited." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -135,7 +135,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After a Wookie unit you control is sacrificed or destroyed, shuffle it back into it&#39;s owner&#39;s deck from the discard pile. (Limit once per turn.)" />
+  <property name="Text" value="Reaction: After a Wookiee unit you control is sacrificed or destroyed, shuffle it back into its owner&#39;s deck from the discard pile. (Limit once per turn.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -151,7 +151,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:1, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character-Wookie-Unique" />
+  <property name="Traits" value="Character-Wookiee-Unique" />
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -166,12 +166,12 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000001089" name="Wookie Defender">
+<card id="ff4fb461-8060-457a-9c16-000000001089" name="Wookiee Defender">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:0, BD:1, T:0, EE-UD:1, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Character-Wookie" />
+  <property name="Traits" value="Character-Wookiee" />
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -206,16 +206,16 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000001091" name="Wookie Rage">
+<card id="ff4fb461-8060-457a-9c16-000000001091" name="Wookiee Rage">
   <property name="Cost" value="1" />
-  <property name="Type" value="Event" />	
-  <property name="Force" value="1" />	
+  <property name="Type" value="Event" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: During an engagement, sacrifice a participating Wookie unit to deal X damage divided among participating enemy units. X is the remaining damage capacity of the sacrificed unit." />
+  <property name="Text" value="Action: During an engagement, sacrifice a participating Wookiee unit to deal X damage divided among participating enemy units. X is the remaining damage capacity of the sacrificed unit." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -275,7 +275,7 @@
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After this unit is focused to strike, reveal the top 3 cards of your deck. Discard one of those cards, place one on the bottom of your deck, and place on into your hand." />
+  <property name="Text" value="Reaction: After this unit is focused to strike, reveal the top 3 cards of your deck. Discard one of those cards, place one on the bottom of your deck, and place one into your hand." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Smugglers and Spies" />
@@ -555,7 +555,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance your play area.&#xD;&#xA;While you are the defending player and have no ready defenders, this enhancement gains:&#34;Action: Focus this enhancement to have a ready target unit you control participate on your side.&#34;" />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;While you are the defending player and have no ready defenders, this enhancement gains: &#34;Action: Focus this enhancement to have a target ready unit you control participate on your side.&#34;" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Neutral" />
@@ -635,7 +635,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After a focus token is placed on a friendly unit by an enemy card effect or combat icon, move that focus to this unit. (Limit once per turn.)" />
+  <property name="Text" value="Reaction: After a focus token is placed on a friendly unit by an enemy card effect or combat icon, move that focus token to this unit. (Limit once per turn.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -655,7 +655,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After a focus token is placed on a friendly unit by an enemy card effect or combat icon, move that focus to this unit. (Limit once per turn.)" />
+  <property name="Text" value="Reaction: After a focus token is placed on a friendly unit by an enemy card effect or combat icon, move that focus token to this unit. (Limit once per turn.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -671,7 +671,7 @@
   <property name="Type" value="Enhancement" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Skill-Light Saber Form" />
+  <property name="Traits" value="Skill-Lightsaber Form" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -691,7 +691,7 @@
   <property name="Type" value="Enhancement" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="Skill-Light Saber Form" />
+  <property name="Traits" value="Skill-Lightsaber Form" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -715,7 +715,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Reaction: After you declare a lone attacker, target up to X ready enemy units. X is the number of focus tokens on a Force User unit you control. Targeted units cannot be declared as defenders at this engagement." />
+  <property name="Text" value="Reaction: After you declare a lone attacker, target up to X ready enemy units. X is the number of focus tokens on a Force User unit you control. Targeted units cannot be declared as defenders this engagement." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Jedi" />
@@ -808,14 +808,14 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001121" name="Undercover">
   <property name="Cost" value="0" />
-  <property name="Type" value="Enhancement" />
+  <property name="Type" value="Event" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Mission" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: Target up to 2 cards in your discard pile. Shuffle the targeted cards back into your deck. Then place this card at an enemy objective as a captured card." />
+  <property name="Text" value="Action: Target up to 2 cards in your discard pile. Shuffle the targeted cards back into your deck. Then, place this card at an enemy objective as a captured card." />
   <property name="Flavor" value="" />
   <property name="Side" value="Light" />
   <property name="Affiliation" value="Rebel Alliance" />
@@ -831,7 +831,7 @@
   <property name="Type" value="Event" />
   <property name="Force" value="2" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Mission" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -855,7 +855,7 @@
   <property name="Damage Capacity" value="5" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Imperial Navy affiliation only.&#xD;&#xA;While you control 3 or more [Imperial Navy] objectives, this objective gains:&#34;Reaction: After an opponent declares attackers, he must either spend 2 resources or end the engagement without further resolution. (Limit once per turn.)&#34;" />
+  <property name="Text" value="Imperial Navy affiliation only.&#xD;&#xA;While you control 3 or more [Imperial Navy] objectives, this objective gains: &#34;Reaction: After an opponent declares attackers, he must either spend 2 resources or end the engagement without further resolution. (Limit once per turn.)&#34;" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -875,7 +875,7 @@
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="1" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Elite.&#xD;&#xA;Reaction: After a phase beings, spend 1 [Imperial Navy] resource to tread a target card&#39;s printed text box as if it were blank (except for Traits) until the end of the phase. (Limit once per turn.)" />
+  <property name="Text" value="Elite.&#xD;&#xA;Reaction: After a phase begins, spend 1 [Imperial Navy] resource to treat a target card&#39;s printed text box as if it were blank (except for Traits) until the end of the phase. (Limit once per turn.)" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -895,7 +895,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Targeted Strike.&#34;This unit gains [EE Unit Damage] for each [Imperial Navy] objective you control." />
+  <property name="Text" value="Targeted Strike.&#xD;&#xA;This unit gains [EE Unit Damage] for each [Imperial Navy] objective you control." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -933,7 +933,7 @@
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
-  <property name="Resources" value="1" />
+  <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
   <property name="Text" value="Play only during your turn.&#xD;&#xA;Action: Destroy each unit with printed cost 2 or lower." />
   <property name="Flavor" value="" />
@@ -948,14 +948,14 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001128" name="Twist of Fate">
   <property name="Cost" value="0" />
-  <property name="Type" value="Fate" />	
-  <property name="Force" value="0" />	
+  <property name="Type" value="Fate" />
+  <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="2" />
-  <property name="Text" value="" />
+  <property name="Text" value="Cancel this edge battle and the card effects of all other fate cards just revealed. Discard both edge stacks and start a new edge battle." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Neutral" />
@@ -1078,7 +1078,7 @@
   <property name="Text" value="Reaction: After an enemy objective is destroyed, increase the Death Star dial by 1." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
-  <property name="Affiliation" value="Neutral" />
+  <property name="Affiliation" value="Imperial Navy" />
   <property name="Block" value="179" />
   <property name="Block Number" value="6" />
   <property name="Number" value="880" />
@@ -1135,7 +1135,7 @@
   <property name="Damage Capacity" value="3" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="While this unit is defending, it gains:&#34;Reaction: After the first enemy Vehicle unit is focused to strike this engagement, it loses [Blast Damage] and [EE Blast Damage] for that strike.&#34;" />
+  <property name="Text" value="While this unit is defending it gains: &#34;Reaction: After the first enemy Vehicle unit is focused to strike this engagement, it loses [Blast Damage] and [EE Blast Damage] for that strike.&#34;" />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -1151,7 +1151,7 @@
   <property name="Type" value="Unit" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Droid" />
   <property name="Damage Capacity" value="1" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
@@ -1168,14 +1168,14 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001139" name="Control Room">
   <property name="Cost" value="2" />
-  <property name="Type" value="Enhancement" />	
-  <property name="Force" value="0" />	
+  <property name="Type" value="Enhancement" />
+  <property name="Force" value="0" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Location" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="2" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance your play area.&#xD;&#xA;Limited. (You cannot play more than one limited card each turn.)" />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Limited." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Imperial Navy" />
@@ -1195,7 +1195,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="10" />
-  <property name="Text" value="If you control a participating unique [Imperial Navy] unit, move up to 2 damage from a target friendly objective to a target enemy objective." />
+  <property name="Text" value="If you control a participating unique [Imperial Navy] unit, move up to 2 damage from a friendly objective to a target enemy objective." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Neutral" />
@@ -1249,7 +1249,7 @@
 <card id="ff4fb461-8060-457a-9c16-000000001143" name="VT-49 Decimator">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
-  <property name="Force" value="2" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Vehicle-Transport" />
   <property name="Damage Capacity" value="2" />
@@ -1269,7 +1269,7 @@
 <card id="ff4fb461-8060-457a-9c16-000000001144" name="VT-49 Decimator">
   <property name="Cost" value="2" />
   <property name="Type" value="Unit" />
-  <property name="Force" value="2" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:1, BD:0, T:0, EE-UD:0, EE-BD:1, EE-T:0" />
   <property name="Traits" value="Vehicle-Transport" />
   <property name="Damage Capacity" value="2" />
@@ -1311,11 +1311,11 @@
   <property name="Type" value="Enhancement" />
   <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
-  <property name="Traits" value="" />
+  <property name="Traits" value="Weapon" />
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance a Capital Ship or Transport unit.&#xD;&#xA;Enhanced unit gains [Tactics]" />
+  <property name="Text" value="Enhance a Capital Ship or Transport unit.&#xD;&#xA;Enhanced unit gains [Tactics]." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Neutral" />
@@ -1406,7 +1406,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000001151" name="Fighters Coming In&#33;">
+<card id="ff4fb461-8060-457a-9c16-000000001151" name="Fighters Coming In!">
   <property name="Cost" value="0" />
   <property name="Type" value="Event" />
   <property name="Force" value="1" />
@@ -1495,7 +1495,7 @@
   <property name="Damage Capacity" value="2" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Action: During an engagement in which Gorc is participating, put this unit into play as a participating unit on your side." />
+  <property name="Text" value="Action: During an engagement in which Gorc is participating, put this unit into play from your hand as a participating unit on your side." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Sith" />
@@ -1528,8 +1528,8 @@
 </card>
 <card id="ff4fb461-8060-457a-9c16-000000001157" name="Force Stasis">
   <property name="Cost" value="1" />
-  <property name="Type" value="Event" />	
-  <property name="Force" value="1" />	
+  <property name="Type" value="Event" />
+  <property name="Force" value="1" />
   <property name="Combat Icons" value="UD:0, BD:0, T:0, EE-UD:0, EE-BD:0, EE-T:0" />
   <property name="Traits" value="Force-Control-Alter" />
   <property name="Damage Capacity" value="0" />
@@ -1566,7 +1566,7 @@
   <property name="AutoScript" value="" />
   <property name="AutoAction" value="" />
 </card>
-<card id="ff4fb461-8060-457a-9c16-000000001159" name="The Hutt&#39;s Menagerie " size="ObjectiveSize">
+<card id="ff4fb461-8060-457a-9c16-000000001159" name="The Hutt&#39;s Menagerie" size="ObjectiveSize">
   <property name="Cost" value="0" />
   <property name="Type" value="Objective" />
   <property name="Force" value="0" />
@@ -1655,7 +1655,7 @@
   <property name="Damage Capacity" value="0" />
   <property name="Resources" value="0" />
   <property name="Edge Priority" value="" />
-  <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Shuffle this enhnacement into its owner&#39;s deck to remove a target enemy non-Vehicle unit from an engagement. Then, deal that unit 1 damage." />
+  <property name="Text" value="Enhance your play area.&#xD;&#xA;Action: Shuffle this enhancement into its owner&#39;s deck to remove a target enemy non-Vehicle unit from an engagement. Then, deal that unit 1 damage." />
   <property name="Flavor" value="" />
   <property name="Side" value="Dark" />
   <property name="Affiliation" value="Scum and Villainy" />
