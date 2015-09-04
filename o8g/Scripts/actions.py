@@ -740,6 +740,12 @@ def calcResources(card):
       for capturedC in capturedCards: # We check each entry in the dictionary. Each entry is a card's unique ID
          if capturedCards[capturedC] == card._id: # If the value we have for that card's ID is the unique ID of the current dictionary, it means that card is currently being captured at our objective.
             extraResources += 1 # Thus we increase the provided resources by one.
+   if card.name == 'The Master\'s Domain': # This objective has 1 resource for each Jedi objective its owner controls
+      currentObjectives = eval(me.getGlobalVariable('currentObjectives'))
+      for i in range(len(currentObjectives)):
+         Objective = Card(currentObjectives[i])
+         if Objective.Affiliation == "Jedi" and Objective._id != card._id: # We have to give Master's Domain 1 base resource in the card definition, otherwise it doesn't get recognised as a resource-generating card when double-clicked. So we don't want to count itself again.
+            extraResources += 1
    debugNotify("<<< calcResources() with return {}".format(num(card.Resources) + extraResources)) #Debug
    return num(card.Resources) + extraResources
    
