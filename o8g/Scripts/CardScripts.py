@@ -8197,7 +8197,7 @@ Arden Lyn
 ff4fb461-8060-457a-9c16-000000001070
 -----
 +++++
-R0:Put1Focus-isCost$$Put1Focus-Targeted-atUnit-targetOpponents-onlyDuringEngagement
+
 
 .....
 Dark Side Apprentice
@@ -8205,7 +8205,7 @@ Dark Side Apprentice
 ff4fb461-8060-457a-9c16-000000001071
 -----
 +++++
-R0:Remove1Damage-DemiAutoTargeted-atOfficer-hasMarker{Damage}-choose1-isCost$$Put1Damage
+
 
 .....
 Return to Darkness
@@ -8228,7 +8228,6 @@ Give in to Your Anger
 -----
 ff4fb461-8060-457a-9c16-000000001074
 -----
-onResolveFate:SimplyAnnounce{allow a friendly player to place one nonfate card from their hand into their edge stack}
 +++++
 
 .....
@@ -8236,7 +8235,6 @@ Behind the Black Sun
 -----
 ff4fb461-8060-457a-9c16-000000001075
 -----
-afterCardRefreshing:Remove1Focus-AutoTargeted-atVehicle-hasMarker{Focus}-choose1-duringMyTurn-targetAllied-isReact
 +++++
 
 .....
@@ -8244,7 +8242,6 @@ Guri
 -----
 ff4fb461-8060-457a-9c16-000000001076
 -----
-onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
 +++++
 
 .....
