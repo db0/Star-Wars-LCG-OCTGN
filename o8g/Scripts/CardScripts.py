@@ -8045,6 +8045,235 @@ ff4fb461-8060-457a-9c16-000000001050
 +++++
 
 .....
+The Forgotten Masters
+-----
+ff4fb461-8060-457a-9c16-000000001051
+-----
++++++
+
+.....
+T'Ra Saa
+-----
+ff4fb461-8060-457a-9c16-000000001052
+-----
++++++
+
+.....
+Lost Master
+-----
+ff4fb461-8060-457a-9c16-000000001053
+-----
+onPlay:CommitMyself
++++++
+
+.....
+Lost Master
+-----
+ff4fb461-8060-457a-9c16-000000001054
+-----
+onPlay:CommitMyself
++++++
+
+.....
+A Gift From the Past
+-----
+ff4fb461-8060-457a-9c16-000000001055
+-----
+
++++++
+
+.....
+Echoes of the Force
+-----
+ff4fb461-8060-457a-9c16-000000001056
+-----
+onResolveFate:CommitTarget-Targeted-atUnit-isNotCommited||UncommitTarget-Targeted-atUnit-isCommited
++++++
+
+.....
+Heroes of the Rebellion
+-----
+ff4fb461-8060-457a-9c16-000000001057
+-----
++++++
+
+.....
+Tycho Celchu
+-----
+ff4fb461-8060-457a-9c16-000000001058
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Wes Janson
+-----
+ff4fb461-8060-457a-9c16-000000001059
+-----
+onPlay:CustomScript||onPay:Reduce1CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce1
++++++
+
+.....
+Rogue Six
+-----
+ff4fb461-8060-457a-9c16-000000001060
+-----
+
++++++
+
+.....
+Rogue Nine
+-----
+ff4fb461-8060-457a-9c16-000000001061
+-----
+
++++++
+
+.....
+Ready for Takeoff
+-----
+ff4fb461-8060-457a-9c16-000000001062
+-----
++++++
+
+.....
+That Bucket o' Bolts
+-----
+ff4fb461-8060-457a-9c16-000000001063
+-----
++++++
+
+.....
+Han Solo
+-----
+ff4fb461-8060-457a-9c16-000000001064
+-----
+onPlay:CustomScript||onPay:Reduce2CostPlay-perEveryVehicle-Targeted-atVehicle-noTargetingError-maxReduce2
++++++
+
+.....
+Millennium Falcon
+-----
+ff4fb461-8060-457a-9c16-000000001065
+-----
+ConstantEffect:Edge1Bonus
++++++
+R0:DisengageMyself-onlyOnce
+
+.....
+Well Paid
+-----
+ff4fb461-8060-457a-9c16-000000001066
+-----
+onPlay:SimplyAnnounce{reduce the cost and pilot cost of each Pilot and each Vehicle card they play this phase by 1.}$$CreateDummy-nonUnique-isSilent||whileInPlay:Reduce1CostPlay-affectsPilot_or_Vehicle Ship-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
++++++
+
+.....
+Well Paid
+-----
+ff4fb461-8060-457a-9c16-000000001067
+-----
+onPlay:SimplyAnnounce{reduce the cost and pilot cost of each Pilot and each Vehicle card they play this phase by 1.}$$CreateDummy-nonUnique-isSilent||whileInPlay:Reduce1CostPlay-affectsPilot_or_Vehicle Ship-onlyforDummy||afterPhase:DestroyMyself-onlyforDummy-isSilent
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000001068
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
++++++
+
+.....
+The Reawakening
+-----
+ff4fb461-8060-457a-9c16-000000001069
+-----
++++++
+
+.....
+Arden Lyn
+-----
+ff4fb461-8060-457a-9c16-000000001070
+-----
++++++
+
+
+.....
+Dark Side Apprentice
+-----
+ff4fb461-8060-457a-9c16-000000001071
+-----
++++++
+
+
+.....
+Return to Darkness
+-----
+ff4fb461-8060-457a-9c16-000000001072
+-----
+Placement:Force User_or_Force Sensitive
++++++
+
+
+.....
+Give in to Your Anger
+-----
+ff4fb461-8060-457a-9c16-000000001073
+-----
++++++
+
+.....
+Give in to Your Anger
+-----
+ff4fb461-8060-457a-9c16-000000001074
+-----
++++++
+
+.....
+Behind the Black Sun
+-----
+ff4fb461-8060-457a-9c16-000000001075
+-----
++++++
+
+.....
+Guri
+-----
+ff4fb461-8060-457a-9c16-000000001076
+-----
++++++
+
+.....
+Freelance Assassin
+-----
+ff4fb461-8060-457a-9c16-000000001077
+-----
++++++
+
+.....
+Hidden Vibroknife
+-----
+ff4fb461-8060-457a-9c16-000000001078
+-----
+Placement:Character_or_Droid||BonusIcons:UD:1
++++++
+
+.....
+Threat Removal
+-----
+ff4fb461-8060-457a-9c16-000000001079
+-----
++++++
+
+.....
+Heat of Battle
+-----
+ff4fb461-8060-457a-9c16-000000001080
+-----
+onResolveFate:Deal1Damage-DemiAutoTargeted-atUnit-isParticipating-targetOpponents-choose1
+
+.....
 House Edge
 -----
 ff4fb461-8060-457a-9c16-000000001081

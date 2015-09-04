@@ -1,6 +1,6 @@
 =====Message of the Day======
 
-Imperial Entanglements now available
+Jump to Lightspeed now available
 
 Set added by BolivarShagnasty; any cards that are reprints from previous sets or have functions identical/similar to previously scipted cards are scripted. Please report any issues to:
 https://github.com/BolivarShagnasty/Star-Wars-LCG-OCTGN/issues

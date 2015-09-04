@@ -675,7 +675,49 @@ def CustomScript(card, action = 'PLAY'): # Scripts that are complex and fairly u
             card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
             card.sendToBack()
             TokensX('Put1isEnhancement-isSilent', '', card)
-            notify("{} climbs into {}".format(card,vehicle[0]))			
+            notify("{} climbs into {}".format(card,vehicle[0]))
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000001058': # Tycho Celchu B167/2
+      if action == 'PLAY': # In this scenario, Tycho is attaching to a vehicle the player had targeted before they played him.
+         vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
+         if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Tycho in it.
+            hostCards = eval(getGlobalVariable('Host Cards'))
+            hostCards[card._id] = vehicle[0]._id
+            setGlobalVariable('Host Cards',str(hostCards))
+            cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == vehicle[0]._id])
+            debugNotify("About to move into position") #Debug
+            x,y = vehicle[0].position
+            card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
+            card.sendToBack()
+            TokensX('Put1isEnhancement-isSilent', '', card)
+            notify("{} climbs into {}".format(card,vehicle[0]))
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000001059': # Wes Janson B167/3
+      if action == 'PLAY': # In this scenario, Wes is attaching to a vehicle the player had targeted before they played him.
+         vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
+         if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Wes in it.
+            hostCards = eval(getGlobalVariable('Host Cards'))
+            hostCards[card._id] = vehicle[0]._id
+            setGlobalVariable('Host Cards',str(hostCards))
+            cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == vehicle[0]._id])
+            debugNotify("About to move into position") #Debug
+            x,y = vehicle[0].position
+            card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
+            card.sendToBack()
+            TokensX('Put1isEnhancement-isSilent', '', card)
+            notify("{} climbs into {}".format(card,vehicle[0]))
+   elif card.model == 'ff4fb461-8060-457a-9c16-000000001064': # Han Solo B168/2
+      if action == 'PLAY': # In this scenario, Han is attaching to a vehicle the player had targeted before they played him.
+         vehicle = findTarget('Targeted-atVehicle-targetAllied-noTargetingError')
+         if len(vehicle) > 0: #If the player has targeted a Vehicle we assume they wanted to put Han in it.
+            hostCards = eval(getGlobalVariable('Host Cards'))
+            hostCards[card._id] = vehicle[0]._id
+            setGlobalVariable('Host Cards',str(hostCards))
+            cardAttachementsNR = len([att_id for att_id in hostCards if hostCards[att_id] == vehicle[0]._id])
+            debugNotify("About to move into position") #Debug
+            x,y = vehicle[0].position
+            card.moveToTable(x, y - ((cwidth(card) / 4 * playerside) * cardAttachementsNR))
+            card.sendToBack()
+            TokensX('Put1isEnhancement-isSilent', '', card)
+            notify("{} climbs into {}".format(card,vehicle[0]))			            
    else: notify("{} uses {}'s ability".format(me,card)) # Just a catch-all.
 def chkLookupRestrictions(card,lookup,origin_card):
    debugNotify(">>> chkLookupRestrictions()") # Debug

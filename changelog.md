@@ -1,5 +1,9 @@
 Changelog - Star Wars LCG OCTGN Game Definition
 ===============================================
+### 2.20.0.x
+
+Jump to Lightspeed has been added
+
 ### 2.19.0.x
 
 Imperial Entanglements has been added
